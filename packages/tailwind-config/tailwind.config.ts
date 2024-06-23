@@ -1,5 +1,6 @@
 import forms from "@tailwindcss/forms";
 import typography from "@tailwindcss/typography";
+// @ts-ignore - this package is not typed
 import scrollbarHide from "tailwind-scrollbar-hide";
 import animate from 'tailwindcss-animate';
 import type { Config } from "tailwindcss";
