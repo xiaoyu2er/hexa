@@ -1,4 +1,4 @@
-import { Button } from "@hexa/ui/button";
+import { Button } from "@hexa/ui";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,7 +9,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@hexa/ui/alert-dialog"
+} from "@hexa/ui"
 
 function AlertDialogDemo() {
   return (
