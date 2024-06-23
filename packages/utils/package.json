@@ -1,0 +1,29 @@
+{
+    "name": "@hexa/utils",
+    "description": "Utilities for Hexa",
+    "version": "0.0.0",
+    "sideEffects": false,
+    "private": true,
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist/**"
+    ],
+    "scripts": {
+        "build": "tsup",
+        "lint": "eslint src/",
+        "dev": "tsup --watch",
+        "check-types": "tsc --noEmit"
+    },
+    "devDependencies": {
+        "@hexa/eslint-config": "workspace:*",
+        "@hexa/typescript-config": "workspace:*",
+        "tsup": "^6.1.3",
+        "typescript": "^5.1.6",
+        "eslint": "^8.57.0"
+    },
+    "dependencies": {
+        "clsx": "^2.1.0",
+        "tailwind-merge": "^2.2.1"
+    }
+}
