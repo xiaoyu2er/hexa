@@ -1,7 +1,5 @@
-import { EmailTemplate } from '@/lib/emails/hello';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { HelloEmailTemplate } from '@/lib/emails/hello';
+import { resend } from '@/lib/emails';
 
 export async function GET() {
   try {
@@ -10,7 +8,7 @@ export async function GET() {
       from: 'Hexa <noreply@hexa.im>',
       to: ['me@zyq.io'],
       subject: 'Hello world',
-      react: EmailTemplate({ message: 'Hello John' }),
+      react: HelloEmailTemplate({ message: 'Hello John' }),
     });
 
     if (error) {
