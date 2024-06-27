@@ -1,10 +1,7 @@
-import { logout } from "@/lib/auth/actions";
 import { validateRequest } from "@/lib/auth/validate-request";
-import { Button } from "@hexa/ui";
-import { useServerAction } from "zsa-react";
-import { Logout } from "./components/Logout";
-import { Login } from "./components/Login";
-import { SignUp } from "./components/SignUp";
+import { Logout } from "../components/Logout";
+import { Login } from "../components/Login";
+import { SignUp } from "../components/SignUp";
 
 
 export default async function Home() {
