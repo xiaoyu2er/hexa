@@ -1,7 +1,6 @@
 {
   "extends": "@hexa/typescript-config/react-library.json",
   "compilerOptions": {
-    "outDir": "dist",
     "paths": {
       "@/*": ["./src/*"]
     },
