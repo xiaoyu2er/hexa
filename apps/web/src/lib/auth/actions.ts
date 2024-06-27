@@ -18,9 +18,11 @@ import { emailVerificationTable, userTable } from "@/db/schema";
 
 import { createServerAction, ZSAError } from "zsa";
 import { redirect } from "next/navigation";
-import { EXIPRE_TIME_SPAN, RESEND_VERIFICATION_CODE_MILLSECONDS } from "../const";
+import { EXIPRE_TIME_SPAN, PUBLIC_URL, RESEND_VERIFICATION_CODE_MILLSECONDS } from "@/lib/const";
 import { validateRequest } from "./validate-request";
 import { z } from "zod";
+import { resend } from "@/lib/emails";
+import VerifyEmailTemplate from "@hexa/email-templates/emails/VerifyEmail";
 
 export interface ActionResponse<T> {
   fieldError?: Partial<Record<keyof T, string | undefined>>;
@@ -249,4 +251,22 @@ function generateId() {
 
 async function sendVerificationEmail(email: string, code: string) {
   console.log('sending email to', email, 'with code', code);
+  const url = PUBLIC_URL + '/api/verify-email?code=' + code;
+  // @ts-ignore text is not required
+  const { data, error } = await resend.emails.send({
+    from: 'Hexa <noreply@hexa.im>',
+    to: [email],
+    subject: 'Verify your Hexa email address',
+    react: VerifyEmailTemplate({ email, code, url }),
+  });
+
+  if (error) {
+    console.error('Failed to send email', error);
+    throw new ZSAError(
+      "INTERNAL_SERVER_ERROR",
+      "Failed to send email"
+    )
+  }
+
+  return data;
 }
