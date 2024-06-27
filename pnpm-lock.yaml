@@ -20,6 +20,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@hexa/email-templates':
+        specifier: workspace:*
+        version: link:../../packages/email-templates
       '@hexa/tailwind-config':
         specifier: workspace:*
         version: link:../../packages/tailwind-config
@@ -147,6 +150,9 @@ importers:
 
   packages/email-templates:
     dependencies:
+      '@hexa/tailwind-config':
+        specifier: workspace:*
+        version: link:../tailwind-config
       '@react-email/components':
         specifier: ^0.0.19
         version: 0.0.19(react@18.3.1)
@@ -156,6 +162,10 @@ importers:
       react-email:
         specifier: 2.1.4
         version: 2.1.4(eslint@8.57.0)
+    devDependencies:
+      tailwindcss:
+        specifier: ^3.4.4
+        version: 3.4.4
 
   packages/eslint-config:
     devDependencies:
