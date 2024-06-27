@@ -26,7 +26,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "./ui/drawer";
-import { useMediaQuery } from "@hexa/utils";
+import { useMediaQuery } from "@/hooks";
 import { cn } from "@hexa/utils";
 
 type StatefulContent = ({
