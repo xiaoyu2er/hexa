@@ -47,8 +47,8 @@ export default function VerifyEmailTemplate({
               Verification code
             </Text>
 
-            <Section className="max-auto bg-slate-200 flex items-center justify-center ">
-              <Text className="text-xl">{code}</Text>
+            <Section className="max-auto bg-slate-200">
+              <Text className="text-xl text-center">{code}</Text>
             </Section>
 
             <Text className="text-sm text-center mt-2 mb-4">
