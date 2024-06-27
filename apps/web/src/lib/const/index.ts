@@ -9,3 +9,8 @@ export const VERIFY_CODE_LENGTH = 6;
 export const EXIPRE_TIME_SPAN = process.env.NODE_ENV === 'development' ?
     new TimeSpan(30, "s") :// 1 mi
     new TimeSpan(10, "m") // 10 minutes
+
+export const PUBLIC_URL = process.env.NODE_ENV === 'development' ?
+    process.env.__NEXT_PRIVATE_ORIGIN : `https://${(
+        process.env.VERCEL_ENV === 'production' ? (process.env.VERCEL_PROJECT_PRODUCTION_URL) : process.env.VERCEL_BRANCH_URL
+    )}`;
