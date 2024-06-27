@@ -6,13 +6,21 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:migrate:prod": "NODE_ENV=production drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@hexa/tailwind-config": "workspace:*",
     "@hexa/ui": "workspace:*",
     "@hexa/utils": "workspace:*",
+    "drizzle-orm": "^0.31.2",
     "next": "15.0.0-rc.0",
+    "pg": "^8.12.0",
+    "postgres": "^3.4.4",
     "react": "19.0.0-rc-f994737d14-20240522",
     "react-dom": "19.0.0-rc-f994737d14-20240522",
     "resend": "^3.3.0"
