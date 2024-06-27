@@ -11,7 +11,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:migrate:prod": "NODE_ENV=production drizzle-kit migrate",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "db:studio:prod": "NODE_ENV=production drizzle-kit studio"
   },
   "dependencies": {
     "@hexa/tailwind-config": "workspace:*",
