@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google"
-
-// import "@hexa/ui/dist/index.css";
-import './globals.css';
+import { Toaster } from "@hexa/ui"
 import { cn } from "@hexa/utils";
+import './globals.css';
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -27,6 +26,7 @@ export default function RootLayout({
         fontSans.variable
       )}>
         {children}
+        <Toaster />
       </body>
     </html>
   );
