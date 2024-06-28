@@ -90,7 +90,16 @@ export async function findDBToken(userId: string, type: TokenType) {
   });
 }
 
-export async function sendVerifyTokenEmail(user: User, type: TokenType) {
+export async function deleteDBToken(userId: string, type: TokenType) {
+  return await db
+    .delete(tokenTable)
+    .where(and(eq(tokenTable.userId, userId), eq(tokenTable.type, type)));
+}
+
+export async function sendVerifyTokenEmail(
+  user: { id: string; email: string },
+  type: TokenType,
+) {
   if (!user.email) {
     throw new ZSAError("INTERNAL_SERVER_ERROR", "User email is missing");
   }
@@ -99,7 +108,10 @@ export async function sendVerifyTokenEmail(user: User, type: TokenType) {
   return await sendVerificationCodeEmail(user.email, verificationCode);
 }
 
-export async function resendVerifyTokenEmail(user: User, type: TokenType) {
+export async function resendVerifyTokenEmail(
+  user: { id: string; email?: string | null },
+  type: TokenType,
+) {
   if (!user.email) {
     throw new ZSAError("INTERNAL_SERVER_ERROR", "User email is missing");
   }
@@ -121,4 +133,75 @@ export async function resendVerifyTokenEmail(user: User, type: TokenType) {
   const { code } = await addDBToken(user.id, "VERIFY_EMAIL");
 
   return await sendVerificationCodeEmail(user.email, code);
+}
+
+export async function verifyDBTokenByCode(
+  user: { id: string },
+  codeOrToken: {
+    code?: string;
+    token?: string;
+  },
+  type: TokenType,
+  deleteRow: boolean,
+) {
+  if (!codeOrToken.code && !codeOrToken.token) {
+    throw new ZSAError("CONFLICT", "Code or token is required");
+  }
+
+  const tokenRow = await findDBToken(user.id, type);
+
+  // No record
+  if (!tokenRow) {
+    throw new ZSAError(
+      "CONFLICT",
+      process.env.NODE_ENV === "development"
+        ? "Code was not sent"
+        : "Code is invalid or expired",
+    );
+  }
+
+  // Expired
+  if (!isWithinExpirationDate(tokenRow.expiresAt)) {
+    // Delete the verification row
+    if (deleteRow) {
+      await deleteDBToken(user.id, type);
+    }
+
+    throw new ZSAError(
+      "CONFLICT",
+      process.env.NODE_ENV === "development"
+        ? "Code is expired"
+        : "Code is invalid or expired",
+    );
+  }
+
+  if (codeOrToken.code) {
+    // Not matching code
+    if (tokenRow.code !== codeOrToken.code) {
+      throw new ZSAError(
+        "CONFLICT",
+        process.env.NODE_ENV === "development"
+          ? "Code does not match"
+          : "Code is invalid or expired",
+      );
+    }
+  }
+
+  if (codeOrToken.token) {
+    // Not matching token
+    if (tokenRow.token !== codeOrToken.token) {
+      throw new ZSAError(
+        "CONFLICT",
+        process.env.NODE_ENV === "development"
+          ? "Token does not match"
+          : "Token is invalid or expired",
+      );
+    }
+  }
+
+  if (deleteRow) {
+    await deleteDBToken(user.id, type);
+  }
+
+  return tokenRow;
 }

@@ -1,13 +1,10 @@
 "use server";
 
-import { db, tokenTable, userTable } from "@/db";
-import { RESEND_VERIFY_CODE_TIME_SPAN } from "@/lib/const";
+import { db, userTable } from "@/db";
 import { SignupSchema, OTPSchema, EmptySchema } from "@/lib/zod/schemas/auth";
-import { formatDistanceStrict } from "date-fns";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { isWithinExpirationDate } from "oslo";
 import { createServerAction, ZSAError } from "zsa";
 import { lucia } from "@/lib/auth/lucia";
 import { validateRequest } from "@/lib/auth/validate-request";
@@ -16,8 +13,8 @@ import {
   generateUserId,
   sendVerificationCodeEmail,
   addDBToken,
-  findDBToken,
   resendVerifyTokenEmail,
+  verifyDBTokenByCode,
 } from "./utils";
 
 export const signupAction = createServerAction()
@@ -115,73 +112,7 @@ export const verifyEmailAction = createServerAction()
       );
     }
 
-    const verifyRow = await db.query.tokenTable.findFirst({
-      where: (table, { eq, and }) =>
-        and(eq(table.userId, user.id), eq(table.type, "VERIFY_EMAIL")),
-      with: {
-        user: true,
-      },
-    });
-
-    // No record
-    if (!verifyRow) {
-      throw new ZSAError(
-        "CONFLICT",
-        process.env.NODE_ENV === "development"
-          ? "Code was not sent"
-          : "Code is invalid or expired",
-      );
-    }
-
-    // Not matching email
-    if (verifyRow.user?.email !== user.email) {
-      throw new ZSAError(
-        "CONFLICT",
-        process.env.NODE_ENV === "development"
-          ? "Email does not match"
-          : "Code is invalid or expired",
-      );
-    }
-
-    // Expired
-    if (!isWithinExpirationDate(verifyRow.expiresAt)) {
-      // Delete the verification row
-      await db
-        .delete(tokenTable)
-        .where(
-          and(
-            eq(tokenTable.id, verifyRow.id),
-            eq(tokenTable.type, "VERIFY_EMAIL"),
-          ),
-        );
-
-      throw new ZSAError(
-        "CONFLICT",
-        process.env.NODE_ENV === "development"
-          ? "Code is expired"
-          : "Code is invalid or expired",
-      );
-    }
-
-    // Not matching code
-    if (verifyRow.code !== code) {
-      throw new ZSAError(
-        "CONFLICT",
-        process.env.NODE_ENV === "development"
-          ? "Code does not match"
-          : "Code is invalid or expired",
-      );
-    }
-
-    // Delete the verification row
-    await db
-      .delete(tokenTable)
-      .where(
-        and(
-          eq(tokenTable.id, verifyRow.id),
-          eq(tokenTable.type, "VERIFY_EMAIL"),
-        ),
-      );
+    await verifyDBTokenByCode({ id: user.id }, { code }, "VERIFY_EMAIL", true);
 
     // Mathcing code
     // Update session
