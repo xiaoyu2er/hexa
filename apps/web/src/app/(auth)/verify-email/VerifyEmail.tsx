@@ -1,7 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { resendVerificationEmail, verifyEmailByCode } from "@/lib/auth/actions";
+import {
+  verifyEmailResendAction,
+  verifyEmailAction,
+} from "@/lib/auth/actions/sign-up.action";
 import {
   Button,
   Card,
@@ -24,7 +27,7 @@ import { FC, useEffect, useRef } from "react";
 import {
   APP_TITLE,
   VERIFY_CODE_LENGTH,
-  RESEND_VERIFICATION_CODE_SECONDS,
+  RESEND_VERIFY_CODE_TIME_SPAN,
 } from "@/lib/const";
 import { useCountdown } from "usehooks-ts";
 import { cn } from "@hexa/utils";
@@ -49,15 +52,14 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({ email }) => {
   } = form;
 
   const [count, { startCountdown, resetCountdown }] = useCountdown({
-    countStart: RESEND_VERIFICATION_CODE_SECONDS,
-    intervalMs: 1000,
+    countStart: RESEND_VERIFY_CODE_TIME_SPAN.seconds(),
   });
 
   useEffect(() => {
     startCountdown();
   }, []);
 
-  const { execute: execVerify } = useServerAction(verifyEmailByCode, {
+  const { execute: execVerify } = useServerAction(verifyEmailAction, {
     onError: ({ err }) => {
       if (err.code === "INPUT_PARSE_ERROR") {
         Object.entries(err.fieldErrors).forEach(([field, message]) => {
@@ -76,12 +78,12 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({ email }) => {
   });
 
   const { execute: execResend, isPending: isRensedPending } = useServerAction(
-    resendVerificationEmail,
+    verifyEmailResendAction,
     {
       onError: ({ err }) => {
         setError("code", { message: err.message });
       },
-    },
+    }
   );
 
   const resed = async () => {
@@ -160,7 +162,7 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({ email }) => {
                   "font-medium text-sm text-primary hover:underline hover:underline-offset-4 hover:cursor-pointer text-center",
                   {
                     "opacity-70": count > 0,
-                  },
+                  }
                 )}
                 onClick={resed}
               >

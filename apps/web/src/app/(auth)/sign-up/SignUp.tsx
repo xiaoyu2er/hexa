@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { signup } from "@/lib/auth/actions";
+import { signupAction } from "@/lib/auth/actions/sign-up.action";
 import {
   Button,
   Card,
@@ -49,7 +49,7 @@ export const Signup: FC<SignupProps> = ({ email }) => {
     formState: { isSubmitting, errors },
     setFocus,
   } = form;
-  const { execute } = useServerAction(signup, {
+  const { execute } = useServerAction(signupAction, {
     onError: ({ err }) => {
       console.error("sign-up", err);
       if (err.code === "INPUT_PARSE_ERROR") {
