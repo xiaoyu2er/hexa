@@ -1,4 +1,5 @@
-import { boolean, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+import { boolean, pgEnum, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
 export const userTable = pgTable("user", {
   id: text("id").primaryKey(),
@@ -38,24 +39,42 @@ export const sessionTable = pgTable("session", {
     .defaultNow(),
 });
 
-export const emailVerificationTable = pgTable("email_verification", {
+export const tokenTypeEnum = pgEnum('tokenType', ['RESET_PASSWORD', 'VERIFY_EMAIL']);
+export type TokenType = typeof tokenTypeEnum.enumValues[number];
+
+export const tokenTable = pgTable("token", {
   id: serial("id").primaryKey(),
   userId: text("user_id")
     .notNull()
     .references(() => userTable.id),
-  email: text("email").notNull(),
+  type: tokenTypeEnum('type').notNull(),
   code: text("code").notNull(),
+  token: text("token").notNull(),
+  expiresAt: timestamp("expires_at", {
+    withTimezone: true,
+    mode: "date",
+  }).notNull(),
   createdAt: timestamp("created_at", {
     withTimezone: true,
     mode: "date",
   })
     .notNull()
     .defaultNow(),
-  expiresAt: timestamp("expires_at", {
-    withTimezone: true,
-    mode: "date",
-  }).notNull(),
 });
+
+
+export const usersRelations = relations(userTable, ({ many }) => ({
+  tokens: many(tokenTable),
+}));
+
+export const tokensRelations = relations(tokenTable, ({ one }) => ({
+  user: one(userTable, {
+    fields: [tokenTable.userId],
+    references: [userTable.id],
+  }),
+}));
+
+
 
 export const oauthAccountTable = pgTable("oauth_account", {
   id: text("id").primaryKey(),
@@ -81,4 +100,4 @@ export const oauthAccountTable = pgTable("oauth_account", {
 export type User = typeof userTable.$inferSelect;
 export type OAuthAccount = typeof oauthAccountTable.$inferSelect;
 export type Session = typeof sessionTable.$inferSelect;
-export type EmailVerification = typeof emailVerificationTable.$inferSelect;
+export type Token = typeof tokenTable.$inferSelect;
