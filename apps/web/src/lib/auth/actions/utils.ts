@@ -130,7 +130,7 @@ export async function resendVerifyTokenEmail(
     }
   }
 
-  const { code } = await addDBToken(user.id, "VERIFY_EMAIL");
+  const { code } = await addDBToken(user.id, "RESET_PASSWORD");
 
   return await sendVerificationCodeEmail(user.email, code);
 }
