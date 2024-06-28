@@ -13,6 +13,8 @@ export const uncachedValidateRequest = async (): Promise<
   const result = await lucia.validateSession(sessionId);
   // next.js throws when you attempt to set cookie when rendering page
   try {
+    // If Session.fresh is true, it indicates the session expiration has been extended and you should set a new session cookie.
+    // see https://lucia-auth.com/basics/sessions
     if (result.session && result.session.fresh) {
       const sessionCookie = lucia.createSessionCookie(result.session.id);
       cookies().set(
