@@ -203,7 +203,7 @@ export const resendVerificationEmail = createServerAction()
 
     const verificationCode = await generateEmailVerificationCode(user.id, user.email);
 
-    await sendVerificationEmail(user.email, verificationCode);
+    return await sendVerificationEmail(user.email, verificationCode);
   })
 
 export const logout = createServerAction()
@@ -250,8 +250,14 @@ function generateId() {
 }
 
 async function sendVerificationEmail(email: string, code: string) {
-  console.log('sending email to', email, 'with code', code);
   const url = PUBLIC_URL + '/api/verify-email?code=' + code;
+  if(process.env.NODE_ENV === 'development') {
+    // sleep 1000;
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    console.log('sending email to', email, 'with code', code, 'verify-url', url);
+    return { code, email, url };
+  }
+  
   // @ts-ignore text is not required
   const { data, error } = await resend.emails.send({
     from: 'Hexa <noreply@hexa.im>',
@@ -268,5 +274,5 @@ async function sendVerificationEmail(email: string, code: string) {
     )
   }
 
-  return data;
+  return data as unknown as { code: string, email: string, url: string };
 }
