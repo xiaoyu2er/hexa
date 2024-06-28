@@ -1,13 +1,12 @@
-'use server';
+"use server";
 
 import { db } from "@/db";
 import { LoginSchema } from "@/lib/zod/schemas/auth";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createServerAction, ZSAError } from "zsa";
-import { lucia } from "..";
 import { isHashValid } from "./utils";
-
+import { lucia } from "../lucia";
 
 export const loginAction = createServerAction()
   .input(LoginSchema)
@@ -49,9 +48,7 @@ export const loginAction = createServerAction()
       );
     }
 
-    const session = await lucia.createSession(existingUser.id, {
-      email: existingUser.email,
-    });
+    const session = await lucia.createSession(existingUser.id, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
     cookies().set(
       sessionCookie.name,

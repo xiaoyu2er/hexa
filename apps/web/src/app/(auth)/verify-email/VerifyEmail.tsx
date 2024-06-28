@@ -83,7 +83,7 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({ email }) => {
       onError: ({ err }) => {
         setError("code", { message: err.message });
       },
-    }
+    },
   );
 
   const resed = async () => {
@@ -162,7 +162,7 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({ email }) => {
                   "font-medium text-sm text-primary hover:underline hover:underline-offset-4 hover:cursor-pointer text-center",
                   {
                     "opacity-70": count > 0,
-                  }
+                  },
                 )}
                 onClick={resed}
               >
