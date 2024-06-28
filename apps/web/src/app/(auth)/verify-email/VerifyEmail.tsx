@@ -89,10 +89,10 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({ email }) => {
     if (isRensedPending) return;
     const [data, error] = await execResend({});
     if (data) {
-      console.log(data);
       resetCountdown();
       startCountdown();
       reset();
+      console.log(JSON.stringify(data));
     } else {
       console.log(error);
       setError("code", { message: error?.message });

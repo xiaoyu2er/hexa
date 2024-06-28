@@ -40,7 +40,7 @@ export const login = createServerAction()
     if (!existingUser || !existingUser?.hashedPassword) {
       throw new ZSAError("FORBIDDEN", "Incorrect email or password");
     }
-    const validPassword = await new Scrypt().verify(
+    const validPassword = await isHashValid(
       existingUser.hashedPassword,
       password,
     );
@@ -74,7 +74,7 @@ export const signup = createServerAction()
     }
 
     const userId = generateId();
-    const hashedPassword = await getHasedPassword(password);
+    const hashedPassword = await getHash(password);
 
     const [user] = await db
       .insert(userTable)
@@ -260,8 +260,12 @@ async function generateEmailVerificationCode(userId: string, email: string) {
   return code;
 }
 
-async function getHasedPassword(password: string) {
-  return new Scrypt().hash(password);
+async function getHash(value: string) {
+  return new Scrypt().hash(value);
+}
+
+async function isHashValid(hash: string, value: string) {
+  return new Scrypt().verify(hash, value);
 }
 
 function generateId() {
@@ -269,19 +273,11 @@ function generateId() {
 }
 
 async function sendVerificationEmail(email: string, code: string) {
-  const url = PUBLIC_URL + "/api/verify-email?code=" + code;
   if (process.env.NODE_ENV === "development") {
     // sleep 1000;
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log(
-      "sending email to",
-      email,
-      "with code",
-      code,
-      "verify-url",
-      url,
-    );
-    return { code, email, url };
+    console.log("sending email to", email, "with code");
+    return { code, email };
   }
 
   // @ts-ignore text is not required
@@ -289,7 +285,7 @@ async function sendVerificationEmail(email: string, code: string) {
     from: "Hexa <noreply@hexa.im>",
     to: [email],
     subject: "Verify your Hexa email address",
-    react: VerifyEmailTemplate({ email, code, url }),
+    react: VerifyEmailTemplate({ email, code }),
   });
 
   if (error) {

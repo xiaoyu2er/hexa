@@ -16,7 +16,7 @@ import Footer from "./components/Footer";
 
 interface VerifyEmailTemplateProps {
   email: string;
-  url: string;
+  url?: string;
   code: string;
 }
 export default function VerifyEmailTemplate({
@@ -27,7 +27,7 @@ export default function VerifyEmailTemplate({
   return (
     <Html>
       <Head />
-      <Preview>Verify Your Email: {code}</Preview>
+      <Preview>{code} is your verification code</Preview>
       <Tailwind>
         <Body className="mx-auto my-auto bg-white font-sans">
           <Container className="mx-auto my-10 max-w-[500px] rounded border border-solid border-gray-200 px-10 py-5">
@@ -57,25 +57,28 @@ export default function VerifyEmailTemplate({
               This code is valid for 10 minutes
             </Text>
 
-            <Hr />
-
-            <Text className="text-sm leading-6 text-black">
-              Or, please click the link below to sign in to your account.
-            </Text>
-            <Section className="my-8 text-center">
-              <Link
-                className="rounded-full bg-black px-6 py-3 text-center text-[12px] font-semibold text-white no-underline"
-                href={url}
-              >
-                Sign in
-              </Link>
-            </Section>
-            <Text className="text-sm leading-6 text-black">
-              Also, you can copy and paste this URL into your browser:
-            </Text>
-            <Text className="max-w-sm flex-wrap break-words font-medium text-purple-600 no-underline">
-              {url}
-            </Text>
+            {url && (
+              <>
+                <Hr />
+                <Text className="text-sm leading-6 text-black">
+                  Or, please click the link below to sign in to your account.
+                </Text>
+                <Section className="my-8 text-center">
+                  <Link
+                    className="rounded-full bg-black px-6 py-3 text-center text-[12px] font-semibold text-white no-underline"
+                    href={url}
+                  >
+                    Sign in
+                  </Link>
+                </Section>
+                <Text className="text-sm leading-6 text-black">
+                  Also, you can copy and paste this URL into your browser:
+                </Text>
+                <Text className="max-w-sm flex-wrap break-words font-medium text-purple-600 no-underline">
+                  {url}
+                </Text>
+              </>
+            )}
             <Footer email={email} />
           </Container>
         </Body>
@@ -86,6 +89,6 @@ export default function VerifyEmailTemplate({
 
 VerifyEmailTemplate.PreviewProps = {
   email: "test@example.com",
-  url: "https://example.com/verify-email?code=123456",
+  // url: "https://example.com/verify-email?code=123456",
   code: "123456",
 } as VerifyEmailTemplateProps;
