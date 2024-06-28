@@ -13,6 +13,8 @@ const password = z
 
 const token = z.string().min(1, "Invalid token");
 
+export const EmptySchema = z.object({});
+
 export const SignupSchema = z.object({
   email,
   password,
