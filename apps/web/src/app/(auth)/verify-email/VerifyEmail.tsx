@@ -4,7 +4,7 @@ import Link from "next/link";
 import {
   resendVerifyEmailAction,
   verifyEmailAction,
-} from "@/lib/auth/actions/sign-up.action";
+} from "@/lib/auth/actions/sign-up";
 import {
   Button,
   Card,
