@@ -4,8 +4,7 @@ import React, { FC } from "react";
 interface HelloProps {
   name: string;
 }
-
-const Hello: FC<HelloProps> = ({ name }) => {
+export function Hello({ name }: HelloProps) {
   return (
     <Html>
       <Button
@@ -16,10 +15,8 @@ const Hello: FC<HelloProps> = ({ name }) => {
       </Button>
     </Html>
   );
-};
+}
 
 Hello.PreviewProps = {
   name: "Hexa",
 } as HelloProps;
-
-export default Hello;
