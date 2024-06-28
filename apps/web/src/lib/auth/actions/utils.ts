@@ -46,7 +46,7 @@ export async function sendVerificationCodeEmail(email: string, code: string) {
   const { data, error } = await resend.emails.send({
     from: "Hexa <noreply@hexa.im>",
     to: [email],
-    subject: "Verify your Hexa email address",
+    subject: "Verify your code",
     react: VerifyCodeTemplate({ email, code }),
   });
 
