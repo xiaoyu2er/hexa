@@ -7,10 +7,10 @@
     "emails"
   ],
   "scripts": {
-    "dev": "email dev",
-    "build": "email build",
-    "start": "email start",
-    "export": "email export"
+    "email:dev": "email dev",
+    "email:build": "email build",
+    "email:start": "email start",
+    "email:export": "email export"
   },
   "keywords": [],
   "author": "",
