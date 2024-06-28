@@ -10,7 +10,7 @@ export const metadata = {
 export default async function LoginPage() {
   const { user } = await validateRequest();
 
-  if (user?.emailVerified) redirect('/');
+  if (user?.emailVerified) redirect("/");
 
   return <Login />;
 }

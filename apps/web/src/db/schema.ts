@@ -1,4 +1,4 @@
-import { boolean, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core"
+import { boolean, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
 export const userTable = pgTable("user", {
   id: text("id").primaryKey(),
@@ -10,12 +10,16 @@ export const userTable = pgTable("user", {
   createdAt: timestamp("created_at", {
     withTimezone: true,
     mode: "date",
-  }).notNull().defaultNow(),
+  })
+    .notNull()
+    .defaultNow(),
   updatedAt: timestamp("updated_at", {
     withTimezone: true,
     mode: "date",
-  }).notNull().defaultNow(),
-})
+  })
+    .notNull()
+    .defaultNow(),
+});
 
 export const sessionTable = pgTable("session", {
   id: text("id").primaryKey(),
@@ -29,8 +33,10 @@ export const sessionTable = pgTable("session", {
   createdAt: timestamp("created_at", {
     withTimezone: true,
     mode: "date",
-  }).notNull().defaultNow(),
-})
+  })
+    .notNull()
+    .defaultNow(),
+});
 
 export const emailVerificationTable = pgTable("email_verification", {
   id: serial("id").primaryKey(),
@@ -42,19 +48,21 @@ export const emailVerificationTable = pgTable("email_verification", {
   createdAt: timestamp("created_at", {
     withTimezone: true,
     mode: "date",
-  }).notNull().defaultNow(),
+  })
+    .notNull()
+    .defaultNow(),
   expiresAt: timestamp("expires_at", {
     withTimezone: true,
     mode: "date",
   }).notNull(),
-})
+});
 
 export const oauthAccountTable = pgTable("oauth_account", {
   id: text("id").primaryKey(),
   userId: text("user_id")
     .notNull()
     .references(() => userTable.id),
-  provider: text('provider', { enum: ["github", "google"] }).notNull(),
+  provider: text("provider", { enum: ["github", "google"] }).notNull(),
   providerAccountId: text("provider_account_id").notNull(),
   accessToken: text("access_token").notNull(),
   refreshToken: text("refresh_token"),
@@ -65,9 +73,10 @@ export const oauthAccountTable = pgTable("oauth_account", {
   createdAt: timestamp("created_at", {
     withTimezone: true,
     mode: "date",
-  }).notNull().defaultNow(),
-})
-
+  })
+    .notNull()
+    .defaultNow(),
+});
 
 export type User = typeof userTable.$inferSelect;
 export type OAuthAccount = typeof oauthAccountTable.$inferSelect;

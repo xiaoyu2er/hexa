@@ -12,7 +12,7 @@ export default async function VerifyEmailPage() {
   // If user is logged in and email is verified, redirect to Home page
   if (user && user.emailVerified) redirect("/");
   // If user is not logged in, redirect to Sign Up page
-  if(!user?.email) redirect("/sign-up");
-  
+  if (!user?.email) redirect("/sign-up");
+
   return <VerifyEmail email={user?.email} />;
 }

@@ -8,7 +8,13 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle, DiscordLogoIcon, Divider, FormErrorMessage, Input, LoadingButton, PasswordInput,
+  CardTitle,
+  DiscordLogoIcon,
+  Divider,
+  FormErrorMessage,
+  Input,
+  LoadingButton,
+  PasswordInput,
 } from "@hexa/ui";
 import {
   Form,
@@ -17,7 +23,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@hexa/ui"
+} from "@hexa/ui";
 import { useServerAction } from "zsa-react";
 import { useForm } from "react-hook-form";
 import { SignupForm } from "@/lib/zod/schemas/auth";
@@ -35,31 +41,35 @@ export const Signup: FC<SignupProps> = ({ email }) => {
       email: email ?? "",
       password: "",
     },
-  })
+  });
 
-  const { handleSubmit, setError, formState: { isSubmitting, errors }, setFocus } = form
+  const {
+    handleSubmit,
+    setError,
+    formState: { isSubmitting, errors },
+    setFocus,
+  } = form;
   const { execute } = useServerAction(signup, {
     onError: ({ err }) => {
-      console.error('sign-up', err);
-      if (err.code === 'INPUT_PARSE_ERROR') {
+      console.error("sign-up", err);
+      if (err.code === "INPUT_PARSE_ERROR") {
         Object.entries(err.fieldErrors).forEach(([field, message]) => {
           if (message) {
-            setError(field as keyof SignupForm, { message: message[0] })
+            setError(field as keyof SignupForm, { message: message[0] });
           }
         });
         if (err.formErrors?.length) {
-          setError('root', { message: err.formErrors[0] })
+          setError("root", { message: err.formErrors[0] });
         }
       } else {
-        setError('root', { message: err.message })
+        setError("root", { message: err.message });
       }
-    }
+    },
   });
 
   useEffect(() => {
-    setFocus("email")
-  }, [])
-
+    setFocus("email");
+  }, []);
 
   return (
     <Card className="w-full max-w-md">
@@ -75,8 +85,12 @@ export const Signup: FC<SignupProps> = ({ email }) => {
           </Link>
         </Button>
         <Divider>or</Divider>
-        <Form {...form} >
-          <form onSubmit={handleSubmit((form) => execute(form))} method="POST" className="space-y-4">
+        <Form {...form}>
+          <form
+            onSubmit={handleSubmit((form) => execute(form))}
+            method="POST"
+            className="space-y-4"
+          >
             <FormField
               control={form.control}
               name="email"
@@ -119,7 +133,13 @@ export const Signup: FC<SignupProps> = ({ email }) => {
             <Button variant={"link"} size={"sm"} className="p-0" asChild>
               <Link href={"/login"}>Have an account? Login</Link>
             </Button>
-            <LoadingButton className="w-full" type="submit" loading={isSubmitting}>Sign Up</LoadingButton>
+            <LoadingButton
+              className="w-full"
+              type="submit"
+              loading={isSubmitting}
+            >
+              Sign Up
+            </LoadingButton>
             <Button variant="outline" className="w-full" type="button" asChild>
               <Link href="/">Cancel</Link>
             </Button>
@@ -128,4 +148,4 @@ export const Signup: FC<SignupProps> = ({ email }) => {
       </CardContent>
     </Card>
   );
-}
+};

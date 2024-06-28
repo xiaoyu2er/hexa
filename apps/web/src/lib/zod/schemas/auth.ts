@@ -1,18 +1,17 @@
 import { MIN_PASSWORD_LENGTH } from "@/lib/const";
 import { z } from "zod";
 
-const email = z
-  .string()
-  .email("Please enter a valid email");
+const email = z.string().email("Please enter a valid email");
 
 const password = z
   .string()
-  .min(MIN_PASSWORD_LENGTH, `Your password must contain ${MIN_PASSWORD_LENGTH} or more characters.`)
+  .min(
+    MIN_PASSWORD_LENGTH,
+    `Your password must contain ${MIN_PASSWORD_LENGTH} or more characters.`,
+  )
   .max(255);
 
-const token = z
-  .string()
-  .min(1, "Invalid token")
+const token = z.string().min(1, "Invalid token");
 
 export const SignupSchema = z.object({
   email,
@@ -37,7 +36,6 @@ export const ResetPasswordSchema = z.object({
   password,
 });
 export type ResetPasswordForm = z.infer<typeof ResetPasswordSchema>;
-
 
 // one-time password
 export const OTPSchema = z.object({
