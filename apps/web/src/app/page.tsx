@@ -10,10 +10,10 @@ export default async function Home() {
       {session ? (
         <>
           <div className="w-1/2 whitespace-pre-wrap">
-            {JSON.stringify(user, null, "\t")}
+            user: {JSON.stringify(user, null, "\t")}
           </div>
           <div className="w-1/2 whitespace-pre-wrap">
-            {JSON.stringify(session, null, "\t")}
+            session: {JSON.stringify(session, null, "\t")}
           </div>
           <Logout />
         </>

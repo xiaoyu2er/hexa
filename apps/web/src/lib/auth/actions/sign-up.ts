@@ -15,7 +15,9 @@ import {
   getHash,
   generateUserId,
   sendVerificationCodeEmail,
-  generateDBToken,
+  addDBToken,
+  findDBToken,
+  resendVerifyTokenEmail,
 } from "./utils";
 
 export const signupAction = createServerAction()
@@ -70,21 +72,19 @@ export const signupAction = createServerAction()
       throw new ZSAError("INTERNAL_SERVER_ERROR", "Failed to create user");
     }
 
-    const { code: verificationCode } = await generateDBToken(
+    const { code: verificationCode } = await addDBToken(
       user.id,
-      "VERIFY_EMAIL"
+      "VERIFY_EMAIL",
     );
 
     await sendVerificationCodeEmail(email, verificationCode);
 
-    const newSession = await lucia.createSession(user.id, {
-      email: user.email,
-    });
+    const newSession = await lucia.createSession(user.id, {});
     const sessionCookie = lucia.createSessionCookie(newSession.id);
     cookies().set(
       sessionCookie.name,
       sessionCookie.value,
-      sessionCookie.attributes
+      sessionCookie.attributes,
     );
 
     redirect("/verify-email");
@@ -98,30 +98,7 @@ export const resendVerifyEmailAction = createServerAction()
       return redirect("/login");
     }
 
-    const verifyRow = await db.query.tokenTable.findFirst({
-      where: (table, { eq, and }) =>
-        and(eq(table.userId, user.id), eq(table.type, "VERIFY_EMAIL")),
-    });
-
-    if (verifyRow) {
-      const nextSendTime = new Date(
-        +verifyRow.createdAt + RESEND_VERIFY_CODE_TIME_SPAN.milliseconds()
-      );
-
-      if (isWithinExpirationDate(nextSendTime)) {
-        throw new ZSAError(
-          "CONFLICT",
-          `Please wait ${formatDistanceStrict(new Date(), nextSendTime)} before resending`
-        );
-      }
-    }
-
-    const { code: verificationCode } = await generateDBToken(
-      user.id,
-      "VERIFY_EMAIL"
-    );
-
-    return await sendVerificationCodeEmail(user.email, verificationCode);
+    return resendVerifyTokenEmail(user, "VERIFY_EMAIL");
   });
 
 export const verifyEmailAction = createServerAction()
@@ -134,7 +111,7 @@ export const verifyEmailAction = createServerAction()
     if (!user) {
       throw new ZSAError(
         "FORBIDDEN",
-        "Access to this verify email is forbidden"
+        "Access to this verify email is forbidden",
       );
     }
 
@@ -152,7 +129,7 @@ export const verifyEmailAction = createServerAction()
         "CONFLICT",
         process.env.NODE_ENV === "development"
           ? "Code was not sent"
-          : "Code is invalid or expired"
+          : "Code is invalid or expired",
       );
     }
 
@@ -162,7 +139,7 @@ export const verifyEmailAction = createServerAction()
         "CONFLICT",
         process.env.NODE_ENV === "development"
           ? "Email does not match"
-          : "Code is invalid or expired"
+          : "Code is invalid or expired",
       );
     }
 
@@ -174,15 +151,15 @@ export const verifyEmailAction = createServerAction()
         .where(
           and(
             eq(tokenTable.id, verifyRow.id),
-            eq(tokenTable.type, "VERIFY_EMAIL")
-          )
+            eq(tokenTable.type, "VERIFY_EMAIL"),
+          ),
         );
 
       throw new ZSAError(
         "CONFLICT",
         process.env.NODE_ENV === "development"
           ? "Code is expired"
-          : "Code is invalid or expired"
+          : "Code is invalid or expired",
       );
     }
 
@@ -192,7 +169,7 @@ export const verifyEmailAction = createServerAction()
         "CONFLICT",
         process.env.NODE_ENV === "development"
           ? "Code does not match"
-          : "Code is invalid or expired"
+          : "Code is invalid or expired",
       );
     }
 
@@ -202,8 +179,8 @@ export const verifyEmailAction = createServerAction()
       .where(
         and(
           eq(tokenTable.id, verifyRow.id),
-          eq(tokenTable.type, "VERIFY_EMAIL")
-        )
+          eq(tokenTable.type, "VERIFY_EMAIL"),
+        ),
       );
 
     // Mathcing code
@@ -213,12 +190,12 @@ export const verifyEmailAction = createServerAction()
       .update(userTable)
       .set({ emailVerified: true })
       .where(eq(userTable.id, user.id));
-    const session = await lucia.createSession(user.id, { email: user.email });
+    const session = await lucia.createSession(user.id, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
     cookies().set(
       sessionCookie.name,
       sessionCookie.value,
-      sessionCookie.attributes
+      sessionCookie.attributes,
     );
 
     // Redirect to home

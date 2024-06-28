@@ -1,16 +1,13 @@
-
-'use server';
+"use server";
 
 import { cookies } from "next/headers";
 
-import { lucia } from "@/lib/auth";
+import { lucia } from "@/lib/auth/lucia";
 
 import { redirect } from "next/navigation";
 import { createServerAction, ZSAError } from "zsa";
 import { validateRequest } from "../validate-request";
 import { EmptySchema } from "@/lib/zod/schemas/auth";
-
-
 
 export const logoutAction = createServerAction()
   .input(EmptySchema)

@@ -29,6 +29,13 @@
       "when": 1719600371058,
       "tag": "0003_neat_scorpion",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1719608487776,
+      "tag": "0004_magical_bug",
+      "breakpoints": true
     }
   ]
 }

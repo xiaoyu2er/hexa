@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { signupAction } from "@/lib/auth/actions/sign-up.action";
+import { signupAction } from "@/lib/auth/actions/sign-up";
 import {
   Button,
   Card,

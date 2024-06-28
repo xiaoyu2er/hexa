@@ -38,8 +38,8 @@ export default function VerifyCodeTemplate({
 
             <Text className="text-sm leading-6 text-black">
               We want to make sure it's really you. Please enter the following
-              verification code when prompted. You can ignore this message if you
-              didn't request a verification.
+              verification code when prompted. You can ignore this message if
+              you didn't request a verification.
             </Text>
 
             <Text className="text-l font-semibold text-black text-center my-2">
