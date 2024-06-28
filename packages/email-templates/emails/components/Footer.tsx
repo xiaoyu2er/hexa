@@ -1,13 +1,10 @@
 import { Hr, Tailwind, Text } from "@react-email/components";
 
-
 interface FooterProps {
   email: string;
 }
 
-export default function Footer({
-  email
-}: FooterProps) {
+export default function Footer({ email }: FooterProps) {
   return (
     <Tailwind>
       <Hr className="mx-0 my-6 w-full border border-gray-200" />
@@ -19,7 +16,6 @@ export default function Footer({
   );
 }
 
-
 Footer.PreviewProps = {
-  email: "test@example.com"
+  email: "test@example.com",
 } as FooterProps;

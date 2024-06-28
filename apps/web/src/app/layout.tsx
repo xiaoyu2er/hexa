@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Inter as FontSans } from "next/font/google"
-import { Toaster } from "@hexa/ui"
+import { Inter as FontSans } from "next/font/google";
+import { Toaster } from "@hexa/ui";
 import { cn } from "@hexa/utils";
-import './globals.css';
+import "./globals.css";
 
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
-})
+});
 
 export const metadata: Metadata = {
   title: "Hexa",
@@ -21,10 +21,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(
-        "bg-background font-sans antialiased h-screen",
-        fontSans.variable
-      )}>
+      <body
+        className={cn(
+          "bg-background font-sans antialiased h-screen",
+          fontSans.variable,
+        )}
+      >
         {children}
         <Toaster />
       </body>

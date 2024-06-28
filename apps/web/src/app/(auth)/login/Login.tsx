@@ -1,11 +1,18 @@
 "use client";
 
 import {
-  Button, Card,
+  Button,
+  Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle, DiscordLogoIcon, Divider, FormErrorMessage, Input, LoadingButton, PasswordInput
+  CardTitle,
+  DiscordLogoIcon,
+  Divider,
+  FormErrorMessage,
+  Input,
+  LoadingButton,
+  PasswordInput,
 } from "@hexa/ui";
 import Link from "next/link";
 
@@ -34,28 +41,33 @@ export function Login() {
       email: "",
       password: "",
     },
-  })
+  });
 
-  const { handleSubmit, setError, formState: { isSubmitting, errors }, setFocus } = form
+  const {
+    handleSubmit,
+    setError,
+    formState: { isSubmitting, errors },
+    setFocus,
+  } = form;
   const { execute } = useServerAction(login, {
     onError: ({ err }) => {
-      if (err.code === 'INPUT_PARSE_ERROR') {
+      if (err.code === "INPUT_PARSE_ERROR") {
         Object.entries(err.fieldErrors).forEach(([field, message]) => {
           if (message) {
-            setError(field as keyof SignupForm, { message: message[0] })
+            setError(field as keyof SignupForm, { message: message[0] });
           }
         });
         if (err.formErrors?.length) {
-          setError('root', { message: err.formErrors[0] })
+          setError("root", { message: err.formErrors[0] });
         }
       } else {
-        setError('root', { message: err.message })
+        setError("root", { message: err.message });
       }
-    }
+    },
   });
   useEffect(() => {
-    setFocus("email")
-  }, [])
+    setFocus("email");
+  }, []);
 
   return (
     <Card className="w-full max-w-md">
@@ -74,7 +86,11 @@ export function Login() {
         </Button>
         <Divider>or</Divider>
         <Form {...form}>
-          <form onSubmit={handleSubmit((form) => execute(form))} method="POST" className="grid gap-4">
+          <form
+            onSubmit={handleSubmit((form) => execute(form))}
+            method="POST"
+            className="grid gap-4"
+          >
             <FormField
               control={form.control}
               name="email"
@@ -113,7 +129,6 @@ export function Login() {
               )}
             />
 
-
             <FormErrorMessage message={errors.root?.message} />
 
             <div className="flex flex-wrap justify-between">
@@ -125,7 +140,13 @@ export function Login() {
               </Button>
             </div>
 
-            <LoadingButton type="submit" className="w-full" loading={isSubmitting}>Login</LoadingButton>
+            <LoadingButton
+              type="submit"
+              className="w-full"
+              loading={isSubmitting}
+            >
+              Login
+            </LoadingButton>
             <Button type="button" variant="outline" className="w-full" asChild>
               <Link href="/">Cancel</Link>
             </Button>

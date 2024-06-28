@@ -31,7 +31,6 @@ export default function VerifyEmailTemplate({
       <Tailwind>
         <Body className="mx-auto my-auto bg-white font-sans">
           <Container className="mx-auto my-10 max-w-[500px] rounded border border-solid border-gray-200 px-10 py-5">
-
             <Heading className="mx-0 my-7 p-0 text-center text-xl font-semibold text-black">
               Verify your email address
             </Heading>
@@ -40,7 +39,10 @@ export default function VerifyEmailTemplate({
             </Text>
 
             <Text className="text-sm leading-6 text-black">
-              Thanks for starting account creation process. We want to make sure it's really you. Please enter the following verification code when prompted. If you don't want to create an account, you can ignore this message.
+              Thanks for starting account creation process. We want to make sure
+              it's really you. Please enter the following verification code when
+              prompted. If you don't want to create an account, you can ignore
+              this message.
             </Text>
 
             <Text className="text-l font-semibold text-black text-center my-2">
@@ -81,7 +83,6 @@ export default function VerifyEmailTemplate({
     </Html>
   );
 }
-
 
 VerifyEmailTemplate.PreviewProps = {
   email: "test@example.com",

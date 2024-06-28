@@ -16,11 +16,10 @@ const Hello: FC<HelloProps> = ({ name }) => {
       </Button>
     </Html>
   );
-}
+};
 
 Hello.PreviewProps = {
   name: "Hexa",
 } as HelloProps;
-
 
 export default Hello;

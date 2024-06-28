@@ -1,8 +1,7 @@
-export { AnimatedSpinner } from './AnimatedSpinner'
-export { PencilLine } from 'lucide-react';
+export { AnimatedSpinner } from "./AnimatedSpinner";
+export { PencilLine } from "lucide-react";
 
 export {
-  
   EyeOpenIcon,
   EyeNoneIcon as EyeCloseIcon,
   SunIcon,
