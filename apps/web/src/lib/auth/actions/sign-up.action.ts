@@ -2,13 +2,12 @@
 
 import { db, tokenTable, userTable } from "@/db";
 import { RESEND_VERIFY_CODE_TIME_SPAN } from "@/lib/const";
-import { SignupSchema, OTPSchema } from "@/lib/zod/schemas/auth";
+import { SignupSchema, OTPSchema, EmptySchema } from "@/lib/zod/schemas/auth";
 import { formatDistanceStrict } from "date-fns";
 import { and, eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { isWithinExpirationDate } from "oslo";
-import { z } from "zod";
 import { createServerAction, ZSAError } from "zsa";
 import { lucia } from "@/lib/auth/lucia";
 import { validateRequest } from "@/lib/auth/validate-request";
@@ -91,8 +90,8 @@ export const signupAction = createServerAction()
     redirect("/verify-email");
   });
 
-export const verifyEmailResendAction = createServerAction()
-  .input(z.object({}))
+export const resendVerifyEmailAction = createServerAction()
+  .input(EmptySchema)
   .handler(async () => {
     const { user } = await validateRequest();
     if (!user?.email) {

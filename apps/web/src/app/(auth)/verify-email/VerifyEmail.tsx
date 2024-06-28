@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import {
-  verifyEmailResendAction,
+  resendVerifyEmailAction,
   verifyEmailAction,
 } from "@/lib/auth/actions/sign-up.action";
 import {
@@ -78,7 +78,7 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({ email }) => {
   });
 
   const { execute: execResend, isPending: isRensedPending } = useServerAction(
-    verifyEmailResendAction,
+    resendVerifyEmailAction,
     {
       onError: ({ err }) => {
         setError("code", { message: err.message });

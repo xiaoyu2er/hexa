@@ -6,14 +6,14 @@ import { cookies } from "next/headers";
 import { lucia } from "@/lib/auth";
 
 import { redirect } from "next/navigation";
-import { z } from "zod";
 import { createServerAction, ZSAError } from "zsa";
 import { validateRequest } from "../validate-request";
+import { EmptySchema } from "@/lib/zod/schemas/auth";
 
 
 
 export const logoutAction = createServerAction()
-  .input(z.object({}))
+  .input(EmptySchema)
   .handler(async () => {
     const { session } = await validateRequest();
     if (!session) {
