@@ -16,7 +16,7 @@ import {
 } from "@hexa/ui";
 import Link from "next/link";
 
-import { login } from "@/lib/auth/actions";
+import { loginAction } from "@/lib/auth/actions/login";
 import {
   Form,
   FormControl,
@@ -49,7 +49,7 @@ export function Login() {
     formState: { isSubmitting, errors },
     setFocus,
   } = form;
-  const { execute } = useServerAction(login, {
+  const { execute } = useServerAction(loginAction, {
     onError: ({ err }) => {
       if (err.code === "INPUT_PARSE_ERROR") {
         Object.entries(err.fieldErrors).forEach(([field, message]) => {

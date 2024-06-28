@@ -1,11 +1,11 @@
 "use client";
 
-import { logout } from "@/lib/auth/actions";
+import { logoutAction } from "@/lib/auth/actions/logout";
 import { Button } from "@hexa/ui";
 import { useServerAction } from "zsa-react";
 
 export const Logout = () => {
-  const { execute, isPending } = useServerAction(logout);
+  const { execute } = useServerAction(logoutAction);
 
   return (
     <Button className="mt-4" onClick={() => execute({})}>

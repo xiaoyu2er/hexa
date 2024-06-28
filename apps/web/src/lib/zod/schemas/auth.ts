@@ -26,12 +26,13 @@ export const LoginSchema = z.object({
 });
 export type LoginForm = z.infer<typeof LoginSchema>;
 
-export const ForgotPasswordSchema = z.object({
+export const ForgetPasswordSchema = z.object({
   email,
 });
-export type ForgotPasswordForm = z.infer<typeof ForgotPasswordSchema>;
+export type ForgetPasswordForm = z.infer<typeof ForgetPasswordSchema>;
 
 export const ResetPasswordSchema = z.object({
+  email,
   token,
   password,
 });
