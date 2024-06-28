@@ -149,7 +149,10 @@ importers:
         version: link:../tailwind-config
       '@react-email/components':
         specifier: ^0.0.19
-        version: 0.0.19(react@18.3.1)
+        version: 0.0.19(@types/react@18.3.3)(react@18.3.1)
+      '@types/react':
+        specifier: ^18.3.3
+        version: 18.3.3
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -4002,7 +4005,7 @@ packages:
       react: 18.3.1
     dev: false
 
-  /@react-email/components@0.0.19(react@18.3.1):
+  /@react-email/components@0.0.19(@types/react@18.3.3)(react@18.3.1):
     resolution: {integrity: sha512-yf49eIq0NDDXzO2RTZaT8fKa16eKUFMdWWMx4V5Bq+b2JdGuAMobO5s9Ea6azSVL6RDcJ8epdY1TCR2kL2PPHw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
@@ -4016,7 +4019,7 @@ packages:
       '@react-email/container': 0.0.12(react@18.3.1)
       '@react-email/font': 0.0.6(react@18.3.1)
       '@react-email/head': 0.0.9(react@18.3.1)
-      '@react-email/heading': 0.0.12(react@18.3.1)
+      '@react-email/heading': 0.0.12(@types/react@18.3.3)(react@18.3.1)
       '@react-email/hr': 0.0.8(react@18.3.1)
       '@react-email/html': 0.0.8(react@18.3.1)
       '@react-email/img': 0.0.8(react@18.3.1)
@@ -4059,7 +4062,7 @@ packages:
       react: 18.3.1
     dev: false
 
-  /@react-email/heading@0.0.12(react@18.3.1):
+  /@react-email/heading@0.0.12(@types/react@18.3.3)(react@18.3.1):
     resolution: {integrity: sha512-eB7mpnAvDmwvQLoPuwEiPRH4fPXWe6ltz6Ptbry2BlI88F0a2k11Ghb4+sZHBqg7vVw/MKbqEgtLqr3QJ/KfCQ==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
@@ -4622,7 +4625,7 @@ packages:
   /@types/react-dom@18.2.19:
     resolution: {integrity: sha512-aZvQL6uUbIJpjZk4U8JZGbau9KDeAwMfmhyWorxgBkqDIEf6ROjRozcmPIicqsUwPUjbkDfHKgGee1Lq65APcA==}
     dependencies:
-      '@types/react': 18.2.61
+      '@types/react': 18.3.3
     dev: true
 
   /@types/react-dom@18.3.0:
