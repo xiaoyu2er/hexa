@@ -72,7 +72,7 @@ export const Signup: FC<SignupProps> = ({ email }) => {
   }, []);
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="max-w-full w-96">
       <CardHeader className="text-center">
         <CardTitle>{APP_TITLE} Sign Up</CardTitle>
         <CardDescription>Sign up to start using the app</CardDescription>

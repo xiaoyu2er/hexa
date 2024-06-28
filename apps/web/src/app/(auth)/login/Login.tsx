@@ -70,7 +70,7 @@ export function Login() {
   }, []);
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="max-w-full w-96">
       <CardHeader className="text-center">
         <CardTitle>{APP_TITLE} Log In</CardTitle>
         <CardDescription>
