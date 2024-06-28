@@ -8,8 +8,8 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle, 
-  LoadingButton, 
+  CardTitle,
+  LoadingButton,
   PencilLine,
 } from "@hexa/ui";
 
@@ -78,18 +78,25 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({ email }) => {
     }
   });
 
-  const { execute: execResend } = useServerAction(resendVerificationEmail, {
+  const { execute: execResend, isPending: isRensedPending } = useServerAction(resendVerificationEmail, {
     onError: ({ err }) => {
       setError('code', { message: err.message })
     }
   })
 
-  const resed = () => {
+  const resed = async () => {
     if (count > 0) return;
-    execResend({});
-    resetCountdown();
-    startCountdown();
-    reset();
+    if (isRensedPending) return;
+    const [data, error] = await execResend({});
+    if (data) {
+      console.log(data);
+      resetCountdown();
+      startCountdown();
+      reset();
+    } else {
+      console.log(error);
+      setError('code', { message: error?.message })
+    }
   }
 
   return (
@@ -128,10 +135,12 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({ email }) => {
                 )}
               />
               <p
-                className={cn("font-medium text-sm text-primary hover:underline hover:underline-offset-4 hover:cursor-pointer text-center", count > 0 && "opacity-70")}
+                className={cn("font-medium text-sm text-primary hover:underline hover:underline-offset-4 hover:cursor-pointer text-center", {
+                  "opacity-70": count > 0
+                })}
                 onClick={resed}
               >
-                Didn't receive a code? Resend {count > 0 ? `(${count}s)` : null}
+                Didn't receive a code? Resend {count > 0 ? `(${count}s)` : (isRensedPending ? "..." : "")}
               </p>
               <LoadingButton className="w-full" loading={isSubmitting} type="submit">Verify</LoadingButton>
               <Button variant="outline" className="w-full" type="button" asChild>
