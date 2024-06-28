@@ -16,7 +16,6 @@ import { createServerAction, ZSAError } from "zsa";
 import { redirect } from "next/navigation";
 import {
   EXIPRE_TIME_SPAN,
-  PUBLIC_URL,
   RESEND_VERIFICATION_CODE_MILLSECONDS,
 } from "@/lib/const";
 import { validateRequest } from "./validate-request";
@@ -37,15 +36,36 @@ export const login = createServerAction()
       where: (table, { eq }) => eq(table.email, email),
     });
 
-    if (!existingUser || !existingUser?.hashedPassword) {
-      throw new ZSAError("FORBIDDEN", "Incorrect email or password");
+    if (!existingUser) {
+      throw new ZSAError(
+        "FORBIDDEN",
+        process.env.NODE_ENV === "development"
+          ? "User does not exist"
+          : "Incorrect email or password",
+      );
     }
+
+    if (!existingUser.hashedPassword) {
+      throw new ZSAError(
+        "FORBIDDEN",
+        process.env.NODE_ENV === "development"
+          ? "No password set"
+          : "Incorrect email or password",
+      );
+    }
+
     const validPassword = await isHashValid(
       existingUser.hashedPassword,
       password,
     );
+
     if (!validPassword) {
-      throw new ZSAError("FORBIDDEN", "Incorrect email or password");
+      throw new ZSAError(
+        "FORBIDDEN",
+        process.env.NODE_ENV === "development"
+          ? "Incorrect password"
+          : "Incorrect email or password",
+      );
     }
 
     const session = await lucia.createSession(existingUser.id, {
@@ -57,43 +77,76 @@ export const login = createServerAction()
       sessionCookie.value,
       sessionCookie.attributes,
     );
-    redirect("/");
+
+    if (existingUser.emailVerified) {
+      redirect("/");
+    } else {
+      redirect("/verify-email");
+    }
   });
 
 export const signup = createServerAction()
   .input(SignupSchema)
   .handler(async ({ input }) => {
+    const request = await validateRequest();
+    if (request.user?.id) {
+      await lucia.invalidateUserSessions(request.user.id);
+    }
     const { email, password } = input;
     const existingUser = await db.query.userTable.findFirst({
       where: (table, { eq }) => eq(table.email, email),
-      columns: { email: true },
     });
 
-    if (existingUser) {
+    if (existingUser && existingUser.emailVerified) {
       throw new ZSAError("FORBIDDEN", "User already exists");
     }
 
-    const userId = generateId();
-    const hashedPassword = await getHash(password);
+    let user = existingUser;
+    if (existingUser) {
+      const hashedPassword = await getHash(password);
+      if (hashedPassword !== existingUser?.hashedPassword) {
+        // update the password
+        user = (
+          await db
+            .update(userTable)
+            .set({ hashedPassword })
+            .where(eq(userTable.id, existingUser.id))
+            .returning()
+        )[0];
+        console.log("User updated", user);
+      }
+    } else {
+      const userId = generateId();
+      const hashedPassword = await getHash(password);
 
-    const [user] = await db
-      .insert(userTable)
-      .values({
-        id: userId,
-        email,
-        hashedPassword,
-      })
-      .returning();
+      user = (
+        await db
+          .insert(userTable)
+          .values({
+            id: userId,
+            email,
+            hashedPassword,
+          })
+          .returning()
+      )[0];
+
+      console.log("User updated", user);
+    }
 
     if (!user) {
       throw new ZSAError("INTERNAL_SERVER_ERROR", "Failed to create user");
     }
-    console.log("created a new user", user);
-    const verificationCode = await generateEmailVerificationCode(userId, email);
+
+    const verificationCode = await generateEmailVerificationCode(
+      user.id,
+      email,
+    );
     await sendVerificationEmail(email, verificationCode);
 
-    const session = await lucia.createSession(userId, { email: user.email });
-    const sessionCookie = lucia.createSessionCookie(session.id);
+    const newSession = await lucia.createSession(user.id, {
+      email: user.email,
+    });
+    const sessionCookie = lucia.createSessionCookie(newSession.id);
     cookies().set(
       sessionCookie.name,
       sessionCookie.value,
