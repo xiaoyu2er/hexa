@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
-import { Toaster } from "@hexa/ui";
+import { Toaster } from "@hexa/ui/toaster";
 import { cn } from "@hexa/utils";
 import "./globals.css";
 
