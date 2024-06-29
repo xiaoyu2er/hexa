@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@hexa/ui";
+import { Button } from "@hexa/ui/button";
 import Link from "next/link";
 
 export const SignUp = () => {

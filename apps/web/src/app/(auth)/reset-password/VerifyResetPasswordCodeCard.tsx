@@ -9,24 +9,24 @@ import {
   VerifyResetPasswordCodeForm,
   VerifyResetPasswordCodeSchema,
 } from "@/lib/zod/schemas/auth";
+import { Button } from "@hexa/ui/button";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@hexa/ui/input-otp";
 import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
   CardContent,
+} from "@hexa/ui/card";
+import {
   FormField,
   FormItem,
   FormControl,
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
   FormMessage,
-  LoadingButton,
-  Button,
   Form,
-  PencilLine,
-} from "@hexa/ui";
+} from "@hexa/ui/form";
+import { PencilLine } from "@hexa/ui/icons";
+import { LoadingButton } from "@hexa/ui/loading-button";
 import { cn } from "@hexa/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";

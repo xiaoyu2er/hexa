@@ -5,22 +5,10 @@ import {
   resendVerifyEmailAction,
   verifyEmailAction,
 } from "@/lib/auth/actions/sign-up";
-import {
-  Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  LoadingButton,
-  PencilLine,
-} from "@hexa/ui";
 
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@hexa/ui";
 import { useServerAction } from "zsa-react";
 
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "@hexa/ui";
-import { useForm } from "react-hook-form";
+import { Form, useForm } from "react-hook-form";
 import { OTPForm, OTPSchema } from "@/lib/zod/schemas/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FC, useEffect, useRef } from "react";
@@ -31,6 +19,18 @@ import {
 } from "@/lib/const";
 import { useCountdown } from "usehooks-ts";
 import { cn } from "@hexa/utils";
+import { Button } from "@hexa/ui/button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@hexa/ui/card";
+import { FormField, FormItem, FormControl, FormMessage } from "@hexa/ui/form";
+import { PencilLine } from "@hexa/ui/icons";
+import { LoadingButton } from "@hexa/ui/loading-button";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@hexa/ui/input-otp";
 
 export interface VerifyEmailProps {
   email: string | null | undefined;

@@ -5,22 +5,24 @@ import {
   ForgetPasswordForm,
   ForgetPasswordSchema,
 } from "@/lib/zod/schemas/auth";
+import { Button } from "@hexa/ui/button";
 import {
-  Button,
   Card,
-  CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
-  Form,
-  FormControl,
+  CardDescription,
+  CardContent,
+} from "@hexa/ui/card";
+import {
   FormField,
   FormItem,
   FormLabel,
+  FormControl,
   FormMessage,
-  Input,
-  LoadingButton,
-} from "@hexa/ui";
+  Form,
+} from "@hexa/ui/form";
+import { Input } from "@hexa/ui/input";
+import { LoadingButton } from "@hexa/ui/loading-button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { FC, useEffect } from "react";

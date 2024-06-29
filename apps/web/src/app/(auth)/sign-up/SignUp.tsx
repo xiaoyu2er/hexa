@@ -2,33 +2,33 @@
 
 import Link from "next/link";
 import { signupAction } from "@/lib/auth/actions/sign-up";
-import {
-  Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  DiscordLogoIcon,
-  Divider,
-  FormErrorMessage,
-  Input,
-  LoadingButton,
-  PasswordInput,
-} from "@hexa/ui";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@hexa/ui";
+
 import { useServerAction } from "zsa-react";
-import { useForm } from "react-hook-form";
+import { Form, useForm } from "react-hook-form";
 import { SignupForm } from "@/lib/zod/schemas/auth";
 import { APP_TITLE } from "@/lib/const";
 import { FC, useEffect } from "react";
+import { Button } from "@hexa/ui/button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@hexa/ui/card";
+import { Divider } from "@hexa/ui/divider";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@hexa/ui/form";
+import { FormErrorMessage } from "@hexa/ui/form-error-message";
+import { DiscordLogoIcon } from "@hexa/ui/icons";
+import { Input } from "@hexa/ui/input";
+import { LoadingButton } from "@hexa/ui/loading-button";
+import { PasswordInput } from "@hexa/ui/password-input";
 
 interface SignupProps {
   email: string | null | undefined;

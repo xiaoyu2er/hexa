@@ -1,6 +1,4 @@
-import { redirect } from "next/navigation";
 import { ResetPassword } from "./ResetPassword";
-import { validateRequest } from "@/lib/auth/validate-request";
 
 export const metadata = {
   title: "Verify Email",
