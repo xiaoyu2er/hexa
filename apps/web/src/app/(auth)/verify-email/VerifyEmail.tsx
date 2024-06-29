@@ -8,7 +8,7 @@ import {
 
 import { useServerAction } from "zsa-react";
 
-import { Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { OTPForm, OTPSchema } from "@/lib/zod/schemas/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FC, useEffect, useRef } from "react";
@@ -27,7 +27,13 @@ import {
   CardDescription,
   CardContent,
 } from "@hexa/ui/card";
-import { FormField, FormItem, FormControl, FormMessage } from "@hexa/ui/form";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormControl,
+  FormMessage,
+} from "@hexa/ui/form";
 import { PencilLine } from "@hexa/ui/icons";
 import { LoadingButton } from "@hexa/ui/loading-button";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@hexa/ui/input-otp";
