@@ -84,7 +84,7 @@ export const ResetPasswordCard: FC<ResetParsswordCardProps> = ({
   }, []);
 
   return (
-    <Card className="max-w-full w-96">
+    <Card className="max-w-full md:w-96">
       <CardHeader className="text-center">
         <CardTitle>Reset Password</CardTitle>
         <CardDescription>

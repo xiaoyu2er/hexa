@@ -102,7 +102,7 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({ email }) => {
   };
 
   return (
-    <Card className="max-w-full w-96">
+    <Card className="max-w-full md:w-96">
       <CardHeader className="text-center">
         <CardTitle>{APP_TITLE} Verify Email</CardTitle>
         <CardDescription>
