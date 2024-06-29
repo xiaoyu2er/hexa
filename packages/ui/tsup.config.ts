@@ -1,7 +1,7 @@
 import { defineConfig, Options } from "tsup";
 
 export default defineConfig((options: Options) => ({
-  entry: ["src/index.tsx"],
+  entry: ["src/**/*"],
   format: ["esm"],
   sourcemap: true,
   esbuildOptions(options) {
