@@ -6,22 +6,24 @@ import {
   ResetPasswordForm,
   ResetPasswordSchema,
 } from "@/lib/zod/schemas/auth";
+import { Button } from "@hexa/ui/button";
 import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
   CardContent,
+} from "@hexa/ui/card";
+import {
   FormField,
   FormItem,
   FormLabel,
   FormControl,
   FormMessage,
-  Button,
-  LoadingButton,
   Form,
-  PasswordInput,
-} from "@hexa/ui";
+} from "@hexa/ui/form";
+import { LoadingButton } from "@hexa/ui/loading-button";
+import { PasswordInput } from "@hexa/ui/password-input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { FC, useEffect } from "react";

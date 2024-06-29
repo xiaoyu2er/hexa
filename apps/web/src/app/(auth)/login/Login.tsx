@@ -1,19 +1,5 @@
 "use client";
 
-import {
-  Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  DiscordLogoIcon,
-  Divider,
-  FormErrorMessage,
-  Input,
-  LoadingButton,
-  PasswordInput,
-} from "@hexa/ui";
 import Link from "next/link";
 
 import { loginAction } from "@/lib/auth/actions/login";
@@ -24,13 +10,28 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@hexa/ui";
+} from "@hexa/ui/form";
+
+import { Button } from "@hexa/ui/button";
 
 import { LoginForm, LoginSchema, SignupForm } from "@/lib/zod/schemas/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
+import { DiscordLogoIcon } from "@hexa/ui/icons";
+import { PasswordInput } from "@hexa/ui/password-input";
+import { FormErrorMessage } from "@hexa/ui/form-error-message";
+import { LoadingButton } from "@hexa/ui/loading-button";
+import { Divider } from "@hexa/ui/divider";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@hexa/ui/card";
+import { Input } from "@hexa/ui/input";
 
 const APP_TITLE = "Hexa";
 
