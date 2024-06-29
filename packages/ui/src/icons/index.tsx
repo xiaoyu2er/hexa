@@ -1,5 +1,17 @@
 export { AnimatedSpinner } from "./AnimatedSpinner";
-export { PencilLine } from "lucide-react";
+export {
+  PencilLine,
+  BookIcon,
+  MenuIcon,
+  SearchIcon,
+  UsersIcon,
+  Moon,
+  Sun,
+  LayoutDashboard,
+  Lightbulb,
+  Loader2Icon,
+  LogOut,
+} from "lucide-react";
 
 export {
   EyeOpenIcon,
