@@ -4,7 +4,7 @@ import Link from "next/link";
 import { signupAction } from "@/lib/auth/actions/sign-up";
 
 import { useServerAction } from "zsa-react";
-import { Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { SignupForm } from "@/lib/zod/schemas/auth";
 import { APP_TITLE } from "@/lib/const";
 import { FC, useEffect } from "react";
@@ -18,6 +18,7 @@ import {
 } from "@hexa/ui/card";
 import { Divider } from "@hexa/ui/divider";
 import {
+  Form,
   FormField,
   FormItem,
   FormLabel,
