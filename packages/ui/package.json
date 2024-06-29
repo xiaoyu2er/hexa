@@ -8,12 +8,237 @@
   "files": [
     "dist/**"
   ],
+  "exports": {
+    "./hooks": {
+      "import": [
+        "./dist/hooks/index.mjs"
+      ],
+      "types": "./dist/hooks/index.d.mts"
+    },
+    "./icons": {
+      "import": [
+        "./dist/icons/index.mjs"
+      ],
+      "types": [
+        "./dist/icons/index.d.mts"
+      ]
+    },
+    "./alert-dialog": {
+      "import": [
+        "./dist/ui/alert-dialog.mjs"
+      ],
+      "types": [
+        "./dist/ui/alert-dialog.d.mts"
+      ]
+    },
+    "./alert": {
+      "import": [
+        "./dist/ui/alert.mjs"
+      ],
+      "types": [
+        "./dist/ui/alert.d.mts"
+      ]
+    },
+    "./avatar": {
+      "import": [
+        "./dist/ui/avatar.mjs"
+      ],
+      "types": [
+        "./dist/ui/avatar.d.mts"
+      ]
+    },
+    "./badge": {
+      "import": [
+        "./dist/ui/badge.mjs"
+      ],
+      "types": [
+        "./dist/ui/badge.d.mts"
+      ]
+    },
+    "./button": {
+      "import": [
+        "./dist/ui/button.mjs"
+      ],
+      "types": [
+        "./dist/ui/button.d.mts"
+      ]
+    },
+    "./card": {
+      "import": [
+        "./dist/ui/card.mjs"
+      ],
+      "types": [
+        "./dist/ui/card.d.mts"
+      ]
+    },
+    "./dialog": {
+      "import": [
+        "./dist/ui/dialog.mjs"
+      ],
+      "types": [
+        "./dist/ui/dialog.d.mts"
+      ]
+    },
+    "./drawer": {
+      "import": [
+        "./dist/ui/drawer.mjs"
+      ],
+      "types": [
+        "./dist/ui/drawer.d.mts"
+      ]
+    },
+    "./dropdown-menu": {
+      "import": [
+        "./dist/ui/dropdown-menu.mjs"
+      ],
+      "types": [
+        "./dist/ui/dropdown-menu.d.mts"
+      ]
+    },
+    "./form": {
+      "import": [
+        "./dist/ui/form.mjs"
+      ],
+      "types": [
+        "./dist/ui/form.d.mts"
+      ]
+    },
+    "./input-otp": {
+      "import": [
+        "./dist/ui/input-otp.mjs"
+      ],
+      "types": [
+        "./dist/ui/input-otp.d.mts"
+      ]
+    },
+    "./input": {
+      "import": [
+        "./dist/ui/input.mjs"
+      ],
+      "types": [
+        "./dist/ui/input.d.mts"
+      ]
+    },
+    "./label": {
+      "import": [
+        "./dist/ui/label.mjs"
+      ],
+      "types": [
+        "./dist/ui/label.d.mts"
+      ]
+    },
+    "./pagination": {
+      "import": [
+        "./dist/ui/pagination.mjs"
+      ],
+      "types": [
+        "./dist/ui/pagination.d.mts"
+      ]
+    },
+    "./skeleton": {
+      "import": [
+        "./dist/ui/skeleton.mjs"
+      ],
+      "types": [
+        "./dist/ui/skeleton.d.mts"
+      ]
+    },
+    "./tabs": {
+      "import": [
+        "./dist/ui/tabs.mjs"
+      ],
+      "types": [
+        "./dist/ui/tabs.d.mts"
+      ]
+    },
+    "./textarea": {
+      "import": [
+        "./dist/ui/textarea.mjs"
+      ],
+      "types": [
+        "./dist/ui/textarea.d.mts"
+      ]
+    },
+    "./toast": {
+      "import": [
+        "./dist/ui/toast.mjs"
+      ],
+      "types": [
+        "./dist/ui/toast.d.mts"
+      ]
+    },
+    "./toaster": {
+      "import": [
+        "./dist/ui/toaster.mjs"
+      ],
+      "types": [
+        "./dist/ui/toaster.d.mts"
+      ]
+    },
+    "./use-toast.ts": {
+      "import": [
+        "./dist/ui/use-toast.ts.mjs"
+      ],
+      "types": [
+        "./dist/ui/use-toast.ts.d.mts"
+      ]
+    },
+    "./divider": {
+      "import": [
+        "./dist/divider.mjs"
+      ],
+      "types": [
+        "./dist/divider.d.mts"
+      ]
+    },
+    "./form-error-message": {
+      "import": [
+        "./dist/form-error-message.mjs"
+      ],
+      "types": [
+        "./dist/form-error-message.d.mts"
+      ]
+    },
+    "./loading-button": {
+      "import": [
+        "./dist/loading-button.mjs"
+      ],
+      "types": [
+        "./dist/loading-button.d.mts"
+      ]
+    },
+    "./password-input": {
+      "import": [
+        "./dist/password-input.mjs"
+      ],
+      "types": [
+        "./dist/password-input.d.mts"
+      ]
+    },
+    "./responsive-dialog": {
+      "import": [
+        "./dist/responsive-dialog.mjs"
+      ],
+      "types": [
+        "./dist/responsive-dialog.d.mts"
+      ]
+    },
+    ".": {
+      "import": [
+        "./dist/index.mjs"
+      ],
+      "types": [
+        "./dist/index.d.mts"
+      ]
+    }
+  },
   "scripts": {
     "build": "tsup",
     "lint": "eslint src/",
-    "dev": "tsup --watch",
+    "dev": "rm -rf dist/ && tsup --watch",
     "check-types": "tsc --noEmit",
-    "update-ui": "pnpm dlx shadcn-ui@latest add $(ls src/ui/*.tsx | xargs -n1 basename | sed 's/.tsx$//' | tr '\n' ' ')"
+    "update-ui": "pnpm dlx shadcn-ui@latest add $(ls src/ui/*.tsx | xargs -n1 basename | sed 's/.tsx$//' | tr '\n' ' ')",
+    "update-exports": "node scripts/update-exports.js "
   },
   "devDependencies": {
     "@hexa/eslint-config": "workspace:*",
@@ -34,6 +259,7 @@
     "@hexa/utils": "workspace:*",
     "@hookform/resolvers": "^3.6.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
+    "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-dropdown-menu": "^2.1.1",
     "@radix-ui/react-icons": "^1.3.0",
