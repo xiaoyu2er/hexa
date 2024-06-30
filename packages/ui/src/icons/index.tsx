@@ -11,6 +11,7 @@ export {
   Lightbulb,
   Loader2Icon,
   LogOut,
+  GithubIcon
 } from "lucide-react";
 
 export {

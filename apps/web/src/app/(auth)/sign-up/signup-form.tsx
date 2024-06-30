@@ -26,7 +26,7 @@ import {
   FormMessage,
 } from "@hexa/ui/form";
 import { FormErrorMessage } from "@hexa/ui/form-error-message";
-import { DiscordLogoIcon } from "@hexa/ui/icons";
+import { DiscordLogoIcon, GithubIcon } from "@hexa/ui/icons";
 import { Input } from "@hexa/ui/input";
 import { LoadingButton } from "@hexa/ui/loading-button";
 import { PasswordInput } from "@hexa/ui/password-input";
@@ -80,9 +80,9 @@ export const Signup: FC<SignupProps> = ({ email }) => {
       </CardHeader>
       <CardContent>
         <Button variant="outline" className="w-full" asChild>
-          <Link href="/login/discord">
-            <DiscordLogoIcon className="mr-2 h-5 w-5" />
-            Sign up with Discord
+          <Link href="/oauth/github">
+            <GithubIcon className="mr-2 h-5 w-5" />
+            Sign up with Github
           </Link>
         </Button>
         <Divider>or</Divider>

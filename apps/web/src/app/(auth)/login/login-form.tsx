@@ -19,7 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
-import { DiscordLogoIcon } from "@hexa/ui/icons";
+import { DiscordLogoIcon, GithubIcon } from "@hexa/ui/icons";
 import { PasswordInput } from "@hexa/ui/password-input";
 import { FormErrorMessage } from "@hexa/ui/form-error-message";
 import { LoadingButton } from "@hexa/ui/loading-button";
@@ -80,9 +80,9 @@ export function Login() {
       </CardHeader>
       <CardContent>
         <Button variant="outline" className="w-full" asChild>
-          <Link href="/login/discord">
-            <DiscordLogoIcon className="mr-2 h-5 w-5" />
-            Log in with Discord
+          <Link href="/oauth/github">
+            <GithubIcon className="mr-2 h-5 w-5" />
+            Log in with Github
           </Link>
         </Button>
         <Divider>or</Divider>
