@@ -26,7 +26,7 @@ import {
   FormMessage,
 } from "@hexa/ui/form";
 import { FormErrorMessage } from "@hexa/ui/form-error-message";
-import { DiscordLogoIcon, GithubIcon } from "@hexa/ui/icons";
+import { DiscordLogoIcon, GithubIcon, GoogleIcon } from "@hexa/ui/icons";
 import { Input } from "@hexa/ui/input";
 import { LoadingButton } from "@hexa/ui/loading-button";
 import { PasswordInput } from "@hexa/ui/password-input";
@@ -79,12 +79,18 @@ export const Signup: FC<SignupProps> = ({ email }) => {
         <CardDescription>Sign up to start using the app</CardDescription>
       </CardHeader>
       <CardContent>
-        <Button variant="outline" className="w-full" asChild>
-          <Link href="/oauth/github">
-            <GithubIcon className="mr-2 h-5 w-5" />
-            Sign up with Github
-          </Link>
-        </Button>
+        <div className="flex space-x-2">
+          <Button variant="outline" className="w-full" asChild>
+            <Link href="/oauth/github">
+              <GithubIcon className="mr-2 h-5 w-5" />
+            </Link>
+          </Button>
+          <Button variant="outline" className="w-full" asChild>
+            <Link href="/oauth/google">
+              <GoogleIcon className="mr-2 h-5 w-5" />
+            </Link>
+          </Button>
+        </div>
         <Divider>or</Divider>
         <Form {...form}>
           <form

@@ -1,4 +1,5 @@
 export { AnimatedSpinner } from "./animated-spinner";
+export { GoogleIcon } from "./google-icon";
 export {
   PencilLine,
   BookIcon,
@@ -11,7 +12,7 @@ export {
   Lightbulb,
   Loader2Icon,
   LogOut,
-  GithubIcon
+  GithubIcon,
 } from "lucide-react";
 
 export {
@@ -43,4 +44,5 @@ export {
   ChevronRightIcon,
   DotsHorizontalIcon,
   ArrowLeftIcon,
+  GitHubLogoIcon,
 } from "@radix-ui/react-icons";
