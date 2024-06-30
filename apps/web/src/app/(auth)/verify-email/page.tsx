@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { VerifyEmail } from "./VerifyEmail";
+import { VerifyEmail } from "./verify-email-form";
 import { validateRequest } from "@/lib/auth/validate-request";
 
 export const metadata = {

@@ -2,9 +2,9 @@
 
 import { FC, useState } from "react";
 import { useStep } from "usehooks-ts";
-import { ForgetPasswordCard } from "./ForgetPasswordCard";
-import { ResetPasswordCard } from "./ResetPasswordCard";
-import { VerifyResetPasswordCodeCard } from "./VerifyResetPasswordCodeCard";
+import { ForgetPasswordCard } from "./forget-password-form";
+import { ResetPasswordCard } from "./reset-password-form";
+import { VerifyResetPasswordCodeCard } from "./verfiy-code-form";
 import { useRouter } from "next/navigation";
 
 export interface ResetPasswordProps {}

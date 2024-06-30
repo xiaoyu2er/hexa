@@ -1,4 +1,4 @@
-import { ResetPassword } from "./ResetPassword";
+import { ResetPassword } from "./reset-password";
 
 export const metadata = {
   title: "Verify Email",

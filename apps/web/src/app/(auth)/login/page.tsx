@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { validateRequest } from "@/lib/auth/validate-request";
-import { Login } from "./Login";
+import { Login } from "./login-form";
 
 export const metadata = {
   title: "Login",

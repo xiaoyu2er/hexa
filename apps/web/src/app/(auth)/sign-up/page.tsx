@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { Signup } from "./SignUp";
+import { Signup } from "./signup-form";
 import { validateRequest } from "@/lib/auth/validate-request";
 
 export const metadata = {

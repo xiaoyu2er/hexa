@@ -1,7 +1,7 @@
 import { validateRequest } from "@/lib/auth/validate-request";
-import { Logout } from "../components/Logout";
-import { Login } from "../components/Login";
-import { SignUp } from "../components/SignUp";
+import { Logout } from "../components/logout-button";
+import { Login } from "../components/login-button";
+import { SignUp } from "../components/signup-button";
 
 import {
   AlertDialog,
