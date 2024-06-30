@@ -6,10 +6,7 @@ console.log("uiFiles", uiFiles);
 
 const uiExports = uiFiles.reduce((acc, file) => {
   const name = file.replace(/\.tsx$/, "");
-  acc[`./${name}`] = {
-    import: [`./dist/ui/${name}.mjs`],
-    types: [`./dist/ui/${name}.d.mts`],
-  };
+  acc[`./${name}`] = "./src/ui/" + file;
   return acc;
 }, {});
 
@@ -21,28 +18,16 @@ console.log("otherFiles", otherFiles);
 
 const otherExports = otherFiles.reduce((acc, file) => {
   const name = file.replace(/\.tsx$/, "");
-  acc[`./${name}`] = {
-    import: [`./dist/${name}.mjs`],
-    types: [`./dist/${name}.d.mts`],
-  };
+  acc[`./${name}`] = "./src/" + file;
   return acc;
 }, {});
 
 pkg.exports = {
-  "./hooks": {
-    import: ["./dist/hooks/index.mjs"],
-    types: "./dist/hooks/index.d.mts",
-  },
-  "./icons": {
-    import: ["./dist/icons/index.mjs"],
-    types: ["./dist/icons/index.d.mts"],
-  },
+  "./hooks": "./src/hooks/index.tsx",
+  "./icons": "./src/icons/index.tsx",
   ...uiExports,
   ...otherExports,
-  ".": {
-    import: ["./dist/index.mjs"],
-    types: ["./dist/index.d.mts"],
-  },
+  ".": "./src/index.tsx",
 };
 
 // udpate package.json

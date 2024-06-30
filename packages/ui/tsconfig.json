@@ -2,7 +2,8 @@
   "extends": "@hexa/typescript-config/react-library.json",
   "compilerOptions": {
     "paths": {
-      "@/*": ["./src/*"]
+      "@hexa/ui": ["./src/ui"],
+      "@hexa/ui/*": ["./src/ui/*", "./src/*"],
     },
   },
   "include": ["src", "scripts"],
