@@ -2,7 +2,6 @@ const pkg = require("../package.json");
 const fs = require("fs");
 const path = require("path");
 const uiFiles = fs.readdirSync(path.resolve(__dirname, "../src/ui"));
-console.log("uiFiles", uiFiles);
 
 const uiExports = uiFiles.reduce((acc, file) => {
   const name = file.replace(/\.tsx$/, "");
@@ -14,7 +13,10 @@ const otherFiles = fs
   .readdirSync(path.resolve(__dirname, "../src"))
   .filter((file) => file.endsWith(".tsx") && file !== "index.tsx");
 
-console.log("otherFiles", otherFiles);
+console.log(
+  "@hexa/ui",
+  [...uiFiles, ...otherFiles].map((f) => f.replace(/\.tsx?$/, ""))
+);
 
 const otherExports = otherFiles.reduce((acc, file) => {
   const name = file.replace(/\.tsx$/, "");
