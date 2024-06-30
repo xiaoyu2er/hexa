@@ -3,27 +3,22 @@
 import { db, userTable } from "@/db";
 import { SignupSchema, OTPSchema, EmptySchema } from "@/lib/zod/schemas/auth";
 import { eq } from "drizzle-orm";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createServerAction, ZSAError } from "zsa";
-import { lucia } from "@/lib/auth/lucia";
 import { validateRequest } from "@/lib/auth/validate-request";
 import {
-  getHash,
-  generateUserId,
   sendVerificationCodeEmail,
   addDBToken,
   resendVerifyTokenEmail,
   verifyDBTokenByCode,
 } from "./utils";
+import { createUser } from "@/db/data-access/user";
+import { getHash } from "@/lib/utils";
+import { invalidateUserSessions, setSession } from "@/lib/session";
 
 export const signupAction = createServerAction()
   .input(SignupSchema)
   .handler(async ({ input }) => {
-    const request = await validateRequest();
-    if (request.user?.id) {
-      await lucia.invalidateUserSessions(request.user.id);
-    }
     const { email, password } = input;
     const existingUser = await db.query.userTable.findFirst({
       where: (table, { eq }) => eq(table.email, email),
@@ -48,19 +43,7 @@ export const signupAction = createServerAction()
         console.log("User updated", user);
       }
     } else {
-      const userId = generateUserId();
-      const hashedPassword = await getHash(password);
-
-      user = (
-        await db
-          .insert(userTable)
-          .values({
-            id: userId,
-            email,
-            hashedPassword,
-          })
-          .returning()
-      )[0];
+      user = await createUser({ email, emailVerified: false, password });
 
       console.log("User updated", user);
     }
@@ -76,13 +59,7 @@ export const signupAction = createServerAction()
 
     await sendVerificationCodeEmail(email, verificationCode);
 
-    const newSession = await lucia.createSession(user.id, {});
-    const sessionCookie = lucia.createSessionCookie(newSession.id);
-    cookies().set(
-      sessionCookie.name,
-      sessionCookie.value,
-      sessionCookie.attributes,
-    );
+    await setSession(user.id);
 
     redirect("/verify-email");
   });
@@ -116,18 +93,12 @@ export const verifyEmailAction = createServerAction()
 
     // Mathcing code
     // Update session
-    await lucia.invalidateUserSessions(user.id);
+    await invalidateUserSessions(user.id);
     await db
       .update(userTable)
       .set({ emailVerified: true })
       .where(eq(userTable.id, user.id));
-    const session = await lucia.createSession(user.id, {});
-    const sessionCookie = lucia.createSessionCookie(session.id);
-    cookies().set(
-      sessionCookie.name,
-      sessionCookie.value,
-      sessionCookie.attributes,
-    );
+    await setSession(user.id);
 
     // Redirect to home
     return redirect("/");

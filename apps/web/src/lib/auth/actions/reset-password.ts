@@ -18,6 +18,7 @@ import {
 import { lucia } from "../lucia";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { invalidateUserSessions, setSession } from "@/lib/session";
 
 export const forgetPasswordAction = createServerAction()
   .input(ForgetPasswordSchema)
@@ -117,14 +118,8 @@ export const resetPasswordAction = createServerAction()
       .where(eq(userTable.id, user.id));
 
     // invalidate all sessions & update a new sssion
-    await lucia.invalidateUserSessions(user.id);
-    const newSession = await lucia.createSession(user.id, {});
-    const sessionCookie = lucia.createSessionCookie(newSession.id);
-    cookies().set(
-      sessionCookie.name,
-      sessionCookie.value,
-      sessionCookie.attributes,
-    );
+    await invalidateUserSessions(user.id);
+    await setSession(user.id);
 
     redirect("/");
   });

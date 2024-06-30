@@ -1,13 +1,10 @@
 "use server";
 
-import { cookies } from "next/headers";
-
-import { lucia } from "@/lib/auth/lucia";
-
 import { redirect } from "next/navigation";
 import { createServerAction, ZSAError } from "zsa";
 import { validateRequest } from "../validate-request";
 import { EmptySchema } from "@/lib/zod/schemas/auth";
+import { invalidateSession, setBlankSessionCookie } from "@/lib/session";
 
 export const logoutAction = createServerAction()
   .input(EmptySchema)
@@ -16,12 +13,7 @@ export const logoutAction = createServerAction()
     if (!session) {
       throw new ZSAError("FORBIDDEN", "User is not authenticated");
     }
-    await lucia.invalidateSession(session.id);
-    const sessionCookie = lucia.createBlankSessionCookie();
-    cookies().set(
-      sessionCookie.name,
-      sessionCookie.value,
-      sessionCookie.attributes,
-    );
+    await invalidateSession(session.id);
+    setBlankSessionCookie();
     return redirect("/");
   });

@@ -2,11 +2,10 @@
 
 import { db } from "@/db";
 import { LoginSchema } from "@/lib/zod/schemas/auth";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createServerAction, ZSAError } from "zsa";
-import { isHashValid } from "./utils";
-import { lucia } from "../lucia";
+import { setSession } from "@/lib/session";
+import { isHashValid } from "@/lib/utils";
 
 export const loginAction = createServerAction()
   .input(LoginSchema)
@@ -48,13 +47,7 @@ export const loginAction = createServerAction()
       );
     }
 
-    const session = await lucia.createSession(existingUser.id, {});
-    const sessionCookie = lucia.createSessionCookie(session.id);
-    cookies().set(
-      sessionCookie.name,
-      sessionCookie.value,
-      sessionCookie.attributes,
-    );
+    await setSession(existingUser.id);
 
     if (existingUser.emailVerified) {
       redirect("/");

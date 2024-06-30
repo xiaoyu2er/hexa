@@ -14,25 +14,7 @@ import { resend } from "@/lib/emails";
 import VerifyCodeTemplate from "@hexa/email-templates/emails/VerifyCode";
 import { ZSAError } from "zsa";
 import { formatDistanceStrict } from "date-fns";
-
-export async function getHash(value: string) {
-  return new Scrypt().hash(value);
-}
-
-export async function isHashValid(hash: string, value: string) {
-  return new Scrypt().verify(hash, value);
-}
-
-export function generateUserId() {
-  return "2088" + generateRandomString(12, alphabet("0-9"));
-}
-
-export function generateCode() {
-  return generateRandomString(6, alphabet("0-9"));
-}
-export function generateToken() {
-  return generateIdFromEntropySize(25);
-}
+import { generateCode, generateId } from "@/lib/utils";
 
 export async function sendVerificationCodeEmail(email: string, code: string) {
   if (process.env.NODE_ENV === "development") {
@@ -63,7 +45,7 @@ export async function addDBToken(userId: string, type: TokenType) {
     .delete(tokenTable)
     .where(and(eq(tokenTable.userId, userId), eq(tokenTable.type, type)));
   const code = generateCode();
-  const token = generateToken();
+  const token = generateId();
   const row = (
     await db
       .insert(tokenTable)
