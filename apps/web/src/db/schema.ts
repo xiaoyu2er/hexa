@@ -1,11 +1,11 @@
-import { generateId, generateUserId } from "@/lib/utils";
+import { generateId } from "@/lib/utils";
 import { relations } from "drizzle-orm";
 import { boolean, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 export const userTable = pgTable("user", {
   id: text("id")
     .primaryKey()
-    .$defaultFn(() => generateUserId()),
+    .$defaultFn(() => generateId()),
   name: text("name"),
   email: text("email").unique(),
   emailVerified: boolean("email_verified").notNull().default(false),
