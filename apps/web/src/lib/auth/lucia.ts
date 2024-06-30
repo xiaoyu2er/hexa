@@ -39,6 +39,7 @@ declare module "lucia" {
     DatabaseSessionAttributes: DatabaseSessionAttributes;
     DatabaseUserAttributes: DatabaseUserAttributes;
   }
+
   interface DatabaseSessionAttributes {}
   interface DatabaseUserAttributes extends Omit<DbUser, "hashedPassword"> {}
 }
