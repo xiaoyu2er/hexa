@@ -25,7 +25,7 @@
     "./textarea": "./src/ui/textarea.tsx",
     "./toast": "./src/ui/toast.tsx",
     "./toaster": "./src/ui/toaster.tsx",
-    "./use-toast.ts": "./src/ui/use-toast.ts",
+    "./use-toast": "./src/ui/use-toast.tsx",
     "./divider": "./src/divider.tsx",
     "./form-error-message": "./src/form-error-message.tsx",
     "./loading-button": "./src/loading-button.tsx",
