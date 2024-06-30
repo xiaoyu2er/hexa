@@ -3,6 +3,8 @@ import { Inter as FontSans } from "next/font/google";
 import { Toaster } from "@hexa/ui/toaster";
 import { cn } from "@hexa/utils";
 import "./globals.css";
+import { Providers } from "./providers";
+import { Header } from "@/components/header/header";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -27,7 +29,7 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        {children}
+        <Providers>{children}</Providers>
         <Toaster />
       </body>
     </html>
