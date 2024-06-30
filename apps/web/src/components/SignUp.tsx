@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export const SignUp = () => {
   return (
-    <Button className="mt-4" asChild variant="secondary">
+    <Button asChild variant="secondary">
       <Link href="/sign-up">Sign Up</Link>
     </Button>
   );
