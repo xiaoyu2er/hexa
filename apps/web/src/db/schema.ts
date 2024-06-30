@@ -1,15 +1,11 @@
+import { generateId, generateUserId } from "@/lib/utils";
 import { relations } from "drizzle-orm";
-import {
-  boolean,
-  pgEnum,
-  pgTable,
-  serial,
-  text,
-  timestamp,
-} from "drizzle-orm/pg-core";
+import { boolean, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 export const userTable = pgTable("user", {
-  id: text("id").primaryKey(),
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => generateUserId()),
   name: text("name"),
   email: text("email").unique(),
   emailVerified: boolean("email_verified").notNull().default(false),
@@ -21,6 +17,10 @@ export const userTable = pgTable("user", {
   })
     .notNull()
     .defaultNow(),
+  updatedAt: timestamp("updated_at", {
+    withTimezone: true,
+    mode: "date",
+  }).$onUpdate(() => new Date()),
 });
 
 export const sessionTable = pgTable("session", {
@@ -32,6 +32,10 @@ export const sessionTable = pgTable("session", {
     withTimezone: true,
     mode: "date",
   }).notNull(),
+  updatedAt: timestamp("updated_at", {
+    withTimezone: true,
+    mode: "date",
+  }).$onUpdate(() => new Date()),
 });
 
 export const tokenTypeEnum = pgEnum("tokenType", [
@@ -41,7 +45,9 @@ export const tokenTypeEnum = pgEnum("tokenType", [
 export type TokenType = (typeof tokenTypeEnum.enumValues)[number];
 
 export const tokenTable = pgTable("token", {
-  id: serial("id").primaryKey(),
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => generateId()),
   userId: text("user_id")
     .notNull()
     .references(() => userTable.id),
@@ -58,6 +64,10 @@ export const tokenTable = pgTable("token", {
   })
     .notNull()
     .defaultNow(),
+  updatedAt: timestamp("updated_at", {
+    withTimezone: true,
+    mode: "date",
+  }).$onUpdate(() => new Date()),
 });
 
 export const usersRelations = relations(userTable, ({ many }) => ({
@@ -71,19 +81,28 @@ export const tokensRelations = relations(tokenTable, ({ one }) => ({
   }),
 }));
 
+export const providerEnum = pgEnum("providerEnum", ["GOOGLE", "GITHUB"]);
+export type ProviderType = (typeof providerEnum.enumValues)[number];
+
 export const oauthAccountTable = pgTable("oauth_account", {
-  id: text("id").primaryKey(),
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => generateId()),
   userId: text("user_id")
     .notNull()
     .references(() => userTable.id),
-  provider: text("provider", { enum: ["github", "google"] }).notNull(),
+  provider: providerEnum("provider").notNull(),
   providerAccountId: text("provider_account_id").notNull(),
-  accessToken: text("access_token").notNull(),
-  refreshToken: text("refresh_token"),
-  expiresAt: timestamp("expires_at", {
+  createdAt: timestamp("created_at", {
     withTimezone: true,
     mode: "date",
-  }),
+  })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", {
+    withTimezone: true,
+    mode: "date",
+  }).$onUpdate(() => new Date()),
 });
 
 export type UserModel = typeof userTable.$inferSelect;
