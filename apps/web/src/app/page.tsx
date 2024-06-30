@@ -16,7 +16,7 @@ import {
 } from "@hexa/ui/alert-dialog";
 import { Button } from "@hexa/ui/button";
 
-export function AlertDialogDemo() {
+function AlertDialogDemo() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
