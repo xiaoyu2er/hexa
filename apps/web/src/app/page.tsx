@@ -1,7 +1,4 @@
 import { validateRequest } from "@/lib/auth/validate-request";
-import { Logout } from "../components/logout-button";
-import { Login } from "../components/login-button";
-import { SignUp } from "../components/signup-button";
 
 import {
   AlertDialog,
@@ -15,6 +12,7 @@ import {
   AlertDialogTrigger,
 } from "@hexa/ui/alert-dialog";
 import { Button } from "@hexa/ui/button";
+import { Header } from "@/components/header/header";
 
 function AlertDialogDemo() {
   return (
@@ -42,24 +40,20 @@ function AlertDialogDemo() {
 export default async function Home() {
   const { user, session } = await validateRequest();
   return (
-    <div className="flex flex-col items-center justify-center h-screen px-2">
-      {session ? (
-        <>
-          <div className="w-1/2 whitespace-pre-wrap">
-            user: {JSON.stringify(user, null, "\t")}
+    <>
+      <Header />
+      <div className="flex flex-col items-center justify-center h-screen px-2">
+        {session ? (
+          <>
+            <div>user: {JSON.stringify(user, null, "\t")}</div>
+            <div>session: {JSON.stringify(session, null, "\t")}</div>
+          </>
+        ) : (
+          <div className="flex gap-12">
+            <AlertDialogDemo />
           </div>
-          <div className="w-1/2 whitespace-pre-wrap">
-            session: {JSON.stringify(session, null, "\t")}
-          </div>
-          <Logout />
-        </>
-      ) : (
-        <div className="flex gap-12">
-          <AlertDialogDemo />
-          <Login />
-          <SignUp />
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 }
