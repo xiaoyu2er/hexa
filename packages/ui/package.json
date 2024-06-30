@@ -37,6 +37,8 @@
     "lint": "eslint src/",
     "check-types": "tsc --noEmit",
     "update-ui": "pnpm dlx shadcn-ui@latest add $(ls src/ui/*.tsx | xargs -n1 basename | sed 's/.tsx$//' | tr '\n' ' ')",
+    "add": "pnpm dlx shadcn-ui@latest add",
+    "postadd": "pnpm run update-exports && pnpm run format",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "update-exports": "node scripts/update-exports.js",
     "dev": "node --watch-path=./src scripts/update-exports.js",
