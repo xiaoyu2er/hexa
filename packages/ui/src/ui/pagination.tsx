@@ -6,7 +6,7 @@ import {
 } from "@radix-ui/react-icons";
 
 import { cn } from "@hexa/utils";
-import { ButtonProps, buttonVariants } from "@/ui/button";
+import { ButtonProps, buttonVariants } from "@hexa/ui/button";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   <nav

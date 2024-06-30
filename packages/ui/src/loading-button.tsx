@@ -1,7 +1,7 @@
 import { Loader2 } from "lucide-react";
 import omit from "lodash/omit";
 
-import { Button, ButtonProps } from "./ui/button";
+import { Button, ButtonProps } from "@hexa/ui/button";
 
 export interface LoadingButtonProps extends ButtonProps {
   loading: boolean;

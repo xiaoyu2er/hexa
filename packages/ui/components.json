@@ -12,7 +12,7 @@
   },
   "aliases": {
     "components": "@/components",
-    "ui": "@/ui",
+    "ui": "@hexa/ui",
     "utils": "@hexa/utils"
   }
 }

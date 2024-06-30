@@ -11,7 +11,7 @@ import {
 } from "react-hook-form";
 
 import { cn } from "@hexa/utils";
-import { Label } from "@/ui/label";
+import { Label } from "@hexa/ui/label";
 
 const Form = FormProvider;
 
