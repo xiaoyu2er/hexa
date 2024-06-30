@@ -1,4 +1,4 @@
-export { AnimatedSpinner } from "./AnimatedSpinner";
+export { AnimatedSpinner } from "./animated-spinner";
 export {
   PencilLine,
   BookIcon,
