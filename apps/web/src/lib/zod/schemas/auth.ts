@@ -19,14 +19,16 @@ const code = z
   })
   .max(6);
 
+const cfTurnstileResponse = z.string().min(1, "Please complete the challenge.");
+
 export const EmptySchema = z.object({});
 
 export const SignupSchema = z.object({
   email,
   password,
+  "cf-turnstile-response": cfTurnstileResponse,
 });
 
-const cfTurnstileResponse = z.string().min(1, "Please complete the challenge.");
 export const TurnstileSchema = z.object({
   "cf-turnstile-response": cfTurnstileResponse,
 });

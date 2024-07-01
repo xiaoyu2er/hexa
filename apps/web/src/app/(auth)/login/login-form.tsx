@@ -49,10 +49,8 @@ export function Login() {
     setValue,
   } = form;
 
-  const { resetTurnstile, turnstile, hasTurnstileClientError } = useTurnstile<LoginForm>(
-    setError,
-    setValue
-  );
+  const { resetTurnstile, turnstile, hasTurnstileClientError } =
+    useTurnstile<LoginForm>(setError, setValue);
 
   const { execute } = useServerAction(loginAction, {
     onError: ({ err }) => {
