@@ -47,7 +47,7 @@ export const turnstileProcedure = createServerActionProcedure()
       throw new ZSAError(
         "FORBIDDEN",
         process.env.NODE_ENV === "development"
-          ? "Cloudflare Turnstile failed - " +
+          ? "[dev][server-side] Cloudflare Turnstile failed - " +
             turnstileVerifyRes["error-codes"][0]
           : "Only humans are allowed to login. Please try again.",
       );
