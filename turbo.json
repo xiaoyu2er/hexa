@@ -2,7 +2,16 @@
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env"],
   "globalEnv": [
+    "__NEXT_PRIVATE_ORIGIN",
+    "VERCEL_ENV",
+    "VERCEL_PROJECT_PRODUCTION_URL",
+    "VERCEL_BRANCH_URL",
+    "NODE_ENV",
     "RESEND_API_KEY",
+    "GITHUB_CLIENT_ID",
+    "GITHUB_CLIENT_SECRET",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
     "NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY",
     "CLOUDFLARE_TURNSTILE_SECRET_KEY"
   ],
