@@ -13,6 +13,10 @@ export {
   Lightbulb,
   Loader2Icon,
   LogOut,
+  CircleUser,
+  Menu,
+  Package2,
+  Search,
 } from "lucide-react";
 
 export {
