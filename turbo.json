@@ -1,7 +1,11 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env"],
-  "globalEnv": ["RESEND_API_KEY"],
+  "globalEnv": [
+    "RESEND_API_KEY",
+    "NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY",
+    "CLOUDFLARE_TURNSTILE_SECRET_KEY"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
