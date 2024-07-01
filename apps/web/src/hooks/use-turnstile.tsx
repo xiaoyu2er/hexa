@@ -5,7 +5,7 @@ import { useTheme } from "next-themes";
 
 export function useTurnstile<T extends FieldValues = FieldValues>(
   setError: UseFormSetError<T>,
-  setValue: UseFormSetValue<T>
+  setValue: UseFormSetValue<T>,
 ) {
   const ref = useRef();
   const { theme } = useTheme();

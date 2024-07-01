@@ -26,10 +26,11 @@ import {
   FormMessage,
 } from "@hexa/ui/form";
 import { FormErrorMessage } from "@hexa/ui/form-error-message";
-import { DiscordLogoIcon, GithubIcon, GoogleIcon } from "@hexa/ui/icons";
+import { GithubIcon, GoogleIcon } from "@hexa/ui/icons";
 import { Input } from "@hexa/ui/input";
 import { LoadingButton } from "@hexa/ui/loading-button";
 import { PasswordInput } from "@hexa/ui/password-input";
+import { useTurnstile } from "@/hooks/use-turnstile";
 
 interface SignupProps {
   email: string | null | undefined;
@@ -49,7 +50,10 @@ export const Signup: FC<SignupProps> = ({ email }) => {
     setError,
     formState: { isSubmitting, errors },
     setFocus,
+    setValue,
   } = form;
+  const { resetTurnstile, turnstile, hasTurnstileClientError } =
+    useTurnstile<SignupForm>(setError, setValue);
   const { execute } = useServerAction(signupAction, {
     onError: ({ err }) => {
       console.error("sign-up", err);
@@ -65,6 +69,7 @@ export const Signup: FC<SignupProps> = ({ email }) => {
       } else {
         setError("root", { message: err.message });
       }
+      resetTurnstile();
     },
   });
 
@@ -137,6 +142,7 @@ export const Signup: FC<SignupProps> = ({ email }) => {
               )}
             />
             <FormErrorMessage message={errors.root?.message} />
+            {turnstile}
             <Button variant={"link"} size={"sm"} className="p-0" asChild>
               <Link href={"/login"}>Have an account? Login</Link>
             </Button>
@@ -144,6 +150,7 @@ export const Signup: FC<SignupProps> = ({ email }) => {
               className="w-full"
               type="submit"
               loading={isSubmitting}
+              disabled={hasTurnstileClientError}
             >
               Sign Up
             </LoadingButton>

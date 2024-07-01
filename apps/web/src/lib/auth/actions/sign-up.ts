@@ -15,8 +15,10 @@ import {
 import { createUser } from "@/db/data-access/user";
 import { getHash } from "@/lib/utils";
 import { invalidateUserSessions, setSession } from "@/lib/session";
+import { turnstileProcedure } from "./turnstile";
 
-export const signupAction = createServerAction()
+export const signupAction = turnstileProcedure
+  .createServerAction()
   .input(SignupSchema)
   .handler(async ({ input }) => {
     const { email, password } = input;
