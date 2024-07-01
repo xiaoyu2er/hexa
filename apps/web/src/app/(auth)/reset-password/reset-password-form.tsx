@@ -64,7 +64,7 @@ export const ResetPasswordCard: FC<ResetParsswordCardProps> = ({
       if (err.code === "INPUT_PARSE_ERROR") {
         Object.entries(err.fieldErrors).forEach(([field, message]) => {
           if (message) {
-            setError(field as keyof ForgetPasswordForm, {
+            setError(field as keyof ResetPasswordForm, {
               message: message[0],
             });
           }
