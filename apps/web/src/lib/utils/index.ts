@@ -1,5 +1,5 @@
-import { randomUUID } from "crypto";
-import { Scrypt } from "lucia";
+// import { randomUUID } from "crypto";
+import { Scrypt, generateIdFromEntropySize } from "lucia";
 import { alphabet, generateRandomString } from "oslo/crypto";
 
 export async function getHash(value: string) {
@@ -21,12 +21,12 @@ export function generateId() {
    * @example "36b8f84d-df4e-4d49-b662-bcde71a8764f"
    * @since v15.6.0, v14.17.0
    */
-  return randomUUID();
+  // return randomUUID();
   /**
    *  Generates a cryptographically strong random string made of a-z (lowercase) and 2-7 using the provided entropy size.
    * The output length increases as the entropy size increases.
    * If size is a multiple of 5, the output size will be (size * 8) / 5 (see base32 encoding).
    * @example "62zhs6gceakgksk3k5igjpumudeo4sxiehfwx6tu"
    */
-  // return generateIdFromEntropySize(25); // 40 characters
+  return generateIdFromEntropySize(20); // 32 characters
 }
