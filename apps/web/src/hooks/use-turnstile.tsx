@@ -1,12 +1,14 @@
 import { useRef, useState } from "react";
 import { FieldValues, UseFormSetError, UseFormSetValue } from "react-hook-form";
 import { Turnstile } from "@marsidev/react-turnstile";
+import { useTheme } from "next-themes";
 
 export function useTurnstile<T extends FieldValues = FieldValues>(
   setError: UseFormSetError<T>,
   setValue: UseFormSetValue<T>
 ) {
   const ref = useRef();
+  const { theme } = useTheme();
 
   const [turnstileClientError, setClientError] = useState<string | undefined>();
 
@@ -20,7 +22,7 @@ export function useTurnstile<T extends FieldValues = FieldValues>(
   const turnstile = (
     <Turnstile
       ref={ref}
-      options={{ size: "auto" }}
+      options={{ size: "auto", theme }}
       siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!}
       onError={(err: string) => {
         // https://developers.cloudflare.com/turnstile/troubleshooting/client-side-errors/error-codes/
