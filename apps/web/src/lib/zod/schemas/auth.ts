@@ -29,6 +29,7 @@ export const SignupSchema = z.object({
 export const LoginSchema = z.object({
   email,
   password,
+  "cf-turnstile-response": z.string().optional(),
 });
 
 export const ForgetPasswordSchema = z.object({

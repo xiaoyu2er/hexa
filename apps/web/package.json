@@ -22,6 +22,7 @@
     "@hexa/utils": "workspace:*",
     "@hookform/resolvers": "^3.6.0",
     "@lucia-auth/adapter-drizzle": "^1.0.7",
+    "@marsidev/react-turnstile": "^0.7.1",
     "arctic": "^1.9.1",
     "date-fns": "^3.6.0",
     "drizzle-orm": "^0.31.2",
