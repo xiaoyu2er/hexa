@@ -64,6 +64,10 @@ export function Login() {
       } else {
         setError("root", { message: err.message });
       }
+
+      // turnstile response could be only used once
+      // @ts-ignore
+      ref.current?.reset();
     },
   });
   useEffect(() => {
@@ -137,12 +141,7 @@ export function Login() {
                 )}
               />
 
-              <FormErrorMessage
-                message={
-                  errors["cf-turnstile-response"]?.message ||
-                  errors.root?.message
-                }
-              />
+              <FormErrorMessage message={errors.root?.message} />
 
               <Turnstile
                 ref={ref}
