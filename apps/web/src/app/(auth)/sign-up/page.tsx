@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { Signup } from "./signup-form";
+import { SignupPage } from "./signup";
 import { validateRequest } from "@/lib/auth/validate-request";
 
 export const metadata = {
@@ -7,10 +7,10 @@ export const metadata = {
   description: "Signup Page",
 };
 
-export default async function SignupPage() {
+export default async function () {
   const { user } = await validateRequest();
-  if (user?.emailVerified) {
+  if (user) {
     return redirect("/");
   }
-  return <Signup email={user?.email} />;
+  return <SignupPage />;
 }

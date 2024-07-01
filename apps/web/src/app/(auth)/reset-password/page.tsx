@@ -5,7 +5,7 @@ export const metadata = {
   description: "Verify Email Page",
 };
 
-export default async function ResetPasswordPage() {
+export default async function () {
   // const { user } = await validateRequest();
   // // If user is logged in and email is verified, redirect to Home page
   // if (user && user.emailVerified) redirect("/");

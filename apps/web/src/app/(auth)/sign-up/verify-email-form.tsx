@@ -39,14 +39,21 @@ import { LoadingButton } from "@hexa/ui/loading-button";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@hexa/ui/input-otp";
 
 export interface VerifyEmailProps {
-  email: string | null | undefined;
+  email: string;
+  onSuccess?: () => void;
+  onCancel?: () => void;
 }
 
-export const VerifyEmail: FC<VerifyEmailProps> = ({ email }) => {
+export const VerifyEmail: FC<VerifyEmailProps> = ({
+  email,
+  onCancel,
+  onSuccess,
+}) => {
   const form = useForm<OTPForm>({
     resolver: zodResolver(OTPSchema),
     defaultValues: {
       code: "",
+      email: email,
     },
   });
   const formRef = useRef<HTMLFormElement>(null);
@@ -81,6 +88,9 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({ email }) => {
       }
       reset(undefined, { keepErrors: true });
     },
+    onSuccess: () => {
+      onSuccess?.();
+    },
   });
 
   const { execute: execResend, isPending: isRensedPending } = useServerAction(
@@ -89,13 +99,13 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({ email }) => {
       onError: ({ err }) => {
         setError("code", { message: err.message });
       },
-    },
+    }
   );
 
   const resed = async () => {
     if (count > 0) return;
     if (isRensedPending) return;
-    const [data, error] = await execResend({});
+    const [data, error] = await execResend({ email });
     if (data) {
       resetCountdown();
       startCountdown();
@@ -112,14 +122,15 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({ email }) => {
       <CardHeader className="text-center">
         <CardTitle>{APP_TITLE} Verify Email</CardTitle>
         <CardDescription>
-          Please enter the verification code sent to your email
+          Enter the verification code sent to your email
         </CardDescription>
         {email ? (
-          <CardDescription>
-            <Link href="/sign-up" className="flex items-end justify-center">
-              {email}&nbsp;
-              <PencilLine className="h-4 w-4" aria-hidden="true" />
-            </Link>
+          <CardDescription
+            className="flex items-end justify-center hover:cursor-pointer"
+            onClick={onCancel}
+          >
+            {email}&nbsp;
+            <PencilLine className="h-4 w-4" aria-hidden="true" />
           </CardDescription>
         ) : null}
       </CardHeader>
@@ -167,7 +178,7 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({ email }) => {
                 "font-medium text-sm text-primary hover:underline hover:underline-offset-4 hover:cursor-pointer text-center",
                 {
                   "opacity-70": count > 0,
-                },
+                }
               )}
               onClick={resed}
             >
