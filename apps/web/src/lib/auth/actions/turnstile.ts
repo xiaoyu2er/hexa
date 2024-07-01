@@ -11,13 +11,9 @@
 // internal-error	An internal error happened while validating the response. The request can be retried.
 
 import { TurnstileSchema } from "@/lib/zod/schemas/auth";
+import { TurnstileServerValidationResponse } from "@marsidev/react-turnstile";
 import { headers } from "next/headers";
 import { ZSAError, createServerActionProcedure } from "zsa";
-
-export interface TurnstileFailedValidationResponse {
-  success: boolean;
-  "error-codes": string[];
-}
 
 export const turnstileProcedure = createServerActionProcedure()
   .input(TurnstileSchema)
@@ -31,25 +27,19 @@ export const turnstileProcedure = createServerActionProcedure()
 
     const result = await fetch(
       "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-      { method: "POST", body: form },
+      { method: "POST", body: form }
     );
-    const turnstileVerifyRes: TurnstileFailedValidationResponse =
-      await result.json();
-    // {
-    //     "success": false,
-    //     "error-codes": [
-    //       "invalid-input-response"
-    //     ]
-    //   }
-    console.log("turnstile response", turnstileVerifyRes);
+    const verifyRes: TurnstileServerValidationResponse = await result.json();
 
-    if (turnstileVerifyRes.success === false) {
+    console.log("turnstile response", verifyRes);
+
+    if (verifyRes.success === false) {
       throw new ZSAError(
         "FORBIDDEN",
         process.env.NODE_ENV === "development"
           ? "[dev][server-side] Cloudflare Turnstile failed - " +
-            turnstileVerifyRes["error-codes"][0]
-          : "Only humans are allowed to login. Please try again.",
+            verifyRes["error-codes"][0]
+          : "Only humans are allowed to login. Please try again."
       );
     }
     return {};
