@@ -34,9 +34,11 @@ import { useTurnstile } from "@/hooks/use-turnstile";
 
 interface SignupProps {
   email: string | null | undefined;
+  onSuccess: (data: { email: string }) => void;
+  onCancel?: () => void;
 }
 
-export const Signup: FC<SignupProps> = ({ email }) => {
+export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
   const form = useForm<SignupForm>({
     // resolver: zodResolver(SignupSchema),
     defaultValues: {
@@ -73,6 +75,10 @@ export const Signup: FC<SignupProps> = ({ email }) => {
         setError("root", { message: err.message });
       }
       resetTurnstile();
+    },
+    onSuccess: ({ data }) => {
+      console.log("sign-up", data);
+      onSuccess?.(data);
     },
   });
 
@@ -157,8 +163,13 @@ export const Signup: FC<SignupProps> = ({ email }) => {
             >
               Sign Up
             </LoadingButton>
-            <Button variant="outline" className="w-full" type="button" asChild>
-              <Link href="/">Cancel</Link>
+            <Button
+              variant="outline"
+              className="w-full"
+              type="button"
+              onClick={onCancel}
+            >
+              Cancel
             </Button>
           </form>
         </Form>

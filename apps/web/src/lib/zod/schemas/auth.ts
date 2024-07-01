@@ -58,6 +58,7 @@ export const ResetPasswordSchema = z.object({
 // one-time password
 export const OTPSchema = z.object({
   code,
+  email,
 });
 
 export const OnlyEmailSchema = z.object({

@@ -1,18 +1,21 @@
 "use server";
 
 import { db, userTable } from "@/db";
-import { SignupSchema, OTPSchema, EmptySchema } from "@/lib/zod/schemas/auth";
+import {
+  SignupSchema,
+  OTPSchema,
+  OnlyEmailSchema,
+} from "@/lib/zod/schemas/auth";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { createServerAction, ZSAError } from "zsa";
-import { validateRequest } from "@/lib/auth/validate-request";
 import {
   sendVerificationCodeEmail,
   addDBToken,
   resendVerifyTokenEmail,
   verifyDBTokenByCode,
 } from "./utils";
-import { createUser } from "@/db/data-access/user";
+import { createUser, getUserByEmail } from "@/db/data-access/user";
 import { getHash } from "@/lib/utils";
 import { invalidateUserSessions, setSession } from "@/lib/session";
 import { turnstileProcedure } from "./turnstile";
@@ -31,6 +34,7 @@ export const signupAction = turnstileProcedure
     }
 
     let user = existingUser;
+
     if (existingUser) {
       const hashedPassword = await getHash(password);
       if (hashedPassword !== existingUser?.hashedPassword) {
@@ -56,22 +60,24 @@ export const signupAction = turnstileProcedure
 
     const { code: verificationCode } = await addDBToken(
       user.id,
-      "VERIFY_EMAIL",
+      "VERIFY_EMAIL"
     );
 
-    await sendVerificationCodeEmail(email, verificationCode);
+    const data = await sendVerificationCodeEmail(email, verificationCode);
 
-    await setSession(user.id);
-
-    redirect("/verify-email");
+    console.log("send a email", email, data);
+    return {
+      email,
+    };
   });
 
 export const resendVerifyEmailAction = createServerAction()
-  .input(EmptySchema)
-  .handler(async () => {
-    const { user } = await validateRequest();
-    if (!user?.email) {
-      return redirect("/login");
+  .input(OnlyEmailSchema)
+  .handler(async ({ input }) => {
+    const { email } = input;
+    const user = await getUserByEmail(email);
+    if (!user) {
+      throw new ZSAError("FORBIDDEN", "User not found");
     }
 
     return resendVerifyTokenEmail(user, "VERIFY_EMAIL");
@@ -80,15 +86,11 @@ export const resendVerifyEmailAction = createServerAction()
 export const verifyEmailAction = createServerAction()
   .input(OTPSchema)
   .handler(async ({ input }) => {
-    const { code } = input;
-    const { user } = await validateRequest();
+    const { code, email } = input;
+    const user = await getUserByEmail(email);
 
-    // No session
     if (!user) {
-      throw new ZSAError(
-        "FORBIDDEN",
-        "Access to this verify email is forbidden",
-      );
+      throw new ZSAError("FORBIDDEN", "User not found");
     }
 
     await verifyDBTokenByCode({ id: user.id }, { code }, "VERIFY_EMAIL", true);
@@ -100,8 +102,8 @@ export const verifyEmailAction = createServerAction()
       .update(userTable)
       .set({ emailVerified: true })
       .where(eq(userTable.id, user.id));
+
     await setSession(user.id);
 
-    // Redirect to home
-    return redirect("/");
+    redirect("/dash");
   });
