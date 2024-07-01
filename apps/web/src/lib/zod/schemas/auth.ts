@@ -41,6 +41,7 @@ export const LoginSchema = z.object({
 
 export const ForgetPasswordSchema = z.object({
   email,
+  "cf-turnstile-response": cfTurnstileResponse,
 });
 
 export const VerifyResetPasswordCodeSchema = z.object({

@@ -30,7 +30,7 @@ export const ResetPassword: FC<ResetPasswordProps> = () => {
             goToNextStep();
           }}
           onCancel={() => {
-            router.back();
+            router.push("/");
           }}
         />
       )}

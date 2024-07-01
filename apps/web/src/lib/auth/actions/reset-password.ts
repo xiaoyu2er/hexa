@@ -17,8 +17,10 @@ import {
 import { redirect } from "next/navigation";
 import { invalidateUserSessions, setSession } from "@/lib/session";
 import { getHash } from "@/lib/utils";
+import { turnstileProcedure } from "./turnstile";
 
-export const forgetPasswordAction = createServerAction()
+export const forgetPasswordAction = turnstileProcedure
+  .createServerAction()
   .input(ForgetPasswordSchema)
   .handler(async ({ input }) => {
     const { email } = input;

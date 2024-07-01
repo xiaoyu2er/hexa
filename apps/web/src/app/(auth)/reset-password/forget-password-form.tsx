@@ -1,5 +1,6 @@
 "use client";
 
+import { useTurnstile } from "@/hooks/use-turnstile";
 import { forgetPasswordAction } from "@/lib/auth/actions/reset-password";
 import {
   ForgetPasswordForm,
@@ -52,7 +53,16 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
     setError,
     formState: { isSubmitting, errors },
     setFocus,
+    setValue,
+    watch,
   } = form;
+
+  const { resetTurnstile, turnstile } = useTurnstile<ForgetPasswordForm>({
+    setError,
+    setValue,
+    errorField: "email",
+  });
+
   const { execute } = useServerAction(forgetPasswordAction, {
     onError: ({ err }) => {
       console.error("sign-up", err);
@@ -70,6 +80,7 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
       } else {
         setError("email", { message: err.message });
       }
+      resetTurnstile();
     },
     onSuccess: ({ data }) => {
       onSuccess?.(data);
@@ -114,6 +125,7 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
                 </FormItem>
               )}
             />
+            {turnstile}
             <Button variant={"link"} size={"sm"} className="p-0" asChild>
               <Link href={"/sign-up"}>Not signed up? Sign up now.</Link>
             </Button>
@@ -121,6 +133,7 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
               className="w-full"
               type="submit"
               loading={isSubmitting}
+              disabled={!watch("cf-turnstile-response")}
             >
               Reset Password
             </LoadingButton>
