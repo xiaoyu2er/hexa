@@ -145,6 +145,7 @@ export function Login() {
 
               <Turnstile
                 ref={ref}
+                options={{ size: "auto" }}
                 siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!}
                 onError={(err: string) => {
                   // https://developers.cloudflare.com/turnstile/troubleshooting/client-side-errors/error-codes/
