@@ -14,11 +14,10 @@ export const getUserByEmailProcedure = createServerActionProcedure()
         "NOT_FOUND",
         process.env.NODE_ENV === "development"
           ? "[dev] User not found by email: " + email
-          : "Email not found"
+          : "Email not found",
       );
     }
     return {
-        user
-    }
+      user,
+    };
   });
-
