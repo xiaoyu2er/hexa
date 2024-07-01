@@ -36,7 +36,11 @@ export function useTurnstile<T extends FieldValues = FieldValues>({
   const turnstile = (
     <Turnstile
       ref={ref}
-      options={{ size: "auto", theme }}
+      options={{
+        size: "auto",
+        // type TurnstileTheme = 'light' | 'dark' | 'auto';
+        theme: theme === "dark" ? "dark" : "light",
+      }}
       siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!}
       onError={(err: string) => {
         // https://developers.cloudflare.com/turnstile/troubleshooting/client-side-errors/error-codes/
