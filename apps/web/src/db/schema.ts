@@ -26,8 +26,8 @@ export const userTable = pgTable("user", {
 export const sessionTable = pgTable("session", {
   id: text("id").primaryKey(),
   userId: text("user_id")
-    .notNull()
-    .references(() => userTable.id),
+  .notNull()
+  .references(() => userTable.id, {onDelete: 'cascade'}),
   expiresAt: timestamp("expires_at", {
     withTimezone: true,
     mode: "date",
@@ -48,9 +48,9 @@ export const tokenTable = pgTable("token", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => generateId()),
-  userId: text("user_id")
+    userId: text("user_id")
     .notNull()
-    .references(() => userTable.id),
+    .references(() => userTable.id, {onDelete: 'cascade'}),
   type: tokenTypeEnum("type").notNull(),
   code: text("code").notNull(),
   token: text("token").notNull(),
@@ -70,11 +70,11 @@ export const tokenTable = pgTable("token", {
   }).$onUpdate(() => new Date()),
 });
 
-export const usersRelations = relations(userTable, ({ many }) => ({
+export const userTokenRelation = relations(userTable, ({ many }) => ({
   tokens: many(tokenTable),
 }));
 
-export const tokensRelations = relations(tokenTable, ({ one }) => ({
+export const tokenUserRelation = relations(tokenTable, ({ one }) => ({
   user: one(userTable, {
     fields: [tokenTable.userId],
     references: [userTable.id],
@@ -90,7 +90,7 @@ export const oauthAccountTable = pgTable("oauth_account", {
     .$defaultFn(() => generateId()),
   userId: text("user_id")
     .notNull()
-    .references(() => userTable.id),
+    .references(() => userTable.id, {onDelete: 'cascade'}),
   provider: providerEnum("provider").notNull(),
   providerAccountId: text("provider_account_id").notNull(),
   createdAt: timestamp("created_at", {
@@ -104,6 +104,20 @@ export const oauthAccountTable = pgTable("oauth_account", {
     mode: "date",
   }).$onUpdate(() => new Date()),
 });
+
+export const userAccountRelations = relations(userTable, ({ many }) => ({
+  oauthAccounts: many(oauthAccountTable),
+}));
+
+export const oauthAccountUserRelation = relations(
+  oauthAccountTable,
+  ({ one }) => ({
+    user: one(userTable, {
+      fields: [oauthAccountTable.userId],
+      references: [userTable.id],
+    }),
+  })
+);
 
 export type UserModel = typeof userTable.$inferSelect;
 export type OAuthAccountModel = typeof oauthAccountTable.$inferSelect;

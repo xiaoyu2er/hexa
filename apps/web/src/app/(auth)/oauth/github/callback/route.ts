@@ -4,9 +4,12 @@ import { github } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { getAccountByGithubId } from "@/db/data-access/account";
 import { GitHubEmail, GitHubUser } from "@/types";
-import { createUserByGithubAccount } from "@/db/use-cases/user";
+import {
+  createUserByGithubAccount,
+  uploadUserProfile,
+} from "@/db/use-cases/user";
 import { setSession } from "@/lib/session";
-
+import { waitUntil } from "@vercel/functions";
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
@@ -38,7 +41,7 @@ export async function GET(request: NextRequest) {
     if (!primaryEmail) {
       return NextResponse.json(
         { error: "No primary email address" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -50,6 +53,13 @@ export async function GET(request: NextRequest) {
 
     if (existingAccount) {
       await setSession(existingAccount.userId);
+      waitUntil(
+        uploadUserProfile(
+          existingAccount.user.id,
+          existingAccount.user.avatarUrl
+        )
+      );
+
       return new Response(null, {
         status: 302,
         headers: { Location: "/" },
@@ -57,6 +67,8 @@ export async function GET(request: NextRequest) {
     }
 
     const user = await createUserByGithubAccount(githubUser);
+    waitUntil(uploadUserProfile(user.id, user.avatarUrl));
+
     await setSession(user.id);
     return new Response(null, {
       status: 302,
@@ -69,7 +81,7 @@ export async function GET(request: NextRequest) {
     }
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

@@ -1,9 +1,14 @@
 import { GitHubUser, GoogleUser } from "@/types";
-import { createUser, getUserByEmail } from "../data-access/user";
+import {
+  createUser,
+  getUserByEmail,
+  updateUserProfile,
+} from "../data-access/user";
 import {
   createGithubAccount,
   createGoogleAccount,
 } from "../data-access/account";
+import { isStored, storage } from "@/lib/storage";
 
 export async function createUserByGithubAccount(githubUser: GitHubUser) {
   let existingUser = await getUserByEmail(githubUser.email);
@@ -12,6 +17,7 @@ export async function createUserByGithubAccount(githubUser: GitHubUser) {
     existingUser = await createUser({
       email: githubUser.email,
       emailVerified: true,
+      avatarUrl: githubUser.avatar_url,
     });
   }
 
@@ -29,6 +35,7 @@ export async function createUserByGoogleAccount(googleUser: GoogleUser) {
     existingUser = await createUser({
       email: googleUser.email,
       emailVerified: true,
+      avatarUrl: googleUser.picture,
     });
   }
 
@@ -38,4 +45,13 @@ export async function createUserByGoogleAccount(googleUser: GoogleUser) {
 
   await createGoogleAccount(existingUser.id, googleUser);
   return existingUser;
+}
+
+export async function uploadUserProfile(uid: string, imageUrl: string | null) {
+  if (imageUrl && !isStored(imageUrl)) {
+    console.log("uploadUserProfile", uid, imageUrl);
+    const { url } = await storage.upload(`avatars/${uid}`, imageUrl);
+    console.log("uploadUserProfile", url);
+    await updateUserProfile(uid, url);
+  }
 }

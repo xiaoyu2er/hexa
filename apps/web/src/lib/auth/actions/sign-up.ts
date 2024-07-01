@@ -49,7 +49,7 @@ export const signupAction = turnstileProcedure
         console.log("User updated", user);
       }
     } else {
-      user = await createUser({ email, emailVerified: false, password });
+      user = await createUser({ email, emailVerified: false, password, avatarUrl: null });
 
       console.log("User updated", user);
     }
