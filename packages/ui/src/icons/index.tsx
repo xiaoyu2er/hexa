@@ -1,5 +1,6 @@
 export { AnimatedSpinner } from "./animated-spinner";
 export { GoogleIcon } from "./google-icon";
+export { GithubIcon } from "./github-icon";
 export {
   PencilLine,
   BookIcon,
@@ -12,7 +13,6 @@ export {
   Lightbulb,
   Loader2Icon,
   LogOut,
-  GithubIcon,
 } from "lucide-react";
 
 export {
