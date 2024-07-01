@@ -1,6 +1,7 @@
 import { UserModel } from "@/db";
-import { lucia } from "./auth";
+import { lucia, validateRequest } from "./auth";
 import { cookies } from "next/headers";
+import { ZSAError } from "zsa";
 
 export function getSessionId() {
   return cookies().get(lucia.sessionCookieName)?.value ?? null;
@@ -16,7 +17,7 @@ export async function setSessionCookie(sessionId: string) {
   cookies().set(
     sessionCookie.name,
     sessionCookie.value,
-    sessionCookie.attributes,
+    sessionCookie.attributes
   );
 }
 
@@ -37,6 +38,17 @@ export function setBlankSessionCookie() {
   cookies().set(
     sessionCookie.name,
     sessionCookie.value,
-    sessionCookie.attributes,
+    sessionCookie.attributes
   );
 }
+
+export const assertAuthenticated = async () => {
+  const { user } = await validateRequest();
+  if (!user) {
+    throw new ZSAError(
+      "FORBIDDEN",
+      "You must be logged in to access this resource"
+    );
+  }
+  return user;
+};

@@ -60,6 +60,10 @@ export const OTPSchema = z.object({
   code,
 });
 
+export const OnlyEmailSchema = z.object({
+  email,
+});
+
 export type SignupForm = z.infer<typeof SignupSchema>;
 export type LoginForm = z.infer<typeof LoginSchema>;
 export type ForgetPasswordForm = z.infer<typeof ForgetPasswordSchema>;
