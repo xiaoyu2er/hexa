@@ -20,7 +20,7 @@ export async function getAccountByGithubId(githubId: number) {
     ),
     with: {
       user: true,
-    }
+    },
   });
 }
 

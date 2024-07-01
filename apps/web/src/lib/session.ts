@@ -17,7 +17,7 @@ export async function setSessionCookie(sessionId: string) {
   cookies().set(
     sessionCookie.name,
     sessionCookie.value,
-    sessionCookie.attributes
+    sessionCookie.attributes,
   );
 }
 
@@ -38,7 +38,7 @@ export function setBlankSessionCookie() {
   cookies().set(
     sessionCookie.name,
     sessionCookie.value,
-    sessionCookie.attributes
+    sessionCookie.attributes,
   );
 }
 
@@ -47,7 +47,7 @@ export const assertAuthenticated = async () => {
   if (!user) {
     throw new ZSAError(
       "FORBIDDEN",
-      "You must be logged in to access this resource"
+      "You must be logged in to access this resource",
     );
   }
   return user;

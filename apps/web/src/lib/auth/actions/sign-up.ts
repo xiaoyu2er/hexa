@@ -49,7 +49,12 @@ export const signupAction = turnstileProcedure
         console.log("User updated", user);
       }
     } else {
-      user = await createUser({ email, emailVerified: false, password, avatarUrl: null });
+      user = await createUser({
+        email,
+        emailVerified: false,
+        password,
+        avatarUrl: null,
+      });
 
       console.log("User updated", user);
     }
@@ -60,7 +65,7 @@ export const signupAction = turnstileProcedure
 
     const { code: verificationCode } = await addDBToken(
       user.id,
-      "VERIFY_EMAIL"
+      "VERIFY_EMAIL",
     );
 
     const data = await sendVerificationCodeEmail(email, verificationCode);

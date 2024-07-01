@@ -12,14 +12,14 @@ class StorageClient {
 
   constructor() {
     this.client = new AwsClient({
-      accessKeyId: process.env.STORAGE_ACCESS_KEY_ID,
-      secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY,
+      accessKeyId: process.env.STORAGE_ACCESS_KEY_ID!,
+      secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY!,
       service: "s3",
       region: "auto",
     });
   }
 
-  async upload(key: string, body: Blob | Buffer | string, opts?: imageOptions) {
+  async upload(key: string, body: Blob | string, opts?: imageOptions) {
     let uploadBody;
     if (typeof body === "string") {
       if (this.isBase64(body)) {
@@ -33,33 +33,36 @@ class StorageClient {
       uploadBody = body;
     }
 
-    console.log('uploadBody', uploadBody, uploadBody.size, uploadBody.type);
+    console.log("uploadBody", uploadBody, uploadBody.size, uploadBody.type);
 
-    const headers = {
+    const headers: { [key: string]: string } = {
       "Content-Length": uploadBody.size.toString(),
     };
     if (opts?.contentType) headers["Content-Type"] = opts.contentType;
 
     try {
-     const res = await this.client.fetch(`${process.env.STORAGE_ENDPOINT}/${key}`, {
-        method: "PUT",
-        headers,
-        body: uploadBody,
-      });
+      const res = await this.client.fetch(
+        `${process.env.STORAGE_ENDPOINT!}/${key}`,
+        {
+          method: "PUT",
+          headers,
+          body: uploadBody,
+        },
+      );
 
       const json = await res.text();
-      console.log('upload:', json)
+      console.log("upload:", json);
 
       return {
-        url: `${process.env.STORAGE_BASE_URL}/${key}`,
+        url: `${process.env.STORAGE_BASE_URL!}/${key}`,
       };
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(`Failed to upload file: ${error.message}`);
     }
   }
 
   async delete(key: string) {
-    await this.client.fetch(`${process.env.STORAGE_ENDPOINT}/${key}`, {
+    await this.client.fetch(`${process.env.STORAGE_ENDPOINT!}/${key}`, {
       method: "DELETE",
     });
 
@@ -70,7 +73,7 @@ class StorageClient {
     const base64Data = base64.replace(/^data:.+;base64,/, "");
     const paddedBase64Data = base64Data.padEnd(
       base64Data.length + ((4 - (base64Data.length % 4)) % 4),
-      "="
+      "=",
     );
 
     const binaryString = atob(paddedBase64Data);
@@ -78,7 +81,8 @@ class StorageClient {
     for (let i = 0; i < binaryString.length; i++) {
       byteArray[i] = binaryString.charCodeAt(i);
     }
-    const blobProps = {};
+    const blobProps: { type?: string } = {};
+
     if (opts?.contentType) blobProps["type"] = opts.contentType;
     return new Blob([byteArray], blobProps);
   }
@@ -127,5 +131,5 @@ class StorageClient {
 export const storage = new StorageClient();
 
 export const isStored = (url: string) => {
-  return url.startsWith(process.env.STORAGE_BASE_URL || "");
+  return url.startsWith(process.env.STORAGE_BASE_URL! || "");
 };

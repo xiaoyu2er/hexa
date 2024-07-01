@@ -27,7 +27,7 @@ export const turnstileProcedure = createServerActionProcedure()
 
     const result = await fetch(
       "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-      { method: "POST", body: form }
+      { method: "POST", body: form },
     );
     const verifyRes: TurnstileServerValidationResponse = await result.json();
 
@@ -39,7 +39,7 @@ export const turnstileProcedure = createServerActionProcedure()
         process.env.NODE_ENV === "development"
           ? "[dev][server-side] Cloudflare Turnstile failed - " +
             verifyRes["error-codes"][0]
-          : "Only humans are allowed to login. Please try again."
+          : "Only humans are allowed to login. Please try again.",
       );
     }
     return {};

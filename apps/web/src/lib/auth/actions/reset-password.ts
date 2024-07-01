@@ -22,7 +22,7 @@ import { getUserByEmailProcedure } from "./user";
 
 export const forgetPasswordAction = chainServerActionProcedures(
   turnstileProcedure,
-  getUserByEmailProcedure
+  getUserByEmailProcedure,
 )
   .createServerAction()
   .input(ForgetPasswordSchema)
@@ -57,7 +57,7 @@ export const verifyResetPasswordCodeAction = getUserByEmailProcedure
       user,
       { code },
       "RESET_PASSWORD",
-      false
+      false,
     );
     return { token: tokenRow.token };
   });

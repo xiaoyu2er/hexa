@@ -26,8 +26,8 @@ export const userTable = pgTable("user", {
 export const sessionTable = pgTable("session", {
   id: text("id").primaryKey(),
   userId: text("user_id")
-  .notNull()
-  .references(() => userTable.id, {onDelete: 'cascade'}),
+    .notNull()
+    .references(() => userTable.id, { onDelete: "cascade" }),
   expiresAt: timestamp("expires_at", {
     withTimezone: true,
     mode: "date",
@@ -48,9 +48,9 @@ export const tokenTable = pgTable("token", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => generateId()),
-    userId: text("user_id")
+  userId: text("user_id")
     .notNull()
-    .references(() => userTable.id, {onDelete: 'cascade'}),
+    .references(() => userTable.id, { onDelete: "cascade" }),
   type: tokenTypeEnum("type").notNull(),
   code: text("code").notNull(),
   token: text("token").notNull(),
@@ -90,7 +90,7 @@ export const oauthAccountTable = pgTable("oauth_account", {
     .$defaultFn(() => generateId()),
   userId: text("user_id")
     .notNull()
-    .references(() => userTable.id, {onDelete: 'cascade'}),
+    .references(() => userTable.id, { onDelete: "cascade" }),
   provider: providerEnum("provider").notNull(),
   providerAccountId: text("provider_account_id").notNull(),
   createdAt: timestamp("created_at", {
@@ -116,7 +116,7 @@ export const oauthAccountUserRelation = relations(
       fields: [oauthAccountTable.userId],
       references: [userTable.id],
     }),
-  })
+  }),
 );
 
 export type UserModel = typeof userTable.$inferSelect;

@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
     if (!primaryEmail) {
       return NextResponse.json(
         { error: "No primary email address" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -56,8 +56,8 @@ export async function GET(request: NextRequest) {
       waitUntil(
         uploadUserProfile(
           existingAccount.user.id,
-          existingAccount.user.avatarUrl
-        )
+          existingAccount.user.avatarUrl,
+        ),
       );
 
       return new Response(null, {
@@ -81,7 +81,7 @@ export async function GET(request: NextRequest) {
     }
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
