@@ -31,7 +31,7 @@ export const forgetPasswordAction = createServerAction()
         "NOT_FOUND",
         process.env.NODE_ENV === "development"
           ? "Email not found"
-          : "Email not found"
+          : "Email not found",
       );
     }
 
@@ -55,7 +55,7 @@ export const resendResetPasswordCodeAction = createServerAction()
         "NOT_FOUND",
         process.env.NODE_ENV === "development"
           ? "Email not found"
-          : "Email not found"
+          : "Email not found",
       );
     }
 
@@ -75,7 +75,7 @@ export const verifyResetPasswordCodeAction = createServerAction()
         "NOT_FOUND",
         process.env.NODE_ENV === "development"
           ? "Email not found"
-          : "Email not found"
+          : "Email not found",
       );
     }
 
@@ -83,7 +83,7 @@ export const verifyResetPasswordCodeAction = createServerAction()
       user,
       { code },
       "RESET_PASSWORD",
-      false
+      false,
     );
     return { token: tokenRow.token };
   });
@@ -102,7 +102,7 @@ export const resetPasswordAction = createServerAction()
         "NOT_FOUND",
         process.env.NODE_ENV === "development"
           ? "Email not found"
-          : "Email not found"
+          : "Email not found",
       );
     }
 
