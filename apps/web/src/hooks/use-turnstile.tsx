@@ -1,4 +1,10 @@
-import { useRef, useState } from "react";
+/**
+ * This hook is used to integrate Cloudflare Turnstile with React Hook Form.
+ * @see docs https://docs.page/marsidev/react-turnstile/
+ * @see demo https://react-turnstile.vercel.app/basic
+ */
+
+import { useRef } from "react";
 import {
   FieldValues,
   Path,
