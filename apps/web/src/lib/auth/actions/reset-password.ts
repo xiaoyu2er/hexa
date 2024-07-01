@@ -7,7 +7,7 @@ import {
   VerifyResetPasswordCodeSchema,
 } from "@/lib/zod/schemas/auth";
 import { eq } from "drizzle-orm";
-import { createServerAction, ZSAError } from "zsa";
+import { chainServerActionProcedures } from "zsa";
 import {
   addDBToken,
   sendVerificationCodeEmail,
@@ -18,24 +18,17 @@ import { redirect } from "next/navigation";
 import { invalidateUserSessions, setSession } from "@/lib/session";
 import { getHash } from "@/lib/utils";
 import { turnstileProcedure } from "./turnstile";
+import { getUserByEmailProcedure } from "./user";
 
-export const forgetPasswordAction = turnstileProcedure
+export const forgetPasswordAction = chainServerActionProcedures(
+  turnstileProcedure,
+  getUserByEmailProcedure
+)
   .createServerAction()
   .input(ForgetPasswordSchema)
-  .handler(async ({ input }) => {
+  .handler(async ({ input, ctx }) => {
     const { email } = input;
-
-    const user = await db.query.userTable.findFirst({
-      where: (table, { eq }) => eq(table.email, email),
-    });
-    if (!user) {
-      throw new ZSAError(
-        "NOT_FOUND",
-        process.env.NODE_ENV === "development"
-          ? "Email not found"
-          : "Email not found",
-      );
-    }
+    const user = ctx.user;
 
     const { code } = await addDBToken(user.id, "RESET_PASSWORD");
 
@@ -44,69 +37,37 @@ export const forgetPasswordAction = turnstileProcedure
     return { email };
   });
 
-export const resendResetPasswordCodeAction = createServerAction()
+export const resendResetPasswordCodeAction = getUserByEmailProcedure
+  .createServerAction()
   .input(VerifyResetPasswordCodeSchema.pick({ email: true }))
-  .handler(async ({ input }) => {
+  .handler(async ({ input, ctx }) => {
     const { email } = input;
-
-    const user = await db.query.userTable.findFirst({
-      where: (table, { eq }) => eq(table.email, email),
-    });
-    if (!user) {
-      throw new ZSAError(
-        "NOT_FOUND",
-        process.env.NODE_ENV === "development"
-          ? "Email not found"
-          : "Email not found",
-      );
-    }
-
+    const user = ctx.user;
     return resendVerifyTokenEmail({ id: user.id, email }, "RESET_PASSWORD");
   });
 
-export const verifyResetPasswordCodeAction = createServerAction()
+export const verifyResetPasswordCodeAction = getUserByEmailProcedure
+  .createServerAction()
   .input(VerifyResetPasswordCodeSchema)
-  .handler(async ({ input }) => {
+  .handler(async ({ input, ctx }) => {
     const { email, code } = input;
     console.log("verifyResetPasswordCodeAction", email, code);
-    const user = await db.query.userTable.findFirst({
-      where: (table, { eq }) => eq(table.email, email),
-    });
-    if (!user) {
-      throw new ZSAError(
-        "NOT_FOUND",
-        process.env.NODE_ENV === "development"
-          ? "Email not found"
-          : "Email not found",
-      );
-    }
-
+    const user = ctx.user;
     const tokenRow = await verifyDBTokenByCode(
       user,
       { code },
       "RESET_PASSWORD",
-      false,
+      false
     );
     return { token: tokenRow.token };
   });
 
-export const resetPasswordAction = createServerAction()
+export const resetPasswordAction = getUserByEmailProcedure
+  .createServerAction()
   .input(ResetPasswordSchema)
-  .handler(async ({ input }) => {
-    const { email, token, password } = input;
-
-    const user = await db.query.userTable.findFirst({
-      where: (table, { eq }) => eq(table.email, email),
-    });
-
-    if (!user) {
-      throw new ZSAError(
-        "NOT_FOUND",
-        process.env.NODE_ENV === "development"
-          ? "Email not found"
-          : "Email not found",
-      );
-    }
+  .handler(async ({ input, ctx }) => {
+    const { token, password } = input;
+    const user = ctx.user;
 
     await verifyDBTokenByCode(user, { token }, "RESET_PASSWORD", true);
 
