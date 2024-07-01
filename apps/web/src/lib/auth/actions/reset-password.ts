@@ -45,7 +45,7 @@ export const forgetPasswordAction = turnstileProcedure
   });
 
 export const resendResetPasswordCodeAction = createServerAction()
-  .input(ForgetPasswordSchema)
+  .input(VerifyResetPasswordCodeSchema.pick({ email: true }))
   .handler(async ({ input }) => {
     const { email } = input;
 
