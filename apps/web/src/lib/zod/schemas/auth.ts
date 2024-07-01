@@ -26,7 +26,7 @@ export const SignupSchema = z.object({
   password,
 });
 
-const cfTurnstileResponse = z.string().optional();
+const cfTurnstileResponse = z.string().min(1, "Please complete the challenge.");
 export const TurnstileSchema = z.object({
   "cf-turnstile-response": cfTurnstileResponse,
 });
