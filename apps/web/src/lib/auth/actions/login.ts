@@ -3,11 +3,12 @@
 import { db } from "@/db";
 import { LoginSchema } from "@/lib/zod/schemas/auth";
 import { redirect } from "next/navigation";
-import { createServerAction, ZSAError } from "zsa";
+import { ZSAError } from "zsa";
 import { setSession } from "@/lib/session";
 import { isHashValid } from "@/lib/utils";
-import { headers } from "next/headers";
 import { turnstileProcedure } from "./turnstile";
+import { waitUntil } from "@vercel/functions";
+import { uploadUserProfile } from "@/db/use-cases/user";
 
 export const loginAction = turnstileProcedure
   .createServerAction()
@@ -51,6 +52,8 @@ export const loginAction = turnstileProcedure
     }
 
     await setSession(existingUser.id);
+
+    waitUntil(uploadUserProfile(existingUser.id, existingUser.avatarUrl));
 
     redirect("/");
   });

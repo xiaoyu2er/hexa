@@ -41,9 +41,15 @@ importers:
       '@marsidev/react-turnstile':
         specifier: ^0.7.1
         version: 0.7.1(react-dom@19.0.0-rc-f994737d14-20240522)(react@19.0.0-rc-f994737d14-20240522)
+      '@vercel/functions':
+        specifier: ^1.0.2
+        version: 1.0.2
       arctic:
         specifier: ^1.9.1
         version: 1.9.1
+      aws4fetch:
+        specifier: ^1.0.18
+        version: 1.0.18
       date-fns:
         specifier: ^3.6.0
         version: 3.6.0
@@ -6030,6 +6036,11 @@ packages:
   /@ungap/structured-clone@1.2.0:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
 
+  /@vercel/functions@1.0.2:
+    resolution: {integrity: sha512-j3udyHOv/05Y8o3WQ/ANMWa1aYagsY5B3ouImiwgYsz5z4CBUHTY5dk74oQAXYr+bgoVDpdDlmxkpnxGzKEdLQ==}
+    engines: {node: '>= 16'}
+    dev: false
+
   /@vercel/style-guide@5.2.0(eslint@8.57.0)(prettier@3.2.5)(typescript@5.3.3):
     resolution: {integrity: sha512-fNSKEaZvSkiBoF6XEefs8CcgAV9K9e+MbcsDZjUsktHycKdA0jvjAzQi1W/FzLS+Nr5zZ6oejCwq/97dHUKe0g==}
     engines: {node: '>=16'}
@@ -6461,6 +6472,10 @@ packages:
     resolution: {integrity: sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==}
     engines: {node: '>= 0.4'}
     dev: true
+
+  /aws4fetch@1.0.18:
+    resolution: {integrity: sha512-3Cf+YaUl07p24MoQ46rFwulAmiyCwH2+1zw1ZyPAX5OtJ34Hh185DwB8y/qRLb6cYYYtSFJ9pthyLc0MD4e8sQ==}
+    dev: false
 
   /axe-core@4.7.0:
     resolution: {integrity: sha512-M0JtH+hlOL5pLQwHOLNYZaXuhqmvS8oExsqB1SBYgA4Dk7u/xx+YdGHXaK5pyUfed5mYXdlYiphWq3G8cRi5JQ==}
@@ -11906,8 +11921,8 @@ packages:
     engines: {node: '>=14.17'}
     dev: true
 
-  /typescript@5.5.2:
-    resolution: {integrity: sha512-NcRtPEOsPFFWjobJEtfihkLCZCXZt/os3zf8nTxjVH3RvTSxjrCamJpbExGvYOF+tFHc3pA65qpdwPbzjohhew==}
+  /typescript@5.5.3:
+    resolution: {integrity: sha512-/hreyEujaB0w76zKo6717l3L0o/qEUtRgdvUBvlkhoWeOVMjMuHNHk0BRBzikzuGDqNmPQbg5ifMEqsHLiIUcQ==}
     engines: {node: '>=14.17'}
     hasBin: true
     dev: false
@@ -12314,7 +12329,7 @@ packages:
     resolution: {integrity: sha512-8Te7WUGlv1FtVpMxpNSTp0X5oBMNbnkDP/qGSaTaLokyf/D17mrYDiQZaMpZ5DmuyBYw+uB4Wj+hAqo4tpXXBQ==}
     dependencies:
       react: 18.3.1
-      typescript: 5.5.2
+      typescript: 5.5.3
       zod: 3.23.8
       zsa: 0.4.0
     dev: false
@@ -12322,6 +12337,6 @@ packages:
   /zsa@0.4.0:
     resolution: {integrity: sha512-B8xOQkHT27kRz6a/M4EKThU7Q3REMRjjrhH1vCZ1CbkZXOUh1ENd1NbFWKfTdiuNaPwS6lA/ccTscAcyWkT50A==}
     dependencies:
-      typescript: 5.5.2
+      typescript: 5.5.3
       zod: 3.23.8
     dev: false

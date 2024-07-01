@@ -12,13 +12,12 @@ import { ModeToggle } from "./mode-toggle";
 import { MenuButton } from "./menu-button";
 import { validateRequest } from "@/lib/auth/validate-request";
 import { LogoutMenuItem } from "./logout-menu-item";
+import { User } from "lucia";
 
-async function ProfileAvatar({ userId }: { userId: string }) {
-  // const profile = await getUserProfileUseCase(userId);
-
+async function ProfileAvatar({ user }: { user: User }) {
   return (
     <Avatar>
-      <AvatarImage src={"/next.svg"} />
+      <AvatarImage src={user.avatarUrl!} />
       <AvatarFallback>{"AA"}</AvatarFallback>
     </Avatar>
   );
@@ -44,7 +43,7 @@ async function HeaderActions() {
                   </div>
                 }
               >
-                <ProfileAvatar userId={user.id} />
+                <ProfileAvatar user={user} />
               </Suspense>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="space-y-2">

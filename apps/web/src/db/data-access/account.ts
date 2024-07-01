@@ -18,6 +18,9 @@ export async function getAccountByGithubId(githubId: number) {
       eq(oauthAccountTable.provider, "GITHUB"),
       eq(oauthAccountTable.providerAccountId, String(githubId)),
     ),
+    with: {
+      user: true,
+    }
   });
 }
 

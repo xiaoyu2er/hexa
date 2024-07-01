@@ -15,17 +15,28 @@ export async function createUser({
   email,
   emailVerified,
   password,
-}: Pick<UserModel, "email" | "emailVerified"> & { password?: string }) {
+  avatarUrl,
+}: Pick<UserModel, "email" | "emailVerified" | "avatarUrl"> & {
+  password?: string;
+}) {
   const user = (
     await db
       .insert(userTable)
       .values({
         email,
         emailVerified,
+        avatarUrl,
         ...(password ? { hashedPassword: await getHash(password) } : {}),
       })
       .returning()
   )[0];
 
   return user;
+}
+
+export async function updateUserProfile(uid: string, imageUrl: string) {
+  await db
+    .update(userTable)
+    .set({ avatarUrl: imageUrl })
+    .where(eq(userTable.id, uid));
 }
