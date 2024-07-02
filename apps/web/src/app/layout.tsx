@@ -3,8 +3,9 @@ import { Inter as FontSans } from "next/font/google";
 import { Toaster } from "@hexa/ui/toaster";
 import { cn } from "@hexa/utils";
 import "./globals.css";
-import { Providers } from "./providers";
-import { Header } from "@/components/header/header";
+import { SessionProvider } from "./session-provider";
+import { ThemeProvider } from "next-themes";
+import { validateRequest } from "@/lib/auth";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -16,20 +17,28 @@ export const metadata: Metadata = {
   description: "Infinite Possibilities with a Single Link",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await validateRequest();
   return (
     <html lang="en">
       <body
         className={cn(
           "bg-background font-sans antialiased h-screen",
-          fontSans.variable,
+          fontSans.variable
         )}
       >
-        <Providers>{children}</Providers>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SessionProvider value={session}>{children}</SessionProvider>
+        </ThemeProvider>
         <Toaster />
       </body>
     </html>
