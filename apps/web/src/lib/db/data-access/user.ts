@@ -40,3 +40,11 @@ export async function updateUserProfile(uid: string, imageUrl: string) {
     .set({ avatarUrl: imageUrl })
     .where(eq(userTable.id, uid));
 }
+
+
+export async function updateUserName(uid: string, name: string) {
+  await db
+    .update(userTable)
+    .set({ name })
+    .where(eq(userTable.id, uid));
+}
