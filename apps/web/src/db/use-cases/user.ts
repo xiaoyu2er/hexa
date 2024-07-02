@@ -18,6 +18,7 @@ export async function createUserByGithubAccount(githubUser: GitHubUser) {
       email: githubUser.email,
       emailVerified: true,
       avatarUrl: githubUser.avatar_url,
+      name: githubUser.name,
     });
   }
 
@@ -36,6 +37,7 @@ export async function createUserByGoogleAccount(googleUser: GoogleUser) {
       email: googleUser.email,
       emailVerified: true,
       avatarUrl: googleUser.picture,
+      name: googleUser.name,
     });
   }
 

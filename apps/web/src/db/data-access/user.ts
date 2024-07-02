@@ -16,16 +16,16 @@ export async function createUser({
   emailVerified,
   password,
   avatarUrl,
-}: Pick<UserModel, "email" | "emailVerified" | "avatarUrl"> & {
-  password?: string;
-}) {
+  name,
+}: Omit<Partial<UserModel>, "password"> & { password?: string }) {
   const user = (
     await db
       .insert(userTable)
       .values({
         email,
-        emailVerified,
-        avatarUrl,
+        emailVerified: emailVerified ?? false,
+        avatarUrl: avatarUrl ?? null,
+        name: name ?? null,
         ...(password ? { hashedPassword: await getHash(password) } : {}),
       })
       .returning()
