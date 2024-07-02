@@ -110,5 +110,5 @@ export const verifyEmailAction = createServerAction()
 
     await setSession(user.id);
 
-    redirect("/dash");
+    redirect("/settings");
   });

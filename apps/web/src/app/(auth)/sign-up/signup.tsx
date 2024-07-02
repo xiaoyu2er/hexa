@@ -35,7 +35,6 @@ export const SignupPage: FC<SignupPageProps> = () => {
           email={email}
           onSuccess={() => {
             console.log("Signup success");
-            // router.push("/dash");
           }}
           onCancel={onCancel}
         />
