@@ -1,16 +1,10 @@
 "use client";
 
+import { useSession } from "@/app/session-provider";
 import { ModeToggle } from "@/components/header/mode-toggle";
+import { logoutAction } from "@/lib/actions/logout";
+import { Avatar, AvatarFallback, AvatarImage } from "@hexa/ui/avatar";
 import { Button } from "@hexa/ui/button";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@hexa/ui/card";
-import { Checkbox } from "@hexa/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -19,12 +13,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from "@hexa/ui/dropdown-menu";
-import { CircleUser, Menu, Package2, Search } from "@hexa/ui/icons";
+import { LogOut, Menu, Package2, Search, Settings } from "@hexa/ui/icons";
 import { Input } from "@hexa/ui/input";
 import { Sheet, SheetTrigger, SheetContent } from "@hexa/ui/sheet";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
+import { useServerAction } from "zsa-react";
 
 const CONSOLE_NAVBARS = [
   {
@@ -34,8 +29,10 @@ const CONSOLE_NAVBARS = [
 ];
 
 export function ConsoleLayout({ children }: { children: ReactNode }) {
+  const { user } = useSession();
   const pathname = usePathname();
   console.log("pathname", pathname);
+  const { execute: execLogout, isPending } = useServerAction(logoutAction);
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -114,17 +111,41 @@ export function ConsoleLayout({ children }: { children: ReactNode }) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">
-                <CircleUser className="h-5 w-5" />
+                <Avatar>
+                  <AvatarImage
+                    src={user?.avatarUrl!}
+                    alt={user?.name || "User Profile Picture"}
+                  />
+                  <AvatarFallback>
+                    {user?.name
+                      ?.split(" ")
+                      .slice(0, 2)
+                      .map((n) => n[0])
+                      .join("")
+                      .toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
                 <span className="sr-only">Toggle user menu</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href="/settings" className="flex gap-2 items-center">
+                  <Settings className="h-4 w-4" /> Settings
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem
+                disabled={isPending}
+                onClick={() => {
+                  execLogout({});
+                }}
+                className="flex gap-2 items-center"
+              >
+                <LogOut className="w-4 h-4" /> Logout
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
