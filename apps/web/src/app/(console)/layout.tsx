@@ -1,6 +1,7 @@
 import { validateRequest } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
+import { ConsoleLayout } from "@/components/layouts/console-layout";
 
 export default async function DashLayout({
   children,
@@ -9,5 +10,6 @@ export default async function DashLayout({
 }) {
   const { user } = await validateRequest();
   if (!user) redirect("/login");
-  return <div>{children}</div>;
+
+  return <ConsoleLayout>{children}</ConsoleLayout>;
 }
