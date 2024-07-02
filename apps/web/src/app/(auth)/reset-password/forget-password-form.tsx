@@ -1,7 +1,7 @@
 "use client";
 
 import { useTurnstile } from "@/hooks/use-turnstile";
-import { forgetPasswordAction } from "@/lib/auth/actions/reset-password";
+import { forgetPasswordAction } from "@/lib/actions/reset-password";
 import {
   ForgetPasswordForm,
   ForgetPasswordSchema,

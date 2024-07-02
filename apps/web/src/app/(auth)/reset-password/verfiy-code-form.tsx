@@ -3,7 +3,7 @@
 import {
   verifyResetPasswordCodeAction,
   resendResetPasswordCodeAction,
-} from "@/lib/auth/actions/reset-password";
+} from "@/lib/actions/reset-password";
 import { RESEND_VERIFY_CODE_TIME_SPAN, VERIFY_CODE_LENGTH } from "@/lib/const";
 import {
   VerifyResetPasswordCodeForm,

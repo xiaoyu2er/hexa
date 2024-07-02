@@ -4,7 +4,7 @@ import Link from "next/link";
 import {
   resendVerifyEmailAction,
   verifyEmailAction,
-} from "@/lib/auth/actions/sign-up";
+} from "@/lib/actions/sign-up";
 
 import { useServerAction } from "zsa-react";
 

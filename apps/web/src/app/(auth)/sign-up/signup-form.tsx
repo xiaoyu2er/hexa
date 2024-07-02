@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { signupAction } from "@/lib/auth/actions/sign-up";
+import { signupAction } from "@/lib/actions/sign-up";
 
 import { useServerAction } from "zsa-react";
 import { useForm } from "react-hook-form";

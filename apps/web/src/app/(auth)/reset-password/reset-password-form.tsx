@@ -1,6 +1,6 @@
 "use client";
 
-import { resetPasswordAction } from "@/lib/auth/actions/reset-password";
+import { resetPasswordAction } from "@/lib/actions/reset-password";
 import {
   ForgetPasswordForm,
   ResetPasswordForm,
