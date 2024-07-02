@@ -1,4 +1,4 @@
-import { db } from "@/db";
+import { db } from "@/lib/db";
 import { OnlyEmailSchema } from "@/lib/zod/schemas/auth";
 import { ZSAError, createServerActionProcedure } from "zsa";
 

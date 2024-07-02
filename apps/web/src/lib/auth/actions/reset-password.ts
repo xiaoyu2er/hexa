@@ -1,6 +1,6 @@
 "use server";
 
-import { db, userTable } from "@/db";
+import { db, userTable } from "@/lib/db";
 import {
   ForgetPasswordSchema,
   ResetPasswordSchema,

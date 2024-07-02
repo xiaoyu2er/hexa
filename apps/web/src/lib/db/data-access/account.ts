@@ -1,5 +1,5 @@
 import { and, eq } from "drizzle-orm";
-import { db } from "../db";
+import { db } from "@/lib/db";
 import { UserModel, oauthAccountTable } from "../schema";
 import { GitHubUser, GoogleUser } from "@/types";
 

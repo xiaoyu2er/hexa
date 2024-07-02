@@ -1,6 +1,6 @@
 "use server";
 
-import { db } from "@/db";
+import { db } from "@/lib/db";
 import { LoginSchema } from "@/lib/zod/schemas/auth";
 import { redirect } from "next/navigation";
 import { ZSAError } from "zsa";
@@ -8,7 +8,7 @@ import { setSession } from "@/lib/session";
 import { isHashValid } from "@/lib/utils";
 import { turnstileProcedure } from "./turnstile";
 import { waitUntil } from "@vercel/functions";
-import { uploadUserProfile } from "@/db/use-cases/user";
+import { uploadUserProfile } from "@/lib/db/use-cases/user";
 
 export const loginAction = turnstileProcedure
   .createServerAction()

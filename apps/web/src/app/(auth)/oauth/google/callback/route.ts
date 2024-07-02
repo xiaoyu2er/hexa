@@ -4,11 +4,11 @@ import { google } from "@/lib/auth";
 import { setSession } from "@/lib/session";
 import { NextResponse } from "next/server";
 import { GoogleUser } from "@/types";
-import { getAccountByGoogleId } from "@/db/data-access/account";
+import { getAccountByGoogleId } from "@/lib/db/data-access/account";
 import {
   createUserByGoogleAccount,
   uploadUserProfile,
-} from "@/db/use-cases/user";
+} from "@/lib/db/use-cases/user";
 import { waitUntil } from "@vercel/functions";
 
 export async function GET(request: Request): Promise<Response> {
