@@ -52,13 +52,8 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
     setError,
     formState: { isSubmitting, errors },
     setFocus,
-    setValue,
-    watch,
   } = form;
-  const { resetTurnstile, turnstile } = useTurnstile<SignupForm>({
-    setError,
-    setValue,
-  });
+  const { resetTurnstile, turnstile, disableNext } = useTurnstile({ form });
   const { execute } = useServerAction(signupAction, {
     onError: ({ err }) => {
       console.error("sign-up", err);
@@ -159,7 +154,7 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
               className="w-full"
               type="submit"
               loading={isSubmitting}
-              disabled={!watch("cf-turnstile-response")}
+              disabled={disableNext}
             >
               Sign Up
             </LoadingButton>

@@ -53,13 +53,10 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
     setError,
     formState: { isSubmitting, errors },
     setFocus,
-    setValue,
-    watch,
   } = form;
 
-  const { resetTurnstile, turnstile } = useTurnstile<ForgetPasswordForm>({
-    setError,
-    setValue,
+  const { resetTurnstile, turnstile, disableNext } = useTurnstile({
+    form,
     errorField: "email",
   });
 
@@ -133,7 +130,7 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
               className="w-full"
               type="submit"
               loading={isSubmitting}
-              disabled={!watch("cf-turnstile-response")}
+              disabled={disableNext}
             >
               Reset Password
             </LoadingButton>

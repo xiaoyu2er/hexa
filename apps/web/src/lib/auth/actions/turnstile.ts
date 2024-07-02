@@ -15,32 +15,41 @@ import { TurnstileServerValidationResponse } from "@marsidev/react-turnstile";
 import { headers } from "next/headers";
 import { ZSAError, createServerActionProcedure } from "zsa";
 
-export const turnstileProcedure = createServerActionProcedure()
+export const emptyTurnstileProcedure = createServerActionProcedure()
   .input(TurnstileSchema)
-  .handler(async ({ input }) => {
-    const form = new URLSearchParams();
-    form.append("secret", process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY!);
-    form.append("response", input["cf-turnstile-response"]!);
-    form.append("remoteip", headers().get("x-forwarded-for") as string);
-
-    console.log("turnstile form", form.toString());
-
-    const result = await fetch(
-      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-      { method: "POST", body: form },
-    );
-    const verifyRes: TurnstileServerValidationResponse = await result.json();
-
-    console.log("turnstile response", verifyRes);
-
-    if (verifyRes.success === false) {
-      throw new ZSAError(
-        "FORBIDDEN",
-        process.env.NODE_ENV === "development"
-          ? "[dev][server-side] Cloudflare Turnstile failed - " +
-            verifyRes["error-codes"][0]
-          : "Only humans are allowed to login. Please try again.",
-      );
-    }
+  .handler(async () => {
     return {};
   });
+
+export const turnstileProcedure = process.env.DISABLE_CLOUDFLARE_TURNSTILE
+  ? emptyTurnstileProcedure
+  : createServerActionProcedure()
+      .input(TurnstileSchema)
+      .handler(async ({ input }) => {
+        const form = new URLSearchParams();
+        form.append("secret", process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY!);
+        form.append("response", input["cf-turnstile-response"]!);
+        form.append("remoteip", headers().get("x-forwarded-for") as string);
+
+        console.log("turnstile form", form.toString());
+
+        const result = await fetch(
+          "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+          { method: "POST", body: form },
+        );
+        const verifyRes: TurnstileServerValidationResponse =
+          await result.json();
+
+        console.log("turnstile response", verifyRes);
+
+        if (verifyRes.success === false) {
+          throw new ZSAError(
+            "FORBIDDEN",
+            process.env.NODE_ENV === "development"
+              ? "[dev][server-side] Cloudflare Turnstile failed - " +
+                verifyRes["error-codes"][0]
+              : "Only humans are allowed to login. Please try again.",
+          );
+        }
+        return {};
+      });
