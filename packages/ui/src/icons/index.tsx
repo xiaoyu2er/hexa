@@ -17,6 +17,7 @@ export {
   Menu,
   Package2,
   Search,
+  Settings,
 } from "lucide-react";
 
 export {
