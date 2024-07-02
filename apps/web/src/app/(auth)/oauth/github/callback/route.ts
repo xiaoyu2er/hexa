@@ -72,7 +72,7 @@ export async function GET(request: NextRequest) {
     await setSession(user.id);
     return new Response(null, {
       status: 302,
-      headers: { Location: "/" },
+      headers: { Location: "/settings" },
     });
   } catch (e) {
     console.error("/oauth/github/callback", e);
