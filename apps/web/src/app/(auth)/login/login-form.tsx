@@ -46,13 +46,10 @@ export function Login() {
     setError,
     formState: { isSubmitting, errors },
     setFocus,
-    setValue,
-    watch,
   } = form;
 
-  const { resetTurnstile, turnstile } = useTurnstile<LoginForm>({
-    setError,
-    setValue,
+  const { resetTurnstile, turnstile, disableNext } = useTurnstile({
+    form,
   });
 
   const { execute } = useServerAction(loginAction, {
@@ -161,7 +158,7 @@ export function Login() {
                 type="submit"
                 className="w-full"
                 loading={isSubmitting}
-                disabled={!watch("cf-turnstile-response")}
+                disabled={disableNext}
               >
                 Login
               </LoadingButton>

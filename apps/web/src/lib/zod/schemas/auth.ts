@@ -1,4 +1,4 @@
-import { MIN_PASSWORD_LENGTH } from "@/lib/const";
+import { DISABLE_CLOUDFLARE_TURNSTILE, MIN_PASSWORD_LENGTH } from "@/lib/const";
 import { z } from "zod";
 
 const email = z.string().email("Please enter a valid email");
@@ -19,7 +19,9 @@ const code = z
   })
   .max(6);
 
-const cfTurnstileResponse = z.string().min(1, "Please complete the challenge.");
+const cfTurnstileResponse = DISABLE_CLOUDFLARE_TURNSTILE
+  ? z.string().optional()
+  : z.string().min(1, "Please complete the challenge.");
 
 export const EmptySchema = z.object({});
 

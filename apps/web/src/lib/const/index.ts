@@ -32,3 +32,6 @@ export const PUBLIC_URL =
           ? process.env.VERCEL_PROJECT_PRODUCTION_URL
           : process.env.VERCEL_BRANCH_URL
       }`;
+
+export const DISABLE_CLOUDFLARE_TURNSTILE =
+  !process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY;
