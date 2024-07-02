@@ -1,6 +1,6 @@
 "use client";
 
-import { logoutAction } from "@/lib/auth/actions/logout";
+import { logoutAction } from "@/lib/actions/logout";
 import { DropdownMenuItem } from "@hexa/ui/dropdown-menu";
 import { Loader2Icon, LogOut } from "@hexa/ui/icons";
 import { useServerAction } from "zsa-react";

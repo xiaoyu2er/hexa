@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { loginAction } from "@/lib/auth/actions/login";
+import { loginAction } from "@/lib/actions/login";
 import {
   Form,
   FormControl,
