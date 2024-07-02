@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
-import { db } from "../db";
-import { UserModel, userTable } from "../schema";
+import { db } from "@/lib/db";
+import { UserModel, userTable } from "@/lib/db/schema";
 import { getHash } from "@/lib/utils";
 
 export async function getUserByEmail(email: string) {

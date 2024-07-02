@@ -1,6 +1,6 @@
 "use server";
 
-import { db, userTable } from "@/db";
+import { db, userTable } from "@/lib/db";
 import {
   SignupSchema,
   OTPSchema,
@@ -15,7 +15,7 @@ import {
   resendVerifyTokenEmail,
   verifyDBTokenByCode,
 } from "./utils";
-import { createUser, getUserByEmail } from "@/db/data-access/user";
+import { createUser, getUserByEmail } from "@/lib/db/data-access/user";
 import { getHash } from "@/lib/utils";
 import { invalidateUserSessions, setSession } from "@/lib/session";
 import { turnstileProcedure } from "./turnstile";

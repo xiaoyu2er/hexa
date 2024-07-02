@@ -1,8 +1,8 @@
 import { generateIdFromEntropySize, Scrypt, User } from "lucia";
 import { createDate, isWithinExpirationDate } from "oslo";
 
-import { db } from "@/db";
-import { tokenTable, TokenType } from "@/db/schema";
+import { db } from "@/lib/db";
+import { tokenTable, TokenType } from "@/lib/db/schema";
 import { and, eq } from "drizzle-orm";
 import { alphabet, generateRandomString } from "oslo/crypto";
 

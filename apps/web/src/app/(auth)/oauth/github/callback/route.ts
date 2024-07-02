@@ -2,12 +2,12 @@ import { cookies } from "next/headers";
 import { OAuth2RequestError } from "arctic";
 import { github } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
-import { getAccountByGithubId } from "@/db/data-access/account";
+import { getAccountByGithubId } from "@/lib/db/data-access/account";
 import { GitHubEmail, GitHubUser } from "@/types";
 import {
   createUserByGithubAccount,
   uploadUserProfile,
-} from "@/db/use-cases/user";
+} from "@/lib/db/use-cases/user";
 import { setSession } from "@/lib/session";
 import { waitUntil } from "@vercel/functions";
 export async function GET(request: NextRequest) {
