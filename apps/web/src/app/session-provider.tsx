@@ -31,5 +31,5 @@ export const useSession = () => {
     throw new Error("useSession must be used within a SessionProvider");
   }
 
-  return sessionContext;
+  return sessionContext as { user: User; session: Session };
 };

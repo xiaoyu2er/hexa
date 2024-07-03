@@ -22,6 +22,8 @@ export {
   Settings,
   Loader2,
   UploadCloud,
+  Copy,
+  Check,
 } from "lucide-react";
 
 // https://www.radix-ui.com/icons
