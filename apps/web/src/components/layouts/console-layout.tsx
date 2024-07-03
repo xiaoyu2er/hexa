@@ -39,7 +39,7 @@ export function ConsoleLayout({ children }: { children: ReactNode }) {
                 key={navbar.name}
                 href={navbar.href}
                 className={`${
-                  pathname === navbar.href
+                  pathname.startsWith(navbar.href)
                     ? "text-foreground"
                     : "text-muted-foreground"
                 } transition-colors hover:text-foreground`}
