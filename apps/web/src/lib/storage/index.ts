@@ -61,7 +61,15 @@ class StorageClient {
     }
   }
 
-  async delete(key: string) {
+  async delete(url: string) {
+    if (!url.startsWith(process.env.STORAGE_BASE_URL!)) {
+      return {
+        success: false,
+        message: `Url not stored on ${process.env.STORAGE_BASE_URL!}`,
+      };
+    }
+    const key = url.replace(process.env.STORAGE_BASE_URL! + "/", "");
+
     await this.client.fetch(`${process.env.STORAGE_ENDPOINT!}/${key}`, {
       method: "DELETE",
     });
