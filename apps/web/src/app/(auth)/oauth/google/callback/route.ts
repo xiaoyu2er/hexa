@@ -5,10 +5,7 @@ import { setSession } from "@/lib/session";
 import { NextResponse } from "next/server";
 import { GoogleUser } from "@/types";
 import { getAccountByGoogleId } from "@/lib/db/data-access/account";
-import {
-  createUserByGoogleAccount,
-  uploadUserProfile,
-} from "@/lib/db/use-cases/user";
+import { createUserByGoogleAccount } from "@/lib/db/use-cases/user";
 import { waitUntil } from "@vercel/functions";
 
 export async function GET(request: Request): Promise<Response> {
@@ -59,7 +56,6 @@ export async function GET(request: Request): Promise<Response> {
     }
 
     const user = await createUserByGoogleAccount(googleUser);
-    waitUntil(uploadUserProfile(user.id, user.avatarUrl));
     await setSession(user.id);
     return new Response(null, {
       status: 302,
