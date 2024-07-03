@@ -44,3 +44,7 @@ export async function updateUserProfile(uid: string, imageUrl: string) {
 export async function updateUserName(uid: string, name: string) {
   await db.update(userTable).set({ name }).where(eq(userTable.id, uid));
 }
+
+export async function updateUserAvatar(uid: string, avatarUrl: string) {
+  await db.update(userTable).set({ avatarUrl }).where(eq(userTable.id, uid));
+}
