@@ -75,7 +75,7 @@ export function EditUserName() {
           <CardHeader>
             <CardTitle>Your Name</CardTitle>
             <CardDescription>
-              This will be your display name on Hexa.
+              This will be your display name on {process.env.NEXT_PUBLIC_APP_NAME}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -93,9 +93,10 @@ export function EditUserName() {
               )}
             />
           </CardContent>
-          <CardFooter className="border-t px-6 py-4">
+          <CardFooter className="border-t px-6 py-4 items-center flex-row-reverse justify-between">
             <LoadingButton
               type="submit"
+              className="shrink-0"
               loading={isSubmitting}
               disabled={!isDirty}
             >

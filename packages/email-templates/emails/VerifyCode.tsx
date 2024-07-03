@@ -33,7 +33,7 @@ export default function VerifyCodeTemplate({
               Verify your code
             </Heading>
             <Text className="text-sm leading-6 text-black">
-              Welcome to Hexa.im!
+              Welcome to {process.env.NEXT_PUBLIC_APP_NAME}
             </Text>
 
             <Text className="text-sm leading-6 text-black">
