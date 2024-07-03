@@ -1,6 +1,6 @@
 import { EditUserName } from "@/components/settings/edit-user-name";
 
-export default function () {
+export default async function () {
   return (
     <>
       <EditUserName />

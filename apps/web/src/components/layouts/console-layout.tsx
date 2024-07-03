@@ -31,7 +31,6 @@ const CONSOLE_NAVBARS = [
 export function ConsoleLayout({ children }: { children: ReactNode }) {
   const { user } = useSession();
   const pathname = usePathname();
-  console.log("pathname", pathname);
   const { execute: execLogout, isPending } = useServerAction(logoutAction);
   return (
     <div className="flex min-h-screen w-full flex-col">

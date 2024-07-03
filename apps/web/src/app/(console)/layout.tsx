@@ -1,15 +1,6 @@
-import { validateRequest } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import type { ReactNode } from "react";
 import { ConsoleLayout } from "@/components/layouts/console-layout";
+import type { ReactNode } from "react";
 
-export default async function DashLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
-  const { user } = await validateRequest();
-  if (!user) redirect("/login");
-
+export default function DashLayout({ children }: { children: ReactNode }) {
   return <ConsoleLayout>{children}</ConsoleLayout>;
 }
