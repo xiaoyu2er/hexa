@@ -9,7 +9,7 @@ import { Sheet, SheetTrigger, SheetContent } from "@hexa/ui/sheet";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
-import { UserAvatar } from "../user-avatar";
+import { UserAccountNav } from "@/components/user-account-nav";
 
 const CONSOLE_NAVBARS = [
   {
@@ -97,7 +97,7 @@ export function ConsoleLayout({ children }: { children: ReactNode }) {
               </div>
             </form>
             <ModeToggle />
-            <UserAvatar user={user} />
+            <UserAccountNav user={user} />
           </div>
         </div>
       </header>
