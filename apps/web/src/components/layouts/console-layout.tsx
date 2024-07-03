@@ -3,7 +3,7 @@
 import { useSession } from "@/app/session-provider";
 import { ModeToggle } from "@/components/header/mode-toggle";
 import { logoutAction } from "@/lib/actions/logout";
-import { getAvatarFallbackName } from "@/lib/user";
+import { getAvatarFallbackName, getAvatarFallbackUrl } from "@/lib/user";
 import { Avatar, AvatarFallback, AvatarImage } from "@hexa/ui/avatar";
 import { Button } from "@hexa/ui/button";
 import {
@@ -117,7 +117,15 @@ export function ConsoleLayout({ children }: { children: ReactNode }) {
                     alt={user?.name || "User Profile Picture"}
                   />
                   <AvatarFallback>
-                    {getAvatarFallbackName(user?.name)}
+                    <Avatar>
+                      <AvatarImage
+                        src={getAvatarFallbackUrl(user)}
+                        alt={user?.name || "User Profile Picture"}
+                      />
+                      <AvatarFallback>
+                        {getAvatarFallbackName(user)}
+                      </AvatarFallback>
+                    </Avatar>
                   </AvatarFallback>
                 </Avatar>
                 <span className="sr-only">Toggle user menu</span>
