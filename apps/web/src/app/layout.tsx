@@ -6,6 +6,7 @@ import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { SessionProvider } from "./session-provider";
 import { validateRequest } from "@/lib/auth";
+import { TailwindIndicator } from "@/components/tailwind-indicator";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -40,6 +41,7 @@ export default async function RootLayout({
           <SessionProvider value={session}>{children}</SessionProvider>
         </ThemeProvider>
         <Toaster richColors />
+        <TailwindIndicator />
       </body>
     </html>
   );
