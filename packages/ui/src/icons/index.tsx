@@ -1,6 +1,8 @@
 export { AnimatedSpinner } from "./animated-spinner";
 export { GoogleIcon } from "./google-icon";
 export { GithubIcon } from "./github-icon";
+
+// https://lucide.dev/icons/
 export {
   PencilLine,
   BookIcon,
@@ -18,8 +20,11 @@ export {
   Package2,
   Search,
   Settings,
+  Loader2,
+  UploadCloud,
 } from "lucide-react";
 
+// https://www.radix-ui.com/icons
 export {
   EyeOpenIcon,
   EyeNoneIcon as EyeCloseIcon,
