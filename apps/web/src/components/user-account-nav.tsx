@@ -15,7 +15,7 @@ import { User } from "lucia";
 import Link from "next/link";
 import { useServerAction } from "zsa-react";
 
-export function UserAvatar({ user }: { user: User }) {
+export function UserAccountNav({ user }: { user: User }) {
   const { execute: execLogout, isPending } = useServerAction(logoutAction);
 
   return (
