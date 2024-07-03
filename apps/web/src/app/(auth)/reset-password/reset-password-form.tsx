@@ -2,7 +2,6 @@
 
 import { resetPasswordAction } from "@/lib/actions/reset-password";
 import {
-  ForgetPasswordForm,
   ResetPasswordForm,
   ResetPasswordSchema,
 } from "@/lib/zod/schemas/auth";

@@ -22,7 +22,7 @@ export function ConsoleLayout({ children }: { children: ReactNode }) {
   const { user } = useSession();
   const pathname = usePathname();
   return (
-    <div className="flex min-h-screen flex-col space-y-6">
+    <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
         <div className="container flex h-16 items-center justify-between py-4">
           <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">

@@ -16,7 +16,6 @@ import { isStored, storage } from "../storage";
 import { generateId } from "../utils";
 import { waitUntil } from "@vercel/functions";
 import {
-  invalidateSession,
   invalidateUserSessions,
   setBlankSessionCookie,
 } from "../session";

@@ -6,7 +6,6 @@ import { NextResponse } from "next/server";
 import { GoogleUser } from "@/types";
 import { getAccountByGoogleId } from "@/lib/db/data-access/account";
 import { createUserByGoogleAccount } from "@/lib/db/use-cases/user";
-import { waitUntil } from "@vercel/functions";
 
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);

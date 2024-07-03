@@ -2,13 +2,11 @@ import { GitHubUser, GoogleUser } from "@/types";
 import {
   createUser,
   getUserByEmail,
-  updateUserProfile,
 } from "../data-access/user";
 import {
   createGithubAccount,
   createGoogleAccount,
 } from "../data-access/account";
-import { isStored, storage } from "@/lib/storage";
 
 export async function createUserByGithubAccount(githubUser: GitHubUser) {
   let existingUser = await getUserByEmail(githubUser.email);

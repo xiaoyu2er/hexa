@@ -37,7 +37,7 @@ export default function UploadAvatar() {
   const {
     handleSubmit,
     setError,
-    formState: { isSubmitting, isDirty },
+    formState: { isSubmitting },
     reset,
   } = form;
 
@@ -52,7 +52,7 @@ export default function UploadAvatar() {
   });
 
   const [avatarUrl, setAvatarUrl] = useState<string | null | undefined>(
-    user?.avatarUrl,
+    user?.avatarUrl
   );
 
   useEffect(() => {
