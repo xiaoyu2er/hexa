@@ -25,8 +25,6 @@ export const getUserByEmailProcedure = createServerActionProcedure()
 
 export const authenticatedProcedure = createServerActionProcedure().handler(
   async () => {
-    return {
-      user: await assertAuthenticated(),
-    };
+    return await assertAuthenticated();
   },
 );

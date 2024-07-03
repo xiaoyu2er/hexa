@@ -43,12 +43,15 @@ export function setBlankSessionCookie() {
 }
 
 export const assertAuthenticated = async () => {
-  const { user } = await validateRequest();
+  const { user, session } = await validateRequest();
   if (!user) {
     throw new ZSAError(
       "FORBIDDEN",
       "You must be logged in to access this resource",
     );
   }
-  return user;
+  return {
+    user,
+    session,
+  };
 };
