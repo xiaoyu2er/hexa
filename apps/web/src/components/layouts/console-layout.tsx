@@ -116,15 +116,12 @@ export function ConsoleLayout({ children }: { children: ReactNode }) {
                     src={user?.avatarUrl!}
                     alt={user?.name || "User Profile Picture"}
                   />
-                  <AvatarFallback>
+                  <AvatarFallback delayMs={200}>
                     <Avatar>
                       <AvatarImage
                         src={getAvatarFallbackUrl(user)}
-                        alt={user?.name || "User Profile Picture"}
+                        alt={user?.name || "User Fallback Profile Picture"}
                       />
-                      <AvatarFallback>
-                        {getAvatarFallbackName(user)}
-                      </AvatarFallback>
                     </Avatar>
                   </AvatarFallback>
                 </Avatar>
