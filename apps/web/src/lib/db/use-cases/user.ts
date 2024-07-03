@@ -48,12 +48,3 @@ export async function createUserByGoogleAccount(googleUser: GoogleUser) {
   await createGoogleAccount(existingUser.id, googleUser);
   return existingUser;
 }
-
-export async function uploadUserProfile(uid: string, imageUrl: string | null) {
-  if (imageUrl && !isStored(imageUrl)) {
-    console.log("uploadUserProfile", uid, imageUrl);
-    const { url } = await storage.upload(`avatars/${uid}`, imageUrl);
-    console.log("uploadUserProfile", url);
-    await updateUserProfile(uid, url);
-  }
-}

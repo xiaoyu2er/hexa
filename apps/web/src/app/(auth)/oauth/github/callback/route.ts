@@ -4,12 +4,8 @@ import { github } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { getAccountByGithubId } from "@/lib/db/data-access/account";
 import { GitHubEmail, GitHubUser } from "@/types";
-import {
-  createUserByGithubAccount,
-  uploadUserProfile,
-} from "@/lib/db/use-cases/user";
+import { createUserByGithubAccount } from "@/lib/db/use-cases/user";
 import { setSession } from "@/lib/session";
-import { waitUntil } from "@vercel/functions";
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
@@ -53,12 +49,6 @@ export async function GET(request: NextRequest) {
 
     if (existingAccount) {
       await setSession(existingAccount.userId);
-      waitUntil(
-        uploadUserProfile(
-          existingAccount.user.id,
-          existingAccount.user.avatarUrl,
-        ),
-      );
 
       return new Response(null, {
         status: 302,
@@ -67,7 +57,6 @@ export async function GET(request: NextRequest) {
     }
 
     const user = await createUserByGithubAccount(githubUser);
-    waitUntil(uploadUserProfile(user.id, user.avatarUrl));
 
     await setSession(user.id);
     return new Response(null, {
