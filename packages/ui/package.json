@@ -51,6 +51,7 @@
     "./toggle": "./src/ui/toggle.tsx",
     "./tooltip": "./src/ui/tooltip.tsx",
     "./divider": "./src/divider.tsx",
+    "./file-upload": "./src/file-upload.tsx",
     "./form-error-message": "./src/form-error-message.tsx",
     "./loading-button": "./src/loading-button.tsx",
     "./password-input": "./src/password-input.tsx",
