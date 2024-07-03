@@ -8,6 +8,7 @@ import { SessionProvider } from "./session-provider";
 import { validateRequest } from "@/lib/auth";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Analytics } from "@/components/analytics";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -29,7 +30,7 @@ export default async function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "bg-background font-sans antialiased h-screen",
+          "min-h-screen bg-background font-sans antialiased",
           fontSans.variable,
         )}
       >
@@ -44,6 +45,7 @@ export default async function RootLayout({
         <Toaster richColors />
         <TailwindIndicator />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
