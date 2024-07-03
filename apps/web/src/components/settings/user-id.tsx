@@ -20,7 +20,8 @@ export function UserId() {
       <CardHeader>
         <CardTitle>Your User ID</CardTitle>
         <CardDescription>
-        This is your unique account identifier on {process.env.NEXT_PUBLIC_APP_NAME}.
+          This is your unique account identifier on{" "}
+          {process.env.NEXT_PUBLIC_APP_NAME}.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex items-center">

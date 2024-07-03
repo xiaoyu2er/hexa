@@ -2,14 +2,25 @@
 
 import { authenticatedProcedure } from "./procedures";
 import {
+  DeleteAccountSchema,
   UpdateAvatarSchema,
   UpdateUserNameSchema,
 } from "@/lib/zod/schemas/user";
-import { updateUserAvatar, updateUserName } from "@/lib/db/data-access/user";
+import {
+  deleteUser,
+  updateUserAvatar,
+  updateUserName,
+} from "@/lib/db/data-access/user";
 import { revalidatePath } from "next/cache";
 import { isStored, storage } from "../storage";
 import { generateId } from "../utils";
 import { waitUntil } from "@vercel/functions";
+import {
+  invalidateSession,
+  invalidateUserSessions,
+  setBlankSessionCookie,
+} from "../session";
+import { redirect } from "next/navigation";
 
 export const updateUserNameAction = authenticatedProcedure
   .createServerAction()
@@ -37,4 +48,15 @@ export const updateUserAvatarAction = authenticatedProcedure
       })(),
     );
     revalidatePath("/");
+  });
+
+export const deleteAccountAction = authenticatedProcedure
+  .createServerAction()
+  .input(DeleteAccountSchema)
+  .handler(async ({ ctx }) => {
+    const { user } = ctx;
+    await deleteUser(user.id);
+    await invalidateUserSessions(user.id);
+    setBlankSessionCookie();
+    return redirect("/");
   });
