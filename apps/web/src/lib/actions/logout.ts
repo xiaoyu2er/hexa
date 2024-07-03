@@ -5,7 +5,7 @@ import { ZSAError } from "zsa";
 import { validateRequest } from "@/lib/auth/validate-request";
 import { EmptySchema } from "@/lib/zod/schemas/auth";
 import { invalidateSession, setBlankSessionCookie } from "@/lib/session";
-import { authenticatedProcedure } from "./auth";
+import { authenticatedProcedure } from "./procedures";
 
 export const logoutAction = authenticatedProcedure
   .createServerAction()

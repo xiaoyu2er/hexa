@@ -1,23 +1,16 @@
-import { db } from "@/lib/db";
-import { OnlyEmailSchema } from "@/lib/zod/schemas/auth";
-import { ZSAError, createServerActionProcedure } from "zsa";
+"use server";
 
-export const getUserByEmailProcedure = createServerActionProcedure()
-  .input(OnlyEmailSchema)
-  .handler(async ({ input }) => {
-    const { email } = input;
-    const user = await db.query.userTable.findFirst({
-      where: (table, { eq }) => eq(table.email, email),
-    });
-    if (!user) {
-      throw new ZSAError(
-        "NOT_FOUND",
-        process.env.NODE_ENV === "development"
-          ? "[dev] User not found by email: " + email
-          : "Email not found",
-      );
-    }
-    return {
-      user,
-    };
+import { authenticatedProcedure } from "./procedures";
+import { UpdateUserNameSchema } from "../zod/schemas/user";
+import { updateUserName } from "../db/data-access/user";
+import { revalidatePath } from "next/cache";
+
+export const updateUserNameAction = authenticatedProcedure
+  .createServerAction()
+  .input(UpdateUserNameSchema)
+  .handler(async ({ input, ctx }) => {
+    const { name } = input;
+    const { user } = ctx;
+    await updateUserName(user.id, name);
+    revalidatePath("/");
   });

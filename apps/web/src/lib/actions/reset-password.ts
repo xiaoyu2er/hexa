@@ -18,7 +18,7 @@ import { redirect } from "next/navigation";
 import { invalidateUserSessions, setSession } from "@/lib/session";
 import { getHash } from "@/lib/utils";
 import { turnstileProcedure } from "./turnstile";
-import { getUserByEmailProcedure } from "./user";
+import { getUserByEmailProcedure } from "./procedures";
 
 export const forgetPasswordAction = chainServerActionProcedures(
   turnstileProcedure,
