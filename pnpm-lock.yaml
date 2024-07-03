@@ -40,7 +40,10 @@ importers:
         version: 1.0.7(lucia@3.2.0)
       '@marsidev/react-turnstile':
         specifier: ^0.7.1
-        version: 0.7.1(react-dom@19.0.0-rc-f994737d14-20240522)(react@19.0.0-rc-f994737d14-20240522)
+        version: 0.7.1(react-dom@19.0.0-rc-f994737d14-20240522)(react@18.3.1)
+      '@vercel/analytics':
+        specifier: ^1.3.1
+        version: 1.3.1(next@15.0.0-rc.0)(react@18.3.1)
       '@vercel/functions':
         specifier: ^1.0.2
         version: 1.0.2
@@ -55,7 +58,7 @@ importers:
         version: 3.6.0
       drizzle-orm:
         specifier: ^0.31.2
-        version: 0.31.2(@types/pg@8.11.6)(@types/react@18.2.61)(pg@8.12.0)(postgres@3.4.4)(react@19.0.0-rc-f994737d14-20240522)
+        version: 0.31.2(@types/pg@8.11.6)(@types/react@18.2.61)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -64,13 +67,13 @@ importers:
         version: 3.2.0
       next:
         specifier: 15.0.0-rc.0
-        version: 15.0.0-rc.0(react-dom@19.0.0-rc-f994737d14-20240522)(react@19.0.0-rc-f994737d14-20240522)
+        version: 15.0.0-rc.0(react-dom@19.0.0-rc-f994737d14-20240522)(react@18.3.1)
       next-safe-action:
         specifier: ^7.1.3
-        version: 7.1.3(next@15.0.0-rc.0)(react-dom@19.0.0-rc-f994737d14-20240522)(react@19.0.0-rc-f994737d14-20240522)(zod@3.23.8)
+        version: 7.1.3(next@15.0.0-rc.0)(react-dom@19.0.0-rc-f994737d14-20240522)(react@18.3.1)(zod@3.23.8)
       next-themes:
         specifier: ^0.3.0
-        version: 0.3.0(react-dom@19.0.0-rc-f994737d14-20240522)(react@19.0.0-rc-f994737d14-20240522)
+        version: 0.3.0(react-dom@19.0.0-rc-f994737d14-20240522)(react@18.3.1)
       oslo:
         specifier: ^1.2.0
         version: 1.2.0
@@ -82,19 +85,19 @@ importers:
         version: 3.4.4
       react:
         specifier: 19.0.0-rc-f994737d14-20240522
-        version: 19.0.0-rc-f994737d14-20240522
+        version: 18.3.1
       react-dom:
         specifier: 19.0.0-rc-f994737d14-20240522
-        version: 19.0.0-rc-f994737d14-20240522(react@19.0.0-rc-f994737d14-20240522)
+        version: 19.0.0-rc-f994737d14-20240522(react@18.3.1)
       react-hook-form:
         specifier: ^7.52.0
-        version: 7.52.0(react@19.0.0-rc-f994737d14-20240522)
+        version: 7.52.0(react@18.3.1)
       resend:
         specifier: ^3.3.0
         version: 3.3.0
       usehooks-ts:
         specifier: ^3.1.0
-        version: 3.1.0(react@19.0.0-rc-f994737d14-20240522)
+        version: 3.1.0(react@18.3.1)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -2048,7 +2051,7 @@ packages:
     peerDependencies:
       react-hook-form: ^7.0.0
     dependencies:
-      react-hook-form: 7.52.0(react@19.0.0-rc-f994737d14-20240522)
+      react-hook-form: 7.52.0(react@18.3.1)
     dev: false
 
   /@humanwhocodes/config-array@0.11.14:
@@ -2335,14 +2338,14 @@ packages:
       lucia: 3.2.0
     dev: false
 
-  /@marsidev/react-turnstile@0.7.1(react-dom@19.0.0-rc-f994737d14-20240522)(react@19.0.0-rc-f994737d14-20240522):
+  /@marsidev/react-turnstile@0.7.1(react-dom@19.0.0-rc-f994737d14-20240522)(react@18.3.1):
     resolution: {integrity: sha512-SGa0cweJ2mP1RRi9oJJrlPpZHvlklLqu8tlXDLEbsQ/WExM8Ng9cr9439lZcnu8+tfeVpQIe8qFB1UU5uE+KlQ==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
-      react: 19.0.0-rc-f994737d14-20240522
-      react-dom: 19.0.0-rc-f994737d14-20240522(react@19.0.0-rc-f994737d14-20240522)
+      react: 18.3.1
+      react-dom: 19.0.0-rc-f994737d14-20240522(react@18.3.1)
     dev: false
 
   /@microsoft/tsdoc-config@0.16.2:
@@ -6036,6 +6039,22 @@ packages:
   /@ungap/structured-clone@1.2.0:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
 
+  /@vercel/analytics@1.3.1(next@15.0.0-rc.0)(react@18.3.1):
+    resolution: {integrity: sha512-xhSlYgAuJ6Q4WQGkzYTLmXwhYl39sWjoMA3nHxfkvG+WdBT25c563a7QhwwKivEOZtPJXifYHR1m2ihoisbWyA==}
+    peerDependencies:
+      next: '>= 13'
+      react: ^18 || ^19
+    peerDependenciesMeta:
+      next:
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      next: 15.0.0-rc.0(react-dom@19.0.0-rc-f994737d14-20240522)(react@18.3.1)
+      react: 18.3.1
+      server-only: 0.0.1
+    dev: false
+
   /@vercel/functions@1.0.2:
     resolution: {integrity: sha512-j3udyHOv/05Y8o3WQ/ANMWa1aYagsY5B3ouImiwgYsz5z4CBUHTY5dk74oQAXYr+bgoVDpdDlmxkpnxGzKEdLQ==}
     engines: {node: '>= 16'}
@@ -7160,7 +7179,7 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.31.2(@types/pg@8.11.6)(@types/react@18.2.61)(pg@8.12.0)(postgres@3.4.4)(react@19.0.0-rc-f994737d14-20240522):
+  /drizzle-orm@0.31.2(@types/pg@8.11.6)(@types/react@18.2.61)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1):
     resolution: {integrity: sha512-QnenevbnnAzmbNzQwbhklvIYrDE8YER8K7kSrAWQSV1YvFCdSQPzj+jzqRdTSsV2cDqSpQ0NXGyL1G9I43LDLg==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
@@ -7247,7 +7266,7 @@ packages:
       '@types/react': 18.2.61
       pg: 8.12.0
       postgres: 3.4.4
-      react: 19.0.0-rc-f994737d14-20240522
+      react: 18.3.1
     dev: false
 
   /eastasianwidth@0.2.0:
@@ -9464,7 +9483,7 @@ packages:
     engines: {node: '>= 0.4.0'}
     dev: true
 
-  /next-safe-action@7.1.3(next@15.0.0-rc.0)(react-dom@19.0.0-rc-f994737d14-20240522)(react@19.0.0-rc-f994737d14-20240522)(zod@3.23.8):
+  /next-safe-action@7.1.3(next@15.0.0-rc.0)(react-dom@19.0.0-rc-f994737d14-20240522)(react@18.3.1)(zod@3.23.8):
     resolution: {integrity: sha512-WWqgoExw2BjiVzTZPryW+rIMRhcrnEhvnKmofCDTNfDD6pmAYXk3f8tM199iTuKGYEHrJDtffs3fggQZlPuMzQ==}
     engines: {node: '>=18.17'}
     peerDependencies:
@@ -9478,9 +9497,9 @@ packages:
     dependencies:
       '@typeschema/main': 0.13.10(@typeschema/zod@0.13.3)
       '@typeschema/zod': 0.13.3(zod@3.23.8)
-      next: 15.0.0-rc.0(react-dom@19.0.0-rc-f994737d14-20240522)(react@19.0.0-rc-f994737d14-20240522)
-      react: 19.0.0-rc-f994737d14-20240522
-      react-dom: 19.0.0-rc-f994737d14-20240522(react@19.0.0-rc-f994737d14-20240522)
+      next: 15.0.0-rc.0(react-dom@19.0.0-rc-f994737d14-20240522)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 19.0.0-rc-f994737d14-20240522(react@18.3.1)
       zod: 3.23.8
     transitivePeerDependencies:
       - '@types/json-schema'
@@ -9515,14 +9534,14 @@ packages:
       react-dom: 18.3.1(react@18.2.0)
     dev: false
 
-  /next-themes@0.3.0(react-dom@19.0.0-rc-f994737d14-20240522)(react@19.0.0-rc-f994737d14-20240522):
+  /next-themes@0.3.0(react-dom@19.0.0-rc-f994737d14-20240522)(react@18.3.1):
     resolution: {integrity: sha512-/QHIrsYpd6Kfk7xakK4svpDI5mmXP0gfvCoJdGpZQ2TOrQZmsW0QxjaiLn8wbIKjtm4BTSqLoix4lxYYOnLJ/w==}
     peerDependencies:
       react: ^16.8 || ^17 || ^18
       react-dom: ^16.8 || ^17 || ^18
     dependencies:
-      react: 19.0.0-rc-f994737d14-20240522
-      react-dom: 19.0.0-rc-f994737d14-20240522(react@19.0.0-rc-f994737d14-20240522)
+      react: 18.3.1
+      react-dom: 19.0.0-rc-f994737d14-20240522(react@18.3.1)
     dev: false
 
   /next@14.1.4(@babel/core@7.24.5)(react-dom@18.3.1)(react@18.3.1):
@@ -9610,7 +9629,7 @@ packages:
       - babel-plugin-macros
     dev: false
 
-  /next@15.0.0-rc.0(react-dom@19.0.0-rc-f994737d14-20240522)(react@19.0.0-rc-f994737d14-20240522):
+  /next@15.0.0-rc.0(react-dom@19.0.0-rc-f994737d14-20240522)(react@18.3.1):
     resolution: {integrity: sha512-IWcCvxUSCAuOK5gig4+9yiyt/dLKpIa+WT01Qcx4CBE4TtwJljyTDnCVVn64jDZ4qmSzsaEYXpb4DTI8qbk03A==}
     engines: {node: '>=18.17.0'}
     hasBin: true
@@ -9637,9 +9656,9 @@ packages:
       caniuse-lite: 1.0.30001593
       graceful-fs: 4.2.11
       postcss: 8.4.31
-      react: 19.0.0-rc-f994737d14-20240522
-      react-dom: 19.0.0-rc-f994737d14-20240522(react@19.0.0-rc-f994737d14-20240522)
-      styled-jsx: 5.1.3(react@19.0.0-rc-f994737d14-20240522)
+      react: 18.3.1
+      react-dom: 19.0.0-rc-f994737d14-20240522(react@18.3.1)
+      styled-jsx: 5.1.3(react@18.3.1)
     optionalDependencies:
       '@next/swc-darwin-arm64': 15.0.0-rc.0
       '@next/swc-darwin-x64': 15.0.0-rc.0
@@ -10394,12 +10413,12 @@ packages:
       scheduler: 0.23.2
     dev: false
 
-  /react-dom@19.0.0-rc-f994737d14-20240522(react@19.0.0-rc-f994737d14-20240522):
+  /react-dom@19.0.0-rc-f994737d14-20240522(react@18.3.1):
     resolution: {integrity: sha512-J4CsfTSptPKkhaPbaR6n/KohQiHZTrRZ8GL4H8rbAqN/Qpy69g2MIoLBr5/PUX21ye6JxC1ZRWJFna7Xdg1pdA==}
     peerDependencies:
       react: 19.0.0-rc-f994737d14-20240522
     dependencies:
-      react: 19.0.0-rc-f994737d14-20240522
+      react: 18.3.1
       scheduler: 0.25.0-rc-f994737d14-20240522
     dev: false
 
@@ -10472,13 +10491,13 @@ packages:
       react: 18.2.0
     dev: false
 
-  /react-hook-form@7.52.0(react@19.0.0-rc-f994737d14-20240522):
+  /react-hook-form@7.52.0(react@18.3.1):
     resolution: {integrity: sha512-mJX506Xc6mirzLsmXUJyqlAI3Kj9Ph2RhplYhUVffeOQSnubK2uVqBFOBJmvKikvbFV91pxVXmDiR+QMF19x6A==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
     dependencies:
-      react: 19.0.0-rc-f994737d14-20240522
+      react: 18.3.1
     dev: false
 
   /react-is@16.13.1:
@@ -10636,11 +10655,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
-    dev: false
-
-  /react@19.0.0-rc-f994737d14-20240522:
-    resolution: {integrity: sha512-SeU2v5Xy6FotVhKz0pMS2gvYP7HlkF0qgTskj3JzA1vlxcb3dQjxlm9t0ZlJqcgoyI3VFAw7bomuDMdgy1nBuw==}
-    engines: {node: '>=0.10.0'}
     dev: false
 
   /read-cache@1.0.0:
@@ -10939,6 +10953,10 @@ packages:
     resolution: {integrity: sha512-Saa1xPByTTq2gdeFZYLLo+RFE35NHZkAbqZeWNd3BpzppeVisAqpDjcp8dyf6uIvEqJRd46jemmyA4iFIeVk8g==}
     dependencies:
       randombytes: 2.1.0
+    dev: false
+
+  /server-only@0.0.1:
+    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
     dev: false
 
   /set-function-length@1.1.1:
@@ -11365,7 +11383,7 @@ packages:
       react: 18.2.0
     dev: false
 
-  /styled-jsx@5.1.3(react@19.0.0-rc-f994737d14-20240522):
+  /styled-jsx@5.1.3(react@18.3.1):
     resolution: {integrity: sha512-qLRShOWTE/Mf6Bvl72kFeKBl8N2Eq9WIFfoAuvbtP/6tqlnj1SCjv117n2MIjOPpa1jTorYqLJgsHKy5Y3ziww==}
     engines: {node: '>= 12.0.0'}
     peerDependencies:
@@ -11379,7 +11397,7 @@ packages:
         optional: true
     dependencies:
       client-only: 0.0.1
-      react: 19.0.0-rc-f994737d14-20240522
+      react: 18.3.1
     dev: false
 
   /sucrase@3.35.0:
@@ -12066,14 +12084,14 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /usehooks-ts@3.1.0(react@19.0.0-rc-f994737d14-20240522):
+  /usehooks-ts@3.1.0(react@18.3.1):
     resolution: {integrity: sha512-bBIa7yUyPhE1BCc0GmR96VU/15l/9gP1Ch5mYdLcFBaFGQsdmXkvjV0TtOqW1yUd6VjIwDunm+flSciCQXujiw==}
     engines: {node: '>=16.15.0'}
     peerDependencies:
       react: ^16.8.0  || ^17 || ^18
     dependencies:
       lodash.debounce: 4.0.8
-      react: 19.0.0-rc-f994737d14-20240522
+      react: 18.3.1
     dev: false
 
   /util-deprecate@1.0.2:

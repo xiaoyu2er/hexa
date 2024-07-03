@@ -7,6 +7,7 @@ import { ThemeProvider } from "next-themes";
 import { SessionProvider } from "./session-provider";
 import { validateRequest } from "@/lib/auth";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
+import { Analytics } from "@/components/analytics";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -42,6 +43,7 @@ export default async function RootLayout({
         </ThemeProvider>
         <Toaster richColors />
         <TailwindIndicator />
+        <Analytics />
       </body>
     </html>
   );
