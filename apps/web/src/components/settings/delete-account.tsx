@@ -52,7 +52,7 @@ export function DeleteAccount() {
     formState: { isSubmitting, errors },
   } = form;
 
-  const { execute, isPending } = useServerAction(deleteAccountAction, {
+  const { execute } = useServerAction(deleteAccountAction, {
     onError: ({ err }) => {
       if (err.code === "INPUT_PARSE_ERROR") {
         Object.entries(err.fieldErrors).forEach(([field, message]) => {

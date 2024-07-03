@@ -13,8 +13,7 @@ export const ResetPassword: FC<ResetPasswordProps> = () => {
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
   const router = useRouter();
-  const [currentStep, { goToNextStep, goToPrevStep, reset, setStep }] =
-    useStep(3);
+  const [currentStep, { goToNextStep, reset }] = useStep(3);
 
   const onCancel = () => {
     setToken("");
