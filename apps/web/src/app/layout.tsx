@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
-import { Toaster } from "@hexa/ui/toaster";
+import { Toaster } from "@hexa/ui/sonner";
 import { cn } from "@hexa/utils";
 import "./globals.css";
-import { SessionProvider } from "./session-provider";
 import { ThemeProvider } from "next-themes";
+import { SessionProvider } from "./session-provider";
 import { validateRequest } from "@/lib/auth";
 
 const fontSans = FontSans({
@@ -28,7 +28,7 @@ export default async function RootLayout({
       <body
         className={cn(
           "bg-background font-sans antialiased h-screen",
-          fontSans.variable
+          fontSans.variable,
         )}
       >
         <ThemeProvider
@@ -39,7 +39,7 @@ export default async function RootLayout({
         >
           <SessionProvider value={session}>{children}</SessionProvider>
         </ThemeProvider>
-        <Toaster />
+        <Toaster richColors />
       </body>
     </html>
   );
