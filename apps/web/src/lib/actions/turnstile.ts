@@ -14,6 +14,7 @@ import { TurnstileSchema } from "@/lib/zod/schemas/auth";
 import { TurnstileServerValidationResponse } from "@marsidev/react-turnstile";
 import { headers } from "next/headers";
 import { ZSAError, createServerActionProcedure } from "zsa";
+import { DISABLE_CLOUDFLARE_TURNSTILE } from "../const";
 
 export const emptyTurnstileProcedure = createServerActionProcedure()
   .input(TurnstileSchema)
@@ -21,7 +22,7 @@ export const emptyTurnstileProcedure = createServerActionProcedure()
     return {};
   });
 
-export const turnstileProcedure = process.env.DISABLE_CLOUDFLARE_TURNSTILE
+export const turnstileProcedure = DISABLE_CLOUDFLARE_TURNSTILE
   ? emptyTurnstileProcedure
   : createServerActionProcedure()
       .input(TurnstileSchema)
