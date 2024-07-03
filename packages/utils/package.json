@@ -5,7 +5,8 @@
   "sideEffects": false,
   "private": true,
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./const": "./src/const.ts"
   },
   "scripts": {
     "lint": "eslint src/",
