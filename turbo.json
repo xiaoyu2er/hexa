@@ -3,6 +3,7 @@
   "globalDependencies": ["**/.env"],
   "globalEnv": [
     "__NEXT_PRIVATE_ORIGIN",
+    "NEXT_PUBLIC_APP_NAME",
     "VERCEL_ENV",
     "VERCEL_PROJECT_PRODUCTION_URL",
     "VERCEL_BRANCH_URL",
