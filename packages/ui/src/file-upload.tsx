@@ -132,7 +132,7 @@ export function FileUpload({
 
     const acceptedTypes = acceptFileTypes[accept].types;
 
-    if (acceptedTypes.length && !acceptedTypes.includes(file.type)) {
+    if (acceptedTypes.length && !acceptedTypes.includes(file.type as typeof acceptedTypes[number])) {
       toast.error(
         acceptFileTypes[accept].errorMessage ?? "File type not supported",
       );
