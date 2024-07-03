@@ -1,4 +1,9 @@
 import { z } from "zod";
+import {
+  ACCEPTED_IMAGE_TYPES,
+  MAX_PROFILE_FILE_SIZE,
+  MAX_PROFILE_FILE_SIZE_MB,
+} from "@hexa/utils/const";
 
 const name = z
   .string()
@@ -10,3 +15,22 @@ export const UpdateUserNameSchema = z.object({
 });
 
 export type UpdateUserNameInput = z.infer<typeof UpdateUserNameSchema>;
+
+// https://github.com/colinhacks/zod/issues/387#issuecomment-1191390673
+const avatarImage = z
+  .any()
+  .refine((file) => !!file, "Image is required.")
+  .refine(
+    (file) => file.size <= MAX_PROFILE_FILE_SIZE,
+    `Max file size is ${MAX_PROFILE_FILE_SIZE_MB}MB.`,
+  )
+  .refine(
+    (file) => ACCEPTED_IMAGE_TYPES.includes(file.type),
+    `${ACCEPTED_IMAGE_TYPES.map((t) => t.replace("image/", "")).join(", ")} files are accepted.`,
+  );
+
+export const UpdateAvatarSchema = z.object({
+  image: avatarImage,
+});
+
+export type UpdateAvatarInput = z.infer<typeof UpdateAvatarSchema>;
