@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@hexa/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -9,8 +10,8 @@ const SETTINGS_NAVBARS = [
     href: "/settings",
   },
   {
-    name: "Account",
-    href: "/settings/account",
+    name: "Security",
+    href: "/settings/security",
   },
 ];
 
@@ -23,19 +24,17 @@ export function SettingsLayout({ children }: { children: React.ReactNode }) {
         <h1 className="text-3xl font-semibold">Settings</h1>
       </div>
       <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
-        <nav
-          className="grid gap-4 text-sm text-muted-foreground"
-          x-chunk="dashboard-04-chunk-0"
-        >
+        <nav className="grid text-sm text-muted-foreground">
           {SETTINGS_NAVBARS.map((nav) => (
             <Link
               key={nav.name}
               href={nav.href}
-              className={`${
-                pathname === nav.href
-                  ? "text-primary font-semibold"
-                  : "text-muted-foreground"
-              }`}
+              className={cn(
+                "rounded-md p-2.5 text-sm transition-all duration-75 hover:bg-gray-100 active:bg-gray-200",
+                {
+                  "font-semibold text-black": nav.href === pathname,
+                }
+              )}
             >
               {nav.name}
             </Link>
