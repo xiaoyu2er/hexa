@@ -75,7 +75,8 @@ export function EditUserName() {
           <CardHeader>
             <CardTitle>Your Name</CardTitle>
             <CardDescription>
-              This will be your display name on {process.env.NEXT_PUBLIC_APP_NAME}
+              This will be your display name on{" "}
+              {process.env.NEXT_PUBLIC_APP_NAME}.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -86,7 +87,7 @@ export function EditUserName() {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} className="max-w-md" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -50,6 +50,7 @@
     "./toggle-group": "./src/ui/toggle-group.tsx",
     "./toggle": "./src/ui/toggle.tsx",
     "./tooltip": "./src/ui/tooltip.tsx",
+    "./copy-button": "./src/copy-button.tsx",
     "./divider": "./src/divider.tsx",
     "./file-upload": "./src/file-upload.tsx",
     "./form-error-message": "./src/form-error-message.tsx",
