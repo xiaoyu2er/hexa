@@ -1,7 +1,7 @@
 "use client";
 
 import { FileUpload } from "@hexa/ui/file-upload";
-import { useSession } from "@/app/session-provider";
+import { useSession } from "@/providers/session-provider";
 import { useEffect, useState } from "react";
 import { toast } from "@hexa/ui/sonner";
 import { getAvatarFallbackUrl } from "@/lib/user";

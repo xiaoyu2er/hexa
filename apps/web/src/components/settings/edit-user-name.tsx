@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "@/app/session-provider";
+import { useSession } from "@/providers/session-provider";
 import { updateUserNameAction } from "@/lib/actions/user";
 import {
   UpdateUserNameInput,
