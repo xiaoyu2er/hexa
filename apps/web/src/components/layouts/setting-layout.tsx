@@ -5,14 +5,18 @@ import { cn } from "@hexa/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const SETTINGS_NAVBARS = [
-  {
-    name: "General",
-    href: "/settings",
-  },
-];
+interface SettingsNavbar {
+  name: string;
+  href: string;
+}
 
-export function SettingsLayout({ children }: { children: React.ReactNode }) {
+export function SettingsLayout({
+  navbars,
+  children,
+}: {
+  navbars: SettingsNavbar[];
+  children: React.ReactNode;
+}) {
   const pathname = usePathname();
 
   return (
@@ -28,7 +32,7 @@ export function SettingsLayout({ children }: { children: React.ReactNode }) {
       <MaxWidth>
         <div className="py-6 lg:py-10 grid max-w-6xl items-start gap-6 md:grid-cols-[120px_1fr] lg:grid-cols-[180px_1fr]">
           <nav className="grid text-sm text-muted-foreground lg:sticky top-36">
-            {SETTINGS_NAVBARS.map((nav) => (
+            {navbars.map((nav) => (
               <Link
                 key={nav.name}
                 href={nav.href}
@@ -36,7 +40,7 @@ export function SettingsLayout({ children }: { children: React.ReactNode }) {
                   "rounded-md p-2.5 text-md transition-all duration-75 hover:bg-gray-100 active:bg-gray-200",
                   {
                     "font-extrabold": nav.href === pathname,
-                  },
+                  }
                 )}
               >
                 {nav.name}
