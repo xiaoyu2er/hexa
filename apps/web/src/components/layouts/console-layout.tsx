@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "@/app/session-provider";
+import { useSession } from "@/providers/session-provider";
 import { ModeToggle } from "@/components/header/mode-toggle";
 import { Button } from "@hexa/ui/button";
 import { Menu, Package2, Search } from "@hexa/ui/icons";

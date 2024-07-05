@@ -4,7 +4,7 @@ import { Toaster } from "@hexa/ui/sonner";
 import { cn } from "@hexa/utils";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
-import { SessionProvider } from "./session-provider";
+import { SessionProvider } from "../providers/session-provider";
 import { validateRequest } from "@/lib/auth";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Analytics } from "@/components/analytics";
@@ -25,7 +25,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await validateRequest();
+  
   return (
     <html lang="en">
       <body
@@ -40,7 +40,7 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SessionProvider value={session}>{children}</SessionProvider>
+          {children}
         </ThemeProvider>
         <Toaster richColors />
         <TailwindIndicator />
