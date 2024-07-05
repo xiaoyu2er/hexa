@@ -4,36 +4,17 @@ import { WorkspaceModel } from "@/lib/db";
 import { Card, CardHeader, CardDescription, CardContent } from "@hexa/ui/card";
 import { BarChart2Icon, GlobeIcon, Link2Icon } from "@hexa/ui/icons";
 import { Badge } from "@hexa/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@hexa/ui/avatar";
-import { useSession } from "@/providers/session-provider";
-import { getAvatarFallbackUrl } from "@/lib/user";
 import Link from "next/link";
+import { WorkspaceAvatar } from "./workspace-avatar";
 
-export function WorkspaceCard({
-  workspace: { name, slug },
-}: {
-  workspace: WorkspaceModel;
-}) {
-  const { user } = useSession();
+export function WorkspaceCard({ workspace }: { workspace: WorkspaceModel }) {
+  const { name, slug } = workspace;
   return (
     <Card className="md:max-w-1/3  md:grow-0 grow">
       <Link href={`/${slug}/`}>
         <CardHeader className="flex flex-row justify-between items-start">
           <div className="flex flex-shrink-0 flex-row items-top gap-2">
-            <Avatar className="h-6 w-6">
-              <AvatarImage
-                src={user?.avatarUrl!}
-                alt={user?.name || "User Profile Picture"}
-              />
-              <AvatarFallback delayMs={200}>
-                <Avatar>
-                  <AvatarImage
-                    src={getAvatarFallbackUrl(user)}
-                    alt={user?.name || "User Fallback Profile Picture"}
-                  />
-                </Avatar>
-              </AvatarFallback>
-            </Avatar>
+            <WorkspaceAvatar workspace={workspace} className="h-6 w-6" />
             <CardDescription>{name}</CardDescription>
           </div>
           <Badge
