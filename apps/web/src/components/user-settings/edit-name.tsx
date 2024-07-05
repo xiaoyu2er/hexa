@@ -3,8 +3,8 @@
 import { useSession } from "@/providers/session-provider";
 import { updateUserNameAction } from "@/lib/actions/user";
 import {
-  UpdateUserNameInput,
-  UpdateUserNameSchema,
+  UpdateNameInput,
+  UpdateNameSchema,
 } from "@/lib/zod/schemas/user";
 import {
   Card,
@@ -33,8 +33,8 @@ import { useServerAction } from "zsa-react";
 export function EditName() {
   const { user } = useSession();
 
-  const form = useForm<UpdateUserNameInput>({
-    resolver: zodResolver(UpdateUserNameSchema),
+  const form = useForm<UpdateNameInput>({
+    resolver: zodResolver(UpdateNameSchema),
     defaultValues: useMemo(() => {
       return {
         name: user?.name ?? "",

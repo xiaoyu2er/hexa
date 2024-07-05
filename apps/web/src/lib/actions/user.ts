@@ -4,7 +4,7 @@ import { authenticatedProcedure } from "./procedures";
 import {
   DeleteUserSchema,
   UpdateAvatarSchema,
-  UpdateUserNameSchema,
+  UpdateNameSchema,
 } from "@/lib/zod/schemas/user";
 import {
   deleteUser,
@@ -20,7 +20,7 @@ import { redirect } from "next/navigation";
 
 export const updateUserNameAction = authenticatedProcedure
   .createServerAction()
-  .input(UpdateUserNameSchema)
+  .input(UpdateNameSchema)
   .handler(async ({ input, ctx }) => {
     const { name } = input;
     const { user } = ctx;
