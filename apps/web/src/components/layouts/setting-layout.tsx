@@ -32,7 +32,7 @@ export function SettingsLayout({ children }: { children: React.ReactNode }) {
               className={cn(
                 "rounded-md p-2.5 text-sm transition-all duration-75 hover:bg-gray-100 active:bg-gray-200",
                 {
-                  "font-semibold text-black": nav.href === pathname,
+                  "font-bold": nav.href === pathname,
                 }
               )}
             >
