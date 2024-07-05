@@ -1,5 +1,12 @@
 import { SettingsLayout } from "@/components/layouts/setting-layout";
 
+const SETTINGS_NAVBARS = [
+  {
+    name: "General",
+    href: "/settings",
+  },
+];
+
 export default function ({ children }: { children: React.ReactNode }) {
-  return <SettingsLayout>{children}</SettingsLayout>;
+  return <SettingsLayout navbars={SETTINGS_NAVBARS}>{children}</SettingsLayout>;
 }
