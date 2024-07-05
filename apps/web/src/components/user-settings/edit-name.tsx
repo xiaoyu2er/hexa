@@ -30,7 +30,7 @@ import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
 
-export function EditUserName() {
+export function EditName() {
   const { user } = useSession();
 
   const form = useForm<UpdateUserNameInput>({

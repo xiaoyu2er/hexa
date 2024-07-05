@@ -1,12 +1,12 @@
 import { DeleteAccount } from "@/components/user-settings/delete-account";
-import { EditUserName } from "@/components/user-settings/edit-user-name";
+import { EditName } from "@/components/user-settings/edit-name";
 import UploadAvatar from "@/components/user-settings/upload-avatar";
 import { UserId } from "@/components/user-settings/user-id";
 
 export default async function () {
   return (
     <>
-      <EditUserName />
+      <EditName />
       <UploadAvatar />
       <UserId />
       <DeleteAccount />
