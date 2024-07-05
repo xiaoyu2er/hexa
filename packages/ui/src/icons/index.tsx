@@ -57,4 +57,5 @@ export {
   DotsHorizontalIcon,
   ArrowLeftIcon,
   GitHubLogoIcon,
+  SlashIcon,
 } from "@radix-ui/react-icons";
