@@ -107,3 +107,8 @@ export interface GoogleUser {
 //   email: "example@qq.com",
 //   email_verified: true,
 // };
+
+export interface NavTab {
+  name: string;
+  href: string;
+}

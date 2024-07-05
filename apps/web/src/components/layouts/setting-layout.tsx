@@ -1,34 +1,22 @@
 "use client";
 
+import { NavTab } from "@/types";
 import { MaxWidth } from "@hexa/ui/max-width";
 import { cn } from "@hexa/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-interface SettingsNavbar {
-  name: string;
-  href: string;
-}
-
 export function SettingsLayout({
   navbars,
   children,
 }: {
-  navbars: SettingsNavbar[];
+  navbars: NavTab[];
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
 
   return (
     <main className="min-h-[calc(100vh-16px)]">
-      <div className="flex h-36 items-center border-b">
-        <MaxWidth>
-          <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-semibold">Settings</h1>
-          </div>
-        </MaxWidth>
-      </div>
-
       <MaxWidth>
         <div className="py-6 lg:py-10 grid max-w-6xl items-start gap-6 md:grid-cols-[120px_1fr] lg:grid-cols-[180px_1fr]">
           <nav className="grid text-sm text-muted-foreground lg:sticky top-36">
