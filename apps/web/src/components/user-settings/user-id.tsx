@@ -25,7 +25,7 @@ export function UserId() {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex items-center">
-        <Input type="text" value={user?.id} className="max-w-md" />
+        <Input type="text" value={user?.id} className="max-w-md" onClick={() => {}} />
         <CopyButton className="relative right-9" value={user.id} />
       </CardContent>
       <CardFooter className="border-t px-6 py-4 items-center flex-row-reverse justify-between"></CardFooter>

@@ -23,7 +23,12 @@ export async function WorkspaceId({ ws }: { ws: WorkspaceModel }) {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex items-center">
-        <Input type="text" value={ws.id} className="max-w-md" />
+        <Input
+          type="text"
+          value={ws?.id}
+          className="max-w-md"
+          onClick={() => {}}
+        />
         <CopyButton className="relative right-9" value={ws.id} />
       </CardContent>
       <CardFooter className="border-t px-6 py-4 items-center flex-row-reverse justify-between"></CardFooter>
