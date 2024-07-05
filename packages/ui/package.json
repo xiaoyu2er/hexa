@@ -55,6 +55,8 @@
     "./file-upload": "./src/file-upload.tsx",
     "./form-error-message": "./src/form-error-message.tsx",
     "./loading-button": "./src/loading-button.tsx",
+    "./max-width": "./src/max-width.tsx",
+    "./nav-logo": "./src/nav-logo.tsx",
     "./password-input": "./src/password-input.tsx",
     "./responsive-dialog": "./src/responsive-dialog.tsx",
     ".": "./src/index.tsx"
