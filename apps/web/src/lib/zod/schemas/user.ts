@@ -35,14 +35,14 @@ export const UpdateAvatarSchema = z.object({
 
 export type UpdateAvatarInput = z.infer<typeof UpdateAvatarSchema>;
 
-export const DELETE_ACCOUNT_CONFIRMATION = "confirm delete account";
-export const DeleteAccountSchema = z.object({
+export const DELETE_USER_CONFIRMATION = "confirm delete account";
+export const DeleteUserSchema = z.object({
   confirm: z
     .string()
     .refine(
-      (v) => v === DELETE_ACCOUNT_CONFIRMATION,
+      (v) => v === DELETE_USER_CONFIRMATION,
       "Please type 'confirm delete account' to delete your account.",
     ),
 });
 
-export type DeleteAccountInput = z.infer<typeof DeleteAccountSchema>;
+export type DeleteUserInput = z.infer<typeof DeleteUserSchema>;
