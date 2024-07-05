@@ -3,13 +3,16 @@
 import { ZSAError } from "zsa";
 import {
   addWorkspaceMember,
+  clearWorkspaceAsDefault,
   createWorkspace,
+  deleteWorkspace,
   getWorkspaceBySlug,
   getWorkspaceByWsId,
   setUserDefaultWorkspace,
 } from "../db/data-access/workspace";
 import {
   CreateWorkspaceSchema,
+  DeleteWorkspaceSchema,
   SetUserDefaultWorkspaceSchema,
 } from "../zod/schemas/workspace";
 import { authenticatedProcedure } from "./procedures";
@@ -59,7 +62,7 @@ export const createWorkspaceAction = authenticatedProcedure
     if (!member) {
       throw new ZSAError(
         "INTERNAL_SERVER_ERROR",
-        "Failed to add workspace member",
+        "Failed to add workspace member"
       );
     }
 
@@ -69,4 +72,14 @@ export const createWorkspaceAction = authenticatedProcedure
       //   workspace,
       //   member,
     };
+  });
+
+export const deleteWorkspaceAction = authenticatedProcedure
+  .createServerAction()
+  .input(DeleteWorkspaceSchema)
+  .handler(async ({ input}) => {
+    const { workspaceId } = input;
+    await clearWorkspaceAsDefault(workspaceId);
+    await deleteWorkspace(workspaceId);
+    return {};
   });

@@ -22,3 +22,16 @@ export const CreateWorkspaceSchema = z.object({
 });
 
 export type CreateWorkspaceInput = z.infer<typeof CreateWorkspaceSchema>;
+
+export const DELETE_WORKSPACE_CONFIRMATION = "confirm delete workspace";
+export const DeleteWorkspaceSchema = z.object({
+  confirm: z
+    .string()
+    .refine(
+      (v) => v === DELETE_WORKSPACE_CONFIRMATION,
+      `Please type '${DELETE_WORKSPACE_CONFIRMATION}' to delete your account.`
+    ),
+  workspaceId: z.string().min(1, "Please enter a workspace ID"),
+});
+
+export type DeleteWorkspaceInput = z.infer<typeof DeleteWorkspaceSchema>;

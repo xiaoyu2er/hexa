@@ -10,7 +10,7 @@ import {
 
 export const setUserDefaultWorkspace = async (
   userId: string,
-  workspaceId: string,
+  workspaceId: string
 ) => {
   return (
     await db
@@ -75,4 +75,19 @@ export const addWorkspaceMember = async ({
       })
       .returning()
   )[0];
+};
+
+export const deleteWorkspace = async (workspaceId: string) => {
+  await db
+    .delete(workspaceTable)
+    .where(eq(workspaceTable.id, workspaceId))
+    .returning();
+};
+
+export const clearWorkspaceAsDefault = async (workspaceId: string) => {
+  await db
+    .update(userTable)
+    .set({ defaultWorkspaceId: null })
+    .where(eq(userTable.defaultWorkspaceId, workspaceId))
+    .returning();
 };
