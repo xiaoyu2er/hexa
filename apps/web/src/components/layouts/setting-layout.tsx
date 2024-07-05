@@ -36,7 +36,7 @@ export function SettingsLayout({ children }: { children: React.ReactNode }) {
                   "rounded-md p-2.5 text-md transition-all duration-75 hover:bg-gray-100 active:bg-gray-200",
                   {
                     "font-extrabold": nav.href === pathname,
-                  }
+                  },
                 )}
               >
                 {nav.name}
