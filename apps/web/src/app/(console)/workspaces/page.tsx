@@ -1,6 +1,8 @@
 import { CreateWorkspace } from "@/components/workspaces/create-workspace";
 import { WorkspaceList } from "@/components/workspaces/workspace-list";
 import { MaxWidth } from "@hexa/ui/max-width";
+import { Suspense } from "react";
+import { CardSkeleton } from "@hexa/ui/card-skeleton";
 
 export default function () {
   return (
@@ -15,8 +17,17 @@ export default function () {
       </div>
 
       <MaxWidth>
-        <div className="py-6 lg:py-10 grid max-w-6xl items-start gap-6 md:grid-cols-[120px_1fr] lg:grid-cols-[180px_1fr]">
-          <WorkspaceList />
+        <div className="py-6 lg:py-10 max-w-6xl">
+          <Suspense
+            fallback={
+              <div className="flex gap-5 flex-wrap">
+                <CardSkeleton />
+                <CardSkeleton />
+              </div>
+            }
+          >
+            <WorkspaceList />
+          </Suspense>
         </div>
       </MaxWidth>
     </main>
