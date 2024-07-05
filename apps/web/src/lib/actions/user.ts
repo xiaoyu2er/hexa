@@ -15,10 +15,7 @@ import { revalidatePath } from "next/cache";
 import { isStored, storage } from "../storage";
 import { generateId } from "../utils";
 import { waitUntil } from "@vercel/functions";
-import {
-  invalidateUserSessions,
-  setBlankSessionCookie,
-} from "../session";
+import { invalidateUserSessions, setBlankSessionCookie } from "../session";
 import { redirect } from "next/navigation";
 
 export const updateUserNameAction = authenticatedProcedure

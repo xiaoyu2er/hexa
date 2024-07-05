@@ -1,8 +1,5 @@
 import { GitHubUser, GoogleUser } from "@/types";
-import {
-  createUser,
-  getUserByEmail,
-} from "../data-access/user";
+import { createUser, getUserByEmail } from "../data-access/user";
 import {
   createGithubAccount,
   createGoogleAccount,

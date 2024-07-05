@@ -52,7 +52,7 @@ export default function UploadAvatar() {
   });
 
   const [avatarUrl, setAvatarUrl] = useState<string | null | undefined>(
-    user?.avatarUrl
+    user?.avatarUrl,
   );
 
   useEffect(() => {

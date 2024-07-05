@@ -1,10 +1,7 @@
 "use client";
 
 import { resetPasswordAction } from "@/lib/actions/reset-password";
-import {
-  ResetPasswordForm,
-  ResetPasswordSchema,
-} from "@/lib/zod/schemas/auth";
+import { ResetPasswordForm, ResetPasswordSchema } from "@/lib/zod/schemas/auth";
 import { Button } from "@hexa/ui/button";
 import {
   Card,
