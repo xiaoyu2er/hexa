@@ -10,7 +10,7 @@ import {
 import { Input } from "@hexa/ui/input";
 import { LoadingButton } from "@hexa/ui/loading-button";
 import { useServerAction } from "zsa-react";
-import { deleteAccountAction } from "@/lib/actions/user";
+import { deleteUserAction } from "@/lib/actions/user";
 import { toast } from "@hexa/ui/sonner";
 import { Button } from "@hexa/ui/button";
 import {
@@ -52,7 +52,7 @@ export function DeleteAccount() {
     formState: { isSubmitting, errors },
   } = form;
 
-  const { execute } = useServerAction(deleteAccountAction, {
+  const { execute } = useServerAction(deleteUserAction, {
     onError: ({ err }) => {
       if (err.code === "INPUT_PARSE_ERROR") {
         Object.entries(err.fieldErrors).forEach(([field, message]) => {

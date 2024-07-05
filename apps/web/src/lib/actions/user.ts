@@ -46,7 +46,7 @@ export const updateUserAvatarAction = authenticatedProcedure
     revalidatePath("/");
   });
 
-export const deleteAccountAction = authenticatedProcedure
+export const deleteUserAction = authenticatedProcedure
   .createServerAction()
   .input(DeleteAccountSchema)
   .handler(async ({ ctx }) => {
