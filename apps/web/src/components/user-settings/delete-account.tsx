@@ -32,15 +32,15 @@ import {
 } from "@hexa/ui/form";
 import { useForm } from "react-hook-form";
 import {
-  DELETE_ACCOUNT_CONFIRMATION,
-  DeleteAccountInput,
-  DeleteAccountSchema,
+  DELETE_USER_CONFIRMATION,
+  DeleteUserInput,
+  DeleteUserSchema,
 } from "@/lib/zod/schemas/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export function DeleteAccount() {
-  const form = useForm<DeleteAccountInput>({
-    resolver: zodResolver(DeleteAccountSchema),
+  const form = useForm<DeleteUserInput>({
+    resolver: zodResolver(DeleteUserSchema),
     defaultValues: {
       confirm: "",
     },
@@ -57,7 +57,7 @@ export function DeleteAccount() {
       if (err.code === "INPUT_PARSE_ERROR") {
         Object.entries(err.fieldErrors).forEach(([field, message]) => {
           if (message) {
-            setError(field as keyof DeleteAccountInput, {
+            setError(field as keyof DeleteUserInput, {
               message: message[0],
             });
           }
@@ -117,7 +117,7 @@ export function DeleteAccount() {
                       <FormLabel>
                         To verify, type{" "}
                         <span className="font-bold">
-                          {DELETE_ACCOUNT_CONFIRMATION}
+                          {DELETE_USER_CONFIRMATION}
                         </span>{" "}
                         below
                       </FormLabel>
@@ -139,7 +139,7 @@ export function DeleteAccount() {
                     type="submit"
                     loading={isSubmitting}
                   >
-                    {DELETE_ACCOUNT_CONFIRMATION}
+                    {DELETE_USER_CONFIRMATION}
                   </LoadingButton>
                 </DialogFooter>
               </form>
