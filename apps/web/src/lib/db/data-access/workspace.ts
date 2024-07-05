@@ -91,3 +91,10 @@ export const clearWorkspaceAsDefault = async (workspaceId: string) => {
     .where(eq(userTable.defaultWorkspaceId, workspaceId))
     .returning();
 };
+
+export async function updateWorkspaceName(id: string, name: string) {
+  await db
+    .update(workspaceTable)
+    .set({ name })
+    .where(eq(workspaceTable.id, id));
+}
