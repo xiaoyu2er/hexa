@@ -1,8 +1,22 @@
 import { z } from "zod";
 
+
 export const SetUserDefaultWorkspaceSchema = z.object({
   workspaceId: z.string().min(1, "Please select a workspace"),
 });
+
+const name = z
+  .string()
+  .min(1, "Please enter a name")
+  .max(32, "Name must be less than 32 characters");
+
+export const UpdateWorkspacerNameSchema = z.object({
+  name,
+  workspaceId: z.string().min(1, "Please enter a workspace ID"),
+});
+
+export type UpdateWorkspaceNameInput = z.infer<typeof UpdateWorkspacerNameSchema>;
+
 
 export type SetUserDefaultWorkspaceInput = z.infer<
   typeof SetUserDefaultWorkspaceSchema
