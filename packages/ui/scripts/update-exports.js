@@ -15,7 +15,7 @@ const otherFiles = fs
 
 console.log(
   "@hexa/ui",
-  [...uiFiles, ...otherFiles].map((f) => f.replace(/\.tsx?$/, ""))
+  [...uiFiles, ...otherFiles].sort().map((f) => f.replace(/\.tsx?$/, ""))
 );
 
 const otherExports = otherFiles.reduce((acc, file) => {
