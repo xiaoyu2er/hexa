@@ -24,6 +24,9 @@ export {
   UploadCloud,
   Copy,
   Check,
+  GlobeIcon,
+  BarChart2Icon,
+  Link2Icon,
 } from "lucide-react";
 
 // https://www.radix-ui.com/icons
