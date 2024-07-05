@@ -1,11 +1,19 @@
 import { generateId } from "@/lib/utils";
 import { relations } from "drizzle-orm";
-import { boolean, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  pgEnum,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
+  unique,
+} from "drizzle-orm/pg-core";
 
 export const userTable = pgTable("user", {
   id: text("id")
     .primaryKey()
-    .$defaultFn(() => generateId('u')),
+    .$defaultFn(() => generateId("u")),
   name: text("name"),
   email: text("email").unique(),
   emailVerified: boolean("email_verified").notNull().default(false),
@@ -47,7 +55,7 @@ export type TokenType = (typeof tokenTypeEnum.enumValues)[number];
 export const tokenTable = pgTable("token", {
   id: text("id")
     .primaryKey()
-    .$defaultFn(() => generateId('token')),
+    .$defaultFn(() => generateId("token")),
   userId: text("user_id")
     .notNull()
     .references(() => userTable.id, { onDelete: "cascade" }),
@@ -87,7 +95,7 @@ export type ProviderType = (typeof providerEnum.enumValues)[number];
 export const oauthAccountTable = pgTable("oauth_account", {
   id: text("id")
     .primaryKey()
-    .$defaultFn(() => generateId('oauth')),
+    .$defaultFn(() => generateId("oauth")),
   userId: text("user_id")
     .notNull()
     .references(() => userTable.id, { onDelete: "cascade" }),
@@ -119,7 +127,122 @@ export const oauthAccountUserRelation = relations(
   }),
 );
 
+export const workspaceTable = pgTable("workspace", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => generateId("ws")),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+
+  createdAt: timestamp("created_at", {
+    withTimezone: true,
+    mode: "date",
+  })
+    .notNull()
+    .defaultNow(),
+
+  updatedAt: timestamp("updated_at", {
+    withTimezone: true,
+    mode: "date",
+  }).$onUpdate(() => new Date()),
+});
+
+export const userWorkspaceRelations = relations(userTable, ({ many }) => ({
+  workspaces: many(workspaceMemberTable),
+}));
+
+export const workspaceMemberRelations = relations(
+  workspaceTable,
+  ({ many }) => ({
+    workspaceMembers: many(workspaceMemberTable),
+  }),
+);
+
+export const workspaceUserRoleEnum = pgEnum("workspaceUserRole", [
+  "OWNER",
+  "ADMIN",
+  "MEMBER",
+]);
+
+export type WorkspaceUserRole =
+  (typeof workspaceUserRoleEnum.enumValues)[number];
+export const workspaceMemberTable = pgTable(
+  "workspace_member",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => generateId("wsm")),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => userTable.id, { onDelete: "cascade" }),
+    role: workspaceUserRoleEnum("role").notNull(),
+    createdAt: timestamp("created_at", {
+      withTimezone: true,
+      mode: "date",
+    })
+      .notNull()
+      .defaultNow(),
+
+    updatedAt: timestamp("updated_at", {
+      withTimezone: true,
+      mode: "date",
+    }).$onUpdate(() => new Date()),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.userId, t.workspaceId] }),
+  }),
+);
+
+export const usersToWorkspaceRelation = relations(
+  workspaceMemberTable,
+  ({ one }) => ({
+    user: one(userTable, {
+      fields: [workspaceMemberTable.userId],
+      references: [userTable.id],
+    }),
+    workspace: one(workspaceTable, {
+      fields: [workspaceMemberTable.workspaceId],
+      references: [workspaceTable.id],
+    }),
+  }),
+);
+
+// export const inviteTable = pgTable(
+//   "invite",
+//   {
+//     id: text("id")
+//       .primaryKey()
+//       .$defaultFn(() => generateId("i")),
+//     email: text("email").notNull(),
+//     workspaceId: text("workspace_id")
+//       .notNull()
+//       .references(() => workspaceTable.id, { onDelete: "cascade" }),
+//     role: workspaceUserRoleEnum("role").notNull(),
+//     createdAt: timestamp("created_at", {
+//       withTimezone: true,
+//       mode: "date",
+//     })
+//       .notNull()
+//       .defaultNow(),
+//     expiresAt: timestamp("expires_at", {
+//       withTimezone: true,
+//       mode: "date",
+//     })
+//       .notNull()
+//       // Expires in 24 hours
+//       .$defaultFn(() => new Date(Date.now() + 24 * 60 * 60 * 1000)),
+//   },
+//   (t) => ({
+//     unq: unique().on(t.email, t.workspaceId),
+//   })
+// );
+
 export type UserModel = typeof userTable.$inferSelect;
 export type OAuthAccountModel = typeof oauthAccountTable.$inferSelect;
 export type SessionModel = typeof sessionTable.$inferSelect;
 export type TokenModel = typeof tokenTable.$inferSelect;
+export type WorkspaceModel = typeof workspaceTable.$inferSelect;
+export type WorkspaceMemberModel = typeof workspaceMemberTable.$inferSelect;
