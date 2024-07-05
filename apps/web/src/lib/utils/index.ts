@@ -14,7 +14,7 @@ export function generateCode() {
   return generateRandomString(6, alphabet("0-9"));
 }
 
-export function generateId() {
+export function generateId(prefix = "") {
   /**
    * Generates a random [RFC 4122](https://www.rfc-editor.org/rfc/rfc4122.txt) version 4 UUID. The UUID is generated using a
    * cryptographic pseudorandom number generator.
@@ -28,5 +28,5 @@ export function generateId() {
    * If size is a multiple of 5, the output size will be (size * 8) / 5 (see base32 encoding).
    * @example "62zhs6gceakgksk3k5igjpumudeo4sxiehfwx6tu"
    */
-  return generateIdFromEntropySize(20); // 32 characters
+  return prefix + "_" + generateIdFromEntropySize(20).slice(prefix.length); // 32 characters
 }

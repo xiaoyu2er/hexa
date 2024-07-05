@@ -5,7 +5,7 @@ import { boolean, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 export const userTable = pgTable("user", {
   id: text("id")
     .primaryKey()
-    .$defaultFn(() => generateId()),
+    .$defaultFn(() => generateId('u')),
   name: text("name"),
   email: text("email").unique(),
   emailVerified: boolean("email_verified").notNull().default(false),
@@ -47,7 +47,7 @@ export type TokenType = (typeof tokenTypeEnum.enumValues)[number];
 export const tokenTable = pgTable("token", {
   id: text("id")
     .primaryKey()
-    .$defaultFn(() => generateId()),
+    .$defaultFn(() => generateId('token')),
   userId: text("user_id")
     .notNull()
     .references(() => userTable.id, { onDelete: "cascade" }),
@@ -87,7 +87,7 @@ export type ProviderType = (typeof providerEnum.enumValues)[number];
 export const oauthAccountTable = pgTable("oauth_account", {
   id: text("id")
     .primaryKey()
-    .$defaultFn(() => generateId()),
+    .$defaultFn(() => generateId('oauth')),
   userId: text("user_id")
     .notNull()
     .references(() => userTable.id, { onDelete: "cascade" }),
