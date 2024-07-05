@@ -32,7 +32,7 @@ import { useBoolean } from "usehooks-ts";
 import { FormErrorMessage } from "@hexa/ui/form-error-message";
 import { ReactNode } from "react";
 
-export function CreateWorkspaceModel({ children }: { children: ReactNode }) {
+export function CreateWorkspaceModal({ children }: { children: ReactNode }) {
   const { value: isOpen, setFalse: close, setValue: setOpen } = useBoolean();
 
   const form = useForm<CreateWorkspaceInput>({
