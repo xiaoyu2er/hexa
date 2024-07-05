@@ -66,7 +66,8 @@
     "add": "pnpm dlx shadcn-ui@latest add",
     "postadd": "pnpm run update-exports && pnpm run format",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "update-exports": "node scripts/update-exports.js"
+    "update-exports": "node scripts/update-exports.js",
+    "dev": "node ./scripts/update-exports.js --watch-path=./src"
   },
   "devDependencies": {
     "@hexa/eslint-config": "workspace:*",
