@@ -1,5 +1,12 @@
+"use client";
+
 import { Button } from "@hexa/ui/button";
+import { CreateWorkspaceModel } from "./create-workspace-modal";
 
 export function CreateWorkspace() {
-  return <Button>Create Workspace</Button>;
+  return (
+    <CreateWorkspaceModel>
+      <Button>Create Workspace</Button>
+    </CreateWorkspaceModel>
+  );
 }
