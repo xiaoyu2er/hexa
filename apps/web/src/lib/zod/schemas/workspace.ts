@@ -1,5 +1,13 @@
 import { z } from "zod";
 
+export const SetUserDefaultWorkspaceSchema = z.object({
+  workspaceId: z.string().min(1, "Please select a workspace"),
+});
+
+export type SetUserDefaultWorkspaceInput = z.infer<
+  typeof SetUserDefaultWorkspaceSchema
+>;
+
 export const CreateWorkspaceSchema = z.object({
   name: z
     .string()

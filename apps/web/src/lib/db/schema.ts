@@ -29,6 +29,10 @@ export const userTable = pgTable("user", {
     withTimezone: true,
     mode: "date",
   }).$onUpdate(() => new Date()),
+
+  defaultWorkspaceId: text("default_workspace_id").references(
+    () => workspaceTable.id,
+  ),
 });
 
 export const sessionTable = pgTable("session", {
@@ -133,7 +137,7 @@ export const workspaceTable = pgTable("workspace", {
     .$defaultFn(() => generateId("ws")),
   name: text("name").notNull(),
   slug: text("slug").notNull().unique(),
-
+  avatarUrl: text("avatar_url"),
   createdAt: timestamp("created_at", {
     withTimezone: true,
     mode: "date",
@@ -147,8 +151,12 @@ export const workspaceTable = pgTable("workspace", {
   }).$onUpdate(() => new Date()),
 });
 
-export const userWorkspaceRelations = relations(userTable, ({ many }) => ({
+export const userWorkspaceRelations = relations(userTable, ({ many, one }) => ({
   workspaces: many(workspaceMemberTable),
+  defaultWorkspace: one(workspaceTable, {
+    fields: [userTable.defaultWorkspaceId],
+    references: [workspaceTable.id],
+  }),
 }));
 
 export const workspaceMemberRelations = relations(
@@ -170,7 +178,7 @@ export const workspaceMemberTable = pgTable(
   "workspace_member",
   {
     id: text("id")
-      .primaryKey()
+      // .primaryKey()
       .$defaultFn(() => generateId("wsm")),
     workspaceId: text("workspace_id")
       .notNull()

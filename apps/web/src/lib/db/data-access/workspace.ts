@@ -1,10 +1,25 @@
+import { eq } from "drizzle-orm";
 import { db } from "../db";
 import {
   WorkspaceMemberModel,
   WorkspaceModel,
+  userTable,
   workspaceMemberTable,
   workspaceTable,
 } from "../schema";
+
+export const setUserDefaultWorkspace = async (
+  userId: string,
+  workspaceId: string,
+) => {
+  return (
+    await db
+      .update(userTable)
+      .set({ defaultWorkspaceId: workspaceId })
+      .where(eq(userTable.id, userId))
+      .returning()
+  )[0];
+};
 
 export const getWorkspacesByUserId = async (userId: string) => {
   return (
@@ -17,9 +32,15 @@ export const getWorkspacesByUserId = async (userId: string) => {
   ).map((wm) => wm.workspace);
 };
 
-export const queryWorkspaceBySlug = async (slug: string) => {
+export const getWorkspaceBySlug = async (slug: string) => {
   return db.query.workspaceTable.findFirst({
     where: (table, { eq }) => eq(table.slug, slug),
+  });
+};
+
+export const getWorkspaceByWsId = async (wsId: string) => {
+  return db.query.workspaceTable.findFirst({
+    where: (table, { eq }) => eq(table.id, wsId),
   });
 };
 
