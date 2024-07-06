@@ -23,19 +23,23 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
-import { updateWorkspaceNameAction } from "@/lib/actions/workspace";
+import { updateWorkspaceSlugAction } from "@/lib/actions/workspace";
 import { WorkspaceModel } from "@/lib/db/schema";
 import {
-  UpdateWorkspaceNameInput,
-  UpdateWorkspacerNameSchema,
+  UpdateWorkspaceSlugInput,
+  UpdateWorkspaceSlugSchema,
 } from "@/lib/zod/schemas/workspace";
+import { useRouter } from "next/navigation";
 
-export function EditName({ ws }: { ws: WorkspaceModel }) {
-  const form = useForm<Pick<UpdateWorkspaceNameInput, "name">>({
-    resolver: zodResolver(UpdateWorkspacerNameSchema.pick({ name: true })),
+export function EditWorkspaceSlug({ ws }: { ws: WorkspaceModel }) {
+  const router = useRouter();
+  const form = useForm<Omit<UpdateWorkspaceSlugInput, "workspaceId">>({
+    resolver: zodResolver(
+      UpdateWorkspaceSlugSchema.omit({ workspaceId: true })
+    ),
     defaultValues: useMemo(() => {
       return {
-        name: ws.name ?? "",
+        slug: ws.slug ?? "",
       };
     }, [ws]),
   });
@@ -49,17 +53,19 @@ export function EditName({ ws }: { ws: WorkspaceModel }) {
 
   useEffect(() => {
     reset({
-      name: ws?.name ?? "",
+      slug: ws?.slug ?? "",
     });
   }, [ws]);
 
-  const { execute } = useServerAction(updateWorkspaceNameAction, {
+  const { execute } = useServerAction(updateWorkspaceSlugAction, {
     onError: ({ err }) => {
-      setError("name", { message: err.message });
+      setError("slug", { message: err.message });
     },
-    onSuccess: () => {
-      toast.success("The workspace name has been updated");
+    onSuccess: ({ data }) => {
+      const slug = data.workspace?.slug;
+      toast.success("The workspace slug has been updated");
       reset();
+      router.replace(`/${slug}/settings`);
     },
   });
   return (
@@ -76,19 +82,19 @@ export function EditName({ ws }: { ws: WorkspaceModel }) {
       >
         <Card x-chunk="dashboard-04-chunk-1">
           <CardHeader>
-            <CardTitle>Workspace Name</CardTitle>
+            <CardTitle>Workspace Slug</CardTitle>
             <CardDescription>
-              This will be the workspace's display name on{" "}
+              This will be the workspace's slug name on{" "}
               {process.env.NEXT_PUBLIC_APP_NAME}.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <FormField
               control={form.control}
-              name="name"
+              name="slug"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Slug</FormLabel>
                   <FormControl>
                     <Input {...field} className="max-w-md" />
                   </FormControl>

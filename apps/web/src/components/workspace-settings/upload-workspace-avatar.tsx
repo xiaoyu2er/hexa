@@ -15,9 +15,7 @@ import {
   CardFooter,
 } from "@hexa/ui/card";
 import { useForm } from "react-hook-form";
-import { UpdateAvatarInput, UpdateAvatarSchema } from "@/lib/zod/schemas/user";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { updateUserAvatarAction } from "@/lib/actions/user";
 import { useServerAction } from "zsa-react";
 import {
   Form,
@@ -33,7 +31,7 @@ import {
 import { WorkspaceModel } from "@/lib/db/schema";
 import { updateWorkspaceAvatarAction } from "@/lib/actions/workspace";
 
-export default function UploadAvatar({ ws }: { ws: WorkspaceModel }) {
+export function UploadWorkspaceAvatar({ ws }: { ws: WorkspaceModel }) {
   const { user } = useSession();
 
   const form = useForm<Omit<UpdateWorkspaceAvatarInput, "workspaceId">>({

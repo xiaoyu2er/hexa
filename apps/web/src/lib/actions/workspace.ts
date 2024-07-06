@@ -11,12 +11,14 @@ import {
   setUserDefaultWorkspace,
   updateWorkspaceAvatar,
   updateWorkspaceName,
+  updateWorkspaceSlug,
 } from "@/lib/db/data-access/workspace";
 import {
   CreateWorkspaceSchema,
   DeleteWorkspaceSchema,
   SetUserDefaultWorkspaceSchema,
   UpdateWorkspaceAvatarSchema,
+  UpdateWorkspaceSlugSchema,
   UpdateWorkspacerNameSchema,
 } from "@/lib/zod/schemas/workspace";
 import { authenticatedProcedure } from "./procedures";
@@ -96,12 +98,24 @@ export const updateWorkspaceNameAction = authenticatedProcedure
   .input(UpdateWorkspacerNameSchema)
   .handler(async ({ input }) => {
     const { name, workspaceId } = input;
-    console.log("updateWorkspaceNameAction", name, workspaceId);
     await updateWorkspaceName(workspaceId, name);
     revalidatePath("/");
     return {};
   });
 
+
+  export const updateWorkspaceSlugAction = authenticatedProcedure
+  .createServerAction()
+  .input(UpdateWorkspaceSlugSchema)
+  .handler(async ({ input }) => {
+    const { slug, workspaceId } = input;
+    const ws = await updateWorkspaceSlug(workspaceId, slug);
+    revalidatePath("/");
+    return {
+      workspace: ws,
+    };
+  });
+ 
 export const updateWorkspaceAvatarAction = authenticatedProcedure
   .createServerAction()
   .input(UpdateWorkspaceAvatarSchema)
