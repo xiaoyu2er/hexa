@@ -10,8 +10,6 @@ export default function NavTabs() {
     { name: "Links", href: `/${slug}` },
     { name: "Settings", href: `/${slug}/settings` },
   ];
-
-  console.log(pathname, slug);
   return (
     <div className="scrollbar-hide mb-[-3px] flex h-12 items-center justify-start space-x-2 overflow-x-auto">
       {tabs.map(({ name, href }) => (

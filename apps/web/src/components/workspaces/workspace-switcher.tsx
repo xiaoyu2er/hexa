@@ -14,17 +14,16 @@ import { Badge } from "@hexa/ui/badge";
 import { useServerAction } from "zsa-react";
 import { setUserDefaultWorkspaceAction } from "@/lib/actions/workspace";
 import { toast } from "@hexa/ui/sonner";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useBoolean } from "usehooks-ts";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { queryUserOptions } from "@/lib/queries/user";
 import { queryWorkspacesOptions } from "@/lib/queries/workspace";
 
 export function WorkspaceSwitcher() {
-  const { data: user } = useSuspenseQuery(queryUserOptions);
+  const { slug } = useParams() as { slug: string };
   const { data: workspaces } = useSuspenseQuery(queryWorkspacesOptions);
   const { value: isPopoverOpen, setValue: setPopoverOpen } = useBoolean();
-  const defaultWs = workspaces.find((ws) => ws.id === user.defaultWorkspaceId);
+  const defaultWs = workspaces.find((ws) => ws.slug === slug);
   const router = useRouter();
   const { execute } = useServerAction(setUserDefaultWorkspaceAction, {
     onSuccess({ data }) {
@@ -87,7 +86,7 @@ export function WorkspaceSwitcher() {
               {ws.name}
             </span>
 
-            {ws.id === user.defaultWorkspaceId ? (
+            {ws.slug === slug ? (
               <CheckIcon className={cn("ml-2 h-6 w-6")} />
             ) : null}
           </Button>
