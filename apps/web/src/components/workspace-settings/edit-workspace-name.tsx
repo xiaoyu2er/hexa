@@ -35,7 +35,7 @@ export function EditWorkspaceName({ ws }: { ws: WorkspaceModel }) {
     resolver: zodResolver(UpdateWorkspacerNameSchema.pick({ name: true })),
     defaultValues: useMemo(() => {
       return {
-        name: ws.name ?? "",
+        name: ws?.name ?? "",
       };
     }, [ws]),
   });
