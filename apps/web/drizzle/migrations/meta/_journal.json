@@ -15,6 +15,34 @@
       "when": 1719866006799,
       "tag": "0001_fantastic_fixer",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1720197970918,
+      "tag": "0002_spicy_gorgon",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1720197976026,
+      "tag": "0003_parched_longshot",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1720198179454,
+      "tag": "0004_amazing_steve_rogers",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1720201781106,
+      "tag": "0005_absent_dagger",
+      "breakpoints": true
     }
   ]
 }
