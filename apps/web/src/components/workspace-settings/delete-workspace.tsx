@@ -10,7 +10,6 @@ import {
 import { Input } from "@hexa/ui/input";
 import { LoadingButton } from "@hexa/ui/loading-button";
 import { useServerAction } from "zsa-react";
-import { deleteUserAction } from "@/lib/actions/user";
 import { toast } from "@hexa/ui/sonner";
 import { Button } from "@hexa/ui/button";
 import {
