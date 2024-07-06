@@ -8,6 +8,7 @@ import {
   deleteWorkspace,
   getWorkspaceBySlug,
   getWorkspaceByWsId,
+  getWorkspacesByUserId,
   setUserDefaultWorkspace,
   updateWorkspaceAvatar,
   updateWorkspaceName,
@@ -16,6 +17,7 @@ import {
 import {
   CreateWorkspaceSchema,
   DeleteWorkspaceSchema,
+  GetWorkspaceBySlugSchema,
   SetUserDefaultWorkspaceSchema,
   UpdateWorkspaceAvatarSchema,
   UpdateWorkspaceSlugSchema,
@@ -26,7 +28,30 @@ import { revalidatePath } from "next/cache";
 import { waitUntil } from "@vercel/functions";
 import { isStored, storage } from "@/lib/storage";
 import { generateId } from "@/lib/utils";
-import { updateUserAvatar } from "@/lib/db/data-access/user";
+
+export const getWorkspacesAction = authenticatedProcedure
+  .createServerAction()
+  .handler(async ({ ctx }) => {
+    const { user } = ctx;
+    const workspaces = await getWorkspacesByUserId(user.id);
+    return {
+      workspaces,
+    };
+  });
+
+export const getWorkspaceBySlugAction = authenticatedProcedure
+  .createServerAction()
+  .input(GetWorkspaceBySlugSchema)
+  .handler(async ({ input }) => {
+    const { slug } = input;
+    const ws = await getWorkspaceBySlug(slug);
+    if (!ws) {
+      throw new ZSAError("NOT_FOUND", "Workspace not found");
+    }
+    return {
+      workspace: ws,
+    };
+  });
 
 export const setUserDefaultWorkspaceAction = authenticatedProcedure
   .createServerAction()
@@ -103,8 +128,7 @@ export const updateWorkspaceNameAction = authenticatedProcedure
     return {};
   });
 
-
-  export const updateWorkspaceSlugAction = authenticatedProcedure
+export const updateWorkspaceSlugAction = authenticatedProcedure
   .createServerAction()
   .input(UpdateWorkspaceSlugSchema)
   .handler(async ({ input }) => {
@@ -115,7 +139,7 @@ export const updateWorkspaceNameAction = authenticatedProcedure
       workspace: ws,
     };
   });
- 
+
 export const updateWorkspaceAvatarAction = authenticatedProcedure
   .createServerAction()
   .input(UpdateWorkspaceAvatarSchema)

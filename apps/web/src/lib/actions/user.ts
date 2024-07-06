@@ -18,6 +18,15 @@ import { waitUntil } from "@vercel/functions";
 import { invalidateUserSessions, setBlankSessionCookie } from "../session";
 import { redirect } from "next/navigation";
 
+export const getUserAction = authenticatedProcedure
+  .createServerAction()
+  .handler(async ({ ctx }) => {
+    const { user } = ctx;
+    return {
+      user,
+    };
+  });
+
 export const updateUserNameAction = authenticatedProcedure
   .createServerAction()
   .input(UpdateUserNameSchema)
@@ -41,7 +50,7 @@ export const updateUserAvatarAction = authenticatedProcedure
         if (user.avatarUrl && isStored(user.avatarUrl)) {
           await storage.delete(user.avatarUrl);
         }
-      })(),
+      })()
     );
     revalidatePath("/");
   });
