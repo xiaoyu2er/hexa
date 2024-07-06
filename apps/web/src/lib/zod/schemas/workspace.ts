@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { UpdateAvatarSchema } from "./user";
 
 
 export const SetUserDefaultWorkspaceSchema = z.object({
@@ -38,14 +39,22 @@ export const CreateWorkspaceSchema = z.object({
 export type CreateWorkspaceInput = z.infer<typeof CreateWorkspaceSchema>;
 
 export const DELETE_WORKSPACE_CONFIRMATION = "confirm delete workspace";
+const workspaceId = z.string().min(1, "Please enter a workspace ID");
 export const DeleteWorkspaceSchema = z.object({
   confirm: z
     .string()
     .refine(
       (v) => v === DELETE_WORKSPACE_CONFIRMATION,
-      `Please type '${DELETE_WORKSPACE_CONFIRMATION}' to delete your account.`
+      `Please type '${DELETE_WORKSPACE_CONFIRMATION}' to delete your workspace.`
     ),
-  workspaceId: z.string().min(1, "Please enter a workspace ID"),
+  workspaceId,
 });
 
 export type DeleteWorkspaceInput = z.infer<typeof DeleteWorkspaceSchema>;
+
+
+export const UpdateWorkspaceAvatarSchema = UpdateAvatarSchema.extend({
+  workspaceId
+})
+
+export type UpdateWorkspaceAvatarInput = z.infer<typeof UpdateWorkspaceAvatarSchema>;

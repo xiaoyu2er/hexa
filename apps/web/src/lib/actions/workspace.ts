@@ -9,17 +9,22 @@ import {
   getWorkspaceBySlug,
   getWorkspaceByWsId,
   setUserDefaultWorkspace,
+  updateWorkspaceAvatar,
   updateWorkspaceName,
 } from "@/lib/db/data-access/workspace";
 import {
   CreateWorkspaceSchema,
   DeleteWorkspaceSchema,
   SetUserDefaultWorkspaceSchema,
+  UpdateWorkspaceAvatarSchema,
   UpdateWorkspacerNameSchema,
-} from "../zod/schemas/workspace";
+} from "@/lib/zod/schemas/workspace";
 import { authenticatedProcedure } from "./procedures";
 import { revalidatePath } from "next/cache";
 import { waitUntil } from "@vercel/functions";
+import { isStored, storage } from "@/lib/storage";
+import { generateId } from "@/lib/utils";
+import { updateUserAvatar } from "@/lib/db/data-access/user";
 
 export const setUserDefaultWorkspaceAction = authenticatedProcedure
   .createServerAction()
@@ -91,8 +96,30 @@ export const updateWorkspaceNameAction = authenticatedProcedure
   .input(UpdateWorkspacerNameSchema)
   .handler(async ({ input }) => {
     const { name, workspaceId } = input;
-    console.log('updateWorkspaceNameAction', name, workspaceId)
+    console.log("updateWorkspaceNameAction", name, workspaceId);
     await updateWorkspaceName(workspaceId, name);
     revalidatePath("/");
     return {};
+  });
+
+export const updateWorkspaceAvatarAction = authenticatedProcedure
+  .createServerAction()
+  .input(UpdateWorkspaceAvatarSchema)
+  .handler(async ({ input, ctx }) => {
+    const { image, workspaceId } = input;
+    const ws = await getWorkspaceByWsId(workspaceId);
+    if (!ws) {
+      throw new ZSAError("NOT_FOUND", "Workspace not found");
+    }
+
+    const { url } = await storage.upload(`ws-avatars/${generateId()}`, image);
+    await updateWorkspaceAvatar(workspaceId, url);
+    waitUntil(
+      (async () => {
+        if (ws.avatarUrl && isStored(ws.avatarUrl)) {
+          await storage.delete(ws.avatarUrl);
+        }
+      })()
+    );
+    revalidatePath("/");
   });
