@@ -20,7 +20,7 @@ const code = z
   .max(6);
 
 const cfTurnstileResponse = DISABLE_CLOUDFLARE_TURNSTILE
-  ? z.string().optional()
+  ? z.nullable(z.string().optional())
   : z.string().min(1, "Please complete the challenge.");
 
 export const EmptySchema = z.object({});
