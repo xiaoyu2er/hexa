@@ -4,7 +4,9 @@ import { MaxWidth } from "@hexa/ui/max-width";
 import { Suspense } from "react";
 import { CardSkeleton } from "@hexa/ui/card-skeleton";
 
-export default function () {
+export const dynamic = "force-dynamic";
+
+export default  function () {
   return (
     <main className="min-h-[calc(100vh-16px)]">
       <div className="flex h-36 items-center border-b">
