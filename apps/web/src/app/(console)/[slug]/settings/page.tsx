@@ -7,6 +7,9 @@ import { getWorkspaceBySlug } from "@/lib/db/data-access/workspace";
 
 export default async function ({ params }: { params: { slug: string } }) {
   const ws = await getWorkspaceBySlug(params.slug);
+  if (!ws) {
+    return <div>Workspace not found</div>;
+  }
   return (
     <>
       <EditWorkspaceName ws={ws!} />
