@@ -40,8 +40,11 @@ import {
 } from "@/lib/zod/schemas/workspace";
 import { deleteWorkspaceAction } from "@/lib/actions/workspace";
 import { useRouter } from "next/navigation";
+import { queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
-export function DeleteWorkspace({ ws }: { ws: WorkspaceModel }) {
+export function DeleteWorkspace({ slug }: { slug: string }) {
+  const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
   const router = useRouter();
   const form = useForm<DeleteWorkspaceInput>({
     resolver: zodResolver(DeleteWorkspaceSchema),

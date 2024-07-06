@@ -24,13 +24,15 @@ import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
 import { updateWorkspaceNameAction } from "@/lib/actions/workspace";
-import { WorkspaceModel } from "@/lib/db/schema";
 import {
   UpdateWorkspaceNameInput,
   UpdateWorkspacerNameSchema,
 } from "@/lib/zod/schemas/workspace";
+import { queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
-export function EditWorkspaceName({ ws }: { ws: WorkspaceModel }) {
+export function EditWorkspaceName({ slug }: { slug: string }) {
+  const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
   const form = useForm<Pick<UpdateWorkspaceNameInput, "name">>({
     resolver: zodResolver(UpdateWorkspacerNameSchema.pick({ name: true })),
     defaultValues: useMemo(() => {

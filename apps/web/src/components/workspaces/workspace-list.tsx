@@ -1,24 +1,17 @@
-"use server";
+"use client";
 
-import { validateRequest } from "@/lib/auth";
-import { getWorkspacesByUserId } from "@/lib/db/data-access/workspace";
 import NoWorkspaces from "./no-workspaces";
 import { WorkspaceCard } from "./workspace-card";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { queryWorkspacesOptions } from "@/lib/queries/workspace";
 
-export const WorkspaceList = async () => {
-  const { user } = await validateRequest();
-  if (!user) {
-    return null;
-  }
-
-  const list = await getWorkspacesByUserId(user.id);
-
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+export const WorkspaceList = () => {
+  const { data: workspaces } = useSuspenseQuery(queryWorkspacesOptions);
   return (
     <>
-      {list.length > 0 ? (
+      {workspaces.length > 0 ? (
         <div className="flex gap-5 flex-wrap">
-          {list.map((w) => {
+          {workspaces.map((w) => {
             return <WorkspaceCard key={w.id} workspace={w}></WorkspaceCard>;
           })}
         </div>

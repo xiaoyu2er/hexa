@@ -3,20 +3,15 @@ import { EditWorkspaceName } from "@/components/workspace-settings/edit-workspac
 import { EditWorkspaceSlug } from "@/components/workspace-settings/edit-workspace-slug";
 import { UploadWorkspaceAvatar } from "@/components/workspace-settings/upload-workspace-avatar";
 import { WorkspaceId } from "@/components/workspace-settings/workspace-id";
-import { getWorkspaceBySlug } from "@/lib/db/data-access/workspace";
 
-export default async function ({ params }: { params: { slug: string } }) {
-  const ws = await getWorkspaceBySlug(params.slug);
-  if (!ws) {
-    return <div>Workspace not found</div>;
-  }
+export default function ({ params: {slug} }: { params: { slug: string } }) {
   return (
     <>
-      <EditWorkspaceName ws={ws!} />
-      <EditWorkspaceSlug ws={ws!} />
-      <UploadWorkspaceAvatar ws={ws!} />
-      <WorkspaceId ws={ws!} />
-      <DeleteWorkspace ws={ws!} />
+      <EditWorkspaceName slug={slug} />
+      <EditWorkspaceSlug slug={slug} />
+      <UploadWorkspaceAvatar slug={slug} />
+      <WorkspaceId slug={slug} />
+      <DeleteWorkspace slug={slug} />
     </>
   );
 }

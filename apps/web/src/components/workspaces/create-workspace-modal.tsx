@@ -31,6 +31,7 @@ import { createWorkspaceAction } from "@/lib/actions/workspace";
 import { useBoolean } from "usehooks-ts";
 import { FormErrorMessage } from "@hexa/ui/form-error-message";
 import { ReactNode } from "react";
+import { getQueryClient } from "@/providers/get-query-client";
 
 export function CreateWorkspaceModal({ children }: { children: ReactNode }) {
   const { value: isOpen, setFalse: close, setValue: setOpen } = useBoolean();
@@ -69,6 +70,10 @@ export function CreateWorkspaceModal({ children }: { children: ReactNode }) {
     onSuccess: () => {
       toast.success("Workspace created successfully");
       close();
+      const client = getQueryClient();
+      client.invalidateQueries({
+        queryKey: ["workspaces"]
+      });
     },
   });
 

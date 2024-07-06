@@ -1,8 +1,8 @@
 "use client";
 
 import { logoutAction } from "@/lib/actions/logout";
+import { queryUserOptions } from "@/lib/queries/user";
 import { getAvatarFallbackUrl } from "@/lib/user";
-import { useSession } from "@/providers/session-provider";
 import { Avatar, AvatarImage, AvatarFallback } from "@hexa/ui/avatar";
 import { Button } from "@hexa/ui/button";
 import {
@@ -14,11 +14,12 @@ import {
   DropdownMenuTrigger,
 } from "@hexa/ui/dropdown-menu";
 import { Settings, LogOut } from "@hexa/ui/icons";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useServerAction } from "zsa-react";
 
 export function UserAccountNav() {
-  const { user } = useSession();
+  const { data: user } = useSuspenseQuery(queryUserOptions);
   const { execute: execLogout, isPending } = useServerAction(logoutAction);
 
   return (

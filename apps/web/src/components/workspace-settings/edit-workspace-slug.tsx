@@ -24,14 +24,16 @@ import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
 import { updateWorkspaceSlugAction } from "@/lib/actions/workspace";
-import { WorkspaceModel } from "@/lib/db/schema";
 import {
   UpdateWorkspaceSlugInput,
   UpdateWorkspaceSlugSchema,
 } from "@/lib/zod/schemas/workspace";
 import { useRouter } from "next/navigation";
+import { queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
-export function EditWorkspaceSlug({ ws }: { ws: WorkspaceModel }) {
+export function EditWorkspaceSlug({ slug }: { slug: string }) {
+  const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
   const router = useRouter();
   const form = useForm<Omit<UpdateWorkspaceSlugInput, "workspaceId">>({
     resolver: zodResolver(
