@@ -93,8 +93,21 @@ export const clearWorkspaceAsDefault = async (workspaceId: string) => {
 };
 
 export async function updateWorkspaceName(id: string, name: string) {
-  await db
-    .update(workspaceTable)
-    .set({ name })
-    .where(eq(workspaceTable.id, id));
+  return (
+    await db
+      .update(workspaceTable)
+      .set({ name })
+      .where(eq(workspaceTable.id, id))
+      .returning()
+  )[0];
+}
+
+export async function updateWorkspaceAvatar(id: string, avatarUrl: string) {
+  return (
+    await db
+      .update(workspaceTable)
+      .set({ avatarUrl })
+      .where(eq(workspaceTable.id, id))
+      .returning()
+  )[0];
 }
