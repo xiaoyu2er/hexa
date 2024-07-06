@@ -8,13 +8,14 @@ import { ThemeProvider } from "next-themes";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Analytics } from "@/components/analytics";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { QueryClientProvider } from "@/providers/query-client-provider";
 
 export const metadata: Metadata = {
   title: "Hexa",
   description: "Infinite Possibilities with a Single Link",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -22,14 +23,17 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={cn(satoshi.variable, inter.variable)}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+        <QueryClientProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+        </QueryClientProvider>
+
         <Toaster richColors />
         <TailwindIndicator />
         <Analytics />
