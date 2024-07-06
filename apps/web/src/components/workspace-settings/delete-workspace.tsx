@@ -43,7 +43,7 @@ import { deleteWorkspaceAction } from "@/lib/actions/workspace";
 import { useRouter } from "next/navigation";
 
 export function DeleteWorkspace({ ws }: { ws: WorkspaceModel }) {
-  const router=  useRouter();
+  const router = useRouter();
   const form = useForm<DeleteWorkspaceInput>({
     resolver: zodResolver(DeleteWorkspaceSchema),
     defaultValues: {
@@ -84,10 +84,10 @@ export function DeleteWorkspace({ ws }: { ws: WorkspaceModel }) {
   return (
     <Card className="border border-red-600">
       <CardHeader>
-        <CardTitle>Delete Account</CardTitle>
+        <CardTitle>Delete Workspace</CardTitle>
         <CardDescription>
-          Permanently delete your {process.env.NEXT_PUBLIC_APP_NAME} account,
-          and their respective stats. This action cannot be undone - please
+          Permanently delete your {process.env.NEXT_PUBLIC_APP_NAME} workspace,
+          and it's respective stats. This action cannot be undone - please
           proceed with caution.
         </CardDescription>
       </CardHeader>
@@ -95,7 +95,7 @@ export function DeleteWorkspace({ ws }: { ws: WorkspaceModel }) {
         <Dialog>
           <DialogTrigger asChild>
             <Button type="submit" variant="destructive" className="shrink-0">
-              Delete Account
+              Delete Workspace
             </Button>
           </DialogTrigger>
 
@@ -107,27 +107,20 @@ export function DeleteWorkspace({ ws }: { ws: WorkspaceModel }) {
                 className="space-y-4"
               >
                 <DialogHeader>
-                  <DialogTitle>Delete Account</DialogTitle>
+                  <DialogTitle>Delete Workspace</DialogTitle>
                   <DialogDescription>
-                    Warning: Permanently delete your
-                    {process.env.NEXT_PUBLIC_APP_NAME} workspace, and their
-                    respective stats. This action cannot be undone - please
-                    proceed with caution.
+                    Permanently delete your {process.env.NEXT_PUBLIC_APP_NAME}{" "}
+                    workspace, and it's respective stats. This action cannot be
+                    undone - please proceed with caution.
                   </DialogDescription>
                 </DialogHeader>
 
                 <FormField
                   control={form.control}
-                  name="confirm"
+                  name="workspaceId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>
-                        To verify, type{" "}
-                        <span className="font-bold">
-                          {DELETE_WORKSPACE_CONFIRMATION}
-                        </span>{" "}
-                        below
-                      </FormLabel>
+                      <FormLabel>You workspace Id</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
@@ -141,10 +134,16 @@ export function DeleteWorkspace({ ws }: { ws: WorkspaceModel }) {
 
                 <FormField
                   control={form.control}
-                  name="workspaceId"
+                  name="confirm"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>You workspace Id</FormLabel>
+                      <FormLabel>
+                        To verify, type{" "}
+                        <span className="font-bold">
+                          {DELETE_WORKSPACE_CONFIRMATION}
+                        </span>{" "}
+                        below
+                      </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
