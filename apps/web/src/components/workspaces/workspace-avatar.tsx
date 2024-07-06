@@ -1,5 +1,5 @@
 import { WorkspaceModel } from "@/lib/db";
-import { getAvatarFallbackUrl } from "@/lib/workspace";
+import { getWorkspaceAvatarFallbackUrl } from "@/lib/workspace";
 import { Avatar, AvatarImage, AvatarFallback } from "@hexa/ui/avatar";
 import { cn } from "@hexa/utils";
 
@@ -19,7 +19,7 @@ export function WorkspaceAvatar({
       <AvatarFallback delayMs={200}>
         <Avatar>
           <AvatarImage
-            src={getAvatarFallbackUrl(workspace)}
+            src={getWorkspaceAvatarFallbackUrl(workspace)}
             alt={workspace?.name || "WS"}
           />
         </Avatar>
