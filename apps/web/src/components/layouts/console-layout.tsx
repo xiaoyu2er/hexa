@@ -1,10 +1,12 @@
+"use client";
+
 import { ModeToggle } from "@/components/header/mode-toggle";
 import Link from "next/link";
 import { ReactNode, Suspense } from "react";
 import { UserAccountNav } from "@/components/user-account-nav";
 import { MaxWidth } from "@hexa/ui/max-width";
 import { NavLogo } from "@hexa/ui/nav-logo";
-import { WorkspaceSwitcherServer } from "@/components/workspaces/workspace-switcher-server";
+import { WorkspaceSwitcher } from "@/components/workspaces/workspace-switcher";
 import { Skeleton } from "@hexa/ui/skeleton";
 import NavTabs from "./nav-tabs";
 
@@ -19,12 +21,14 @@ export function ConsoleLayout({ children }: { children: ReactNode }) {
                 <NavLogo />
               </Link>
               <Suspense fallback={<Skeleton className="h-4 w-[250px]" />}>
-                <WorkspaceSwitcherServer />
+                <WorkspaceSwitcher />
               </Suspense>
             </div>
             <div className="flex items-center space-x-6">
               <ModeToggle />
-              <UserAccountNav />
+              <Suspense fallback={<Skeleton className="h-8 w-8" />}>
+                <UserAccountNav />
+              </Suspense>
             </div>
           </div>
           <NavTabs />

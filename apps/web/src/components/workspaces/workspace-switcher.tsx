@@ -16,18 +16,15 @@ import { setUserDefaultWorkspaceAction } from "@/lib/actions/workspace";
 import { toast } from "@hexa/ui/sonner";
 import { useRouter } from "next/navigation";
 import { useBoolean } from "usehooks-ts";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { queryUserOptions } from "@/lib/queries/user";
+import { queryWorkspacesOptions } from "@/lib/queries/workspace";
 
-export function WorkspaceSwitcher({
-  list,
-  className,
-  defaultWsId,
-}: {
-  defaultWsId: string | null | undefined;
-  className?: string;
-  list: WorkspaceModel[];
-}) {
+export function WorkspaceSwitcher() {
+  const { data: user } = useSuspenseQuery(queryUserOptions);
+  const { data: workspaces } = useSuspenseQuery(queryWorkspacesOptions);
   const { value: isPopoverOpen, setValue: setPopoverOpen } = useBoolean();
-  const defaultWs = list.find((ws) => ws.id === defaultWsId);
+  const defaultWs = workspaces.find((ws) => ws.id === user.defaultWorkspaceId);
   const router = useRouter();
   const { execute } = useServerAction(setUserDefaultWorkspaceAction, {
     onSuccess({ data }) {
@@ -36,7 +33,7 @@ export function WorkspaceSwitcher({
       } = data;
       toast.success("Workspace switched");
       setPopoverOpen(false);
-      router.replace(`/${slug}`);
+      router.push(`/${slug}`);
     },
     onError({ err }) {
       toast.error("Failed to switch workspace" + err.message);
@@ -50,10 +47,7 @@ export function WorkspaceSwitcher({
           role="combobox"
           aria-expanded={isPopoverOpen}
           aria-label="Select a team"
-          className={cn(
-            "justify-between h-10 border-0 gap-3 max-w-80",
-            className,
-          )}
+          className={cn("justify-between h-10 border-0 gap-3 max-w-80")}
         >
           {defaultWs ? (
             <>
@@ -80,20 +74,20 @@ export function WorkspaceSwitcher({
           </p>
         </div>
 
-        {list.map((workspace) => (
+        {workspaces.map((ws) => (
           <Button
             variant="ghost"
             className="w-full h-11 justify-start"
             onClick={() => {
-              execute({ workspaceId: workspace.id });
+              execute({ workspaceId: ws.id });
             }}
           >
-            <WorkspaceAvatar workspace={workspace} className="mr-2 h-6 w-6 " />
+            <WorkspaceAvatar workspace={ws} className="mr-2 h-6 w-6 " />
             <span className="text-left w-full shrink text-nowrap text-ellipsis overflow-hidden">
-              {workspace.name}
+              {ws.name}
             </span>
 
-            {workspace.id === defaultWsId ? (
+            {ws.id === user.defaultWorkspaceId ? (
               <CheckIcon className={cn("ml-2 h-6 w-6")} />
             ) : null}
           </Button>

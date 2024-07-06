@@ -1,7 +1,6 @@
 "use client";
 
 import { FileUpload } from "@hexa/ui/file-upload";
-import { useSession } from "@/providers/session-provider";
 import { useEffect, useState } from "react";
 import { toast } from "@hexa/ui/sonner";
 import { getWorkspaceAvatarFallbackUrl } from "@/lib/workspace";
@@ -28,11 +27,14 @@ import {
   UpdateWorkspaceAvatarInput,
   UpdateWorkspaceAvatarSchema,
 } from "@/lib/zod/schemas/workspace";
-import { WorkspaceModel } from "@/lib/db/schema";
 import { updateWorkspaceAvatarAction } from "@/lib/actions/workspace";
+import { queryUserOptions } from "@/lib/queries/user";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
 
-export function UploadWorkspaceAvatar({ ws }: { ws: WorkspaceModel }) {
-  const { user } = useSession();
+export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
+  const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
+  const { data: user } = useSuspenseQuery(queryUserOptions);
 
   const form = useForm<Omit<UpdateWorkspaceAvatarInput, "workspaceId">>({
     resolver: zodResolver(

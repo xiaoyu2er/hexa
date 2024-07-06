@@ -10,9 +10,11 @@ import {
 } from "@hexa/ui/card";
 import { Input } from "@hexa/ui/input";
 import { CopyButton } from "@hexa/ui/copy-button";
-import { WorkspaceModel } from "@/lib/db";
+import { queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
-export async function WorkspaceId({ ws }: { ws: WorkspaceModel }) {
+export async function WorkspaceId({ slug }: { slug: string }) {
+  const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
   return (
     <Card x-chunk="dashboard-04-chunk-1">
       <CardHeader>

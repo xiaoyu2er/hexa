@@ -1,7 +1,6 @@
 "use client";
 
 import { FileUpload } from "@hexa/ui/file-upload";
-import { useSession } from "@/providers/session-provider";
 import { useEffect, useState } from "react";
 import { toast } from "@hexa/ui/sonner";
 import { getAvatarFallbackUrl } from "@/lib/user";
@@ -26,9 +25,11 @@ import {
   FormItem,
   FormMessage,
 } from "@hexa/ui/form";
+import { queryUserOptions } from "@/lib/queries/user";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 export default function UploadAvatar() {
-  const { user } = useSession();
+  const { data: user } = useSuspenseQuery(queryUserOptions);
 
   const form = useForm<UpdateAvatarInput>({
     resolver: zodResolver(UpdateAvatarSchema),
@@ -52,7 +53,7 @@ export default function UploadAvatar() {
   });
 
   const [avatarUrl, setAvatarUrl] = useState<string | null | undefined>(
-    user?.avatarUrl,
+    user?.avatarUrl
   );
 
   useEffect(() => {

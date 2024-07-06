@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession } from "@/providers/session-provider";
 import { updateUserNameAction } from "@/lib/actions/user";
 import {
   UpdateUserNameInput,
@@ -29,9 +28,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
+import { queryUserOptions } from "@/lib/queries/user";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 export function EditName() {
-  const { user } = useSession();
+  const { data: user } = useSuspenseQuery(queryUserOptions);
 
   const form = useForm<UpdateUserNameInput>({
     resolver: zodResolver(UpdateUserNameSchema),
