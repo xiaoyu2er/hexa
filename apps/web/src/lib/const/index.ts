@@ -33,6 +33,7 @@ export const PUBLIC_URL =
           : process.env.VERCEL_BRANCH_URL
       }`;
 
+// we enable turnstile when we have the site key
+// we don't use process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY because client can't access it
 export const DISABLE_CLOUDFLARE_TURNSTILE =
-  !process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY ||
-  !process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY;
+  !process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY;
