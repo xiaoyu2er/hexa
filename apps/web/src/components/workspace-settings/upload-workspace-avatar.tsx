@@ -4,7 +4,7 @@ import { FileUpload } from "@hexa/ui/file-upload";
 import { useSession } from "@/providers/session-provider";
 import { useEffect, useState } from "react";
 import { toast } from "@hexa/ui/sonner";
-import { getAvatarFallbackUrl } from "@/lib/workspace";
+import { getWorkspaceAvatarFallbackUrl } from "@/lib/workspace";
 import { LoadingButton } from "@hexa/ui/loading-button";
 import {
   Card,
@@ -63,7 +63,7 @@ export function UploadWorkspaceAvatar({ ws }: { ws: WorkspaceModel }) {
 
   useEffect(() => {
     console.log("ws updated", ws);
-    setAvatarUrl(ws.avatarUrl ?? getAvatarFallbackUrl(ws));
+    setAvatarUrl(ws.avatarUrl ?? getWorkspaceAvatarFallbackUrl(ws));
   }, [ws]);
 
   return (
