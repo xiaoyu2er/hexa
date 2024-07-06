@@ -61,4 +61,5 @@ export {
   ArrowLeftIcon,
   GitHubLogoIcon,
   SlashIcon,
+  CaretSortIcon,
 } from "@radix-ui/react-icons";
