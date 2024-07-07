@@ -92,7 +92,6 @@ export function EditWorkspaceName({ slug }: { slug: string }) {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input {...field} className="max-w-md" />
                   </FormControl>
