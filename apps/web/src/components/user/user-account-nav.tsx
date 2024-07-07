@@ -2,8 +2,6 @@
 
 import { logoutAction } from "@/lib/actions/logout";
 import { queryUserOptions } from "@/lib/queries/user";
-import { getAvatarFallbackUrl } from "@/lib/user";
-import { Avatar, AvatarImage, AvatarFallback } from "@hexa/ui/avatar";
 import { Button } from "@hexa/ui/button";
 import {
   DropdownMenu,
@@ -17,7 +15,7 @@ import { Settings, LogOut } from "@hexa/ui/icons";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useServerAction } from "zsa-react";
-import { UserAvatar } from "./user-avatar";
+import { UserAvatar } from "@/components/user/user-avatar";
 
 export function UserAccountNav() {
   const { data: user } = useSuspenseQuery(queryUserOptions);
