@@ -64,7 +64,7 @@ export function WorkspaceSwitcher() {
             role="combobox"
             aria-expanded={isPopoverOpen}
             aria-label="Select a team"
-            className={cn("justify-between h-10 border-0 gap-3 max-w-80")}
+            className={cn("justify-between h-10 border-0 gap-3 max-w-72")}
           >
             {defaultWs ? (
               <>
