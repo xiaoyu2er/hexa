@@ -3,6 +3,7 @@ import {
   getWorkspaceBySlugAction,
   getWorkspacesAction,
 } from "@/lib/actions/workspace";
+import { getQueryClient } from "@/providers/get-query-client";
 
 export const queryWorkspacesOptions = queryOptions({
   queryKey: ["workspaces"],
@@ -16,6 +17,13 @@ export const queryWorkspacesOptions = queryOptions({
   },
 });
 
+export const invalidateWorkspacesQuery = () => {
+  const client = getQueryClient();
+  client.invalidateQueries({
+    queryKey: ["workspaces"],
+  });
+};
+
 export const queryWorkspaceBySlugOptions = (slug: string) =>
   queryOptions({
     queryKey: ["workspace/slug/", slug],
@@ -28,3 +36,10 @@ export const queryWorkspaceBySlugOptions = (slug: string) =>
       return res.workspace;
     },
   });
+
+export const invalidateWorkspaceBySlugQuery = (slug: string) => {
+  const client = getQueryClient();
+  client.invalidateQueries({
+    queryKey: ["workspace/slug/", slug],
+  });
+};

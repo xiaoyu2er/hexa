@@ -30,7 +30,7 @@ import {
 import { updateWorkspaceAvatarAction } from "@/lib/actions/workspace";
 import { queryUserOptions } from "@/lib/queries/user";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
+import { invalidateWorkspaceBySlugQuery, invalidateWorkspacesQuery, queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
 
 export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
   const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
@@ -46,7 +46,6 @@ export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
     handleSubmit,
     setError,
     formState: { isSubmitting },
-    reset,
   } = form;
 
   const { execute } = useServerAction(updateWorkspaceAvatarAction, {
@@ -55,7 +54,8 @@ export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
     },
     onSuccess: () => {
       toast.success("Successfully updated the workspace's avatar image!");
-      reset();
+      invalidateWorkspaceBySlugQuery(slug);
+      invalidateWorkspacesQuery();
     },
   });
 

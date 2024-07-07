@@ -28,7 +28,7 @@ import {
   UpdateWorkspaceNameInput,
   UpdateWorkspacerNameSchema,
 } from "@/lib/zod/schemas/workspace";
-import { queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
+import { invalidateWorkspaceBySlugQuery, invalidateWorkspacesQuery, queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 export function EditWorkspaceName({ slug }: { slug: string }) {
@@ -62,6 +62,9 @@ export function EditWorkspaceName({ slug }: { slug: string }) {
     onSuccess: () => {
       toast.success("The workspace name has been updated");
       reset();
+      invalidateWorkspaceBySlugQuery(slug);
+      invalidateWorkspacesQuery();
+      invalidateWorkspacesQuery();
     },
   });
   return (

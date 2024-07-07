@@ -27,6 +27,7 @@ import {
 import { createWorkspaceAction } from "@/lib/actions/workspace";
 import { FormErrorMessage } from "@hexa/ui/form-error-message";
 import { getQueryClient } from "@/providers/get-query-client";
+import { invalidateWorkspacesQuery } from "@/lib/queries/workspace";
 
 export interface CreateWorkspaceFormProps {
   onSuccess?: () => void;
@@ -67,10 +68,7 @@ export function CreateWorkspaceForm({ onSuccess }: CreateWorkspaceFormProps) {
     onSuccess: () => {
       toast.success("Workspace created successfully");
       onSuccess?.();
-      const client = getQueryClient();
-      client.invalidateQueries({
-        queryKey: ["workspaces"],
-      });
+      invalidateWorkspacesQuery();
     },
   });
 

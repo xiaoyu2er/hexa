@@ -40,7 +40,7 @@ import {
 } from "@/lib/zod/schemas/workspace";
 import { deleteWorkspaceAction } from "@/lib/actions/workspace";
 import { useRouter } from "next/navigation";
-import { queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
+import { invalidateWorkspacesQuery, queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 export function DeleteWorkspace({ slug }: { slug: string }) {
@@ -79,6 +79,7 @@ export function DeleteWorkspace({ slug }: { slug: string }) {
     },
     onSuccess: () => {
       toast.success("Account deleted successfully");
+      invalidateWorkspacesQuery();
       router.replace("/workspaces");
     },
   });
