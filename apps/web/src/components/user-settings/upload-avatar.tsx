@@ -27,6 +27,7 @@ import {
 } from "@hexa/ui/form";
 import { queryUserOptions } from "@/lib/queries/user";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { getQueryClient } from "@/providers/get-query-client";
 
 export default function UploadAvatar() {
   const { data: user } = useSuspenseQuery(queryUserOptions);
@@ -49,6 +50,10 @@ export default function UploadAvatar() {
     onSuccess: () => {
       toast.success("Successfully updated your profile picture!");
       reset();
+      const client = getQueryClient();
+      client.invalidateQueries({
+        queryKey: ["user"],
+      });
     },
   });
 

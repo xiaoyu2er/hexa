@@ -17,6 +17,7 @@ import { Settings, LogOut } from "@hexa/ui/icons";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useServerAction } from "zsa-react";
+import { UserAvatar } from "./user-avatar";
 
 export function UserAccountNav() {
   const { data: user } = useSuspenseQuery(queryUserOptions);
@@ -26,20 +27,7 @@ export function UserAccountNav() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="secondary" size="icon" className="rounded-full">
-          <Avatar className="h-8 w-8">
-            <AvatarImage
-              src={user?.avatarUrl!}
-              alt={user?.name || "User Profile Picture"}
-            />
-            <AvatarFallback delayMs={200}>
-              <Avatar>
-                <AvatarImage
-                  src={getAvatarFallbackUrl(user)}
-                  alt={user?.name || "User Fallback Profile Picture"}
-                />
-              </Avatar>
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar className="h-8 w-8" user={user} />
           <span className="sr-only">Toggle user menu</span>
         </Button>
       </DropdownMenuTrigger>

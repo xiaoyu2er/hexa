@@ -18,10 +18,13 @@ import { useParams, useRouter } from "next/navigation";
 import { useBoolean } from "usehooks-ts";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { queryWorkspacesOptions } from "@/lib/queries/workspace";
+import { queryUserOptions } from "@/lib/queries/user";
+import { UserAvatar } from "@/components/user-avatar";
 
 export function WorkspaceSwitcher() {
   const { slug } = useParams() as { slug: string };
   const { data: workspaces } = useSuspenseQuery(queryWorkspacesOptions);
+  const { data: user } = useSuspenseQuery(queryUserOptions);
   const { value: isPopoverOpen, setValue: setPopoverOpen } = useBoolean();
   const defaultWs = workspaces.find((ws) => ws.slug === slug);
   const router = useRouter();
@@ -61,7 +64,13 @@ export function WorkspaceSwitcher() {
               <Badge className="!mt-0">Plan</Badge>
             </>
           ) : (
-            "Select a workspace"
+            <>
+              <UserAvatar className="h-8 w-8" user={user} />
+              <span className="text-left w-2/3 text-nowrap text-ellipsis overflow-hidden">
+                {user.name}
+              </span>
+              <Badge className="!mt-0">Plan</Badge>
+            </>
           )}
           <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
         </Button>
