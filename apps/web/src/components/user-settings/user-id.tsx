@@ -29,7 +29,7 @@ export function UserId() {
         <Input
           type="text"
           value={user?.id}
-          className="max-w-md"
+          className="w-full md:max-w-md"
           onClick={() => {}}
         />
         <CopyButton className="relative right-9" value={user.id} />
