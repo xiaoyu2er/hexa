@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={cn(satoshi.variable, inter.variable)}>
         <QueryClientProvider>
           <ThemeProvider
@@ -31,13 +31,12 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
+            <Toaster richColors />
+            <TailwindIndicator />
+            <Analytics />
+            <SpeedInsights />
           </ThemeProvider>
         </QueryClientProvider>
-
-        <Toaster richColors />
-        <TailwindIndicator />
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );
