@@ -21,12 +21,26 @@ import { queryWorkspacesOptions } from "@/lib/queries/workspace";
 import { queryUserOptions } from "@/lib/queries/user";
 import { UserAvatar } from "@/components/user-avatar";
 import Link from "next/link";
+import { Dialog, DialogContent } from "@hexa/ui/dialog";
+import { CreateWorkspaceForm } from "./create-workspace-form";
 
 export function WorkspaceSwitcher() {
   const { slug } = useParams() as { slug?: string };
   const { data: workspaces } = useSuspenseQuery(queryWorkspacesOptions);
   const { data: user } = useSuspenseQuery(queryUserOptions);
-  const { value: isPopoverOpen, setValue: setPopoverOpen } = useBoolean();
+  const {
+    value: isPopoverOpen,
+    setValue: setPopoverOpen,
+    setFalse: closePopover,
+  } = useBoolean();
+
+  const {
+    value: isDialogOpen,
+    setValue: setDialogOpen,
+    setFalse: closeDialog,
+    setTrue: openDialog,
+  } = useBoolean();
+
   const defaultWs = workspaces.find((ws) => ws.slug === slug);
   const router = useRouter();
   const { execute } = useServerAction(setUserDefaultWorkspaceAction, {
@@ -43,6 +57,7 @@ export function WorkspaceSwitcher() {
     },
   });
   return (
+    <>
     <Popover open={isPopoverOpen} onOpenChange={setPopoverOpen}>
       <PopoverTrigger asChild>
         <Button
@@ -104,13 +119,20 @@ export function WorkspaceSwitcher() {
           </Button>
         ))}
 
-        <CreateWorkspaceModal>
-          <Button variant="ghost" className="w-full h-11">
-            <PlusCircledIcon className="mr-2 h-6 w-6" />
-            <span className="grow text-left">Create workspace</span>
-          </Button>
-        </CreateWorkspaceModal>
+        <Button variant="ghost" className="w-full h-11" onClick={() => {
+          closePopover();
+          openDialog();
+        }}>
+          <PlusCircledIcon className="mr-2 h-6 w-6" />
+          <span className="grow text-left">Create workspace</span>
+        </Button>
       </PopoverContent>
     </Popover>
+    <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
+      <DialogContent className="sm:max-w-[425px]">
+        <CreateWorkspaceForm onSuccess={closeDialog} />
+      </DialogContent>
+    </Dialog>
+    </>
   );
 }
