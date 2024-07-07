@@ -1,7 +1,7 @@
 import { WorkspaceModel } from "./db";
 
 export const getWorkspaceAvatarFallbackUrl = (ws: WorkspaceModel | null) => {
-  return `https://api.dicebear.com/9.x/icons/svg?seed=${ws?.name}`;
+  return `https://api.dicebear.com/9.x/icons/svg?seed=${ws?.id}`;
 };
 
 export const getWorkspaceAvatarFallbackName = (ws: WorkspaceModel | null) => {
