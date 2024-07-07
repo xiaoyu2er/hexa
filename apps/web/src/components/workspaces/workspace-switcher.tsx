@@ -84,7 +84,6 @@ export function WorkspaceSwitcher() {
                 <span className="text-left w-2/3 text-nowrap text-ellipsis overflow-hidden">
                   {user.name}
                 </span>
-                <Badge className="!mt-0">Plan</Badge>
               </>
             )}
             <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
@@ -94,7 +93,7 @@ export function WorkspaceSwitcher() {
           <div className="space-y-2 p-4 flex justify-between items-center">
             <p className="text-sm text-muted-foreground">My workspaces</p>
 
-            <Button size="sm" variant="outline" asChild onClick={closePopover}>
+            <Button size="sm" variant="outline" asChild onClick={closePopover} className="!mt-0 !h-7">
               <Link href="/workspaces">View All</Link>
             </Button>
           </div>
