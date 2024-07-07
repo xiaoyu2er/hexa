@@ -95,7 +95,7 @@ export function WorkspaceSwitcher() {
         <div className="space-y-2 p-4 flex justify-between items-center">
           <p className="text-sm text-muted-foreground">My workspaces</p>
 
-          <Button size="sm" variant="outline" asChild>
+          <Button size="sm" variant="outline" asChild onClick={closePopover}>
             <Link href="/workspaces">View All</Link>
           </Button>
         </div>
