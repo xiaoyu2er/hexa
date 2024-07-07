@@ -58,7 +58,7 @@ export const DeleteWorkspaceSchema = z.object({
     .string()
     .refine(
       (v) => v === DELETE_WORKSPACE_CONFIRMATION,
-      `Please type '${DELETE_WORKSPACE_CONFIRMATION}' to delete your workspace.`
+      `Please type '${DELETE_WORKSPACE_CONFIRMATION}' to delete your workspace.`,
     ),
   workspaceId,
 });

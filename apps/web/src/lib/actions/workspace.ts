@@ -96,7 +96,7 @@ export const createWorkspaceAction = authenticatedProcedure
     if (!member) {
       throw new ZSAError(
         "INTERNAL_SERVER_ERROR",
-        "Failed to add workspace member"
+        "Failed to add workspace member",
       );
     }
 
@@ -157,7 +157,7 @@ export const updateWorkspaceAvatarAction = authenticatedProcedure
         if (ws.avatarUrl && isStored(ws.avatarUrl)) {
           await storage.delete(ws.avatarUrl);
         }
-      })()
+      })(),
     );
     revalidatePath("/");
   });

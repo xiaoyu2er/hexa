@@ -80,6 +80,7 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
       resetTurnstile();
     },
     onSuccess: ({ data }) => {
+      console.log("Forget password success", data);
       onSuccess?.(data);
     },
   });

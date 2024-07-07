@@ -71,7 +71,7 @@ export function EditWorkspaceName({ slug }: { slug: string }) {
           execute({
             ...form,
             workspaceId: ws.id,
-          })
+          }),
         )}
         method="POST"
         className="grid gap-4"

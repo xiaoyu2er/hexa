@@ -7,7 +7,6 @@ const SETTINGS_NAVBARS = [
   },
 ];
 
-
 export default async function ({ children }: { children: React.ReactNode }) {
   return <SettingsLayout navbars={SETTINGS_NAVBARS}>{children}</SettingsLayout>;
 }

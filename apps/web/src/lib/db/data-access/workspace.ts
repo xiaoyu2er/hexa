@@ -10,7 +10,7 @@ import {
 
 export const setUserDefaultWorkspace = async (
   userId: string,
-  workspaceId: string
+  workspaceId: string,
 ) => {
   return (
     await db

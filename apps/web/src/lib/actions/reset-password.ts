@@ -7,18 +7,37 @@ import {
   VerifyResetPasswordCodeSchema,
 } from "@/lib/zod/schemas/auth";
 import { eq } from "drizzle-orm";
-import { chainServerActionProcedures } from "zsa";
-import {
-  addDBToken,
-  sendVerificationCodeEmail,
-  resendVerifyTokenEmail,
-  verifyDBTokenByCode,
-} from "./utils";
+import { ZSAError, chainServerActionProcedures, createServerAction } from "zsa";
 import { redirect } from "next/navigation";
 import { invalidateUserSessions, setSession } from "@/lib/session";
 import { getHash } from "@/lib/utils";
 import { turnstileProcedure } from "./turnstile";
 import { getUserByEmailProcedure } from "./procedures";
+import { User } from "lucia";
+import { PUBLIC_URL } from "@/lib/const";
+import {
+  addDBToken,
+  getTokenByToken,
+  verifyDBTokenByCode,
+} from "@/lib/db/data-access/token";
+import { sendVerifyCodeAndUrlEmail } from "@/lib/emails";
+
+async function updateTokenAndSendVerifyEmail(user: User) {
+  if (!user.email) {
+    throw new ZSAError("INTERNAL_SERVER_ERROR", "User email is missing");
+  }
+  const { code: verificationCode, token } = await addDBToken(
+    user.id,
+    "RESET_PASSWORD",
+  );
+  const url = `${PUBLIC_URL}/reset-password?token=${token}`;
+  const data = await sendVerifyCodeAndUrlEmail(
+    user.email,
+    verificationCode,
+    url,
+  );
+  return data;
+}
 
 export const forgetPasswordAction = chainServerActionProcedures(
   turnstileProcedure,
@@ -26,24 +45,17 @@ export const forgetPasswordAction = chainServerActionProcedures(
 )
   .createServerAction()
   .input(ForgetPasswordSchema)
-  .handler(async ({ input, ctx }) => {
-    const { email } = input;
+  .handler(async ({ ctx }) => {
     const user = ctx.user;
-
-    const { code } = await addDBToken(user.id, "RESET_PASSWORD");
-
-    await sendVerificationCodeEmail(email, code);
-
-    return { email };
+    return await updateTokenAndSendVerifyEmail(user);
   });
 
 export const resendResetPasswordCodeAction = getUserByEmailProcedure
   .createServerAction()
   .input(VerifyResetPasswordCodeSchema.pick({ email: true }))
-  .handler(async ({ input, ctx }) => {
-    const { email } = input;
+  .handler(async ({ ctx }) => {
     const user = ctx.user;
-    return resendVerifyTokenEmail({ id: user.id, email }, "RESET_PASSWORD");
+    return await updateTokenAndSendVerifyEmail(user);
   });
 
 export const verifyResetPasswordCodeAction = getUserByEmailProcedure
@@ -62,25 +74,31 @@ export const verifyResetPasswordCodeAction = getUserByEmailProcedure
     return { token: tokenRow.token };
   });
 
-export const resetPasswordAction = getUserByEmailProcedure
-  .createServerAction()
+export const resetPasswordAction = createServerAction()
   .input(ResetPasswordSchema)
-  .handler(async ({ input, ctx }) => {
+  .handler(async ({ input }) => {
     const { token, password } = input;
-    const user = ctx.user;
-
-    await verifyDBTokenByCode(user, { token }, "RESET_PASSWORD", true);
+    const tokenRow = await getTokenByToken(token, "RESET_PASSWORD");
+    if (!tokenRow) {
+      throw new ZSAError("CONFLICT", "Invalid token");
+    }
+    await verifyDBTokenByCode(
+      { id: tokenRow.userId },
+      { token },
+      "RESET_PASSWORD",
+      true,
+    );
 
     // update the password
     const hashedPassword = await getHash(password);
     await db
       .update(userTable)
       .set({ hashedPassword })
-      .where(eq(userTable.id, user.id));
+      .where(eq(userTable.id, tokenRow.userId));
 
     // invalidate all sessions & update a new sssion
-    await invalidateUserSessions(user.id);
-    await setSession(user.id);
+    await invalidateUserSessions(tokenRow.userId);
+    await setSession(tokenRow.userId);
 
     redirect("/");
   });

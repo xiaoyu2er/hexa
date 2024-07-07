@@ -1,5 +1,3 @@
-import { redirect } from "next/navigation";
-import { validateRequest } from "@/lib/auth/validate-request";
 import { Login } from "./login-form";
 
 export const metadata = {
@@ -7,10 +5,6 @@ export const metadata = {
   description: "Login Page",
 };
 
-export default async function LoginPage() {
-  const { user } = await validateRequest();
-
-  if (user?.emailVerified) redirect("/");
-
+export default function LoginPage() {
   return <Login />;
 }

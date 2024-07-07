@@ -3,7 +3,7 @@
 import Link from "next/link";
 import {
   resendVerifyEmailAction,
-  verifyEmailAction,
+  verifyEmailByCodeAction,
 } from "@/lib/actions/sign-up";
 
 import { useServerAction } from "zsa-react";
@@ -72,7 +72,7 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({
     startCountdown();
   }, []);
 
-  const { execute: execVerify } = useServerAction(verifyEmailAction, {
+  const { execute: execVerify } = useServerAction(verifyEmailByCodeAction, {
     onError: ({ err }) => {
       if (err.code === "INPUT_PARSE_ERROR") {
         Object.entries(err.fieldErrors).forEach(([field, message]) => {

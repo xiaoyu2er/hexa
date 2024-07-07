@@ -113,6 +113,9 @@ importers:
       zsa:
         specifier: ^0.4.0
         version: 0.4.0
+      zsa-openapi:
+        specifier: ^0.3.0
+        version: 0.3.0(openapi-types@12.1.3)(react@19.0.0-rc-f994737d14-20240522)(zod@3.23.8)
       zsa-react:
         specifier: ^0.1.9
         version: 0.1.9
@@ -9923,6 +9926,10 @@ packages:
       is-wsl: 2.2.0
     dev: true
 
+  /openapi-types@12.1.3:
+    resolution: {integrity: sha512-N4YtSYJqghVu4iek2ZUvcN/0aqH1kRDuNqzcycDxhOUpg7GdvLa2F3DgS6yBNhInhv2r/6I0Flkn7CqL8+nIcw==}
+    dev: false
+
   /optionator@0.9.3:
     resolution: {integrity: sha512-JjCoypp+jKn1ttEFExxhetCKeJt9zhAgAve5FXHixTvFDW/5aEktX9bufBKLRRMdU7bNtpLfcGu94B3cdEJgjg==}
     engines: {node: '>= 0.8.0'}
@@ -12419,6 +12426,19 @@ packages:
 
   /zod@3.23.8:
     resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
+    dev: false
+
+  /zsa-openapi@0.3.0(openapi-types@12.1.3)(react@19.0.0-rc-f994737d14-20240522)(zod@3.23.8):
+    resolution: {integrity: sha512-03Xh/LSPsAd6muP7JsTEzZzapHpJNg9WGHNs4dhd6QSVe8OBXVgI0E2YZ5VBQpCIMXRUf6IZwCYPItWCfQ8EGg==}
+    peerDependencies:
+      openapi-types: ^12.1.3
+      react: ^18.0.0 || ^19.0.0
+      zod: ^3.23.5
+    dependencies:
+      openapi-types: 12.1.3
+      react: 19.0.0-rc-f994737d14-20240522
+      zod: 3.23.8
+      zsa: 0.4.0
     dev: false
 
   /zsa-react@0.1.9:
