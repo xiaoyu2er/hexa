@@ -64,7 +64,6 @@ export function EditWorkspaceName({ slug }: { slug: string }) {
       reset();
       invalidateWorkspaceBySlugQuery(slug);
       invalidateWorkspacesQuery();
-      invalidateWorkspacesQuery();
     },
   });
   return (
