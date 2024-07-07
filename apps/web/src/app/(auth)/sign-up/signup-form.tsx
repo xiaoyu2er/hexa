@@ -5,7 +5,7 @@ import { signupAction } from "@/lib/actions/sign-up";
 
 import { useServerAction } from "zsa-react";
 import { useForm } from "react-hook-form";
-import { SignupForm } from "@/lib/zod/schemas/auth";
+import { SignupForm, SignupSchema } from "@/lib/zod/schemas/auth";
 import { APP_TITLE } from "@/lib/const";
 import { FC, useEffect } from "react";
 import { Button } from "@hexa/ui/button";
@@ -31,6 +31,7 @@ import { Input } from "@hexa/ui/input";
 import { LoadingButton } from "@hexa/ui/loading-button";
 import { PasswordInput } from "@hexa/ui/password-input";
 import { useTurnstile } from "@/hooks/use-turnstile";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface SignupProps {
   email: string | null | undefined;
@@ -40,7 +41,7 @@ interface SignupProps {
 
 export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
   const form = useForm<SignupForm>({
-    // resolver: zodResolver(SignupSchema),
+    resolver: zodResolver(SignupSchema),
     defaultValues: {
       email: email ?? "",
       password: "",
