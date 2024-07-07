@@ -6,10 +6,14 @@ import { useParams, usePathname } from "next/navigation";
 export default function NavTabs() {
   const pathname = usePathname();
   const { slug } = useParams() as { slug?: string };
+
+  if (!slug) return null;
+
   const tabs = [
     { name: "Links", href: `/${slug}` },
     { name: "Settings", href: `/${slug}/settings` },
   ];
+
   return (
     <div className="scrollbar-hide mb-[-3px] flex h-12 items-center justify-start space-x-2 overflow-x-auto">
       {tabs.map(({ name, href }) => (
