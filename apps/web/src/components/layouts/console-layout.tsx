@@ -3,7 +3,7 @@
 import { ModeToggle } from "@/components/header/mode-toggle";
 import Link from "next/link";
 import { ReactNode, Suspense } from "react";
-import { UserAccountNav } from "@/components/user-account-nav";
+import { UserAccountNav } from "@/components/user/user-account-nav";
 import { MaxWidth } from "@hexa/ui/max-width";
 import { NavLogo } from "@hexa/ui/nav-logo";
 import { WorkspaceSwitcher } from "@/components/workspaces/workspace-switcher";
