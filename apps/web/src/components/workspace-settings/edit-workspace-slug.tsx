@@ -29,7 +29,7 @@ import {
   UpdateWorkspaceSlugSchema,
 } from "@/lib/zod/schemas/workspace";
 import { useRouter } from "next/navigation";
-import { queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
+import { invalidateWorkspacesQuery, queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 export function EditWorkspaceSlug({ slug }: { slug: string }) {
@@ -57,6 +57,7 @@ export function EditWorkspaceSlug({ slug }: { slug: string }) {
     onSuccess: ({ data }) => {
       const slug = data.workspace?.slug;
       toast.success("The workspace slug has been updated");
+      invalidateWorkspacesQuery();
       router.replace(`/${slug}/settings`);
     },
   });
