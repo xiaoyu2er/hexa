@@ -2,11 +2,9 @@ import { Skeleton } from "@hexa/ui/skeleton";
 
 export default function () {
   return (
-    <div className="flex items-center space-x-4">
-      <div className="space-y-2">
-        <Skeleton className="h-4 w-[250px]" />
-        <Skeleton className="h-4 w-[200px]" />
-      </div>
+    <div className="flex flex-col w-full space-y-4">
+      <Skeleton className="h-8 w-1/2" />
+      <Skeleton className="h-8 w-1/2" />
     </div>
   );
 }
