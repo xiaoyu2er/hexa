@@ -30,6 +30,7 @@ import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
 import { queryUserOptions } from "@/lib/queries/user";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { getQueryClient } from "@/providers/get-query-client";
 
 export function EditName() {
   const { data: user } = useSuspenseQuery(queryUserOptions);
@@ -63,6 +64,10 @@ export function EditName() {
     onSuccess: () => {
       toast.success("Your name has been updated");
       reset();
+      const client = getQueryClient();
+      client.invalidateQueries({
+        queryKey: ["user"],
+      });
     },
   });
   return (
