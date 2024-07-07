@@ -39,25 +39,16 @@ export function EditWorkspaceSlug({ slug }: { slug: string }) {
     resolver: zodResolver(
       UpdateWorkspaceSlugSchema.omit({ workspaceId: true }),
     ),
-    defaultValues: useMemo(() => {
-      return {
-        slug: ws.slug ?? "",
-      };
-    }, [ws]),
+    defaultValues: {
+      slug: ws.slug,
+    },
   });
 
   const {
     handleSubmit,
     setError,
     formState: { isSubmitting, isDirty },
-    reset,
   } = form;
-
-  useEffect(() => {
-    reset({
-      slug: ws?.slug ?? "",
-    });
-  }, [ws]);
 
   const { execute } = useServerAction(updateWorkspaceSlugAction, {
     onError: ({ err }) => {
@@ -66,7 +57,6 @@ export function EditWorkspaceSlug({ slug }: { slug: string }) {
     onSuccess: ({ data }) => {
       const slug = data.workspace?.slug;
       toast.success("The workspace slug has been updated");
-      reset();
       router.replace(`/${slug}/settings`);
     },
   });
