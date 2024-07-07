@@ -28,7 +28,7 @@ export async function WorkspaceId({ slug }: { slug: string }) {
         <Input
           type="text"
           value={ws?.id}
-          className="max-w-md"
+          className="w-full md:max-w-md"
           onClick={() => {}}
         />
         <CopyButton className="relative right-9" value={ws.id} />
