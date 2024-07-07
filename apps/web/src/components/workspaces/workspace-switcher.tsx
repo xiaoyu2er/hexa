@@ -20,9 +20,10 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { queryWorkspacesOptions } from "@/lib/queries/workspace";
 import { queryUserOptions } from "@/lib/queries/user";
 import { UserAvatar } from "@/components/user-avatar";
+import Link from "next/link";
 
 export function WorkspaceSwitcher() {
-  const { slug } = useParams() as { slug: string };
+  const { slug } = useParams() as { slug?: string };
   const { data: workspaces } = useSuspenseQuery(queryWorkspacesOptions);
   const { data: user } = useSuspenseQuery(queryUserOptions);
   const { value: isPopoverOpen, setValue: setPopoverOpen } = useBoolean();
@@ -75,11 +76,13 @@ export function WorkspaceSwitcher() {
           <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 p-0">
-        <div className="space-y-2 p-4">
-          <p className="text-sm text-muted-foreground">
-            Switch between your workspaces
-          </p>
+      <PopoverContent className="w-72 p-0">
+        <div className="space-y-2 p-4 flex justify-between items-center">
+          <p className="text-sm text-muted-foreground">My workspaces</p>
+
+          <Button size="sm" variant="outline" asChild>
+            <Link href="/workspaces">View All</Link>
+          </Button>
         </div>
 
         {workspaces.map((ws) => (
