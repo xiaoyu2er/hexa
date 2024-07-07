@@ -37,7 +37,7 @@ export function EditWorkspaceSlug({ slug }: { slug: string }) {
   const router = useRouter();
   const form = useForm<Omit<UpdateWorkspaceSlugInput, "workspaceId">>({
     resolver: zodResolver(
-      UpdateWorkspaceSlugSchema.omit({ workspaceId: true })
+      UpdateWorkspaceSlugSchema.omit({ workspaceId: true }),
     ),
     defaultValues: useMemo(() => {
       return {
@@ -77,7 +77,7 @@ export function EditWorkspaceSlug({ slug }: { slug: string }) {
           execute({
             ...form,
             workspaceId: ws.id,
-          })
+          }),
         )}
         method="POST"
         className="grid gap-4"

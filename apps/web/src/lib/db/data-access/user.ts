@@ -34,6 +34,13 @@ export async function createUser({
   return user;
 }
 
+export async function updateUserEmailVerified(uid: string) {
+  await db
+    .update(userTable)
+    .set({ emailVerified: true })
+    .where(eq(userTable.id, uid));
+}
+
 export async function updateUserProfile(uid: string, imageUrl: string) {
   await db
     .update(userTable)

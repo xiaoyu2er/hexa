@@ -4,7 +4,7 @@ import { EditWorkspaceSlug } from "@/components/workspace-settings/edit-workspac
 import { UploadWorkspaceAvatar } from "@/components/workspace-settings/upload-workspace-avatar";
 import { WorkspaceId } from "@/components/workspace-settings/workspace-id";
 
-export default function ({ params: {slug} }: { params: { slug: string } }) {
+export default function ({ params: { slug } }: { params: { slug: string } }) {
   return (
     <>
       <EditWorkspaceName slug={slug} />

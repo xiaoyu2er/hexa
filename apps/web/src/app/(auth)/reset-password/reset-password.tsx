@@ -5,20 +5,34 @@ import { useStep } from "usehooks-ts";
 import { ForgetPasswordCard } from "./forget-password-form";
 import { ResetPasswordCard } from "./reset-password-form";
 import { VerifyResetPasswordCodeCard } from "./verfiy-code-form";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export interface ResetPasswordProps {}
+export interface ResetPasswordProps {
+  token?: string;
+}
 
 export const ResetPassword: FC<ResetPasswordProps> = () => {
+  const params = useSearchParams();
+  const initToken = params.get("token");
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
-  const router = useRouter();
-  const [currentStep, { goToNextStep, reset }] = useStep(3);
+  const [currentStep, { goToNextStep }] = useStep(3);
 
   const onCancel = () => {
-    setToken("");
-    reset();
+    router.push("/");
   };
+
+  if (initToken) {
+    return (
+      <ResetPasswordCard
+        token={initToken}
+        onSuccess={() => console.log("Reset success")}
+        onCancel={onCancel}
+      />
+    );
+  }
+
   return (
     <div>
       {currentStep === 1 && (
@@ -28,9 +42,7 @@ export const ResetPassword: FC<ResetPasswordProps> = () => {
             setEmail(email);
             goToNextStep();
           }}
-          onCancel={() => {
-            router.push("/");
-          }}
+          onCancel={onCancel}
         />
       )}
       {currentStep === 2 && (
@@ -45,7 +57,6 @@ export const ResetPassword: FC<ResetPasswordProps> = () => {
       )}
       {currentStep === 3 && (
         <ResetPasswordCard
-          email={email}
           token={token}
           onSuccess={() => console.log("Reset success")}
           onCancel={onCancel}

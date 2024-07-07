@@ -52,7 +52,6 @@ export const VerifyResetPasswordCodeSchema = z.object({
 });
 
 export const ResetPasswordSchema = z.object({
-  email,
   token,
   password,
 });
@@ -67,6 +66,10 @@ export const OnlyEmailSchema = z.object({
   email,
 });
 
+export const OnlyTokenSchema = z.object({
+  token,
+});
+
 export type SignupForm = z.infer<typeof SignupSchema>;
 export type LoginForm = z.infer<typeof LoginSchema>;
 export type ForgetPasswordForm = z.infer<typeof ForgetPasswordSchema>;
@@ -75,3 +78,4 @@ export type VerifyResetPasswordCodeForm = z.infer<
 >;
 export type ResetPasswordForm = z.infer<typeof ResetPasswordSchema>;
 export type OTPForm = z.infer<typeof OTPSchema>;
+export type OnlyTokenInput = z.infer<typeof OnlyTokenSchema>;

@@ -6,7 +6,7 @@ import { CardSkeleton } from "@hexa/ui/card-skeleton";
 
 export const dynamic = "force-dynamic";
 
-export default  function () {
+export default function () {
   return (
     <main className="min-h-[calc(100vh-16px)]">
       <div className="flex h-36 items-center border-b">

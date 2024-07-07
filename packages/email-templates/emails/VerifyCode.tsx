@@ -17,10 +17,12 @@ import Footer from "./components/Footer";
 interface VerifyCodeTemplateProps {
   email: string;
   code: string;
+  children?: React.ReactNode;
 }
 export default function VerifyCodeTemplate({
   email,
   code,
+  children,
 }: VerifyCodeTemplateProps) {
   return (
     <Html>
@@ -54,6 +56,8 @@ export default function VerifyCodeTemplate({
               This code is valid for 10 minutes
             </Text>
 
+            {children}
+
             <Footer email={email} />
           </Container>
         </Body>
@@ -65,4 +69,5 @@ export default function VerifyCodeTemplate({
 VerifyCodeTemplate.PreviewProps = {
   email: "test@example.com",
   code: "123456",
+  url: "https://example.com",
 } as VerifyCodeTemplateProps;

@@ -72,7 +72,7 @@ export function CreateWorkspaceModal({ children }: { children: ReactNode }) {
       close();
       const client = getQueryClient();
       client.invalidateQueries({
-        queryKey: ["workspaces"]
+        queryKey: ["workspaces"],
       });
     },
   });

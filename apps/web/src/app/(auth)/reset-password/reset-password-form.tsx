@@ -29,22 +29,19 @@ import { useServerAction } from "zsa-react";
 export interface ResetParsswordCardProps {
   onSuccess?: () => void;
   onCancel?: () => void;
-  email: string;
-  token: string;
+  token?: string;
 }
 
 export const ResetPasswordCard: FC<ResetParsswordCardProps> = ({
   onSuccess,
   onCancel,
   token,
-  email,
 }) => {
   const form = useForm<ResetPasswordForm>({
     resolver: zodResolver(ResetPasswordSchema),
     defaultValues: {
       password: "",
       token,
-      email,
     },
   });
 

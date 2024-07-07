@@ -50,7 +50,7 @@ export const updateUserAvatarAction = authenticatedProcedure
         if (user.avatarUrl && isStored(user.avatarUrl)) {
           await storage.delete(user.avatarUrl);
         }
-      })()
+      })(),
     );
     revalidatePath("/");
   });

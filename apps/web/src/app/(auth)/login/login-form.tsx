@@ -150,7 +150,7 @@ export function Login() {
                   <Link href={"/sign-up"}>Not signed up? Sign up now.</Link>
                 </Button>
                 <Button variant={"link"} size={"sm"} className="p-0" asChild>
-                  <Link href={"/reset-password"}>Forgot password?</Link>
+                  <Link href={"/reset-password"}>Forget password?</Link>
                 </Button>
               </div>
 
