@@ -13,7 +13,7 @@ import NavTabs from "./nav-tabs";
 export function ConsoleLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen w-full">
-      <header className="sticky top-0 flex items-center border-b bg-background">
+      <header className="sticky top-0 flex items-center border-b bg-background z-10">
         <MaxWidth>
           <div className="flex h-16 items-center justify-between ">
             <div className="flex items-center gap-4">
