@@ -22,7 +22,9 @@ import {
 } from "@/lib/db/data-access/token";
 import { sendVerifyCodeAndUrlEmail } from "@/lib/emails";
 
-async function updateTokenAndSendVerifyEmail(user: User): Promise<{email: string}> {
+async function updateTokenAndSendVerifyEmail(
+  user: User,
+): Promise<{ email: string }> {
   if (!user.email) {
     throw new ZSAError("INTERNAL_SERVER_ERROR", "User email is missing");
   }

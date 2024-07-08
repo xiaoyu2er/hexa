@@ -27,7 +27,9 @@ import {
 } from "@/lib/db/data-access/token";
 import { User } from "lucia";
 
-async function updateTokenAndSendVerifyEmail(user: User): Promise<{email: string}> {
+async function updateTokenAndSendVerifyEmail(
+  user: User,
+): Promise<{ email: string }> {
   if (!user.email) {
     throw new ZSAError("INTERNAL_SERVER_ERROR", "User email is missing");
   }
@@ -49,9 +51,7 @@ export const signupAction = turnstileProcedure
   .input(SignupSchema)
   .handler(async ({ input }) => {
     const { email, password } = input;
-    const existingUser = await db.query.userTable.findFirst({
-      where: (table, { eq }) => eq(table.email, email),
-    });
+    const existingUser = await getUserByEmail(email);
 
     if (existingUser && existingUser.emailVerified) {
       throw new ZSAError("FORBIDDEN", "User already exists");

@@ -1,21 +1,19 @@
 "use server";
 
-import { db } from "@/lib/db";
 import { LoginSchema } from "@/lib/zod/schemas/auth";
 import { redirect } from "next/navigation";
 import { ZSAError } from "zsa";
 import { setSession } from "@/lib/session";
 import { isHashValid } from "@/lib/utils";
 import { turnstileProcedure } from "./turnstile";
+import { getUserByEmail } from "../db/data-access/user";
 
 export const loginAction = turnstileProcedure
   .createServerAction()
   .input(LoginSchema)
   .handler(async ({ input }) => {
     const { email, password } = input;
-    const existingUser = await db.query.userTable.findFirst({
-      where: (table, { eq }) => eq(table.email, email),
-    });
+    const existingUser = await getUserByEmail(email);
 
     if (!existingUser) {
       throw new ZSAError(

@@ -1,15 +1,13 @@
 import { createServerActionProcedure, ZSAError } from "zsa";
-import { db } from "@/lib/db";
 import { OnlyEmailSchema } from "../zod/schemas/auth";
 import { assertAuthenticated } from "@/lib/session";
+import { getUserByEmail } from "../db/data-access/user";
 
 export const getUserByEmailProcedure = createServerActionProcedure()
   .input(OnlyEmailSchema)
   .handler(async ({ input }) => {
     const { email } = input;
-    const user = await db.query.userTable.findFirst({
-      where: (table, { eq }) => eq(table.email, email),
-    });
+    const user = await getUserByEmail(email);
     if (!user) {
       throw new ZSAError(
         "NOT_FOUND",
