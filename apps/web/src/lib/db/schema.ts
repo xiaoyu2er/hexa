@@ -15,9 +15,7 @@ export const userTable = pgTable("user", {
     .primaryKey()
     .$defaultFn(() => generateId("u")),
   name: text("name"),
-  email: text("email").unique(),
-  emailVerified: boolean("email_verified").notNull().default(false),
-  hashedPassword: text("hashed_password"),
+  password: text("password"),
   avatarUrl: text("avatar_url"),
   createdAt: timestamp("created_at", {
     withTimezone: true,
@@ -63,6 +61,8 @@ export const tokenTable = pgTable("token", {
   userId: text("user_id")
     .notNull()
     .references(() => userTable.id, { onDelete: "cascade" }),
+  email: text("email").notNull(),
+  // emailId: text("email_id").references(() => emailTable.id),
   type: tokenTypeEnum("type").notNull(),
   code: text("code").notNull(),
   token: text("token").notNull(),
@@ -117,7 +117,9 @@ export const oauthAccountTable = pgTable("oauth_account", {
   }).$onUpdate(() => new Date()),
 });
 
-export const userAccountRelations = relations(userTable, ({ many }) => ({
+
+
+export const userOAuthAccountRelations = relations(userTable, ({ many }) => ({
   oauthAccounts: many(oauthAccountTable),
 }));
 
@@ -130,6 +132,39 @@ export const oauthAccountUserRelation = relations(
     }),
   }),
 );
+
+export const emailTable = pgTable("email", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => generateId("em")),
+  userId: text("user_id")
+    .notNull()
+    .references(() => userTable.id, { onDelete: "cascade" }),
+  email: text("email").notNull(),
+  primary: boolean("primary").notNull().default(false),
+  verified: boolean("verified").notNull().default(false),
+  createdAt: timestamp("created_at", {
+    withTimezone: true,
+    mode: "date",
+  })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", {
+    withTimezone: true,
+    mode: "date",
+  }).$onUpdate(() => new Date()),
+});
+
+export const userEmailRelations = relations(userTable, ({ many }) => ({
+  emails: many(emailTable),
+}));
+
+export const emailUserRelations = relations(emailTable, ({ one }) => ({
+  user: one(userTable, {
+    fields: [emailTable.userId],
+    references: [userTable.id],
+  }),
+}));
 
 export const workspaceTable = pgTable("workspace", {
   id: text("id")
@@ -250,6 +285,7 @@ export const usersToWorkspaceRelation = relations(
 
 export type UserModel = typeof userTable.$inferSelect;
 export type OAuthAccountModel = typeof oauthAccountTable.$inferSelect;
+export type EmailModal = typeof emailTable.$inferSelect;
 export type SessionModel = typeof sessionTable.$inferSelect;
 export type TokenModel = typeof tokenTable.$inferSelect;
 export type WorkspaceModel = typeof workspaceTable.$inferSelect;
