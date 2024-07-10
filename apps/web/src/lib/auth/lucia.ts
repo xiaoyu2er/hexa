@@ -6,18 +6,16 @@ import {
   userTable,
   type UserModel as DbUser,
 } from "@/lib/db/schema";
-import omit from "lodash/omit";
+import pick from "lodash/pick";
 
 const adapter = new DrizzlePostgreSQLAdapter(db, sessionTable, userTable);
 
 export const lucia = new Lucia(adapter, {
   getSessionAttributes: (attributes) => {
-    // console.log("getSessionAttributes", attributes);
     return attributes;
   },
   getUserAttributes: (attributes) => {
-    // console.log("getUserAttributes", attributes);
-    return omit(attributes, ["hashedPassword"]);
+    return pick(attributes, ["id", "name", "avatarUrl", "defaultWorkspaceId"]);
   },
 
   /**
