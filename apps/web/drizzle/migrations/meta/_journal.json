@@ -5,57 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1719785849881,
-      "tag": "0000_right_madame_hydra",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1719866006799,
-      "tag": "0001_fantastic_fixer",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1720197970918,
-      "tag": "0002_spicy_gorgon",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1720197976026,
-      "tag": "0003_parched_longshot",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1720198179454,
-      "tag": "0004_amazing_steve_rogers",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1720201781106,
-      "tag": "0005_absent_dagger",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1720471715090,
-      "tag": "0006_last_microchip",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1720546574863,
-      "tag": "0007_chunky_cloak",
+      "when": 1720649649948,
+      "tag": "0000_messy_bullseye",
       "breakpoints": true
     }
   ]
