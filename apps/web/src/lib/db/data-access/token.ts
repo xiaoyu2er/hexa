@@ -19,7 +19,11 @@ export async function findDBTokenByUserId(userId: string, type: TokenType) {
   });
 }
 
-export async function addDBToken(userId: string, type: TokenType) {
+export async function addDBToken(
+  userId: string,
+  email: string,
+  type: TokenType
+) {
   await db
     .delete(tokenTable)
     .where(and(eq(tokenTable.userId, userId), eq(tokenTable.type, type)));
@@ -32,6 +36,7 @@ export async function addDBToken(userId: string, type: TokenType) {
         code,
         token,
         userId,
+        email,
         expiresAt: createDate(RESET_PASSWORD_EXPIRE_TIME_SPAN),
         type,
       })
@@ -52,19 +57,19 @@ export async function getTokenByToken(token: string, type: TokenType) {
 }
 
 export async function verifyDBTokenByCode(
-  user: { id: string },
+  userId: string,
   codeOrToken: {
     code?: string;
     token?: string;
   },
   type: TokenType,
-  deleteRow: boolean,
+  deleteRow: boolean
 ) {
   if (!codeOrToken.code && !codeOrToken.token) {
     throw new ZSAError("CONFLICT", "Code or token is required");
   }
 
-  const tokenRow = await findDBTokenByUserId(user.id, type);
+  const tokenRow = await findDBTokenByUserId(userId, type);
 
   // No record
   if (!tokenRow) {
@@ -72,7 +77,7 @@ export async function verifyDBTokenByCode(
       "CONFLICT",
       process.env.NODE_ENV === "development"
         ? "[dev]Code was not sent"
-        : "Code is invalid or expired",
+        : "Code is invalid or expired"
     );
   }
 
@@ -80,14 +85,14 @@ export async function verifyDBTokenByCode(
   if (!isWithinExpirationDate(tokenRow.expiresAt)) {
     // Delete the verification row
     if (deleteRow) {
-      await deleteDBToken(user.id, type);
+      await deleteDBToken(userId, type);
     }
 
     throw new ZSAError(
       "CONFLICT",
       process.env.NODE_ENV === "development"
         ? "[dev]Code is expired"
-        : "Code is invalid or expired",
+        : "Code is invalid or expired"
     );
   }
 
@@ -98,7 +103,7 @@ export async function verifyDBTokenByCode(
         "CONFLICT",
         process.env.NODE_ENV === "development"
           ? "[dev]Code does not match"
-          : "Code is invalid or expired",
+          : "Code is invalid or expired"
       );
     }
   }
@@ -110,13 +115,13 @@ export async function verifyDBTokenByCode(
         "CONFLICT",
         process.env.NODE_ENV === "development"
           ? "[dev]Token does not match"
-          : "Token is invalid or expired",
+          : "Token is invalid or expired"
       );
     }
   }
 
   if (deleteRow) {
-    await deleteDBToken(user.id, type);
+    await deleteDBToken(userId, type);
   }
 
   return tokenRow;
