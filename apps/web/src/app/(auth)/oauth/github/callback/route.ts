@@ -1,8 +1,11 @@
 import { cookies } from "next/headers";
 import { OAuth2RequestError } from "arctic";
-import { github } from "@/lib/auth";
+import { github, validateRequest } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
-import { getAccountByGithubId } from "@/lib/db/data-access/account";
+import {
+  createGithubAccount,
+  getAccountByGithubId,
+} from "@/lib/db/data-access/account";
 import { GitHubEmail, GitHubUser } from "@/types";
 import { createUserByGithubAccount } from "@/lib/db/use-cases/user";
 import { setSession } from "@/lib/session";
@@ -37,7 +40,7 @@ export async function GET(request: NextRequest) {
     if (!primaryEmail) {
       return NextResponse.json(
         { error: "No primary email address" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -52,13 +55,20 @@ export async function GET(request: NextRequest) {
 
       return new Response(null, {
         status: 302,
-        headers: { Location: "/" },
+        headers: { Location: "/settings" },
       });
     }
 
-    const user = await createUserByGithubAccount(githubUser);
+    let { user } = await validateRequest();
 
-    await setSession(user.id);
+    if (user) {
+      // bind accounts
+      await createGithubAccount(user.id, githubUser);
+    } else {
+      user = await createUserByGithubAccount(githubUser);
+      await setSession(user.id);
+    }
+
     return new Response(null, {
       status: 302,
       headers: { Location: "/settings" },
@@ -70,7 +80,7 @@ export async function GET(request: NextRequest) {
     }
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

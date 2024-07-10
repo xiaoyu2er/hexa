@@ -12,7 +12,6 @@ export async function sendVerifyCodeAndUrlEmail(
   if (process.env.NODE_ENV === "development") {
     // sleep 1000;
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log("sending email to", email, "with code");
     return { code, email, url };
   }
 

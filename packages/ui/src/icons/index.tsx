@@ -30,6 +30,7 @@ export {
   EllipsisIcon,
   MoveRightIcon,
   MailPlusIcon,
+  UserPlusIcon,
 } from "lucide-react";
 
 // https://www.radix-ui.com/icons

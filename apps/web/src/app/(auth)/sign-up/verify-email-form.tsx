@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  VerifyEmailByCodeActionInput,
-  VerifyEmailByCodeActionReturnType,
-  resendVerifyEmailAction,
-  singUpVerifyEmailByCodeAction,
-} from "@/lib/actions/sign-up";
+import { resendVerifyEmailAction } from "@/lib/actions/sign-up";
 
 import { useServerAction } from "zsa-react";
 
@@ -13,10 +8,7 @@ import { useForm } from "react-hook-form";
 import { OTPForm, OTPSchema } from "@/lib/zod/schemas/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FC, useEffect, useRef } from "react";
-import {
-  VERIFY_CODE_LENGTH,
-  RESEND_VERIFY_CODE_TIME_SPAN,
-} from "@/lib/const";
+import { VERIFY_CODE_LENGTH, RESEND_VERIFY_CODE_TIME_SPAN } from "@/lib/const";
 import { useCountdown } from "usehooks-ts";
 import { cn } from "@hexa/utils";
 import { Button } from "@hexa/ui/button";
@@ -38,15 +30,21 @@ import {
 import { PencilLine } from "@hexa/ui/icons";
 import { LoadingButton } from "@hexa/ui/loading-button";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@hexa/ui/input-otp";
+import {
+  VerifyEmailByCodeActionInput,
+  VerifyEmailByCodeActionReturnType,
+} from "@/lib/actions/user";
 
 export interface VerifyEmailProps {
   email: string;
-  showEmail?: boolean;  
+  showEmail?: boolean;
   onSuccess?: () => void;
   onCancel?: () => void;
   isMobile?: boolean;
   className?: string;
-  onVerify : (input: VerifyEmailByCodeActionInput) => VerifyEmailByCodeActionReturnType
+  onVerify: (
+    input: VerifyEmailByCodeActionInput
+  ) => VerifyEmailByCodeActionReturnType;
 }
 
 export const VerifyEmail: FC<VerifyEmailProps> = ({
@@ -56,6 +54,7 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({
   onSuccess,
   className,
   isMobile = true,
+  onVerify,
 }) => {
   const form = useForm<OTPForm>({
     resolver: zodResolver(OTPSchema),
@@ -80,7 +79,7 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({
     startCountdown();
   }, []);
 
-  const { execute: execVerify } = useServerAction(singUpVerifyEmailByCodeAction, {
+  const { execute: execVerify } = useServerAction(onVerify, {
     onError: ({ err }) => {
       if (err.code === "INPUT_PARSE_ERROR") {
         Object.entries(err.fieldErrors).forEach(([field, message]) => {
