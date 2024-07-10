@@ -33,7 +33,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { getQueryClient } from "@/providers/get-query-client";
 
 export function EditName() {
-  const { data: user } = useSuspenseQuery(queryUserOptions);
+  const { data: user, refetch } = useSuspenseQuery(queryUserOptions);
 
   const form = useForm<UpdateUserNameInput>({
     resolver: zodResolver(UpdateUserNameSchema),
@@ -63,11 +63,7 @@ export function EditName() {
     },
     onSuccess: () => {
       toast.success("Your name has been updated");
-      reset();
-      const client = getQueryClient();
-      client.invalidateQueries({
-        queryKey: ["user"],
-      });
+      refetch();
     },
   });
   return (
