@@ -5,6 +5,8 @@ import { useStep } from "usehooks-ts";
 import { Signup } from "./signup-form";
 import { VerifyEmail } from "./verify-email-form";
 import { useRouter } from "next/navigation";
+import { signupAction, singUpVerifyEmailByCodeAction } from "@/lib/actions/sign-up";
+import { verify } from "crypto";
 
 export interface SignupPageProps {}
 
@@ -33,6 +35,7 @@ export const SignupPage: FC<SignupPageProps> = () => {
       {currentStep === 2 && (
         <VerifyEmail
           email={email}
+          onVerify={singUpVerifyEmailByCodeAction}
           onSuccess={() => {
             console.log("Signup success");
           }}

@@ -6,5 +6,7 @@ export const metadata = {
 };
 
 export default function () {
-  return <SignupPage />;
+  return <div className="max-w-full md:w-96">
+    <SignupPage />
+  </div>;
 }
