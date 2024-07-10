@@ -1,6 +1,6 @@
 "use server";
 
-import { TokenModel, db, userTable } from "@/lib/db";
+import { EmailModal, TokenModel, db, userTable } from "@/lib/db";
 import {
   SignupSchema,
   OTPSchema,
@@ -9,11 +9,20 @@ import {
 } from "@/lib/zod/schemas/auth";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
-import { createServerAction, ZSAError } from "zsa";
+import {
+  createServerAction,
+  inferServerActionInput,
+  inferServerActionReturnData,
+  inferServerActionReturnType,
+  inferServerActionReturnTypeHot,
+  ZSAError,
+} from "zsa";
 import {
   createUser,
-  getUserByEmail,
+  getEmail,
+  getUserEmail,
   updateUserEmailVerified,
+  updateUserPassword,
 } from "@/lib/db/data-access/user";
 import { getHash } from "@/lib/utils";
 import { invalidateUserSessions, setSession } from "@/lib/session";
@@ -26,23 +35,19 @@ import {
   verifyDBTokenByCode,
 } from "@/lib/db/data-access/token";
 import { User } from "lucia";
+import { getUserEmailProcedure } from "./procedures";
 
-async function updateTokenAndSendVerifyEmail(
-  user: User,
+export async function updateTokenAndSendVerifyEmail(
+  uid: string,
+  email: string
 ): Promise<{ email: string }> {
-  if (!user.email) {
-    throw new ZSAError("INTERNAL_SERVER_ERROR", "User email is missing");
-  }
   const { code: verificationCode, token } = await addDBToken(
-    user.id,
-    "VERIFY_EMAIL",
+    uid,
+    email,
+    "VERIFY_EMAIL"
   );
   const url = `${PUBLIC_URL}/sign-up/verify-email?token=${token}`;
-  const data = await sendVerifyCodeAndUrlEmail(
-    user.email,
-    verificationCode,
-    url,
-  );
+  const data = await sendVerifyCodeAndUrlEmail(email, verificationCode, url);
   return data;
 }
 
@@ -51,66 +56,63 @@ export const signupAction = turnstileProcedure
   .input(SignupSchema)
   .handler(async ({ input }) => {
     const { email, password } = input;
-    const existingUser = await getUserByEmail(email);
+    const emailItem = await getEmail(email);
 
-    if (existingUser && existingUser.emailVerified) {
-      throw new ZSAError("FORBIDDEN", "User already exists");
+    if (emailItem && emailItem.verified) {
+      throw new ZSAError(
+        "FORBIDDEN",
+        process.env.NODE_ENV === "development"
+          ? "[dev]Email already exists"
+          : "Email already exists"
+      );
     }
 
-    let user = existingUser;
+    let user = emailItem?.user;
 
-    if (existingUser) {
+    if (user) {
       const hashedPassword = await getHash(password);
-      if (hashedPassword !== existingUser?.hashedPassword) {
-        // update the password
-        user = (
-          await db
-            .update(userTable)
-            .set({ hashedPassword })
-            .where(eq(userTable.id, existingUser.id))
-            .returning()
-        )[0];
+      if (hashedPassword !== user?.password) {
+        await updateUserPassword(user.id, hashedPassword);
       }
     } else {
       user = await createUser({
         email,
-        emailVerified: false,
+        verified: false,
         password,
         avatarUrl: null,
       });
-    }
 
-    if (!user) {
-      throw new ZSAError("INTERNAL_SERVER_ERROR", "Failed to create user");
+      if (!user) {
+        throw new ZSAError("INTERNAL_SERVER_ERROR", "Failed to create user");
+      }
     }
-
-    return await updateTokenAndSendVerifyEmail(user);
+    return await updateTokenAndSendVerifyEmail(user.id, email);
   });
 
-export const resendVerifyEmailAction = createServerAction()
-  .input(OnlyEmailSchema)
-  .handler(async ({ input }) => {
-    const { email } = input;
-    const user = await getUserByEmail(email);
-    if (!user) {
+export const resendVerifyEmailAction = getUserEmailProcedure
+  .createServerAction()
+  .handler(async ({ ctx }) => {
+    const { email } = ctx;
+
+    if (!email) {
       throw new ZSAError("FORBIDDEN", "User not found");
     }
 
-    return await updateTokenAndSendVerifyEmail(user);
+    return await updateTokenAndSendVerifyEmail(email.user.id, email.email);
   });
 
 async function onVerifyEmailSuccess(tokenItem: TokenModel) {
+  await updateUserEmailVerified(tokenItem.userId, tokenItem.email);
   await invalidateUserSessions(tokenItem.userId);
-  await updateUserEmailVerified(tokenItem.userId);
   await setSession(tokenItem.userId);
   redirect("/settings");
 }
 
-export const verifyEmailByCodeAction = createServerAction()
+export const singUpVerifyEmailByCodeAction = createServerAction()
   .input(OTPSchema)
   .handler(async ({ input }) => {
     const { code, email } = input;
-    const user = await getUserByEmail(email);
+    const user = await getUserEmail(email);
 
     if (!user) {
       throw new ZSAError("FORBIDDEN", "User not found");
@@ -120,11 +122,19 @@ export const verifyEmailByCodeAction = createServerAction()
       { id: user.id },
       { code },
       "VERIFY_EMAIL",
-      true,
+      true
     );
 
     await onVerifyEmailSuccess(tokenItem);
   });
+
+export type VerifyEmailByCodeActionInput = inferServerActionInput<
+  typeof singUpVerifyEmailByCodeAction
+>;
+
+export type VerifyEmailByCodeActionReturnType = inferServerActionReturnTypeHot<
+  typeof singUpVerifyEmailByCodeAction
+>;
 
 export const verifyEmailByTokenAction = createServerAction()
   .input(OnlyTokenSchema)
@@ -136,7 +146,7 @@ export const verifyEmailByTokenAction = createServerAction()
         "FORBIDDEN",
         process.env.NODE_ENV === "development"
           ? "[dev]Code is not found"
-          : "Code is invalid or expired",
+          : "Code is invalid or expired"
       );
     }
 
@@ -144,7 +154,7 @@ export const verifyEmailByTokenAction = createServerAction()
       { id: tokenItem.userId },
       { token },
       "VERIFY_EMAIL",
-      true,
+      true
     );
     await onVerifyEmailSuccess(tokenItem);
   });
