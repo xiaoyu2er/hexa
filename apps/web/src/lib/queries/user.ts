@@ -1,12 +1,8 @@
 import { DataTag, UseQueryOptions, queryOptions } from "@tanstack/react-query";
-import { getUserAction } from "@/lib/actions/user";
-import { User } from "lucia";
+import { getUserAction, getUserEmailsAction } from "@/lib/actions/user";
+import { getQueryClient } from "@/providers/get-query-client";
 
-export const queryUserOptions: UseQueryOptions<User, Error, User, string[]> & {
-  initialData?: undefined;
-} & {
-  queryKey: DataTag<string[], User>;
-} = queryOptions({
+export const queryUserOptions = queryOptions({
   queryKey: ["user"],
   queryFn: async () => {
     const [res, err] = await getUserAction();
@@ -14,3 +10,19 @@ export const queryUserOptions: UseQueryOptions<User, Error, User, string[]> & {
     return res.user;
   },
 });
+
+export const queryUserEmailsOptions = queryOptions({
+  queryKey: ["user/emails"],
+  queryFn: async () => {
+    const [res, err] = await getUserEmailsAction();
+    if (err) throw err;
+    return res.emails;
+  },
+});
+
+export const invalidateUserEmails = () => {
+  const client = getQueryClient();
+  client.invalidateQueries({
+    queryKey: queryUserEmailsOptions.queryKey,
+  });
+};
