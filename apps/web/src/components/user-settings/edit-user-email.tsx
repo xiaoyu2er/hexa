@@ -71,8 +71,10 @@ export function EditUserEmails() {
                 return (
                   <>
                     <Button className="justify-between" variant="ghost">
-                      <p className="text-sm font-medium leading-none flex gap-2 items-center">
-                        {email.email}
+                      <p className="text-sm font-medium leading-none flex gap-2 items-center overflow-auto">
+                        <span className="shrink text-nowrap text-ellipsis overflow-hidden">
+                          {email.email}
+                        </span>
                         {email.primary && (
                           <Badge className="text-xs">Primary</Badge>
                         )}
@@ -85,7 +87,7 @@ export function EditUserEmails() {
 
                       <DropdownMenu>
                         <DropdownMenuTrigger>
-                          <EllipsisIcon className="h4 w-4" />
+                          <EllipsisIcon className="h4 w-4 ml-2" />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                           <DropdownMenuItem
