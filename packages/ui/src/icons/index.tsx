@@ -27,6 +27,9 @@ export {
   GlobeIcon,
   BarChart2Icon,
   Link2Icon,
+  EllipsisIcon,
+  MoveRightIcon,
+  MailPlusIcon,
 } from "lucide-react";
 
 // https://www.radix-ui.com/icons
