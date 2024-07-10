@@ -1,7 +1,8 @@
 "use server";
 
-import { authenticatedProcedure } from "./procedures";
+import { authenticatedProcedure, getUserEmailProcedure } from "./procedures";
 import {
+  DeleteOAuthAccountSchema,
   DeleteUserSchema,
   UpdateAvatarSchema,
   UpdateUserNameSchema,
@@ -21,12 +22,31 @@ import { revalidatePath } from "next/cache";
 import { isStored, storage } from "../storage";
 import { generateId } from "../utils";
 import { waitUntil } from "@vercel/functions";
-import { invalidateUserSessions, setBlankSessionCookie } from "../session";
+import {
+  invalidateUserSessions,
+  setBlankSessionCookie,
+  setSession,
+} from "../session";
 import { redirect } from "next/navigation";
-import { OTPSchema, OnlyEmailSchema } from "../zod/schemas/auth";
+import {
+  OTPSchema,
+  OnlyEmailSchema,
+  OnlyTokenSchema,
+} from "../zod/schemas/auth";
 import { updateTokenAndSendVerifyEmail } from "./sign-up";
-import { ZSAError, createServerAction } from "zsa";
-import { verifyDBTokenByCode } from "../db/data-access/token";
+import {
+  ZSAError,
+  createServerAction,
+  inferServerActionInput,
+  inferServerActionReturnTypeHot,
+} from "zsa";
+import { getTokenByToken, verifyDBTokenByCode } from "../db/data-access/token";
+import {
+  getUserOAuthAccounts,
+  removeUserOAuthAccount,
+} from "../db/data-access/account";
+import { ProviderType, TokenModel } from "../db";
+import { validateRequest } from "../auth";
 
 export const getUserAction = authenticatedProcedure
   .createServerAction()
@@ -92,30 +112,70 @@ export const removeUserEmailAction = authenticatedProcedure
     await removeUserEmail(user.id, email);
   });
 
-export const verifyEmailByCodeAction = authenticatedProcedure
+export const verifyEmailByCodeAction = getUserEmailProcedure
   .createServerAction()
   .input(OTPSchema)
-  .handler(async ({ input }) => {
-    const { code, email } = input;
-    const user = await getUserEmail(email);
-
-    if (!user) {
-      throw new ZSAError(
-        "NOT_FOUND",
-        process.env.NODE_ENV === "development"
-          ? `User with email ${email} not found`
-          : "User not found"
-      );
-    }
+  .handler(async ({ input, ctx }) => {
+    const { code } = input;
+    const {
+      email: {
+        email,
+        user: { id: userId },
+      },
+    } = ctx;
 
     const tokenItem = await verifyDBTokenByCode(
-      user.id,
+      userId,
       { code },
       "VERIFY_EMAIL",
       true
     );
 
-    await updateUserEmailVerified(tokenItem.userId, email);
+    const { user } = await validateRequest();
+    console.log("user", user);
+    await updateUserEmailVerified(tokenItem.userId, tokenItem.email);
+    if (!user) {
+      await invalidateUserSessions(tokenItem.userId);
+      await setSession(tokenItem.userId);
+      redirect("/settings");
+    }
+  });
+
+export type VerifyEmailByCodeActionInput = inferServerActionInput<
+  typeof verifyEmailByCodeAction
+>;
+
+export type VerifyEmailByCodeActionReturnType = inferServerActionReturnTypeHot<
+  typeof verifyEmailByCodeAction
+>;
+
+export const verifyEmailByTokenAction = createServerAction()
+  .input(OnlyTokenSchema)
+  .handler(async ({ input }) => {
+    const { token } = input;
+    let tokenItem = await getTokenByToken(token, "VERIFY_EMAIL");
+    if (!tokenItem) {
+      throw new ZSAError(
+        "FORBIDDEN",
+        process.env.NODE_ENV === "development"
+          ? "[dev]Code is not found"
+          : "Code is invalid or expired"
+      );
+    }
+    tokenItem = await verifyDBTokenByCode(
+      tokenItem.userId,
+      { token },
+      "VERIFY_EMAIL",
+      true
+    );
+
+    const { user } = await validateRequest();
+    await updateUserEmailVerified(tokenItem.userId, tokenItem.email);
+    if (!user) {
+      await invalidateUserSessions(tokenItem.userId);
+      await setSession(tokenItem.userId);
+    }
+    redirect("/settings");
   });
 
 export const updateUserAvatarAction = authenticatedProcedure
@@ -145,4 +205,23 @@ export const deleteUserAction = authenticatedProcedure
     await invalidateUserSessions(user.id);
     setBlankSessionCookie();
     return redirect("/");
+  });
+
+export const getUserOAuthAccountsAction = authenticatedProcedure
+  .createServerAction()
+  .handler(async ({ ctx }) => {
+    const { user } = ctx;
+    const oauthAccounts = await getUserOAuthAccounts(user.id);
+    return {
+      oauthAccounts,
+    };
+  });
+
+export const removeUserOAuthAccountAction = authenticatedProcedure
+  .createServerAction()
+  .input(DeleteOAuthAccountSchema)
+  .handler(async ({ input, ctx }) => {
+    const { provider } = input;
+    const { user } = ctx;
+    await removeUserOAuthAccount(user.id, provider as ProviderType);
   });

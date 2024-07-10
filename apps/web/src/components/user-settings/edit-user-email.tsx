@@ -125,7 +125,7 @@ export function EditUserEmails() {
                       </DropdownMenu>
                     </Button>
 
-                    {verifingEmail === email.email && (
+                    {!email.verified && verifingEmail === email.email && (
                       <VerifyEmail
                         className="my-2"
                         email={email.email}

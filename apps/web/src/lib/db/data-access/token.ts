@@ -69,6 +69,7 @@ export async function verifyDBTokenByCode(
     throw new ZSAError("CONFLICT", "Code or token is required");
   }
 
+  console.log('findDBTokenByUserId', userId, type)
   const tokenRow = await findDBTokenByUserId(userId, type);
 
   // No record

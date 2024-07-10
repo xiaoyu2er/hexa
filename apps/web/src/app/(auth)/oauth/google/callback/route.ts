@@ -1,10 +1,13 @@
 import { cookies } from "next/headers";
 import { OAuth2RequestError } from "arctic";
-import { google } from "@/lib/auth";
+import { google, validateRequest } from "@/lib/auth";
 import { setSession } from "@/lib/session";
 import { NextResponse } from "next/server";
 import { GoogleUser } from "@/types";
-import { getAccountByGoogleId } from "@/lib/db/data-access/account";
+import {
+  createGoogleAccount,
+  getAccountByGoogleId,
+} from "@/lib/db/data-access/account";
 import { createUserByGoogleAccount } from "@/lib/db/use-cases/user";
 
 export async function GET(request: Request): Promise<Response> {
@@ -32,7 +35,7 @@ export async function GET(request: Request): Promise<Response> {
         headers: {
           Authorization: `Bearer ${tokens.accessToken}`,
         },
-      },
+      }
     );
     const googleUser: GoogleUser = await response.json();
 
@@ -43,22 +46,27 @@ export async function GET(request: Request): Promise<Response> {
     const existingAccount = await getAccountByGoogleId(googleUser.sub);
     if (existingAccount) {
       await setSession(existingAccount.userId);
-      if (existingAccount) {
-        await setSession(existingAccount.userId);
-        return new Response(null, {
-          status: 302,
-          headers: {
-            Location: "/",
-          },
-        });
-      }
+
+      return new Response(null, {
+        status: 302,
+        headers: { Location: "/settings" },
+      });
     }
 
-    const user = await createUserByGoogleAccount(googleUser);
-    await setSession(user.id);
+    let { user } = await validateRequest();
+
+    if (user) {
+      // bind accounts
+      await createGoogleAccount(user.id, googleUser);
+    } else {
+      // create user
+      user = await createUserByGoogleAccount(googleUser);
+      await setSession(user.id);
+    }
+
     return new Response(null, {
       status: 302,
-      headers: { Location: "/" },
+      headers: { Location: "/settings" },
     });
   } catch (e) {
     console.error("/oauth/google/callback", e);

@@ -62,7 +62,6 @@ export const tokenTable = pgTable("token", {
     .notNull()
     .references(() => userTable.id, { onDelete: "cascade" }),
   email: text("email").notNull(),
-  // emailId: text("email_id").references(() => emailTable.id),
   type: tokenTypeEnum("type").notNull(),
   code: text("code").notNull(),
   token: text("token").notNull(),

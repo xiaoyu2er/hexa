@@ -17,5 +17,7 @@ export async function GET() {
     sameSite: "lax",
   });
 
+  // const url = await getGithubAuthUrl();
+  // console.log(url);
   return NextResponse.redirect(url);
 }

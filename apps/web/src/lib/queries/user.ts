@@ -1,5 +1,9 @@
 import { DataTag, UseQueryOptions, queryOptions } from "@tanstack/react-query";
-import { getUserAction, getUserEmailsAction } from "@/lib/actions/user";
+import {
+  getUserAction,
+  getUserEmailsAction,
+  getUserOAuthAccountsAction,
+} from "@/lib/actions/user";
 import { getQueryClient } from "@/providers/get-query-client";
 
 export const queryUserOptions = queryOptions({
@@ -26,3 +30,12 @@ export const invalidateUserEmails = () => {
     queryKey: queryUserEmailsOptions.queryKey,
   });
 };
+
+export const queryUserOAuthAccountsOptions = queryOptions({
+  queryKey: ["user/oauth-accounts"],
+  queryFn: async () => {
+    const [res, err] = await getUserOAuthAccountsAction();
+    if (err) throw err;
+    return res.oauthAccounts;
+  },
+});
