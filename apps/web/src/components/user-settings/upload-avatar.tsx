@@ -30,7 +30,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { getQueryClient } from "@/providers/get-query-client";
 
 export default function UploadAvatar() {
-  const { data: user } = useSuspenseQuery(queryUserOptions);
+  const { data: user, refetch } = useSuspenseQuery(queryUserOptions);
 
   const form = useForm<UpdateAvatarInput>({
     resolver: zodResolver(UpdateAvatarSchema),
@@ -49,11 +49,7 @@ export default function UploadAvatar() {
     },
     onSuccess: () => {
       toast.success("Successfully updated your profile picture!");
-      reset();
-      const client = getQueryClient();
-      client.invalidateQueries({
-        queryKey: ["user"],
-      });
+      refetch();
     },
   });
 
