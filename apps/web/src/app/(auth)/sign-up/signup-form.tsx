@@ -6,7 +6,6 @@ import { signupAction } from "@/lib/actions/sign-up";
 import { useServerAction } from "zsa-react";
 import { useForm } from "react-hook-form";
 import { SignupForm, SignupSchema } from "@/lib/zod/schemas/auth";
-import { APP_TITLE } from "@/lib/const";
 import { FC, useEffect } from "react";
 import { Button } from "@hexa/ui/button";
 import {
@@ -83,9 +82,9 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
   }, []);
 
   return (
-    <Card className="max-w-full md:w-96">
+    <Card>
       <CardHeader className="text-center">
-        <CardTitle>{APP_TITLE} Sign Up</CardTitle>
+        <CardTitle>Sign Up</CardTitle>
         <CardDescription>Sign up to start using the app</CardDescription>
       </CardHeader>
       <CardContent>

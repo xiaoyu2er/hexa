@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import {
+  VerifyEmailByCodeActionInput,
+  VerifyEmailByCodeActionReturnType,
   resendVerifyEmailAction,
-  verifyEmailByCodeAction,
+  singUpVerifyEmailByCodeAction,
 } from "@/lib/actions/sign-up";
 
 import { useServerAction } from "zsa-react";
@@ -13,7 +14,6 @@ import { OTPForm, OTPSchema } from "@/lib/zod/schemas/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FC, useEffect, useRef } from "react";
 import {
-  APP_TITLE,
   VERIFY_CODE_LENGTH,
   RESEND_VERIFY_CODE_TIME_SPAN,
 } from "@/lib/const";
@@ -26,6 +26,7 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
+  CardFooter,
 } from "@hexa/ui/card";
 import {
   Form,
@@ -40,14 +41,21 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@hexa/ui/input-otp";
 
 export interface VerifyEmailProps {
   email: string;
+  showEmail?: boolean;  
   onSuccess?: () => void;
   onCancel?: () => void;
+  isMobile?: boolean;
+  className?: string;
+  onVerify : (input: VerifyEmailByCodeActionInput) => VerifyEmailByCodeActionReturnType
 }
 
 export const VerifyEmail: FC<VerifyEmailProps> = ({
   email,
+  showEmail = true,
   onCancel,
   onSuccess,
+  className,
+  isMobile = true,
 }) => {
   const form = useForm<OTPForm>({
     resolver: zodResolver(OTPSchema),
@@ -72,7 +80,7 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({
     startCountdown();
   }, []);
 
-  const { execute: execVerify } = useServerAction(verifyEmailByCodeAction, {
+  const { execute: execVerify } = useServerAction(singUpVerifyEmailByCodeAction, {
     onError: ({ err }) => {
       if (err.code === "INPUT_PARSE_ERROR") {
         Object.entries(err.fieldErrors).forEach(([field, message]) => {
@@ -99,7 +107,7 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({
       onError: ({ err }) => {
         setError("code", { message: err.message });
       },
-    },
+    }
   );
 
   const resed = async () => {
@@ -118,30 +126,30 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({
   };
 
   return (
-    <Card className="max-w-full md:w-96">
-      <CardHeader className="text-center">
-        <CardTitle>{APP_TITLE} Verify Email</CardTitle>
-        <CardDescription>
-          Enter the verification code sent to your email
-        </CardDescription>
-        {email ? (
-          <CardDescription
-            className="flex items-end justify-center hover:cursor-pointer"
-            onClick={onCancel}
-          >
-            {email}&nbsp;
-            <PencilLine className="h-4 w-4" aria-hidden="true" />
-          </CardDescription>
-        ) : null}
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form
-            onSubmit={handleSubmit(execVerify)}
-            ref={formRef}
-            method="POST"
-            className="space-y-4"
-          >
+    <Form {...form}>
+      <form
+        onSubmit={handleSubmit(execVerify)}
+        ref={formRef}
+        method="POST"
+        className="space-y-4"
+      >
+        <Card className={cn(className)}>
+          <CardHeader className="text-center pb-2">
+            <CardTitle>Verify Email</CardTitle>
+            <CardDescription>
+              Enter the verification code sent to your email
+            </CardDescription>
+            {email && showEmail ? (
+              <CardDescription
+                className="flex items-end justify-center hover:cursor-pointer"
+                onClick={onCancel}
+              >
+                {email}&nbsp;
+                <PencilLine className="h-4 w-4" aria-hidden="true" />
+              </CardDescription>
+            ) : null}
+          </CardHeader>
+          <CardContent>
             <FormField
               control={form.control}
               name="code"
@@ -175,32 +183,41 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({
             />
             <p
               className={cn(
-                "font-medium text-sm text-primary hover:underline hover:underline-offset-4 hover:cursor-pointer text-center",
+                "mt-2 font-medium text-sm text-primary hover:underline hover:underline-offset-4 hover:cursor-pointer text-center",
                 {
                   "opacity-70": count > 0,
-                },
+                }
               )}
               onClick={resed}
             >
               Didn't receive a code? Resend{" "}
               {count > 0 ? `(${count}s)` : isRensedPending ? "..." : ""}
             </p>
+          </CardContent>
+          <CardFooter
+            className={cn(
+              "flex gap-2",
+              !isMobile ? "flex-row-reverse justify-end" : "flex-col"
+            )}
+          >
             <LoadingButton
-              className="w-full"
+              className={!isMobile ? "w-fit" : "w-full"}
               loading={isSubmitting}
               type="submit"
             >
               Verify
             </LoadingButton>
-            <Button variant="outline" className="w-full" type="button" asChild>
-              <Link href="/">Cancel</Link>
+            <Button
+              variant="outline"
+              className={!isMobile ? "w-fit" : "w-full"}
+              type="button"
+              onClick={onCancel}
+            >
+              Cancel
             </Button>
-            <Button variant={"link"} size={"sm"} className="p-0" asChild>
-              <Link href={"/login"}>Have an account? Login</Link>
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+          </CardFooter>
+        </Card>
+      </form>
+    </Form>
   );
 };
