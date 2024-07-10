@@ -9,6 +9,7 @@ import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Analytics } from "@/components/analytics";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { QueryClientProvider } from "@/providers/query-client-provider";
+import {Provider as NiceModalProvider} from "@/components/modal";
 
 export const metadata: Metadata = {
   title: "Hexa",
@@ -24,18 +25,20 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={cn(satoshi.variable, inter.variable)}>
         <QueryClientProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-            <Toaster richColors position="top-center" />
-            <TailwindIndicator />
-            <Analytics />
-            <SpeedInsights />
-          </ThemeProvider>
+          <NiceModalProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+              <Toaster richColors position="top-center" />
+              <TailwindIndicator />
+              <Analytics />
+              <SpeedInsights />
+            </ThemeProvider>
+          </NiceModalProvider>
         </QueryClientProvider>
       </body>
     </html>
