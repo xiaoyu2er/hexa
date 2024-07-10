@@ -1,29 +1,92 @@
-import { eq } from "drizzle-orm";
+import { and, eq, ne } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { UserModel, userTable } from "@/lib/db/schema";
+import { EmailModal, UserModel, emailTable, userTable } from "@/lib/db/schema";
 import { getHash } from "@/lib/utils";
 
-export async function getUserByEmail(email: string) {
+export async function getUser(uid: string) {
   const user = await db.query.userTable.findFirst({
-    where: eq(userTable.email, email),
+    where: eq(userTable.id, uid),
   });
 
   return user;
 }
 
+export async function getEmail(email: string) {
+  const emailItem = await db.query.emailTable.findFirst({
+    where: (table, { eq }) => eq(table.email, email),
+    with: {
+      user: true,
+    },
+  });
+
+  return emailItem;
+}
+
+export async function getUserPrimaryEmail(uid: string) {
+  return await db.query.emailTable.findFirst({
+    where: (table, { eq }) =>
+      and(eq(table.userId, uid), eq(table.primary, true)),
+  });
+}
+
+export async function getUserEmails(uid: string) {
+  return await db.query.emailTable.findMany({
+    where: (table, { eq }) => eq(table.userId, uid),
+    orderBy: emailTable.createdAt,
+  });
+}
+
+export async function getUserEmail(email: string) {
+  const emailItem = await db.query.emailTable.findFirst({
+    where: (table, { eq }) => eq(table.email, email),
+    with: {
+      user: true,
+    },
+  });
+  return emailItem;
+}
+
+export async function createUserEmail({
+  email,
+  verified,
+  primary,
+  userId,
+}: Pick<EmailModal, "email" | "verified" | "primary"> & {
+  userId: UserModel["id"];
+}) {
+  return (
+    await db
+      .insert(emailTable)
+      .values({
+        email,
+        verified,
+        primary,
+        userId: userId,
+      })
+      .returning()
+  )[0];
+}
+
+export async function removeUserEmail(uid: string, email: string) {
+  await db
+    .delete(emailTable)
+    .where(and(eq(emailTable.email, email), eq(emailTable.userId, uid)));
+}
+
 export async function createUser({
   email,
-  emailVerified,
+  verified,
   password,
   avatarUrl,
   name,
-}: Omit<Partial<UserModel>, "password"> & { password?: string }) {
+}: Omit<Partial<UserModel>, "password"> & { password?: string } & Pick<
+    EmailModal,
+    "email" | "verified"
+  >) {
   const user = (
     await db
       .insert(userTable)
       .values({
-        email,
-        emailVerified: emailVerified ?? false,
         avatarUrl: avatarUrl ?? null,
         name: name ?? null,
         ...(password ? { hashedPassword: await getHash(password) } : {}),
@@ -31,14 +94,50 @@ export async function createUser({
       .returning()
   )[0];
 
-  return user;
+  if (!user) return;
+
+  await createUserEmail({
+    email,
+    verified,
+    primary: true,
+    userId: user.id,
+  });
+
+  return await db.query.userTable.findFirst({
+    where: (table, { eq }) => eq(table.id, user.id),
+    with: {
+      emails: true,
+    },
+  });
 }
 
-export async function updateUserEmailVerified(uid: string) {
+export async function updateUserPassword(uid: string, hashedPassword: string) {
   await db
     .update(userTable)
-    .set({ emailVerified: true })
-    .where(eq(userTable.id, uid));
+    .set({ password: hashedPassword })
+    .where(eq(userTable.id, uid))
+    .returning();
+}
+
+export async function updateUserPrimaryEmail(uid: string, email: string) {
+  // set email as primary
+  await db
+    .update(emailTable)
+    .set({ primary: true })
+    .where(and(eq(emailTable.email, email), eq(emailTable.userId, uid)));
+
+  // set all other emails as not primary
+  await db
+    .update(emailTable)
+    .set({ primary: false })
+    .where(and(ne(emailTable.email, email), eq(emailTable.userId, uid)));
+}
+
+export async function updateUserEmailVerified(uid: string, email: string) {
+  await db
+    .update(emailTable)
+    .set({ verified: true })
+    .where(and(eq(emailTable.email, email), eq(emailTable.userId, uid)));
 }
 
 export async function updateUserProfile(uid: string, imageUrl: string) {
