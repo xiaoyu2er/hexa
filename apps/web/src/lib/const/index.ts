@@ -37,3 +37,5 @@ export const PUBLIC_URL =
 // we don't use process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY because client can't access it
 export const DISABLE_CLOUDFLARE_TURNSTILE =
   !process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY;
+
+export const MAX_EMAILS = process.env.NODE_ENV === "development" ? 3 : 5;
