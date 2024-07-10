@@ -1,17 +1,18 @@
 import { GitHubUser, GoogleUser } from "@/types";
-import { createUser, getUserByEmail } from "../data-access/user";
+import { createUser, getUserEmail } from "../data-access/user";
 import {
   createGithubAccount,
   createGoogleAccount,
 } from "../data-access/account";
 
 export async function createUserByGithubAccount(githubUser: GitHubUser) {
-  let existingUser = await getUserByEmail(githubUser.email);
+  const emailItem = await getUserEmail(githubUser.email);
+  let existingUser = emailItem?.user;
 
   if (!existingUser) {
     existingUser = await createUser({
       email: githubUser.email,
-      emailVerified: true,
+      verified: true,
       avatarUrl: githubUser.avatar_url,
       name: githubUser.name,
     });
@@ -25,12 +26,13 @@ export async function createUserByGithubAccount(githubUser: GitHubUser) {
 }
 
 export async function createUserByGoogleAccount(googleUser: GoogleUser) {
-  let existingUser = await getUserByEmail(googleUser.email);
+  const emailItem = await getUserEmail(googleUser.email);
+  let existingUser = emailItem?.user
 
   if (!existingUser) {
     existingUser = await createUser({
       email: googleUser.email,
-      emailVerified: true,
+      verified: true,
       avatarUrl: googleUser.picture,
       name: googleUser.name,
     });
