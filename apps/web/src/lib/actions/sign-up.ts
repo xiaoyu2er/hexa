@@ -16,16 +16,16 @@ import { getUserEmailProcedure } from "./procedures";
 
 export async function updateTokenAndSendVerifyEmail(
   uid: string,
-  email: string
+  email: string,
 ): Promise<{ email: string }> {
   const { code: verificationCode, token } = await addDBToken(
     uid,
     email,
-    "VERIFY_EMAIL"
+    "VERIFY_EMAIL",
   );
   const url = `${PUBLIC_URL}/verify-email?token=${token}`;
   const data = await sendVerifyCodeAndUrlEmail(email, verificationCode, url);
-  console.log('sendVerifyCodeAndUrlEmail', data)
+  console.log("sendVerifyCodeAndUrlEmail", data);
   return data;
 }
 
@@ -41,7 +41,7 @@ export const signupAction = turnstileProcedure
         "FORBIDDEN",
         process.env.NODE_ENV === "development"
           ? "[dev]Email already exists"
-          : "Email already exists"
+          : "Email already exists",
       );
     }
 

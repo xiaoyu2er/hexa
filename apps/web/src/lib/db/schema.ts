@@ -7,7 +7,6 @@ import {
   primaryKey,
   text,
   timestamp,
-  unique,
 } from "drizzle-orm/pg-core";
 
 export const userTable = pgTable("user", {
@@ -115,8 +114,6 @@ export const oauthAccountTable = pgTable("oauth_account", {
     mode: "date",
   }).$onUpdate(() => new Date()),
 });
-
-
 
 export const userOAuthAccountRelations = relations(userTable, ({ many }) => ({
   oauthAccounts: many(oauthAccountTable),

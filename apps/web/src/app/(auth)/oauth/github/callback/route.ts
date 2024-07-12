@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
     if (!primaryEmail) {
       return NextResponse.json(
         { error: "No primary email address" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
     }
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

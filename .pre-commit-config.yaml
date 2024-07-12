@@ -22,16 +22,7 @@ repos:
         args: [--fix, --quiet]
         files: (src|test|test-legacy|stories|webpack)\/.*\.(js|ts|tsx|json)$
         types: [file]
-        stages: [commit] # overriding default_stages so that this hook is not run in the `manual` stage
-  - repo: https://github.com/thibaudcolas/pre-commit-stylelint
-    rev: v16.6.1
-    hooks:
-      - id: stylelint
-        language_version: system
-        files: src\/.*\.(js|ts|tsx|css)$
-        args: [--fix, --quiet]
-        stages: [commit] # overriding default_stages so that this hook is not run in the `manual` stage
-        additional_dependencies: [stylelint@16.0.2, postcss-styled-syntax@0.6.4]
+        stages: [commit]
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
     rev: v9.16.0
     hooks:

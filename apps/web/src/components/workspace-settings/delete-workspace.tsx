@@ -32,7 +32,6 @@ import {
 import { useForm } from "react-hook-form";
 import { DeleteUserInput } from "@/lib/zod/schemas/user";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { WorkspaceModel } from "@/lib/db";
 import {
   DELETE_WORKSPACE_CONFIRMATION,
   DeleteWorkspaceInput,
@@ -40,11 +39,9 @@ import {
 } from "@/lib/zod/schemas/workspace";
 import { deleteWorkspaceAction } from "@/lib/actions/workspace";
 import { useRouter } from "next/navigation";
-import { invalidateWorkspacesQuery, queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { invalidateWorkspacesQuery } from "@/lib/queries/workspace";
 
-export function DeleteWorkspace({ slug }: { slug: string }) {
-  const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
+export function DeleteWorkspace() {
   const router = useRouter();
   const form = useForm<DeleteWorkspaceInput>({
     resolver: zodResolver(DeleteWorkspaceSchema),

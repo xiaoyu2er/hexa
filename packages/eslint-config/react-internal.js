@@ -1,5 +1,5 @@
 const { resolve } = require("node:path");
-
+const commonRules = require("./common-rules");
 const project = resolve(process.cwd(), "tsconfig.json");
 
 /*
@@ -11,9 +11,10 @@ const project = resolve(process.cwd(), "tsconfig.json");
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
   extends: ["eslint:recommended", "prettier", "turbo"],
-  plugins: ["only-warn"],
+  plugins: ["unused-imports"],
+  // plugins: ["only-warn"],
   globals: {
-    React: true,
+    // React: true,
     JSX: true,
   },
   env: {
@@ -36,4 +37,7 @@ module.exports = {
     // Force ESLint to detect .tsx files
     { files: ["*.js?(x)", "*.ts?(x)"] },
   ],
+  rules: {
+    ...commonRules,
+  },
 };

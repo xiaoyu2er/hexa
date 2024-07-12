@@ -143,7 +143,7 @@ export const updateWorkspaceSlugAction = authenticatedProcedure
 export const updateWorkspaceAvatarAction = authenticatedProcedure
   .createServerAction()
   .input(UpdateWorkspaceAvatarSchema)
-  .handler(async ({ input, ctx }) => {
+  .handler(async ({ input }) => {
     const { image, workspaceId } = input;
     const ws = await getWorkspaceByWsId(workspaceId);
     if (!ws) {

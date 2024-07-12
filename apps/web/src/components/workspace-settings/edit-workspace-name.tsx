@@ -13,7 +13,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@hexa/ui/form";
 import { Input } from "@hexa/ui/input";
@@ -28,7 +27,11 @@ import {
   UpdateWorkspaceNameInput,
   UpdateWorkspacerNameSchema,
 } from "@/lib/zod/schemas/workspace";
-import { invalidateWorkspaceBySlugQuery, invalidateWorkspacesQuery, queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
+import {
+  invalidateWorkspaceBySlugQuery,
+  invalidateWorkspacesQuery,
+  queryWorkspaceBySlugOptions,
+} from "@/lib/queries/workspace";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Button } from "@hexa/ui/button";
 

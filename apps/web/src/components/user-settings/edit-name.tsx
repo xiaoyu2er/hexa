@@ -18,7 +18,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@hexa/ui/form";
 import { Input } from "@hexa/ui/input";

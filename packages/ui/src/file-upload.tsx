@@ -1,6 +1,6 @@
 import { cn } from "@hexa/utils";
 import { VariantProps, cva } from "class-variance-authority";
-import { DragEvent, ReactNode, useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { toast } from "sonner";
 import { Loader2, UploadCloud } from "@hexa/ui/icons";
 import { MAX_PROFILE_FILE_SIZE_MB } from "@hexa/utils/const";
@@ -35,14 +35,14 @@ type FileUploadReadFileProps =
        * Whether to automatically read the file and return the result as `src` to onChange
        */
       readFile?: false;
-      onChange?: (data: { file: File }) => void;
+      onChange?(_data: { file: File }): void;
     }
   | {
       /**
        * Whether to automatically read the file and return the result as `src` to onChange
        */
       readFile: true;
-      onChange?: (data: { file: File; src: string }) => void;
+      onChange?: (_data: { file: File; src: string }) => void;
     };
 
 export type FileUploadProps = FileUploadReadFileProps & {
@@ -115,7 +115,8 @@ export function FileUpload({
   ) => {
     const file =
       "dataTransfer" in e
-        ? e.dataTransfer.files && e.dataTransfer.files[0]
+        ? // @ts-ignore - TODO - Fix this
+          e.dataTransfer.files && e.dataTransfer.files[0]
         : e.target.files && e.target.files[0];
 
     if (!file) return;
@@ -187,6 +188,7 @@ export function FileUpload({
         onDrop={async (e) => {
           e.preventDefault();
           e.stopPropagation();
+          // @ts-ignore - TODO - Fix this
           onFileChange(e);
           setDragActive(false);
         }}

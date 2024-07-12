@@ -7,7 +7,7 @@ import {
 const router = createOpenApiServerActionRouter({}).get(
   "/verify-email",
   verifyEmailByTokenAction,
-  {}
+  {},
 );
 
 export const { GET } = createRouteHandlers(router);

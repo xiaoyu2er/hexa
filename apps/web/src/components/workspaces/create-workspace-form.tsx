@@ -26,7 +26,6 @@ import {
 } from "@/lib/zod/schemas/workspace";
 import { createWorkspaceAction } from "@/lib/actions/workspace";
 import { FormErrorMessage } from "@hexa/ui/form-error-message";
-import { getQueryClient } from "@/providers/get-query-client";
 import { invalidateWorkspacesQuery } from "@/lib/queries/workspace";
 import { Button } from "@hexa/ui/button";
 
@@ -122,11 +121,7 @@ export function CreateWorkspaceForm({ onSuccess }: CreateWorkspaceFormProps) {
         <FormErrorMessage message={errors.root?.message} />
 
         <DialogFooter>
-          <Button
-            className="w-full"
-            type="submit"
-            loading={isSubmitting}
-          >
+          <Button className="w-full" type="submit" loading={isSubmitting}>
             Create Workspace
           </Button>
         </DialogFooter>

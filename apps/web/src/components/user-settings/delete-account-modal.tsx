@@ -3,7 +3,7 @@
 import { Input } from "@hexa/ui/input";
 
 import { useServerAction } from "zsa-react";
-import { removeUserEmailAction, removeUserOAuthAccountAction } from "@/lib/actions/user";
+import { removeUserOAuthAccountAction } from "@/lib/actions/user";
 import { toast } from "@hexa/ui/sonner";
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
 
@@ -25,12 +25,12 @@ import {
 } from "@hexa/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { OnlyEmailInput, OnlyEmailSchema } from "@/lib/zod/schemas/auth";
 import { ProviderType } from "@/lib/db";
 import {
   DeleteOAuthAccountInput,
   DeleteOAuthAccountSchema,
 } from "@/lib/zod/schemas/user";
+import { Button } from "@hexa/ui/button";
 
 interface DeleteOAuthAccountProps {
   provider: ProviderType;

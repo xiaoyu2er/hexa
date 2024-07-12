@@ -7,7 +7,7 @@ export const resend = new Resend(process.env.RESEND_API_KEY);
 export async function sendVerifyCodeAndUrlEmail(
   email: string,
   code: string,
-  url: string
+  url: string,
 ) {
   if (process.env.NODE_ENV === "development") {
     // sleep 1000;

@@ -22,11 +22,11 @@ const avatarImage = z
   .refine((file) => !!file, "Image is required.")
   .refine(
     (file) => file.size <= MAX_PROFILE_FILE_SIZE,
-    `Max file size is ${MAX_PROFILE_FILE_SIZE_MB}MB.`
+    `Max file size is ${MAX_PROFILE_FILE_SIZE_MB}MB.`,
   )
   .refine(
     (file) => ACCEPTED_IMAGE_TYPES.includes(file.type),
-    `${ACCEPTED_IMAGE_TYPES.map((t) => t.replace("image/", "")).join(", ")} files are accepted.`
+    `${ACCEPTED_IMAGE_TYPES.map((t) => t.replace("image/", "")).join(", ")} files are accepted.`,
   );
 
 export const UpdateAvatarSchema = z.object({
@@ -41,7 +41,7 @@ export const DeleteUserSchema = z.object({
     .string()
     .refine(
       (v) => v === DELETE_USER_CONFIRMATION,
-      "Please type 'confirm delete account' to delete your account."
+      "Please type 'confirm delete account' to delete your account.",
     ),
 });
 
@@ -52,7 +52,7 @@ export const DeleteOAuthAccountSchema = z.object({
     .string()
     .refine(
       (provider) => provider === "GOOGLE" || provider === "GITHUB",
-      "Invalid connected account type"
+      "Invalid connected account type",
     ),
 });
 

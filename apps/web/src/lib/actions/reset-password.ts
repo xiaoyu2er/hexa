@@ -22,22 +22,22 @@ import { turnstileProcedure } from "./turnstile";
 
 async function updateTokenAndSendVerifyEmail(
   userId: string,
-  email: string
+  email: string,
 ): Promise<{ email: string }> {
   const { code: verificationCode, token } = await addDBToken(
     userId,
     email,
-    "RESET_PASSWORD"
+    "RESET_PASSWORD",
   );
   const url = `${PUBLIC_URL}/reset-password?token=${token}`;
   const data = await sendVerifyCodeAndUrlEmail(email, verificationCode, url);
-  console.log('sendVerifyCodeAndUrlEmail', data)
+  console.log("sendVerifyCodeAndUrlEmail", data);
   return data;
 }
 
 export const forgetPasswordAction = chainServerActionProcedures(
   turnstileProcedure,
-  getUserEmailProcedure
+  getUserEmailProcedure,
 )
   .createServerAction()
   .input(ForgetPasswordSchema)
@@ -80,7 +80,7 @@ export const verifyResetPasswordCodeAction = getUserEmailProcedure
       userId,
       { code },
       "RESET_PASSWORD",
-      false
+      false,
     );
     return { token: tokenRow.token };
   });
@@ -97,7 +97,7 @@ export const resetPasswordAction = createServerAction()
       tokenRow.userId,
       { token },
       "RESET_PASSWORD",
-      true
+      true,
     );
 
     // update the password

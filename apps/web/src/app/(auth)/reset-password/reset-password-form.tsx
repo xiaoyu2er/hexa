@@ -115,18 +115,10 @@ export const ResetPasswordCard: FC<ResetParsswordCardProps> = ({
             <Button variant={"link"} size={"sm"} className="p-0" asChild>
               <Link href={"/sign-up"}>Not signed up? Sign up now.</Link>
             </Button>
-            <Button
-              className="w-full"
-              type="submit"
-              loading={isSubmitting}
-            >
+            <Button className="w-full" type="submit" loading={isSubmitting}>
               Reset Password
             </Button>
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={onCancel}
-            >
+            <Button variant="outline" className="w-full" onClick={onCancel}>
               Cancel
             </Button>
           </form>

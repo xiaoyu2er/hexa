@@ -43,7 +43,7 @@ export interface VerifyEmailProps {
   isMobile?: boolean;
   className?: string;
   onVerify: (
-    input: VerifyEmailByCodeActionInput
+    input: VerifyEmailByCodeActionInput,
   ) => VerifyEmailByCodeActionReturnType;
 }
 
@@ -106,7 +106,7 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({
       onError: ({ err }) => {
         setError("code", { message: err.message });
       },
-    }
+    },
   );
 
   const resed = async () => {
@@ -185,7 +185,7 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({
                 "mt-2 font-medium text-sm text-primary hover:underline hover:underline-offset-4 hover:cursor-pointer text-center",
                 {
                   "opacity-70": count > 0,
-                }
+                },
               )}
               onClick={resed}
             >
@@ -196,7 +196,7 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({
           <CardFooter
             className={cn(
               "flex gap-2",
-              !isMobile ? "flex-row-reverse justify-end" : "flex-col"
+              !isMobile ? "flex-row-reverse justify-end" : "flex-col",
             )}
           >
             <Button

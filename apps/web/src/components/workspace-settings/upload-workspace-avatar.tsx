@@ -43,7 +43,7 @@ export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
 
   const form = useForm<Omit<UpdateWorkspaceAvatarInput, "workspaceId">>({
     resolver: zodResolver(
-      UpdateWorkspaceAvatarSchema.omit({ workspaceId: true })
+      UpdateWorkspaceAvatarSchema.omit({ workspaceId: true }),
     ),
   });
 
@@ -65,7 +65,7 @@ export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
   });
 
   const [avatarUrl, setAvatarUrl] = useState<string | null | undefined>(
-    ws.avatarUrl
+    ws.avatarUrl,
   );
 
   useEffect(() => {
@@ -80,7 +80,7 @@ export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
           execute({
             ...form,
             workspaceId: ws.id,
-          })
+          }),
         )}
         method="POST"
         className="grid gap-4"

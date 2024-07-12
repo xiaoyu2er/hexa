@@ -1,5 +1,5 @@
 const { resolve } = require("node:path");
-
+const commonRules = require("./common-rules");
 const project = resolve(process.cwd(), "tsconfig.json");
 
 /** @type {import("eslint").Linter.Config} */
@@ -14,11 +14,12 @@ module.exports = {
     React: true,
     JSX: true,
   },
+  plugins: ["unused-imports"],
   env: {
     node: true,
     browser: true,
   },
-  plugins: ["only-warn"],
+  // plugins: ["only-warn"],
   settings: {
     "import/resolver": {
       typescript: {
@@ -32,4 +33,7 @@ module.exports = {
     "node_modules/",
   ],
   overrides: [{ files: ["*.js?(x)", "*.ts?(x)"] }],
+  rules: {
+    ...commonRules,
+  },
 };

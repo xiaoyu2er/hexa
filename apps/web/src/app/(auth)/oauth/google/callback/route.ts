@@ -35,7 +35,7 @@ export async function GET(request: Request): Promise<Response> {
         headers: {
           Authorization: `Bearer ${tokens.accessToken}`,
         },
-      }
+      },
     );
     const googleUser: GoogleUser = await response.json();
 
