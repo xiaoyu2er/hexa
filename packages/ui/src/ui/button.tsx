@@ -32,7 +32,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 export interface ButtonProps
@@ -45,15 +45,15 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     { className, variant, size, asChild = false, loading = false, ...props },
-    ref
+    ref,
   ) => {
     const Comp = asChild ? Slot : "button";
     const children = props.children;
     // if loading, add a spinner before the children
     if (!asChild && loading) {
-      const newChildren = React.Children.toArray(children)
+      const newChildren = React.Children.toArray(children);
       newChildren.unshift(
-        <Loader2 className="mr-2 h-4 w-4 animate-spin" key="loading" />
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" key="loading" />,
       );
       props.children = newChildren;
       props.disabled = true;
@@ -67,7 +67,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       />
     );
-  }
+  },
 );
 Button.displayName = "Button";
 

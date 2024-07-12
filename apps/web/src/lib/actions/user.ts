@@ -10,7 +10,6 @@ import {
 import {
   createUserEmail,
   deleteUser,
-  getUserEmail,
   getUserEmails,
   removeUserEmail,
   updateUserAvatar,
@@ -45,7 +44,7 @@ import {
   getUserOAuthAccounts,
   removeUserOAuthAccount,
 } from "../db/data-access/account";
-import { ProviderType, TokenModel } from "../db";
+import { ProviderType } from "../db";
 import { validateRequest } from "../auth";
 
 export const getUserAction = authenticatedProcedure
@@ -119,7 +118,6 @@ export const verifyEmailByCodeAction = getUserEmailProcedure
     const { code } = input;
     const {
       email: {
-        email,
         user: { id: userId },
       },
     } = ctx;
@@ -128,7 +126,7 @@ export const verifyEmailByCodeAction = getUserEmailProcedure
       userId,
       { code },
       "VERIFY_EMAIL",
-      true
+      true,
     );
 
     const { user } = await validateRequest();
@@ -159,14 +157,14 @@ export const verifyEmailByTokenAction = createServerAction()
         "FORBIDDEN",
         process.env.NODE_ENV === "development"
           ? "[dev]Code is not found"
-          : "Code is invalid or expired"
+          : "Code is invalid or expired",
       );
     }
     tokenItem = await verifyDBTokenByCode(
       tokenItem.userId,
       { token },
       "VERIFY_EMAIL",
-      true
+      true,
     );
 
     const { user } = await validateRequest();
@@ -191,7 +189,7 @@ export const updateUserAvatarAction = authenticatedProcedure
         if (user.avatarUrl && isStored(user.avatarUrl)) {
           await storage.delete(user.avatarUrl);
         }
-      })()
+      })(),
     );
     revalidatePath("/");
   });

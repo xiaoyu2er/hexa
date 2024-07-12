@@ -21,7 +21,7 @@ export const loginAction = turnstileProcedure
         "FORBIDDEN",
         process.env.NODE_ENV === "development"
           ? "User does not exist"
-          : "Incorrect email or password"
+          : "Incorrect email or password",
       );
     }
 
@@ -30,7 +30,7 @@ export const loginAction = turnstileProcedure
         "FORBIDDEN",
         process.env.NODE_ENV === "development"
           ? "No password set"
-          : "Incorrect email or password"
+          : "Incorrect email or password",
       );
     }
 
@@ -41,7 +41,7 @@ export const loginAction = turnstileProcedure
         "FORBIDDEN",
         process.env.NODE_ENV === "development"
           ? "Incorrect password"
-          : "Incorrect email or password"
+          : "Incorrect email or password",
       );
     }
 

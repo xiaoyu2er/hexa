@@ -7,7 +7,7 @@ export async function getAccountByGoogleId(googleId: string) {
   return await db.query.oauthAccountTable.findFirst({
     where: and(
       eq(oauthAccountTable.provider, "GOOGLE"),
-      eq(oauthAccountTable.providerAccountId, googleId)
+      eq(oauthAccountTable.providerAccountId, googleId),
     ),
   });
 }
@@ -16,7 +16,7 @@ export async function getAccountByGithubId(githubId: number) {
   return await db.query.oauthAccountTable.findFirst({
     where: and(
       eq(oauthAccountTable.provider, "GITHUB"),
-      eq(oauthAccountTable.providerAccountId, String(githubId))
+      eq(oauthAccountTable.providerAccountId, String(githubId)),
     ),
     with: {
       user: true,
@@ -26,7 +26,7 @@ export async function getAccountByGithubId(githubId: number) {
 
 export async function createGithubAccount(
   userId: UserModel["id"],
-  githubUser: GitHubUser
+  githubUser: GitHubUser,
 ) {
   return (
     await db
@@ -42,7 +42,7 @@ export async function createGithubAccount(
 
 export async function createGoogleAccount(
   userId: UserModel["id"],
-  googleUser: GoogleUser
+  googleUser: GoogleUser,
 ) {
   return (
     await db
@@ -64,14 +64,14 @@ export async function getUserOAuthAccounts(userId: UserModel["id"]) {
 
 export async function removeUserOAuthAccount(
   uid: UserModel["id"],
-  provider: ProviderType
+  provider: ProviderType,
 ) {
   return await db
     .delete(oauthAccountTable)
     .where(
       and(
         eq(oauthAccountTable.userId, uid),
-        eq(oauthAccountTable.provider, provider)
-      )
+        eq(oauthAccountTable.provider, provider),
+      ),
     );
 }

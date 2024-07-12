@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 export function useScreenSize() {
   const [device, setDevice] = useState<"mobile" | "tablet" | "desktop" | null>(
-    null
+    null,
   );
 
   useEffect(() => {

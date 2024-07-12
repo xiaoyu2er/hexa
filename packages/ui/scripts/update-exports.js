@@ -15,7 +15,7 @@ const otherFiles = fs
 
 console.log(
   "@hexa/ui",
-  [...uiFiles, ...otherFiles].sort().map((f) => f.replace(/\.tsx?$/, ""))
+  [...uiFiles, ...otherFiles].sort().map((f) => f.replace(/\.tsx?$/, "")),
 );
 
 const otherExports = otherFiles.reduce((acc, file) => {
@@ -35,5 +35,5 @@ pkg.exports = {
 // udpate package.json
 fs.writeFileSync(
   path.resolve(__dirname, "../package.json"),
-  JSON.stringify(pkg, null, 2) + "\n"
+  JSON.stringify(pkg, null, 2) + "\n",
 );

@@ -135,11 +135,7 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
             >
               Reset Password
             </Button>
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={onCancel}
-            >
+            <Button variant="outline" className="w-full" onClick={onCancel}>
               Cancel
             </Button>
           </form>

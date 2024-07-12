@@ -195,18 +195,10 @@ export const VerifyResetPasswordCodeCard: FC<
               Didn't receive a code? Resend{" "}
               {count > 0 ? `(${count}s)` : isRensedPending ? "..." : ""}
             </p>
-            <Button
-              className="w-full"
-              loading={isSubmitting}
-              type="submit"
-            >
+            <Button className="w-full" loading={isSubmitting} type="submit">
               Verify
             </Button>
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={onCancel}
-            >
+            <Button variant="outline" className="w-full" onClick={onCancel}>
               Cancel
             </Button>
             <Button variant={"link"} size={"sm"} className="p-0" asChild>

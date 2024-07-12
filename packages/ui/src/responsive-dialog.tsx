@@ -29,10 +29,7 @@ import {
 import { useMediaQuery } from "@hexa/ui/hooks";
 import { cn } from "@hexa/utils";
 
-type StatefulContent = ({
-  open,
-  setOpen,
-}: {
+type StatefulContent = (_props: {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) => ReactNode | ReactNode[];
@@ -91,10 +88,7 @@ export const ResponsiveDialog = (props: {
 
 const isFunctionType = (
   prop: ReactNode | ReactNode[] | StatefulContent,
-): prop is ({
-  open,
-  setOpen,
-}: {
+): prop is (_props: {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) => ReactNode | ReactNode[] => {

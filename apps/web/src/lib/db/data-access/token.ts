@@ -22,7 +22,7 @@ export async function findDBTokenByUserId(userId: string, type: TokenType) {
 export async function addDBToken(
   userId: string,
   email: string,
-  type: TokenType
+  type: TokenType,
 ) {
   await db
     .delete(tokenTable)
@@ -63,13 +63,13 @@ export async function verifyDBTokenByCode(
     token?: string;
   },
   type: TokenType,
-  deleteRow: boolean
+  deleteRow: boolean,
 ) {
   if (!codeOrToken.code && !codeOrToken.token) {
     throw new ZSAError("CONFLICT", "Code or token is required");
   }
 
-  console.log('findDBTokenByUserId', userId, type)
+  console.log("findDBTokenByUserId", userId, type);
   const tokenRow = await findDBTokenByUserId(userId, type);
 
   // No record
@@ -78,7 +78,7 @@ export async function verifyDBTokenByCode(
       "CONFLICT",
       process.env.NODE_ENV === "development"
         ? "[dev]Code was not sent"
-        : "Code is invalid or expired"
+        : "Code is invalid or expired",
     );
   }
 
@@ -93,7 +93,7 @@ export async function verifyDBTokenByCode(
       "CONFLICT",
       process.env.NODE_ENV === "development"
         ? "[dev]Code is expired"
-        : "Code is invalid or expired"
+        : "Code is invalid or expired",
     );
   }
 
@@ -104,7 +104,7 @@ export async function verifyDBTokenByCode(
         "CONFLICT",
         process.env.NODE_ENV === "development"
           ? "[dev]Code does not match"
-          : "Code is invalid or expired"
+          : "Code is invalid or expired",
       );
     }
   }
@@ -116,7 +116,7 @@ export async function verifyDBTokenByCode(
         "CONFLICT",
         process.env.NODE_ENV === "development"
           ? "[dev]Token does not match"
-          : "Token is invalid or expired"
+          : "Token is invalid or expired",
       );
     }
   }

@@ -22,7 +22,6 @@ import { Label } from "@hexa/ui/label";
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { isDirty } from "zod";
 import { useServerAction } from "zsa-react";
 
 export function AddUserEmailForm({
@@ -94,11 +93,7 @@ export function AddUserEmailForm({
             >
               Update
             </Button>
-            <Button
-              className="shrink-0"
-              variant="secondary"
-              onClick={onCancel}
-            >
+            <Button className="shrink-0" variant="secondary" onClick={onCancel}>
               Cancel
             </Button>
           </CardFooter>

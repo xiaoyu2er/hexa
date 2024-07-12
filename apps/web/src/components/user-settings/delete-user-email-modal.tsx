@@ -2,18 +2,20 @@
 
 import { Input } from "@hexa/ui/input";
 
-import { useServerAction } from "zsa-react";
 import { removeUserEmailAction } from "@/lib/actions/user";
-import { toast } from "@hexa/ui/sonner";
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
+import { toast } from "@hexa/ui/sonner";
+import { useServerAction } from "zsa-react";
 
+import { OnlyEmailInput, OnlyEmailSchema } from "@/lib/zod/schemas/auth";
+import { Button } from "@hexa/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogDescription,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from "@hexa/ui/dialog";
 import {
   Form,
@@ -23,9 +25,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@hexa/ui/form";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { OnlyEmailInput, OnlyEmailSchema } from "@/lib/zod/schemas/auth";
+import { useForm } from "react-hook-form";
 
 interface DeleteUserEmailProps {
   email: string;

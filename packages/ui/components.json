@@ -1,8 +1,12 @@
 {
   "$schema": "https://ui.shadcn.com/schema.json",
-  "style": "new-york",
+  "aliases": {
+    "components": "@hexa",
+    "ui": "@hexa/ui",
+    "utils": "@hexa/utils"
+  },
   "rsc": true,
-  "tsx": true,
+  "style": "new-york",
   "tailwind": {
     "config": "tailwind.config.ts",
     "css": "src/globals.css",
@@ -10,9 +14,5 @@
     "cssVariables": true,
     "prefix": ""
   },
-  "aliases": {
-    "components": "@hexa",
-    "ui": "@hexa/ui",
-    "utils": "@hexa/utils"
-  }
+  "tsx": true
 }

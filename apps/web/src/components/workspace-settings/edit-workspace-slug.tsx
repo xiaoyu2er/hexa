@@ -13,14 +13,12 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@hexa/ui/form";
 import { Input } from "@hexa/ui/input";
 
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
 import { updateWorkspaceSlugAction } from "@/lib/actions/workspace";
@@ -41,7 +39,7 @@ export function EditWorkspaceSlug({ slug }: { slug: string }) {
   const router = useRouter();
   const form = useForm<Omit<UpdateWorkspaceSlugInput, "workspaceId">>({
     resolver: zodResolver(
-      UpdateWorkspaceSlugSchema.omit({ workspaceId: true })
+      UpdateWorkspaceSlugSchema.omit({ workspaceId: true }),
     ),
     defaultValues: {
       slug: ws.slug,
@@ -72,7 +70,7 @@ export function EditWorkspaceSlug({ slug }: { slug: string }) {
           execute({
             ...form,
             workspaceId: ws.id,
-          })
+          }),
         )}
         method="POST"
         className="grid gap-4"

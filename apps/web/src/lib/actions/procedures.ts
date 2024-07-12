@@ -14,7 +14,7 @@ export const getUserEmailProcedure = createServerActionProcedure()
         "NOT_FOUND",
         process.env.NODE_ENV === "development"
           ? "[dev] User not found by email: " + email
-          : "Email not found"
+          : "Email not found",
       );
     }
     return {
@@ -25,5 +25,5 @@ export const getUserEmailProcedure = createServerActionProcedure()
 export const authenticatedProcedure = createServerActionProcedure().handler(
   async () => {
     return await assertAuthenticated();
-  }
+  },
 );

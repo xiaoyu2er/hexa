@@ -11,7 +11,7 @@ export default function ({ params: { slug } }: { params: { slug: string } }) {
       <EditWorkspaceSlug slug={slug} />
       <UploadWorkspaceAvatar slug={slug} />
       <WorkspaceId slug={slug} />
-      <DeleteWorkspace slug={slug} />
+      <DeleteWorkspace />
     </>
   );
 }

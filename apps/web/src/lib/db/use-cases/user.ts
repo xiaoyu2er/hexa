@@ -27,7 +27,7 @@ export async function createUserByGithubAccount(githubUser: GitHubUser) {
 
 export async function createUserByGoogleAccount(googleUser: GoogleUser) {
   const emailItem = await getUserEmail(googleUser.email);
-  let existingUser = emailItem?.user
+  let existingUser = emailItem?.user;
 
   if (!existingUser) {
     existingUser = await createUser({

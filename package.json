@@ -5,7 +5,9 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "check-types": "turbo check-types",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "preclean": "turbo format && turbo lint"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",

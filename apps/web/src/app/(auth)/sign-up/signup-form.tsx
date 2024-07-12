@@ -67,7 +67,7 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
           setError("root", { message: err.formErrors[0] });
         }
       } else {
-        console.log('err', err);
+        console.log("err", err);
         setError("root", { message: err.message });
       }
       resetTurnstile();
@@ -159,11 +159,7 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
             >
               Sign Up
             </Button>
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={onCancel}
-            >
+            <Button variant="outline" className="w-full" onClick={onCancel}>
               Cancel
             </Button>
           </form>

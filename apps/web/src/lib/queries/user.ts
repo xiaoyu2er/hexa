@@ -1,4 +1,4 @@
-import { DataTag, UseQueryOptions, queryOptions } from "@tanstack/react-query";
+import { queryOptions } from "@tanstack/react-query";
 import {
   getUserAction,
   getUserEmailsAction,

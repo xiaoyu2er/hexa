@@ -51,7 +51,7 @@ export function EditUserEmails() {
         toast.success("Primary email set");
         refetch();
       },
-    }
+    },
   );
 
   return (

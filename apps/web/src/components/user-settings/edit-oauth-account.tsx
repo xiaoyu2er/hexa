@@ -24,7 +24,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@hexa/ui/dropdown-menu";
-import { useBoolean } from "usehooks-ts";
 import { useModal } from "@ebay/nice-modal-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@hexa/ui/popover";
 
@@ -33,13 +32,10 @@ import Link from "next/link";
 
 export function EditOAuthAccount() {
   const { data: accounts, refetch } = useSuspenseQuery(
-    queryUserOAuthAccountsOptions
+    queryUserOAuthAccountsOptions,
   );
   const hasGoogle = accounts.some((a) => a.provider === "GOOGLE");
   const hasGithub = accounts.some((a) => a.provider === "GITHUB");
-
-  const emailCardBool = useBoolean();
-  const addAccountBool = useBoolean();
 
   const modal = useModal(DeleteOAuthAccountModal);
 
