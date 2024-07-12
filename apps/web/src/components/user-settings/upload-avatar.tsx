@@ -4,7 +4,7 @@ import { FileUpload } from "@hexa/ui/file-upload";
 import { useEffect, useState } from "react";
 import { toast } from "@hexa/ui/sonner";
 import { getAvatarFallbackUrl } from "@/lib/user";
-import { LoadingButton } from "@hexa/ui/loading-button";
+
 import {
   Card,
   CardHeader,
@@ -27,7 +27,7 @@ import {
 } from "@hexa/ui/form";
 import { queryUserOptions } from "@/lib/queries/user";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { getQueryClient } from "@/providers/get-query-client";
+import { Button } from "@hexa/ui/button";
 
 export default function UploadAvatar() {
   const { data: user, refetch } = useSuspenseQuery(queryUserOptions);
@@ -54,7 +54,7 @@ export default function UploadAvatar() {
   });
 
   const [avatarUrl, setAvatarUrl] = useState<string | null | undefined>(
-    user?.avatarUrl,
+    user?.avatarUrl
   );
 
   useEffect(() => {
@@ -104,13 +104,13 @@ export default function UploadAvatar() {
             />
           </CardContent>
           <CardFooter className="border-t px-6 py-4 items-center flex-row-reverse justify-between">
-            <LoadingButton
+            <Button
               className="shrink-0 mr-2"
               loading={isSubmitting}
               disabled={avatarUrl === user?.avatarUrl}
             >
               Update
-            </LoadingButton>
+            </Button>
 
             <p className="text-sm text-gray-500">
               Accepted file types: .png, .jpg. Max file size: 2MB.

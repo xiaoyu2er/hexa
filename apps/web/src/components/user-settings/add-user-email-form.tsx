@@ -18,7 +18,7 @@ import {
 } from "@hexa/ui/form";
 import { Input } from "@hexa/ui/input";
 import { Label } from "@hexa/ui/label";
-import { LoadingButton } from "@hexa/ui/loading-button";
+
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -86,16 +86,15 @@ export function AddUserEmailForm({
             />
           </CardContent>
           <CardFooter className="border-t px-6 py-4 items-center flex-row-reverse gap-4">
-            <LoadingButton
+            <Button
               type="submit"
               className="shrink-0"
               loading={isSubmitting}
               disabled={!isDirty}
             >
               Update
-            </LoadingButton>
+            </Button>
             <Button
-              type="button"
               className="shrink-0"
               variant="secondary"
               onClick={onCancel}

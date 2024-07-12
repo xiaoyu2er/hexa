@@ -23,7 +23,7 @@ import {
   Form,
 } from "@hexa/ui/form";
 import { Input } from "@hexa/ui/input";
-import { LoadingButton } from "@hexa/ui/loading-button";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { FC, useEffect } from "react";
@@ -127,18 +127,17 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
             <Button variant={"link"} size={"sm"} className="p-0" asChild>
               <Link href={"/sign-up"}>Not signed up? Sign up now.</Link>
             </Button>
-            <LoadingButton
+            <Button
               className="w-full"
               type="submit"
               loading={isSubmitting}
               disabled={disableNext}
             >
               Reset Password
-            </LoadingButton>
+            </Button>
             <Button
               variant="outline"
               className="w-full"
-              type="button"
               onClick={onCancel}
             >
               Cancel

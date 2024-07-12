@@ -1,7 +1,7 @@
 "use client";
 
 import { Input } from "@hexa/ui/input";
-import { LoadingButton } from "@hexa/ui/loading-button";
+
 import { useServerAction } from "zsa-react";
 import { toast } from "@hexa/ui/sonner";
 import {
@@ -28,6 +28,7 @@ import { createWorkspaceAction } from "@/lib/actions/workspace";
 import { FormErrorMessage } from "@hexa/ui/form-error-message";
 import { getQueryClient } from "@/providers/get-query-client";
 import { invalidateWorkspacesQuery } from "@/lib/queries/workspace";
+import { Button } from "@hexa/ui/button";
 
 export interface CreateWorkspaceFormProps {
   onSuccess?: () => void;
@@ -121,13 +122,13 @@ export function CreateWorkspaceForm({ onSuccess }: CreateWorkspaceFormProps) {
         <FormErrorMessage message={errors.root?.message} />
 
         <DialogFooter>
-          <LoadingButton
+          <Button
             className="w-full"
             type="submit"
             loading={isSubmitting}
           >
             Create Workspace
-          </LoadingButton>
+          </Button>
         </DialogFooter>
       </form>
     </Form>

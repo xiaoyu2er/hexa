@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@hexa/ui/card";
 import { Input } from "@hexa/ui/input";
-import { LoadingButton } from "@hexa/ui/loading-button";
+
 import { useServerAction } from "zsa-react";
 import { toast } from "@hexa/ui/sonner";
 import { Button } from "@hexa/ui/button";
@@ -159,14 +159,14 @@ export function DeleteWorkspace({ slug }: { slug: string }) {
                 />
 
                 <DialogFooter>
-                  <LoadingButton
+                  <Button
                     variant="destructive"
                     className="w-full"
                     type="submit"
                     loading={isSubmitting}
                   >
                     {DELETE_WORKSPACE_CONFIRMATION}
-                  </LoadingButton>
+                  </Button>
                 </DialogFooter>
               </form>
             </Form>

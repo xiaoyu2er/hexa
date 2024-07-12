@@ -22,7 +22,7 @@ import {
   FormMessage,
 } from "@hexa/ui/form";
 import { Input } from "@hexa/ui/input";
-import { LoadingButton } from "@hexa/ui/loading-button";
+
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo } from "react";
@@ -30,7 +30,7 @@ import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
 import { queryUserOptions } from "@/lib/queries/user";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { getQueryClient } from "@/providers/get-query-client";
+import { Button } from "@hexa/ui/button";
 
 export function EditName() {
   const { data: user, refetch } = useSuspenseQuery(queryUserOptions);
@@ -96,14 +96,14 @@ export function EditName() {
             />
           </CardContent>
           <CardFooter className="border-t px-6 py-4 items-center flex-row-reverse justify-between">
-            <LoadingButton
+            <Button
               type="submit"
               className="shrink-0"
               loading={isSubmitting}
               disabled={!isDirty}
             >
               Update
-            </LoadingButton>
+            </Button>
           </CardFooter>
         </Card>
       </form>

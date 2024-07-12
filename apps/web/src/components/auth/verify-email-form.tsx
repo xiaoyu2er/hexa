@@ -28,7 +28,7 @@ import {
   FormMessage,
 } from "@hexa/ui/form";
 import { PencilLine } from "@hexa/ui/icons";
-import { LoadingButton } from "@hexa/ui/loading-button";
+
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@hexa/ui/input-otp";
 import {
   VerifyEmailByCodeActionInput,
@@ -199,17 +199,16 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({
               !isMobile ? "flex-row-reverse justify-end" : "flex-col"
             )}
           >
-            <LoadingButton
+            <Button
               className={!isMobile ? "w-fit" : "w-full"}
               loading={isSubmitting}
               type="submit"
             >
               Verify
-            </LoadingButton>
+            </Button>
             <Button
               variant="outline"
               className={!isMobile ? "w-fit" : "w-full"}
-              type="button"
               onClick={onCancel}
             >
               Cancel

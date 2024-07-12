@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@hexa/ui/card";
 import { Input } from "@hexa/ui/input";
-import { LoadingButton } from "@hexa/ui/loading-button";
+
 import { useServerAction } from "zsa-react";
 import { deleteUserAction } from "@/lib/actions/user";
 import { toast } from "@hexa/ui/sonner";
@@ -133,14 +133,14 @@ export function DeleteAccount() {
                 />
 
                 <DialogFooter>
-                  <LoadingButton
+                  <Button
                     variant="destructive"
                     className="w-full"
                     type="submit"
                     loading={isSubmitting}
                   >
                     {DELETE_USER_CONFIRMATION}
-                  </LoadingButton>
+                  </Button>
                 </DialogFooter>
               </form>
             </Form>

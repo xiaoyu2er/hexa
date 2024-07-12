@@ -1,7 +1,7 @@
 "use client";
 
 import { Input } from "@hexa/ui/input";
-import { LoadingButton } from "@hexa/ui/loading-button";
+
 import { useServerAction } from "zsa-react";
 import { removeUserEmailAction } from "@/lib/actions/user";
 import { toast } from "@hexa/ui/sonner";
@@ -118,14 +118,14 @@ export const DeleteUserEmailModal = NiceModal.create(function ({
             />
 
             <DialogFooter>
-              <LoadingButton
+              <Button
                 variant="destructive"
                 className="w-full"
                 type="submit"
                 loading={isSubmitting}
               >
                 Delete Email
-              </LoadingButton>
+              </Button>
             </DialogFooter>
           </form>
         </Form>

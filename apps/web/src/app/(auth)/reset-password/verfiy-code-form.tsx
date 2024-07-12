@@ -26,7 +26,7 @@ import {
   Form,
 } from "@hexa/ui/form";
 import { PencilLine } from "@hexa/ui/icons";
-import { LoadingButton } from "@hexa/ui/loading-button";
+
 import { cn } from "@hexa/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -195,17 +195,16 @@ export const VerifyResetPasswordCodeCard: FC<
               Didn't receive a code? Resend{" "}
               {count > 0 ? `(${count}s)` : isRensedPending ? "..." : ""}
             </p>
-            <LoadingButton
+            <Button
               className="w-full"
               loading={isSubmitting}
               type="submit"
             >
               Verify
-            </LoadingButton>
+            </Button>
             <Button
               variant="outline"
               className="w-full"
-              type="button"
               onClick={onCancel}
             >
               Cancel

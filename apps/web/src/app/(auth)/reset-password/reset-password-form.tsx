@@ -18,7 +18,7 @@ import {
   FormMessage,
   Form,
 } from "@hexa/ui/form";
-import { LoadingButton } from "@hexa/ui/loading-button";
+
 import { PasswordInput } from "@hexa/ui/password-input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -115,17 +115,16 @@ export const ResetPasswordCard: FC<ResetParsswordCardProps> = ({
             <Button variant={"link"} size={"sm"} className="p-0" asChild>
               <Link href={"/sign-up"}>Not signed up? Sign up now.</Link>
             </Button>
-            <LoadingButton
+            <Button
               className="w-full"
               type="submit"
               loading={isSubmitting}
             >
               Reset Password
-            </LoadingButton>
+            </Button>
             <Button
               variant="outline"
               className="w-full"
-              type="button"
               onClick={onCancel}
             >
               Cancel
