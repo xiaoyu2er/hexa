@@ -1,5 +1,5 @@
 import { Button, Html } from "@react-email/components";
-import React, { FC } from "react";
+import React from "react";
 
 interface HelloProps {
   name: string;
