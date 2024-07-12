@@ -27,7 +27,7 @@ import {
 import { FormErrorMessage } from "@hexa/ui/form-error-message";
 import { GithubIcon, GoogleIcon } from "@hexa/ui/icons";
 import { Input } from "@hexa/ui/input";
-import { LoadingButton } from "@hexa/ui/loading-button";
+
 import { PasswordInput } from "@hexa/ui/password-input";
 import { useTurnstile } from "@/hooks/use-turnstile";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -67,6 +67,7 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
           setError("root", { message: err.formErrors[0] });
         }
       } else {
+        console.log('err', err);
         setError("root", { message: err.message });
       }
       resetTurnstile();
@@ -150,18 +151,17 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
             <Button variant={"link"} size={"sm"} className="p-0" asChild>
               <Link href={"/login"}>Have an account? Login</Link>
             </Button>
-            <LoadingButton
+            <Button
               className="w-full"
               type="submit"
               loading={isSubmitting}
               disabled={disableNext}
             >
               Sign Up
-            </LoadingButton>
+            </Button>
             <Button
               variant="outline"
               className="w-full"
-              type="button"
               onClick={onCancel}
             >
               Cancel

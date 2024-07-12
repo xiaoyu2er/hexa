@@ -4,7 +4,7 @@ import { FileUpload } from "@hexa/ui/file-upload";
 import { useEffect, useState } from "react";
 import { toast } from "@hexa/ui/sonner";
 import { getWorkspaceAvatarFallbackUrl } from "@/lib/workspace";
-import { LoadingButton } from "@hexa/ui/loading-button";
+
 import {
   Card,
   CardHeader,
@@ -30,7 +30,12 @@ import {
 import { updateWorkspaceAvatarAction } from "@/lib/actions/workspace";
 import { queryUserOptions } from "@/lib/queries/user";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { invalidateWorkspaceBySlugQuery, invalidateWorkspacesQuery, queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
+import {
+  invalidateWorkspaceBySlugQuery,
+  invalidateWorkspacesQuery,
+  queryWorkspaceBySlugOptions,
+} from "@/lib/queries/workspace";
+import { Button } from "@hexa/ui/button";
 
 export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
   const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
@@ -38,7 +43,7 @@ export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
 
   const form = useForm<Omit<UpdateWorkspaceAvatarInput, "workspaceId">>({
     resolver: zodResolver(
-      UpdateWorkspaceAvatarSchema.omit({ workspaceId: true }),
+      UpdateWorkspaceAvatarSchema.omit({ workspaceId: true })
     ),
   });
 
@@ -60,7 +65,7 @@ export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
   });
 
   const [avatarUrl, setAvatarUrl] = useState<string | null | undefined>(
-    ws.avatarUrl,
+    ws.avatarUrl
   );
 
   useEffect(() => {
@@ -75,7 +80,7 @@ export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
           execute({
             ...form,
             workspaceId: ws.id,
-          }),
+          })
         )}
         method="POST"
         className="grid gap-4"
@@ -117,13 +122,13 @@ export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
             />
           </CardContent>
           <CardFooter className="border-t px-6 py-4 items-center flex-row-reverse justify-between">
-            <LoadingButton
+            <Button
               className="shrink-0 mr-2"
               loading={isSubmitting}
               disabled={avatarUrl === user?.avatarUrl}
             >
               Update
-            </LoadingButton>
+            </Button>
 
             <p className="text-sm text-gray-500">
               Accepted file types: .png, .jpg. Max file size: 2MB.

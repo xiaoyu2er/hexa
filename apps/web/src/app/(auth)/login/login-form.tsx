@@ -22,7 +22,6 @@ import { useServerAction } from "zsa-react";
 import { GithubIcon, GoogleIcon } from "@hexa/ui/icons";
 import { PasswordInput } from "@hexa/ui/password-input";
 import { FormErrorMessage } from "@hexa/ui/form-error-message";
-import { LoadingButton } from "@hexa/ui/loading-button";
 import { Divider } from "@hexa/ui/divider";
 import {
   Card,
@@ -57,7 +56,7 @@ export function Login() {
       if (err.code === "INPUT_PARSE_ERROR") {
         Object.entries(err.fieldErrors).forEach(([field, message]) => {
           if (message) {
-            setError(field as keyof SignupForm, { message: message[0] });
+            setError(field as keyof LoginForm, { message: message[0] });
           }
         });
         if (err.formErrors?.length) {
@@ -154,18 +153,21 @@ export function Login() {
                 </Button>
               </div>
 
-              <LoadingButton
+              <Button
                 type="submit"
                 className="w-full"
                 loading={isSubmitting}
                 disabled={disableNext}
+                key="login"
               >
                 Login
-              </LoadingButton>
+              </Button>
+
               <Button
                 type="button"
                 variant="outline"
                 className="w-full"
+                key="cancel"
                 asChild
               >
                 <Link href="/">Cancel</Link>

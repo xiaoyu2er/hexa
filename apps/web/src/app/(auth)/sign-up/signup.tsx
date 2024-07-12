@@ -3,9 +3,8 @@
 import { FC, useState } from "react";
 import { useStep } from "usehooks-ts";
 import { Signup } from "./signup-form";
-import { VerifyEmail } from "./verify-email-form";
+import { VerifyEmail } from "@/components/auth/verify-email-form";
 import { useRouter } from "next/navigation";
-import { verify } from "crypto";
 import { verifyEmailByCodeAction } from "@/lib/actions/user";
 
 export interface SignupPageProps {}

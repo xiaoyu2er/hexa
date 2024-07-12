@@ -26,7 +26,7 @@ import {
   DropdownMenuTrigger,
 } from "@hexa/ui/dropdown-menu";
 import { useBoolean } from "usehooks-ts";
-import { VerifyEmail } from "@/app/(auth)/sign-up/verify-email-form";
+import { VerifyEmail } from "@/components/auth/verify-email-form";
 import { MAX_EMAILS } from "@/lib/const";
 import { DeleteUserEmailModal } from "./delete-user-email-modal";
 import { useModal } from "@ebay/nice-modal-react";

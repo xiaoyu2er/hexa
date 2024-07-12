@@ -1,32 +1,20 @@
 "use client";
 
 import {
-  setUserPrimaryEmailAction,
-  verifyEmailByCodeAction,
-} from "@/lib/actions/user";
-import { useState } from "react";
-import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@hexa/ui/card";
-import { toast } from "@hexa/ui/sonner";
-import {
-  queryUserEmailsOptions,
-  queryUserOAuthAccountsOptions,
-} from "@/lib/queries/user";
+import { queryUserOAuthAccountsOptions } from "@/lib/queries/user";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { Button } from "@hexa/ui/button";
-import { Badge } from "@hexa/ui/badge";
 import {
-  CheckIcon,
   EllipsisIcon,
   GithubIcon,
   GoogleIcon,
-  MailPlusIcon,
   MoveRightIcon,
   UserPlusIcon,
 } from "@hexa/ui/icons";
@@ -37,22 +25,9 @@ import {
   DropdownMenuTrigger,
 } from "@hexa/ui/dropdown-menu";
 import { useBoolean } from "usehooks-ts";
-import { VerifyEmail } from "@/app/(auth)/sign-up/verify-email-form";
-import { MAX_EMAILS } from "@/lib/const";
-import { DeleteUserEmailModal } from "./delete-user-email-modal";
 import { useModal } from "@ebay/nice-modal-react";
-import { AddUserEmailForm } from "./add-user-email-form";
-import { useServerAction } from "zsa-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@hexa/ui/popover";
 
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@hexa/ui/command";
-import { cn } from "@hexa/utils";
 import { DeleteOAuthAccountModal } from "./delete-account-modal";
 import Link from "next/link";
 

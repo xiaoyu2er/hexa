@@ -17,7 +17,7 @@ import {
   FormMessage,
 } from "@hexa/ui/form";
 import { Input } from "@hexa/ui/input";
-import { LoadingButton } from "@hexa/ui/loading-button";
+
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo } from "react";
@@ -30,6 +30,7 @@ import {
 } from "@/lib/zod/schemas/workspace";
 import { invalidateWorkspaceBySlugQuery, invalidateWorkspacesQuery, queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { Button } from "@hexa/ui/button";
 
 export function EditWorkspaceName({ slug }: { slug: string }) {
   const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
@@ -101,14 +102,14 @@ export function EditWorkspaceName({ slug }: { slug: string }) {
             />
           </CardContent>
           <CardFooter className="border-t px-6 py-4 items-center flex-row-reverse justify-between">
-            <LoadingButton
+            <Button
               type="submit"
               className="shrink-0"
               loading={isSubmitting}
               disabled={!isDirty}
             >
               Update
-            </LoadingButton>
+            </Button>
           </CardFooter>
         </Card>
       </form>

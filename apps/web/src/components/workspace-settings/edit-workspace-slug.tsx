@@ -17,7 +17,7 @@ import {
   FormMessage,
 } from "@hexa/ui/form";
 import { Input } from "@hexa/ui/input";
-import { LoadingButton } from "@hexa/ui/loading-button";
+
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo } from "react";
@@ -29,15 +29,19 @@ import {
   UpdateWorkspaceSlugSchema,
 } from "@/lib/zod/schemas/workspace";
 import { useRouter } from "next/navigation";
-import { invalidateWorkspacesQuery, queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
+import {
+  invalidateWorkspacesQuery,
+  queryWorkspaceBySlugOptions,
+} from "@/lib/queries/workspace";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { Button } from "@hexa/ui/button";
 
 export function EditWorkspaceSlug({ slug }: { slug: string }) {
   const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
   const router = useRouter();
   const form = useForm<Omit<UpdateWorkspaceSlugInput, "workspaceId">>({
     resolver: zodResolver(
-      UpdateWorkspaceSlugSchema.omit({ workspaceId: true }),
+      UpdateWorkspaceSlugSchema.omit({ workspaceId: true })
     ),
     defaultValues: {
       slug: ws.slug,
@@ -68,7 +72,7 @@ export function EditWorkspaceSlug({ slug }: { slug: string }) {
           execute({
             ...form,
             workspaceId: ws.id,
-          }),
+          })
         )}
         method="POST"
         className="grid gap-4"
@@ -96,14 +100,14 @@ export function EditWorkspaceSlug({ slug }: { slug: string }) {
             />
           </CardContent>
           <CardFooter className="border-t px-6 py-4 items-center flex-row-reverse justify-between">
-            <LoadingButton
+            <Button
               type="submit"
               className="shrink-0"
               loading={isSubmitting}
               disabled={!isDirty}
             >
               Update
-            </LoadingButton>
+            </Button>
           </CardFooter>
         </Card>
       </form>
