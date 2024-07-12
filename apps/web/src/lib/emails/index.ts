@@ -1,5 +1,5 @@
 import { Resend } from "resend";
-import VerifyCodeAndUrlTemplate from "@hexa/email-templates/emails/VerifyCodeAndUrl";
+import VerifyCodeAndUrlTemplate from "@hexa/email-templates/VerifyCodeAndUrl";
 import { ZSAError } from "zsa";
 
 export const resend = new Resend(process.env.RESEND_API_KEY);

@@ -2,10 +2,9 @@
   "name": "@hexa/email-templates",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "files": [
-    "src"
-  ],
+  "exports": {
+    "./*":  "./src/*.tsx"
+  },
   "scripts": {
     "email:dev": "email dev --dir src",
     "email:build": "email build --dir src",
