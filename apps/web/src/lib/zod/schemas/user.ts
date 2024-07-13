@@ -4,6 +4,7 @@ import {
   MAX_PROFILE_FILE_SIZE,
   MAX_PROFILE_FILE_SIZE_MB,
 } from "@hexa/utils/const";
+import { username } from "./auth";
 
 const name = z
   .string()
@@ -57,3 +58,9 @@ export const DeleteOAuthAccountSchema = z.object({
 });
 
 export type DeleteOAuthAccountInput = z.infer<typeof DeleteOAuthAccountSchema>;
+
+export const ChangeUsernameSchema = z.object({
+  username,
+});
+
+export type ChangeUsernameInput = z.infer<typeof ChangeUsernameSchema>;

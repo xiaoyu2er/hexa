@@ -14,6 +14,7 @@ export const userTable = pgTable("user", {
     .primaryKey()
     .$defaultFn(() => generateId("u")),
   name: text("name"),
+  username: text("username").unique().notNull(),
   password: text("password"),
   avatarUrl: text("avatar_url"),
   createdAt: timestamp("created_at", {

@@ -7,7 +7,6 @@ import {
   getEmail,
   updateUserPassword,
 } from "@/lib/db/data-access/user";
-import { getHash } from "@/lib/utils";
 import { turnstileProcedure } from "./turnstile";
 import { sendVerifyCodeAndUrlEmail } from "@/lib/emails";
 import { PUBLIC_URL } from "@/lib/const";
@@ -33,7 +32,7 @@ export const signupAction = turnstileProcedure
   .createServerAction()
   .input(SignupSchema)
   .handler(async ({ input }) => {
-    const { email, password } = input;
+    const { email, password, username } = input;
     const emailItem = await getEmail(email);
 
     if (emailItem && emailItem.verified) {
@@ -48,15 +47,13 @@ export const signupAction = turnstileProcedure
     let user = emailItem?.user;
 
     if (user) {
-      const hashedPassword = await getHash(password);
-      if (hashedPassword !== user?.password) {
-        await updateUserPassword(user.id, hashedPassword);
-      }
+      await updateUserPassword(user.id, password);
     } else {
       user = await createUser({
         email,
         verified: false,
         password,
+        username,
         avatarUrl: null,
       });
 
