@@ -2,6 +2,7 @@
 
 import { authenticatedProcedure, getUserEmailProcedure } from "./procedures";
 import {
+  ChangeUsernameSchema,
   DeleteOAuthAccountSchema,
   DeleteUserSchema,
   UpdateAvatarSchema,
@@ -14,8 +15,9 @@ import {
   removeUserEmail,
   updateUserAvatar,
   updateUserEmailVerified,
-  updateUserName,
+  updateProfileName,
   updateUserPrimaryEmail,
+  updateUsername,
 } from "@/lib/db/data-access/user";
 import { revalidatePath } from "next/cache";
 import { isStored, storage } from "../storage";
@@ -62,7 +64,7 @@ export const updateUserNameAction = authenticatedProcedure
   .handler(async ({ input, ctx }) => {
     const { name } = input;
     const { user } = ctx;
-    await updateUserName(user.id, name);
+    await updateProfileName(user.id, name);
     revalidatePath("/");
   });
 
@@ -222,4 +224,13 @@ export const removeUserOAuthAccountAction = authenticatedProcedure
     const { provider } = input;
     const { user } = ctx;
     await removeUserOAuthAccount(user.id, provider as ProviderType);
+  });
+
+export const changeUsernameAction = authenticatedProcedure
+  .createServerAction()
+  .input(ChangeUsernameSchema)
+  .handler(async ({ input, ctx }) => {
+    const { username } = input;
+    const { user } = ctx;
+    await updateUsername(user.id, username);
   });

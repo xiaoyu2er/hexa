@@ -34,7 +34,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 interface SignupProps {
   email: string | null | undefined;
-  onSuccess: (data: { email: string }) => void;
+  onSuccess: (_data: { email: string }) => void;
   onCancel?: () => void;
 }
 
@@ -44,6 +44,7 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
     defaultValues: {
       email: email ?? "",
       password: "",
+      username: "",
     },
   });
 
@@ -117,10 +118,28 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="email@example.com"
+                      placeholder=""
                       autoComplete="email"
                       type="email"
                       className={errors.email ? "border-destructive" : ""}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder=""
+                      className={errors.username ? "border-destructive" : ""}
                     />
                   </FormControl>
                   <FormMessage />

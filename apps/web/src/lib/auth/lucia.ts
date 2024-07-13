@@ -15,7 +15,13 @@ export const lucia = new Lucia(adapter, {
     return attributes;
   },
   getUserAttributes: (attributes) => {
-    return pick(attributes, ["id", "name", "avatarUrl", "defaultWorkspaceId"]);
+    return pick(attributes, [
+      "id",
+      "name",
+      "avatarUrl",
+      "defaultWorkspaceId",
+      "username",
+    ]);
   },
 
   /**
@@ -36,6 +42,7 @@ export const lucia = new Lucia(adapter, {
 });
 
 declare module "lucia" {
+  // @ts-ignore - We declare the Register interface to extend the default Register interface from Lucia
   interface Register {
     Lucia: typeof lucia;
     DatabaseSessionAttributes: DatabaseSessionAttributes;

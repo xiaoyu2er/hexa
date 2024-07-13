@@ -77,6 +77,7 @@ export async function createUser({
   email,
   verified,
   password,
+  username,
   avatarUrl,
   name,
 }: Omit<Partial<UserModel>, "password"> & { password?: string } & Pick<
@@ -87,9 +88,10 @@ export async function createUser({
     await db
       .insert(userTable)
       .values({
+        username: username ?? null,
         avatarUrl: avatarUrl ?? null,
         name: name ?? null,
-        ...(password ? { hashedPassword: await getHash(password) } : {}),
+        ...(password ? { password: await getHash(password) } : {}),
       })
       .returning()
   )[0];
@@ -111,10 +113,10 @@ export async function createUser({
   });
 }
 
-export async function updateUserPassword(uid: string, hashedPassword: string) {
+export async function updateUserPassword(uid: string, password: string) {
   await db
     .update(userTable)
-    .set({ password: hashedPassword })
+    .set({ password: await getHash(password) })
     .where(eq(userTable.id, uid))
     .returning();
 }
@@ -147,8 +149,12 @@ export async function updateUserProfile(uid: string, imageUrl: string) {
     .where(eq(userTable.id, uid));
 }
 
-export async function updateUserName(uid: string, name: string) {
+export async function updateProfileName(uid: string, name: string) {
   await db.update(userTable).set({ name }).where(eq(userTable.id, uid));
+}
+
+export async function updateUsername(uid: string, username: string) {
+  await db.update(userTable).set({ username }).where(eq(userTable.id, uid));
 }
 
 export async function updateUserAvatar(uid: string, avatarUrl: string) {

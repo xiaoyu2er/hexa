@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@hexa/ui/card";
@@ -34,7 +33,6 @@ export function UserId() {
         />
         <CopyButton className="relative right-9" value={user.id} />
       </CardContent>
-      <CardFooter className="border-t px-6 py-4 items-center flex-row-reverse justify-between"></CardFooter>
     </Card>
   );
 }
