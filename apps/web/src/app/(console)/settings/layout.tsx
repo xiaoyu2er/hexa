@@ -2,8 +2,12 @@ import { SettingsLayout } from "@/components/layouts/setting-layout";
 
 const SETTINGS_NAVBARS = [
   {
-    name: "General",
-    href: "/settings",
+    name: "Profile",
+    href: "/settings/profile",
+  },
+  {
+    name: "Account",
+    href: "/settings/account",
   },
 ];
 

@@ -34,8 +34,8 @@ export function EditOAuthAccount() {
   const { data: accounts, refetch } = useSuspenseQuery(
     queryUserOAuthAccountsOptions,
   );
-  const hasGoogle = accounts.some((a) => a.provider === "GOOGLE");
-  const hasGithub = accounts.some((a) => a.provider === "GITHUB");
+  const hasGoogleAccount = accounts.some((a) => a.provider === "GOOGLE");
+  const hasGithubAccount = accounts.some((a) => a.provider === "GITHUB");
 
   const modal = useModal(DeleteOAuthAccountModal);
 
@@ -62,7 +62,12 @@ export function EditOAuthAccount() {
                           <GoogleIcon className="w-4 h-4" />
                         )}
                         {account.provider[0] +
-                          account.provider.slice(1).toLowerCase()}
+                          account.provider.slice(1).toLowerCase()}{" "}
+                        {account.username && (
+                          <span className="text-sm text-gray-600">
+                            {account.username}
+                          </span>
+                        )}
                       </p>
 
                       <DropdownMenu>
@@ -91,17 +96,17 @@ export function EditOAuthAccount() {
               <PopoverTrigger asChild>
                 <Button
                   variant="ghost"
-                  disabled={hasGithub && hasGoogle}
-                  className="gap-2 items-center justify-start group"
+                  disabled={hasGithubAccount && hasGoogleAccount}
+                  className="gap-2 items-center justify-start group disabled:cursor-not-allowed"
                 >
                   <UserPlusIcon className="w-4 h-4" /> Add new account
-                  {(!hasGithub || !hasGoogle) && (
+                  {(!hasGithubAccount || !hasGoogleAccount) && (
                     <MoveRightIcon className="hidden w-4 h-4 group-hover:block animate-in" />
                   )}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="flex flex-col p-0 w-md">
-                {!hasGithub && (
+                {!hasGithubAccount && (
                   <Button
                     variant="ghost"
                     className="w-full h-11 justify-start "
@@ -113,7 +118,7 @@ export function EditOAuthAccount() {
                     </Link>
                   </Button>
                 )}
-                {!hasGoogle && (
+                {!hasGoogleAccount && (
                   <Button
                     variant="ghost"
                     className="w-full h-11 justify-start"

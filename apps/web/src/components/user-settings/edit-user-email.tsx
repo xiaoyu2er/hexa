@@ -147,7 +147,7 @@ export function EditUserEmails() {
               <Button
                 variant="ghost"
                 disabled={emails.length >= MAX_EMAILS}
-                className="gap-2 items-center justify-start group"
+                className="gap-2 items-center justify-start group disabled:cursor-not-allowed"
                 onClick={emailCardBool.setTrue}
               >
                 <MailPlusIcon className="w-4 h-4" /> Add new email

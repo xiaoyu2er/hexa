@@ -1,6 +1,11 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { ProviderType, UserModel, oauthAccountTable } from "../schema";
+import {
+  OAuthAccountModel,
+  ProviderType,
+  UserModel,
+  oauthAccountTable,
+} from "../schema";
 import { GitHubUser, GoogleUser } from "@/types";
 
 export async function getAccountByGoogleId(googleId: string) {
@@ -25,7 +30,7 @@ export async function getAccountByGithubId(githubId: number) {
 }
 
 export async function createGithubAccount(
-  userId: UserModel["id"],
+  userId: UserModel["id"] | null,
   githubUser: GitHubUser,
 ) {
   return (
@@ -35,6 +40,10 @@ export async function createGithubAccount(
         userId: userId,
         provider: "GITHUB",
         providerAccountId: String(githubUser.id),
+        avatarUrl: githubUser.avatar_url,
+        email: githubUser.email,
+        name: githubUser.name,
+        username: githubUser.login,
       })
       .returning()
   )[0];
@@ -51,6 +60,10 @@ export async function createGoogleAccount(
         userId: userId,
         provider: "GOOGLE",
         providerAccountId: googleUser.sub,
+        avatarUrl: googleUser.picture,
+        email: googleUser.email,
+        name: googleUser.name,
+        username: googleUser.email,
       })
       .returning()
   )[0];
@@ -60,6 +73,25 @@ export async function getUserOAuthAccounts(userId: UserModel["id"]) {
   return await db.query.oauthAccountTable.findMany({
     where: eq(oauthAccountTable.userId, userId),
   });
+}
+
+export async function getOAuthAccount(id: string) {
+  return await db.query.oauthAccountTable.findFirst({
+    where: eq(oauthAccountTable.id, id),
+  });
+}
+
+export async function updateOAuthAccount(
+  id: string,
+  data: Partial<OAuthAccountModel>,
+) {
+  return (
+    await db
+      .update(oauthAccountTable)
+      .set(data)
+      .where(eq(oauthAccountTable.id, id))
+      .returning()
+  )[0];
 }
 
 export async function removeUserOAuthAccount(
