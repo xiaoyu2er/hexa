@@ -1,6 +1,7 @@
 "use client";
 
 import { NavTab } from "@/types";
+import { Button } from "@hexa/ui/button";
 import { MaxWidth } from "@hexa/ui/max-width";
 import { cn } from "@hexa/utils";
 import Link from "next/link";
@@ -19,20 +20,22 @@ export function SettingsLayout({
     <main className="min-h-[calc(100vh-16px)]">
       <MaxWidth>
         <div className="py-6 lg:py-10 grid max-w-6xl items-start gap-6 md:grid-cols-[120px_1fr] lg:grid-cols-[180px_1fr]">
-          <nav className="grid text-sm text-muted-foreground lg:sticky top-36">
+          <nav className="grid text-sm text-muted-foreground lg:sticky top-36 gap-1">
             {navbars.map((nav) => (
-              <Link
+              <Button
+                variant="ghost"
                 key={nav.name}
-                href={nav.href}
-                className={cn(
-                  "rounded-md p-2.5 text-md transition-all duration-75 hover:bg-gray-100 active:bg-gray-200",
-                  {
-                    "font-extrabold": nav.href === pathname,
-                  },
-                )}
+                className={cn("!justify-start", {
+                  "text-accent-foreground": nav.href === pathname,
+                  "bg-accent": nav.href === pathname,
+                })}
+                asChild
               >
-                {nav.name}
-              </Link>
+                <Link href={nav.href}>
+                  <nav.icon className="w-4 h-4 mr-2" />
+                  {nav.name}
+                </Link>
+              </Button>
             ))}
           </nav>
           <div className="grid gap-6">{children}</div>

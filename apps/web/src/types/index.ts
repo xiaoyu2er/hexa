@@ -110,5 +110,6 @@ export interface GoogleUser {
 
 export interface NavTab {
   name: string;
+  icon: React.FC<React.SVGProps<SVGSVGElement>>;
   href: string;
 }
