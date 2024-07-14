@@ -74,7 +74,7 @@ export function EditName() {
       >
         <Card x-chunk="dashboard-04-chunk-1">
           <CardHeader>
-            <CardTitle>Your Name</CardTitle>
+            <CardTitle>Name</CardTitle>
             <CardDescription>
               Your name may appear around {process.env.NEXT_PUBLIC_APP_NAME}.
               You can remove it at any time.

@@ -43,8 +43,8 @@ export function EditOAuthAccount() {
     <>
       <Card>
         <CardHeader>
-          <CardTitle>Your Connected Accounts</CardTitle>
-          <CardDescription>Manage your connected accounts</CardDescription>
+          <CardTitle>Connected Accounts</CardTitle>
+          <CardDescription>Manage your connected accounts.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="max-w-md flex flex-col">

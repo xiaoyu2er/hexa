@@ -150,7 +150,11 @@ export async function updateUserProfile(uid: string, imageUrl: string) {
 }
 
 export async function updateProfileName(uid: string, name: string) {
-  await db.update(userTable).set({ name }).where(eq(userTable.id, uid));
+  await db
+    .update(userTable)
+    // we set name to null if it's an empty string
+    .set({ name: name || null })
+    .where(eq(userTable.id, uid));
 }
 
 export async function updateUsername(uid: string, username: string) {

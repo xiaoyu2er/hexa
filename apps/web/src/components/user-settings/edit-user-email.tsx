@@ -58,7 +58,7 @@ export function EditUserEmails() {
     <>
       <Card>
         <CardHeader>
-          <CardTitle>Your Emails</CardTitle>
+          <CardTitle>Emails</CardTitle>
           <CardDescription>
             You can add multiple email addresses to your account.
           </CardDescription>
