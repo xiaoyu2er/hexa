@@ -95,31 +95,38 @@ export const tokenUserRelation = relations(tokenTable, ({ one }) => ({
 export const providerEnum = pgEnum("providerEnum", ["GOOGLE", "GITHUB"]);
 export type ProviderType = (typeof providerEnum.enumValues)[number];
 
-export const oauthAccountTable = pgTable("oauth_account", {
-  id: text("id")
-    .primaryKey()
-    .$defaultFn(() => generateId("oauth")),
-  userId: text("user_id")
-    // userId can be null if the user didn't finish the sign-up process (setup passwo  rd and username)
-    // .notNull()
-    .references(() => userTable.id, { onDelete: "cascade" }),
-  provider: providerEnum("provider").notNull(),
-  name: text("name"),
-  avatarUrl: text("avatar_url"),
-  email: text("email").notNull(),
-  providerAccountId: text("provider_account_id").notNull(),
-  username: text("username"),
-  createdAt: timestamp("created_at", {
-    withTimezone: true,
-    mode: "date",
-  })
-    .notNull()
-    .defaultNow(),
-  updatedAt: timestamp("updated_at", {
-    withTimezone: true,
-    mode: "date",
-  }).$onUpdate(() => new Date()),
-});
+export const oauthAccountTable = pgTable(
+  "oauth_account",
+  {
+    id: text("id")
+      .$defaultFn(() => generateId("oauth"))
+      .notNull(),
+    userId: text("user_id")
+      // userId can be null if the user didn't finish the sign-up process (setup passwo  rd and username)
+      // .notNull()
+      .references(() => userTable.id, { onDelete: "cascade" }),
+    provider: providerEnum("provider").notNull(),
+    name: text("name"),
+    avatarUrl: text("avatar_url"),
+    email: text("email").notNull(),
+    providerAccountId: text("provider_account_id").notNull(),
+    username: text("username"),
+    createdAt: timestamp("created_at", {
+      withTimezone: true,
+      mode: "date",
+    })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updated_at", {
+      withTimezone: true,
+      mode: "date",
+    }).$onUpdate(() => new Date()),
+  },
+  // primary key [provider, providerAccountId]
+  (t) => ({
+    pk: primaryKey({ columns: [t.provider, t.providerAccountId] }),
+  }),
+);
 
 export const userOAuthAccountRelations = relations(userTable, ({ many }) => ({
   oauthAccounts: many(oauthAccountTable),
