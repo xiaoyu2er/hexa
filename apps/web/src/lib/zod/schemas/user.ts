@@ -8,8 +8,9 @@ import { username } from "./auth";
 
 const name = z
   .string()
-  .min(1, "Please enter a name")
-  .max(32, "Name must be less than 32 characters");
+  // .min(1, "Please enter a name")
+  .max(32, "Name must be less than 32 characters")
+  .nullable();
 
 export const UpdateUserNameSchema = z.object({
   name,

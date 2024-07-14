@@ -88,7 +88,7 @@ export async function createUser({
     await db
       .insert(userTable)
       .values({
-        username: username ?? null,
+        username,
         avatarUrl: avatarUrl ?? null,
         name: name ?? null,
         ...(password ? { password: await getHash(password) } : {}),

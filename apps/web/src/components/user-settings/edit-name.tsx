@@ -76,8 +76,8 @@ export function EditName() {
           <CardHeader>
             <CardTitle>Your Name</CardTitle>
             <CardDescription>
-              This will be your display name on{" "}
-              {process.env.NEXT_PUBLIC_APP_NAME}.
+              Your name may appear around {process.env.NEXT_PUBLIC_APP_NAME}.
+              You can remove it at any time.
             </CardDescription>
           </CardHeader>
           <CardContent>

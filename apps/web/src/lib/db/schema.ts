@@ -100,10 +100,15 @@ export const oauthAccountTable = pgTable("oauth_account", {
     .primaryKey()
     .$defaultFn(() => generateId("oauth")),
   userId: text("user_id")
-    .notNull()
+    // userId can be null if the user didn't finish the sign-up process (setup passwo  rd and username)
+    // .notNull()
     .references(() => userTable.id, { onDelete: "cascade" }),
   provider: providerEnum("provider").notNull(),
+  name: text("name"),
+  avatarUrl: text("avatar_url"),
+  email: text("email").notNull(),
   providerAccountId: text("provider_account_id").notNull(),
+  username: text("username"),
   createdAt: timestamp("created_at", {
     withTimezone: true,
     mode: "date",

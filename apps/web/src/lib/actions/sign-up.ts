@@ -1,10 +1,11 @@
 "use server";
 
-import { SignupSchema } from "@/lib/zod/schemas/auth";
+import { OAuthSignupSchema, SignupSchema } from "@/lib/zod/schemas/auth";
 import { ZSAError } from "zsa";
 import {
   createUser,
   getEmail,
+  getUserEmail,
   updateUserPassword,
 } from "@/lib/db/data-access/user";
 import { turnstileProcedure } from "./turnstile";
@@ -12,6 +13,9 @@ import { sendVerifyCodeAndUrlEmail } from "@/lib/emails";
 import { PUBLIC_URL } from "@/lib/const";
 import { addDBToken } from "@/lib/db/data-access/token";
 import { getUserEmailProcedure } from "./procedures";
+import { getOAuthAccount, updateOAuthAccount } from "../db/data-access/account";
+import { invalidateUserSessions, setSession } from "../session";
+import { redirect } from "next/navigation";
 
 export async function updateTokenAndSendVerifyEmail(
   uid: string,
@@ -62,6 +66,43 @@ export const signupAction = turnstileProcedure
       }
     }
     return await updateTokenAndSendVerifyEmail(user.id, email);
+  });
+
+export const oauthSignupAction = turnstileProcedure
+  .createServerAction()
+  .input(OAuthSignupSchema)
+  .handler(async ({ input }) => {
+    const { username, oauthAccountId } = input;
+    const oauthAcccount = await getOAuthAccount(oauthAccountId);
+    if (!oauthAcccount) {
+      throw new ZSAError("FORBIDDEN", "OAuth account not found");
+    }
+
+    const emailItem = await getUserEmail(oauthAcccount.email);
+
+    if (emailItem && emailItem.verified) {
+      throw new ZSAError("FORBIDDEN", "Email already exists");
+    }
+
+    const user = await createUser({
+      email: oauthAcccount.email,
+      verified: true,
+      // we don't need password for oauth signup
+      // password: password,
+      username,
+      avatarUrl: oauthAcccount.avatarUrl,
+      name: oauthAcccount.name,
+    });
+
+    if (!user) {
+      throw new ZSAError("INTERNAL_SERVER_ERROR", "Failed to create user");
+    }
+
+    await updateOAuthAccount(oauthAcccount.id, { userId: user.id });
+    await invalidateUserSessions(user.id);
+    await setSession(user.id);
+    redirect("/settings");
+    // return {};
   });
 
 export const resendVerifyEmailAction = getUserEmailProcedure

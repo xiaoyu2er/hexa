@@ -7,8 +7,8 @@ import {
   getAccountByGithubId,
 } from "@/lib/db/data-access/account";
 import { GitHubEmail, GitHubUser } from "@/types";
-import { createUserByGithubAccount } from "@/lib/db/use-cases/user";
 import { setSession } from "@/lib/session";
+
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
 
     const existingAccount = await getAccountByGithubId(githubUser.id);
 
-    if (existingAccount) {
+    if (existingAccount && existingAccount.userId) {
       await setSession(existingAccount.userId);
 
       return new Response(null, {
@@ -65,8 +65,30 @@ export async function GET(request: NextRequest) {
       // bind accounts
       await createGithubAccount(user.id, githubUser);
     } else {
-      user = await createUserByGithubAccount(githubUser);
-      await setSession(user.id);
+      // user = await createUserByGithubAccount(githubUser);
+      // bind accounts
+      const account = await createGithubAccount(null, githubUser);
+      if (!account) {
+        return NextResponse.json(
+          { error: "Failed to create account" },
+          { status: 500 },
+        );
+      }
+
+      console.log("acccreateGithubAccountount", account);
+      cookies().set("oauth_account_id", account.id, {
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+        httpOnly: true,
+        // 10 minutes
+        maxAge: 60 * 10,
+        sameSite: "lax",
+      });
+
+      return new Response(null, {
+        status: 302,
+        headers: { Location: "/sign-up" },
+      });
     }
 
     return new Response(null, {
