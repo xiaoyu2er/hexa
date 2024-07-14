@@ -76,9 +76,9 @@ export function Login() {
 
   return (
     <>
-      <Card className="max-w-full md:w-96">
+      <Card>
         <CardHeader className="text-center">
-          <CardTitle>{APP_TITLE} Log In</CardTitle>
+          <CardTitle>Log In</CardTitle>
           <CardDescription>
             Log in to your account to access your dashboard
           </CardDescription>

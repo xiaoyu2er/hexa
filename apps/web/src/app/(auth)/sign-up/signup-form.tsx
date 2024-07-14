@@ -118,7 +118,7 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder=""
+                      placeholder="email@example.com"
                       autoComplete="email"
                       type="email"
                       className={errors.email ? "border-destructive" : ""}
@@ -138,7 +138,7 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder=""
+                      placeholder="username"
                       className={errors.username ? "border-destructive" : ""}
                     />
                   </FormControl>

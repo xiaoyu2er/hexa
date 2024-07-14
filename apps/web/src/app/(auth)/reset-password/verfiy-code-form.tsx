@@ -128,7 +128,7 @@ export const VerifyResetPasswordCodeCard: FC<
   };
 
   return (
-    <Card className="max-w-full md:w-96">
+    <Card>
       <CardHeader className="text-center">
         <CardTitle>Reset password</CardTitle>
         <CardDescription>

@@ -48,55 +48,57 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unverified email" }, { status: 400 });
     }
 
+    let { user } = await validateRequest();
+    // Find existing oauthAccount
     const existingAccount = await getAccountByGithubId(githubUser.id);
 
-    if (existingAccount && existingAccount.userId) {
-      await setSession(existingAccount.userId);
-
+    if (existingAccount) {
+      // If account is already linked to a user, set session and redirect to settings
+      if (existingAccount.userId) {
+        await setSession(existingAccount.userId);
+        return new Response(null, {
+          status: 302,
+          headers: { Location: "/settings" },
+        });
+      }
+    }
+    // we don't need the old account, we can just override it
+    if (user) {
+      // If user is logged in, bind the account, even if it's already linked, update the account
+      // it's possible that the user goes to /oauth/github
+      await createGithubAccount(user.id, githubUser);
       return new Response(null, {
         status: 302,
         headers: { Location: "/settings" },
       });
     }
 
-    let { user } = await validateRequest();
-
-    if (user) {
-      // bind accounts
-      await createGithubAccount(user.id, githubUser);
-    } else {
-      // user = await createUserByGithubAccount(githubUser);
-      // bind accounts
-      const account = await createGithubAccount(null, githubUser);
-      if (!account) {
-        return NextResponse.json(
-          { error: "Failed to create account" },
-          { status: 500 },
-        );
-      }
-
-      console.log("acccreateGithubAccountount", account);
-      cookies().set("oauth_account_id", account.id, {
-        path: "/",
-        secure: process.env.NODE_ENV === "production",
-        httpOnly: true,
-        // 10 minutes
-        maxAge: 60 * 10,
-        sameSite: "lax",
-      });
-
-      return new Response(null, {
-        status: 302,
-        headers: { Location: "/sign-up" },
-      });
+    // If user is not logged in, create a new account, but don't set session, we need to redirect to /sign-up
+    // We still need user to set a username
+    const account = await createGithubAccount(null, githubUser);
+    if (!account) {
+      return NextResponse.json(
+        { error: "Failed to create account" },
+        { status: 500 },
+      );
     }
+    // we pass the new account id to the sign-up page, so we can bind the account to the user later
+    cookies().set("oauth_account_id", account.id, {
+      path: "/",
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      // 1 minutes
+      maxAge: 1 * 10,
+      sameSite: "lax",
+    });
 
     return new Response(null, {
       status: 302,
-      headers: { Location: "/settings" },
+      headers: { Location: "/sign-up" },
     });
   } catch (e) {
     console.error("/oauth/github/callback", e);
+    // the specific error message depends on the provider
     if (e instanceof OAuth2RequestError) {
       return NextResponse.json({ error: e.message }, { status: 400 });
     }
