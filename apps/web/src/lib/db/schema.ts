@@ -99,8 +99,9 @@ export const oauthAccountTable = pgTable(
   "oauth_account",
   {
     id: text("id")
-      .$defaultFn(() => generateId("oauth"))
-      .notNull(),
+      .notNull()
+      .$defaultFn(() => generateId("oauth")),
+    // .primaryKey(),
     userId: text("user_id")
       // userId can be null if the user didn't finish the sign-up process (setup passwo  rd and username)
       // .notNull()
@@ -122,9 +123,10 @@ export const oauthAccountTable = pgTable(
       mode: "date",
     }).$onUpdate(() => new Date()),
   },
-  // primary key [provider, providerAccountId]
+  // primaryKey [provider, providerAccountId]
   (t) => ({
     pk: primaryKey({ columns: [t.provider, t.providerAccountId] }),
+    // unq: unique().on(t.provider, t.providerAccountId),
   }),
 );
 

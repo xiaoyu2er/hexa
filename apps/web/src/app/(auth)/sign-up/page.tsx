@@ -1,5 +1,7 @@
 import { cookies } from "next/headers";
 import { SignupPage } from "./signup";
+import { getOAuthAccount } from "@/lib/db/data-access/account";
+import { OAuthSignupPage } from "./oauth-signup";
 
 export const metadata = {
   title: "Sign Up",
@@ -7,11 +9,15 @@ export const metadata = {
 };
 
 export default async function () {
+  // If we have an OAuth account ID in the cookies, we are in the OAuth flow
   const oauthAccountId = await cookies().get("oauth_account_id")?.value;
-  console.log("sign-up", oauthAccountId);
-  return (
-    <div className="max-w-full md:w-96">
-      <SignupPage oauthAccountId={oauthAccountId} />
-    </div>
-  );
+  if (oauthAccountId) {
+    const account = await getOAuthAccount(oauthAccountId);
+    if (account) {
+      return <OAuthSignupPage oauthAccount={account} />;
+    }
+  }
+
+  // Otherwise, we are in the regular signup flow
+  return <SignupPage />;
 }

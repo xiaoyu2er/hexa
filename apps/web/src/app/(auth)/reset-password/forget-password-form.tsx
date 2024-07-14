@@ -32,7 +32,7 @@ import { useServerAction } from "zsa-react";
 
 export interface ForgetPasswordCardProps {
   email: string;
-  onSuccess: (data: { email: string }) => void;
+  onSuccess: (_data: { email: string }) => void;
   onCancel?: () => void;
 }
 
@@ -90,7 +90,7 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
   }, []);
 
   return (
-    <Card className="max-w-full md:w-96">
+    <Card>
       <CardHeader className="text-center">
         <CardTitle>Forget Password?</CardTitle>
         <CardDescription>

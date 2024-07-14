@@ -28,22 +28,24 @@ import { useServerAction } from "zsa-react";
 import { useTurnstile } from "@/hooks/use-turnstile";
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { OAuthAccountModel } from "@/lib/db";
+import Link from "next/link";
 
 interface OAuthSignupProps {
-  oauthAccountId: string | undefined;
+  oauthAccount: OAuthAccountModel;
   onSuccess: () => void;
   onCancel?: () => void;
 }
 
 export const OAuthSignup: FC<OAuthSignupProps> = ({
-  oauthAccountId,
+  oauthAccount,
   onSuccess,
   onCancel,
 }) => {
   const form = useForm<OAuthSignupInput>({
     resolver: zodResolver(OAuthSignupSchema),
     defaultValues: {
-      oauthAccountId,
+      oauthAccountId: oauthAccount.id,
       username: "",
     },
   });
@@ -88,8 +90,10 @@ export const OAuthSignup: FC<OAuthSignupProps> = ({
   return (
     <Card>
       <CardHeader className="text-center">
-        <CardTitle>OAuth Sign Up</CardTitle>
-        <CardDescription>Sign up to start using the app</CardDescription>
+        <CardTitle>Sign Up</CardTitle>
+        <CardDescription>
+          Create your username to start using the app
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -99,7 +103,10 @@ export const OAuthSignup: FC<OAuthSignupProps> = ({
             className="space-y-4"
           >
             <input type="hidden" {...register("oauthAccountId")} />
-
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <Input value={oauthAccount.email} type="email" disabled />
+            </FormItem>
             <FormField
               control={form.control}
               name="username"
@@ -120,6 +127,10 @@ export const OAuthSignup: FC<OAuthSignupProps> = ({
 
             <FormErrorMessage message={errors.root?.message} />
             {turnstile}
+
+            <Button variant={"link"} size={"sm"} className="p-0" asChild>
+              <Link href={"/login"}>Have an account? Login</Link>
+            </Button>
 
             <Button
               className="w-full"

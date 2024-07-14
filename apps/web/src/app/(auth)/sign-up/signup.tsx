@@ -6,30 +6,13 @@ import { Signup } from "./signup-form";
 import { VerifyEmail } from "@/components/auth/verify-email-form";
 import { useRouter } from "next/navigation";
 import { verifyEmailByCodeAction } from "@/lib/actions/user";
-import { OAuthSignup } from "./oauth-signup-form";
 
-export interface SignupPageProps {
-  oauthAccountId?: string;
-}
+export interface SignupPageProps {}
 
-export const SignupPage: FC<SignupPageProps> = ({ oauthAccountId }) => {
+export const SignupPage: FC<SignupPageProps> = () => {
   const [email, setEmail] = useState("");
   const router = useRouter();
   const [currentStep, { goToNextStep, reset }] = useStep(2);
-
-  if (oauthAccountId) {
-    return (
-      <OAuthSignup
-        oauthAccountId={oauthAccountId}
-        onSuccess={() => {
-          console.log("Signup success");
-        }}
-        onCancel={() => {
-          router.push("/");
-        }}
-      />
-    );
-  }
 
   const onCancel = () => {
     reset();

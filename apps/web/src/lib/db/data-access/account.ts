@@ -45,12 +45,24 @@ export async function createGithubAccount(
         name: githubUser.name,
         username: githubUser.login,
       })
+      .onConflictDoUpdate({
+        target: [
+          oauthAccountTable.provider,
+          oauthAccountTable.providerAccountId,
+        ],
+        set: {
+          avatarUrl: githubUser.avatar_url,
+          email: githubUser.email,
+          name: githubUser.name,
+          username: githubUser.login,
+        },
+      })
       .returning()
   )[0];
 }
 
 export async function createGoogleAccount(
-  userId: UserModel["id"],
+  userId: UserModel["id"] | null,
   googleUser: GoogleUser,
 ) {
   return (
@@ -64,6 +76,18 @@ export async function createGoogleAccount(
         email: googleUser.email,
         name: googleUser.name,
         username: googleUser.email,
+      })
+      .onConflictDoUpdate({
+        target: [
+          oauthAccountTable.provider,
+          oauthAccountTable.providerAccountId,
+        ],
+        set: {
+          avatarUrl: googleUser.picture,
+          email: googleUser.email,
+          name: googleUser.name,
+          username: googleUser.email,
+        },
       })
       .returning()
   )[0];
