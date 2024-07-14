@@ -69,7 +69,7 @@ export default function UploadAvatar() {
       >
         <Card x-chunk="dashboard-04-chunk-1">
           <CardHeader>
-            <CardTitle>Your Avatar</CardTitle>
+            <CardTitle>Avatar</CardTitle>
             <CardDescription>
               This is your avatar image on {process.env.NEXT_PUBLIC_APP_NAME}.
             </CardDescription>

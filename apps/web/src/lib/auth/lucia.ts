@@ -15,13 +15,17 @@ export const lucia = new Lucia(adapter, {
     return attributes;
   },
   getUserAttributes: (attributes) => {
-    return pick(attributes, [
-      "id",
-      "name",
-      "avatarUrl",
-      "defaultWorkspaceId",
-      "username",
-    ]);
+    const hasPassword = !!attributes.password;
+    return {
+      ...pick(attributes, [
+        "id",
+        "name",
+        "avatarUrl",
+        "defaultWorkspaceId",
+        "username",
+      ]),
+      hasPassword,
+    };
   },
 
   /**
@@ -50,5 +54,7 @@ declare module "lucia" {
   }
 
   interface DatabaseSessionAttributes {}
-  interface DatabaseUserAttributes extends Omit<DbUser, "hashedPassword"> {}
+  interface DatabaseUserAttributes extends Omit<DbUser, "password"> {
+    hasPassword: boolean;
+  }
 }

@@ -23,7 +23,7 @@ export function EditUsername() {
   return (
     <Card x-chunk="dashboard-04-chunk-1">
       <CardHeader>
-        <CardTitle>Your username</CardTitle>
+        <CardTitle>Username</CardTitle>
         <CardDescription>
           Your username is how other people on{" "}
           {process.env.NEXT_PUBLIC_APP_NAME} will identify you. Changing your
