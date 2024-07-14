@@ -31,6 +31,8 @@ export {
   MoveRightIcon,
   MailPlusIcon,
   UserPlusIcon,
+  SettingsIcon,
+  UserIcon,
 } from "lucide-react";
 
 // https://www.radix-ui.com/icons

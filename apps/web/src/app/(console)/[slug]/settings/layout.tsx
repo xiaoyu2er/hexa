@@ -1,11 +1,16 @@
-import { SettingsLayout } from "@/components/layouts/setting-layout";
+"use client";
 
-const SETTINGS_NAVBARS = [
+import { SettingsLayout } from "@/components/layouts/setting-layout";
+import { NavTab } from "@/types";
+import { SettingsIcon } from "@hexa/ui/icons";
+
+const SETTINGS_NAVBARS: NavTab[] = [
   {
     name: "General",
     href: "/settings",
+    icon: SettingsIcon,
   },
-];
+] as const;
 
 export default function ({
   children,
