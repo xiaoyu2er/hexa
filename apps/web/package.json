@@ -54,7 +54,6 @@
     "zsa-react": "^0.1.9"
   },
   "devDependencies": {
-    "@hexa/eslint-config": "workspace:*",
     "@hexa/typescript-config": "workspace:*",
     "@tanstack/react-query-devtools": "^5.50.1",
     "@types/lodash": "^4.17.5",
@@ -65,8 +64,6 @@
     "autoprefixer": "^10.4.19",
     "dotenv": "^16.4.5",
     "drizzle-kit": "^0.22.7",
-    "eslint": "^8",
-    "eslint-config-next": "15.0.0-rc.0",
     "postcss": "^8.4.38",
     "postcss-import": "^16.1.0",
     "tailwindcss": "^3.4.4",
