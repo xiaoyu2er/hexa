@@ -1,5 +1,5 @@
 import { cn } from "@hexa/utils";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 export function MaxWidth({
   className,

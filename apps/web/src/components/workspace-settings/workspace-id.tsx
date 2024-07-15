@@ -1,5 +1,6 @@
 "use client";
 
+import { queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
 import {
   Card,
   CardContent,
@@ -8,9 +9,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@hexa/ui/card";
-import { Input } from "@hexa/ui/input";
 import { CopyButton } from "@hexa/ui/copy-button";
-import { queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
+import { Input } from "@hexa/ui/input";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 export async function WorkspaceId({ slug }: { slug: string }) {
@@ -33,7 +33,7 @@ export async function WorkspaceId({ slug }: { slug: string }) {
         />
         <CopyButton className="relative right-9" value={ws.id} />
       </CardContent>
-      <CardFooter className="border-t px-6 py-4 items-center flex-row-reverse justify-between"></CardFooter>
+      <CardFooter className="border-t px-6 py-4 items-center flex-row-reverse justify-between" />
     </Card>
   );
 }

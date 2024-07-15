@@ -1,23 +1,25 @@
 "use client";
 
-import { FileUpload } from "@hexa/ui/file-upload";
-import { useEffect, useState } from "react";
-import { toast } from "@hexa/ui/sonner";
 import { getAvatarFallbackUrl } from "@/lib/user";
+import { FileUpload } from "@hexa/ui/file-upload";
+import { toast } from "@hexa/ui/sonner";
+import { useEffect, useState } from "react";
 
+import { updateUserAvatarAction } from "@/lib/actions/user";
+import { queryUserOptions } from "@/lib/queries/user";
+import {
+  type UpdateAvatarInput,
+  UpdateAvatarSchema,
+} from "@/lib/zod/schemas/user";
+import { Button } from "@hexa/ui/button";
 import {
   Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
 } from "@hexa/ui/card";
-import { useForm } from "react-hook-form";
-import { UpdateAvatarInput, UpdateAvatarSchema } from "@/lib/zod/schemas/user";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { updateUserAvatarAction } from "@/lib/actions/user";
-import { useServerAction } from "zsa-react";
 import {
   Form,
   FormControl,
@@ -25,9 +27,10 @@ import {
   FormItem,
   FormMessage,
 } from "@hexa/ui/form";
-import { queryUserOptions } from "@/lib/queries/user";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Button } from "@hexa/ui/button";
+import { useForm } from "react-hook-form";
+import { useServerAction } from "zsa-react";
 
 export default function UploadAvatar() {
   const { data: user, refetch } = useSuspenseQuery(queryUserOptions);

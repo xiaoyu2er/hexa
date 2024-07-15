@@ -1,9 +1,9 @@
-import { z } from "zod";
 import {
   ACCEPTED_IMAGE_TYPES,
   MAX_PROFILE_FILE_SIZE,
   MAX_PROFILE_FILE_SIZE_MB,
 } from "@hexa/utils/const";
+import { z } from "zod";
 import { username } from "./auth";
 
 const name = z

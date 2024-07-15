@@ -1,20 +1,20 @@
 import { addUserEmailAction } from "@/lib/actions/user";
-import { OnlyEmailInput, OnlyEmailSchema } from "@/lib/zod/schemas/auth";
+import { type OnlyEmailInput, OnlyEmailSchema } from "@/lib/zod/schemas/auth";
 import { Button } from "@hexa/ui/button";
 import {
   Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
 } from "@hexa/ui/card";
 import {
+  Form,
+  FormControl,
   FormField,
   FormItem,
-  FormControl,
   FormMessage,
-  Form,
 } from "@hexa/ui/form";
 import { Input } from "@hexa/ui/input";
 import { Label } from "@hexa/ui/label";

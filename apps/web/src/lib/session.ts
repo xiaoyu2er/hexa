@@ -1,7 +1,7 @@
-import { UserModel } from "@/lib/db";
-import { lucia, validateRequest } from "./auth";
+import type { UserModel } from "@/lib/db";
 import { cookies } from "next/headers";
 import { ZSAError } from "zsa";
+import { lucia, validateRequest } from "./auth";
 
 export function getSessionId() {
   return cookies().get(lucia.sessionCookieName)?.value ?? null;

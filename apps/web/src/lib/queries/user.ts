@@ -1,10 +1,10 @@
-import { queryOptions } from "@tanstack/react-query";
 import {
   getUserAction,
   getUserEmailsAction,
   getUserOAuthAccountsAction,
 } from "@/lib/actions/user";
 import { getQueryClient } from "@/providers/get-query-client";
+import { queryOptions } from "@tanstack/react-query";
 
 export const queryUserOptions = queryOptions({
   queryKey: ["user"],

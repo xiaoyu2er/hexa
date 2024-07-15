@@ -1,36 +1,36 @@
 "use client";
 
-import Link from "next/link";
 import { signupAction } from "@/lib/actions/sign-up";
+import Link from "next/link";
 
-import { useServerAction } from "zsa-react";
-import { useForm } from "react-hook-form";
-import { SignupForm, SignupSchema } from "@/lib/zod/schemas/auth";
-import { FC, useEffect } from "react";
+import { type SignupForm, SignupSchema } from "@/lib/zod/schemas/auth";
 import { Button } from "@hexa/ui/button";
 import {
   Card,
+  CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
 } from "@hexa/ui/card";
 import { Divider } from "@hexa/ui/divider";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@hexa/ui/form";
 import { FormErrorMessage } from "@hexa/ui/form-error-message";
 import { Input } from "@hexa/ui/input";
+import { type FC, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useServerAction } from "zsa-react";
 
-import { PasswordInput } from "@hexa/ui/password-input";
-import { useTurnstile } from "@/hooks/use-turnstile";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { OAuthButtons } from "@/components/auth/oauth-buttons";
+import { useTurnstile } from "@/hooks/use-turnstile";
+import { PasswordInput } from "@hexa/ui/password-input";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface SignupProps {
   email: string | null | undefined;
@@ -59,11 +59,11 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
     onError: ({ err }) => {
       console.error("sign-up", err);
       if (err.code === "INPUT_PARSE_ERROR") {
-        Object.entries(err.fieldErrors).forEach(([field, message]) => {
+        for (const [field, message] of Object.entries(err.fieldErrors)) {
           if (message) {
             setError(field as keyof SignupForm, { message: message[0] });
           }
-        });
+        }
         if (err.formErrors?.length) {
           setError("root", { message: err.formErrors[0] });
         }
@@ -81,7 +81,7 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
 
   useEffect(() => {
     setFocus("email");
-  }, []);
+  }, [setFocus]);
 
   return (
     <Card>

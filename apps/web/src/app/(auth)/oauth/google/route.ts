@@ -1,6 +1,6 @@
 import { google } from "@/lib/auth";
-import { cookies } from "next/headers";
 import { generateCodeVerifier, generateState } from "arctic";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET() {

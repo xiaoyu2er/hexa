@@ -13,8 +13,8 @@ import { OAuthSignupSchema, SignupSchema } from "@/lib/zod/schemas/auth";
 import { redirect } from "next/navigation";
 import {
   ZSAError,
-  inferServerActionInput,
-  inferServerActionReturnTypeHot,
+  type inferServerActionInput,
+  type inferServerActionReturnTypeHot,
 } from "zsa";
 import { getOAuthAccount, updateOAuthAccount } from "../db/data-access/account";
 import { invalidateUserSessions, setSession } from "../session";
@@ -43,7 +43,7 @@ export const signupAction = turnstileProcedure
     const { email, password, username } = input;
     const emailItem = await getEmail(email);
 
-    if (emailItem && emailItem.verified) {
+    if (emailItem?.verified) {
       throw new ZSAError(
         "FORBIDDEN",
         process.env.NODE_ENV === "development"
@@ -85,7 +85,7 @@ export const oauthSignupAction = turnstileProcedure
 
     const emailItem = await getUserEmail(oauthAcccount.email);
 
-    if (emailItem && emailItem.verified) {
+    if (emailItem?.verified) {
       throw new ZSAError("FORBIDDEN", "Email already exists");
     }
 

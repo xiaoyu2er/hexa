@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Body,
   Container,
@@ -10,6 +9,7 @@ import {
   Tailwind,
   Text,
 } from "@react-email/components";
+import type React from "react";
 import Footer from "./components/Footer";
 
 interface VerifyCodeTemplateProps {

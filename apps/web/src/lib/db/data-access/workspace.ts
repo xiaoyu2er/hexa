@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
 import { db } from "../db";
 import {
-  WorkspaceMemberModel,
-  WorkspaceModel,
+  type WorkspaceMemberModel,
+  type WorkspaceModel,
   userTable,
   workspaceMemberTable,
   workspaceTable,

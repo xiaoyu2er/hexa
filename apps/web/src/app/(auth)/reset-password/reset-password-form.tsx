@@ -1,28 +1,31 @@
 "use client";
 
 import { resetPasswordAction } from "@/lib/actions/reset-password";
-import { ResetPasswordForm, ResetPasswordSchema } from "@/lib/zod/schemas/auth";
+import {
+  type ResetPasswordForm,
+  ResetPasswordSchema,
+} from "@/lib/zod/schemas/auth";
 import { Button } from "@hexa/ui/button";
 import {
   Card,
+  CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
 } from "@hexa/ui/card";
 import {
+  Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
-  Form,
 } from "@hexa/ui/form";
 
 import { PasswordInput } from "@hexa/ui/password-input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { FC, useEffect } from "react";
+import { type FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
 
@@ -55,13 +58,13 @@ export const ResetPasswordCard: FC<ResetParsswordCardProps> = ({
     onError: ({ err }) => {
       console.error("resetPasswordAction", err);
       if (err.code === "INPUT_PARSE_ERROR") {
-        Object.entries(err.fieldErrors).forEach(([field, message]) => {
+        for (const [field, message] of Object.entries(err.fieldErrors)) {
           if (message) {
             setError(field as keyof ResetPasswordForm, {
               message: message[0],
             });
           }
-        });
+        }
         if (err.formErrors?.length) {
           setError("password", { message: err.formErrors[0] });
         }
@@ -76,7 +79,7 @@ export const ResetPasswordCard: FC<ResetParsswordCardProps> = ({
 
   useEffect(() => {
     setFocus("password");
-  }, []);
+  }, [setFocus]);
 
   return (
     <Card>

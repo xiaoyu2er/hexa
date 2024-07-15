@@ -1,7 +1,7 @@
 import { getAvatarFallbackName, getAvatarFallbackUrl } from "@/lib/user";
 import { Avatar, AvatarFallback, AvatarImage } from "@hexa/ui/avatar";
 import { cn } from "@hexa/utils";
-import { User } from "lucia";
+import type { User } from "lucia";
 
 export function UserAvatar({
   user,

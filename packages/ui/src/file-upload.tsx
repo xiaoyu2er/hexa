@@ -1,9 +1,10 @@
-import { cn } from "@hexa/utils";
-import { VariantProps, cva } from "class-variance-authority";
-import React, { ReactNode, useState } from "react";
-import { toast } from "sonner";
 import { Loader2, UploadCloud } from "@hexa/ui/icons";
+import { cn } from "@hexa/utils";
 import { MAX_PROFILE_FILE_SIZE_MB } from "@hexa/utils/const";
+import { type VariantProps, cva } from "class-variance-authority";
+import type React from "react";
+import { type ReactNode, useState } from "react";
+import { toast } from "sonner";
 import { Avatar, AvatarImage } from "./ui/avatar";
 
 const acceptFileTypes = {
@@ -116,8 +117,8 @@ export function FileUpload({
     const file =
       "dataTransfer" in e
         ? // @ts-ignore - TODO - Fix this
-          e.dataTransfer.files && e.dataTransfer.files[0]
-        : e.target.files && e.target.files[0];
+          e.dataTransfer.files?.[0]
+        : e.target.files?.[0];
 
     if (!file) return;
 

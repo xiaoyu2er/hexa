@@ -1,44 +1,44 @@
 "use client";
 
-import {
+import type {
   ResendCodeActionInput,
   ResendCodeActionReturnType,
 } from "@/lib/actions/sign-up";
 
 import { useServerAction } from "zsa-react";
 
-import { useForm } from "react-hook-form";
-import { OTPForm, OTPSchema } from "@/lib/zod/schemas/auth";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FC, useEffect, useRef } from "react";
-import { VERIFY_CODE_LENGTH, RESEND_VERIFY_CODE_TIME_SPAN } from "@/lib/const";
-import { useCountdown } from "usehooks-ts";
-import { cn } from "@hexa/utils";
+import { RESEND_VERIFY_CODE_TIME_SPAN, VERIFY_CODE_LENGTH } from "@/lib/const";
+import { type OTPForm, OTPSchema } from "@/lib/zod/schemas/auth";
 import { Button } from "@hexa/ui/button";
 import {
   Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
 } from "@hexa/ui/card";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
-  FormControl,
   FormMessage,
 } from "@hexa/ui/form";
 import { PencilLine } from "@hexa/ui/icons";
+import { cn } from "@hexa/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { type FC, useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { useCountdown } from "usehooks-ts";
 
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "@hexa/ui/input-otp";
-import {
+import type {
   VerifyCodeActionInput,
   VerifyCodeActionReturnData,
   VerifyCodeActionReturnType,
 } from "@/lib/actions/reset-password";
-import { VerifyEmailByCodeReturnType } from "@/lib/actions/user";
+import type { VerifyEmailByCodeReturnType } from "@/lib/actions/user";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@hexa/ui/input-otp";
 
 export interface VerifyCodeProps {
   email: string;
@@ -82,16 +82,16 @@ export const VerifyCode: FC<VerifyCodeProps> = ({
 
   useEffect(() => {
     startCountdown();
-  }, []);
+  }, [startCountdown]);
 
   const { execute: execVerify } = useServerAction(onVerify, {
     onError: ({ err }) => {
       if (err.code === "INPUT_PARSE_ERROR") {
-        Object.entries(err.fieldErrors).forEach(([field, message]) => {
+        for (const [field, message] of Object.entries(err.fieldErrors)) {
           if (message) {
             setError(field as keyof OTPForm, { message: message[0] });
           }
-        });
+        }
         if (err.formErrors?.length) {
           setError("code", { message: err.formErrors[0] });
         }
@@ -185,6 +185,7 @@ export const VerifyCode: FC<VerifyCodeProps> = ({
                 </FormItem>
               )}
             />
+            {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
             <p
               className={cn(
                 "mt-2 font-medium text-sm text-primary hover:underline hover:underline-offset-4 hover:cursor-pointer text-center",

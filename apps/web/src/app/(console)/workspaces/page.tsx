@@ -1,8 +1,8 @@
 import { CreateWorkspace } from "@/components/workspaces/create-workspace";
 import { WorkspaceList } from "@/components/workspaces/workspace-list";
+import { CardSkeleton } from "@hexa/ui/card-skeleton";
 import { MaxWidth } from "@hexa/ui/max-width";
 import { Suspense } from "react";
-import { CardSkeleton } from "@hexa/ui/card-skeleton";
 
 export const dynamic = "force-dynamic";
 

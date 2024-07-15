@@ -1,16 +1,14 @@
 "use client";
 
-import { FC, useState } from "react";
+import { VerifyCode } from "@/components/auth/verify-code-form";
+import { resendVerifyEmailAction } from "@/lib/actions/sign-up";
+import { verifyEmailByCodeAction } from "@/lib/actions/user";
+import { useRouter } from "next/navigation";
+import { type FC, useState } from "react";
 import { useStep } from "usehooks-ts";
 import { Signup } from "./signup-form";
-import { VerifyCode } from "@/components/auth/verify-code-form";
-import { useRouter } from "next/navigation";
-import { verifyEmailByCodeAction } from "@/lib/actions/user";
-import { resendVerifyEmailAction } from "@/lib/actions/sign-up";
 
-export interface SignupPageProps {}
-
-export const SignupPage: FC<SignupPageProps> = () => {
+export const SignupPage: FC = () => {
   const [email, setEmail] = useState("");
   const router = useRouter();
   const [currentStep, { goToNextStep, reset }] = useStep(2);

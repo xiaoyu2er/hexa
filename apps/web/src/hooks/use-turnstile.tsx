@@ -4,17 +4,18 @@
  * @see demo https://react-turnstile.vercel.app/basic
  */
 
-import { useRef } from "react";
-import { FieldValues, UseFormReturn } from "react-hook-form";
+import { DISABLE_CLOUDFLARE_TURNSTILE } from "@/lib/const";
 import { Turnstile } from "@marsidev/react-turnstile";
 import { useTheme } from "next-themes";
-import { DISABLE_CLOUDFLARE_TURNSTILE } from "@/lib/const";
+import { useRef } from "react";
+import type { FieldValues, UseFormReturn } from "react-hook-form";
 
 export function useTurnstile<T extends FieldValues>({
   form,
   errorField = "root",
 }: {
   errorField?: string;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   form: UseFormReturn<T, any, undefined>;
 }) {
   const { setError, setValue, watch } = form;
@@ -36,7 +37,7 @@ export function useTurnstile<T extends FieldValues>({
         // type TurnstileTheme = 'light' | 'dark' | 'auto';
         theme: theme === "dark" ? "dark" : "light",
       }}
-      siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!}
+      siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY ?? ""}
       onError={(err: string) => {
         // https://developers.cloudflare.com/turnstile/troubleshooting/client-side-errors/error-codes/
         console.error("cf-turnstile-error", err);

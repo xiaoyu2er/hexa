@@ -1,5 +1,5 @@
 import { cn } from "@hexa/utils";
-import { FC } from "react";
+import type { FC } from "react";
 interface FormMessageProps {
   message?: string;
   className?: string;

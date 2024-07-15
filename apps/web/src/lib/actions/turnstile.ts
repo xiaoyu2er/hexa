@@ -10,11 +10,11 @@
 // timeout-or-duplicate	The response parameter (token) has already been validated before. This means that the token was issued five minutes ago and is no longer valid, or it was already redeemed.
 // internal-error	An internal error happened while validating the response. The request can be retried.
 
+import { DISABLE_CLOUDFLARE_TURNSTILE } from "@/lib/const";
 import { TurnstileSchema } from "@/lib/zod/schemas/auth";
-import { TurnstileServerValidationResponse } from "@marsidev/react-turnstile";
+import type { TurnstileServerValidationResponse } from "@marsidev/react-turnstile";
 import { headers } from "next/headers";
 import { ZSAError, createServerActionProcedure } from "zsa";
-import { DISABLE_CLOUDFLARE_TURNSTILE } from "@/lib/const";
 
 export const emptyTurnstileProcedure = createServerActionProcedure()
   .input(TurnstileSchema)
@@ -28,8 +28,11 @@ export const turnstileProcedure = DISABLE_CLOUDFLARE_TURNSTILE
       .input(TurnstileSchema)
       .handler(async ({ input }) => {
         const form = new URLSearchParams();
-        form.append("secret", process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY!);
-        form.append("response", input["cf-turnstile-response"]!);
+        form.append(
+          "secret",
+          process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY ?? "",
+        );
+        form.append("response", input["cf-turnstile-response"] ?? "");
         form.append("remoteip", headers().get("x-forwarded-for") as string);
 
         console.log("turnstile form", form.toString());
@@ -47,8 +50,7 @@ export const turnstileProcedure = DISABLE_CLOUDFLARE_TURNSTILE
           throw new ZSAError(
             "FORBIDDEN",
             process.env.NODE_ENV === "development"
-              ? "[dev][server-side] Cloudflare Turnstile failed - " +
-                verifyRes["error-codes"][0]
+              ? `[dev][server-side] Cloudflare Turnstile failed - ${verifyRes["error-codes"][0]}`
               : "Only humans are allowed to login. Please try again.",
           );
         }

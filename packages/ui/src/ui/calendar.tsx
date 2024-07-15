@@ -1,11 +1,11 @@
 "use client";
 
-import * as React from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import type * as React from "react";
 import { DayPicker } from "react-day-picker";
 
-import { cn } from "@hexa/utils";
 import { buttonVariants } from "@hexa/ui/button";
+import { cn } from "@hexa/utils";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 

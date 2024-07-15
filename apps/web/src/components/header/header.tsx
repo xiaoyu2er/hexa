@@ -1,9 +1,9 @@
-import Link from "next/link";
-import { Suspense } from "react";
+import { validateRequest } from "@/lib/auth/validate-request";
 import { Button } from "@hexa/ui/button";
 import { Loader2Icon } from "@hexa/ui/icons";
+import Link from "next/link";
+import { Suspense } from "react";
 import { ModeToggle } from "./mode-toggle";
-import { validateRequest } from "@/lib/auth/validate-request";
 
 async function HeaderActions() {
   const { user } = await validateRequest();

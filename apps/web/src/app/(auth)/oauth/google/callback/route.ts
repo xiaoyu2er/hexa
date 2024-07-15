@@ -4,7 +4,7 @@ import {
   getAccountByGoogleId,
 } from "@/lib/db/data-access/account";
 import { setSession } from "@/lib/session";
-import { GoogleUser } from "@/types";
+import type { GoogleUser } from "@/types";
 import { OAuth2RequestError } from "arctic";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
@@ -42,7 +42,7 @@ export async function GET(request: Request): Promise<Response> {
       return NextResponse.json({ error: "Unverified email" }, { status: 400 });
     }
 
-    let { user } = await validateRequest();
+    const { user } = await validateRequest();
     const existingAccount = await getAccountByGoogleId(googleUser.sub);
 
     if (existingAccount) {

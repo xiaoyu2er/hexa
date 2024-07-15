@@ -17,23 +17,23 @@ import {
 } from "@hexa/ui/form";
 import { Input } from "@hexa/ui/input";
 
-import { toast } from "@hexa/ui/sonner";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
-import { useServerAction } from "zsa-react";
 import { updateWorkspaceNameAction } from "@/lib/actions/workspace";
-import {
-  UpdateWorkspaceNameInput,
-  UpdateWorkspacerNameSchema,
-} from "@/lib/zod/schemas/workspace";
 import {
   invalidateWorkspaceBySlugQuery,
   invalidateWorkspacesQuery,
   queryWorkspaceBySlugOptions,
 } from "@/lib/queries/workspace";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import {
+  type UpdateWorkspaceNameInput,
+  UpdateWorkspacerNameSchema,
+} from "@/lib/zod/schemas/workspace";
 import { Button } from "@hexa/ui/button";
+import { toast } from "@hexa/ui/sonner";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useEffect, useMemo } from "react";
+import { useForm } from "react-hook-form";
+import { useServerAction } from "zsa-react";
 
 export function EditWorkspaceName({ slug }: { slug: string }) {
   const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
@@ -57,7 +57,7 @@ export function EditWorkspaceName({ slug }: { slug: string }) {
     reset({
       name: ws?.name ?? "",
     });
-  }, [ws]);
+  }, [reset, ws]);
 
   const { execute } = useServerAction(updateWorkspaceNameAction, {
     onError: ({ err }) => {

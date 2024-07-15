@@ -1,6 +1,16 @@
 "use server";
 
-import { authenticatedProcedure, getUserEmailProcedure } from "./procedures";
+import {
+  createUserEmail,
+  deleteUser,
+  getUserEmails,
+  removeUserEmail,
+  updateProfileName,
+  updateUserAvatar,
+  updateUserEmailVerified,
+  updateUserPrimaryEmail,
+  updateUsername,
+} from "@/lib/db/data-access/user";
 import {
   ChangeUsernameSchema,
   DeleteOAuthAccountSchema,
@@ -8,45 +18,35 @@ import {
   UpdateAvatarSchema,
   UpdateUserNameSchema,
 } from "@/lib/zod/schemas/user";
-import {
-  createUserEmail,
-  deleteUser,
-  getUserEmails,
-  removeUserEmail,
-  updateUserAvatar,
-  updateUserEmailVerified,
-  updateProfileName,
-  updateUserPrimaryEmail,
-  updateUsername,
-} from "@/lib/db/data-access/user";
-import { revalidatePath } from "next/cache";
-import { isStored, storage } from "../storage";
-import { generateId } from "../utils";
 import { waitUntil } from "@vercel/functions";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import {
+  ZSAError,
+  createServerAction,
+  type inferServerActionReturnTypeHot,
+} from "zsa";
+import { validateRequest } from "../auth";
+import type { ProviderType } from "../db";
+import {
+  getUserOAuthAccounts,
+  removeUserOAuthAccount,
+} from "../db/data-access/account";
+import { getTokenByToken, verifyDBTokenByCode } from "../db/data-access/token";
 import {
   invalidateUserSessions,
   setBlankSessionCookie,
   setSession,
 } from "../session";
-import { redirect } from "next/navigation";
+import { isStored, storage } from "../storage";
+import { generateId } from "../utils";
 import {
   OTPSchema,
   OnlyEmailSchema,
   OnlyTokenSchema,
 } from "../zod/schemas/auth";
+import { authenticatedProcedure, getUserEmailProcedure } from "./procedures";
 import { updateTokenAndSendVerifyEmail } from "./sign-up";
-import {
-  ZSAError,
-  createServerAction,
-  inferServerActionReturnTypeHot,
-} from "zsa";
-import { getTokenByToken, verifyDBTokenByCode } from "../db/data-access/token";
-import {
-  getUserOAuthAccounts,
-  removeUserOAuthAccount,
-} from "../db/data-access/account";
-import { ProviderType } from "../db";
-import { validateRequest } from "../auth";
 
 export const getUserAction = authenticatedProcedure
   .createServerAction()

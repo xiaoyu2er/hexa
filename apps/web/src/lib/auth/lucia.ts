@@ -1,12 +1,12 @@
-import { Lucia, TimeSpan } from "lucia";
-import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
 import { db } from "@/lib/db";
 import {
+  type UserModel as DbUser,
   sessionTable,
   userTable,
-  type UserModel as DbUser,
 } from "@/lib/db/schema";
+import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
 import pick from "lodash/pick";
+import { Lucia, TimeSpan } from "lucia";
 
 const adapter = new DrizzlePostgreSQLAdapter(db, sessionTable, userTable);
 

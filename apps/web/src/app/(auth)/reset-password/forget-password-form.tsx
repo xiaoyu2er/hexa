@@ -3,30 +3,30 @@
 import { useTurnstile } from "@/hooks/use-turnstile";
 import { forgetPasswordAction } from "@/lib/actions/reset-password";
 import {
-  ForgetPasswordForm,
+  type ForgetPasswordForm,
   ForgetPasswordSchema,
 } from "@/lib/zod/schemas/auth";
 import { Button } from "@hexa/ui/button";
 import {
   Card,
+  CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
 } from "@hexa/ui/card";
 import {
+  Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
-  Form,
 } from "@hexa/ui/form";
 import { Input } from "@hexa/ui/input";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { FC, useEffect } from "react";
+import { type FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
 
@@ -64,13 +64,13 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
     onError: ({ err }) => {
       console.error("sign-up", err);
       if (err.code === "INPUT_PARSE_ERROR") {
-        Object.entries(err.fieldErrors).forEach(([field, message]) => {
+        for (const [field, message] of Object.entries(err.fieldErrors)) {
           if (message) {
             setError(field as keyof ForgetPasswordForm, {
               message: message[0],
             });
           }
-        });
+        }
         if (err.formErrors?.length) {
           setError("email", { message: err.formErrors[0] });
         }
@@ -87,7 +87,7 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
 
   useEffect(() => {
     setFocus("email");
-  }, []);
+  }, [setFocus]);
 
   return (
     <Card>

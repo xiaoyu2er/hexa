@@ -1,15 +1,15 @@
-import type { Metadata } from "next";
 import { inter, satoshi } from "@/styles/fonts";
+import type { Metadata } from "next";
 
 import { Toaster } from "@hexa/ui/sonner";
 import { cn } from "@hexa/utils";
 import "./globals.css";
-import { ThemeProvider } from "next-themes";
-import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Analytics } from "@/components/analytics";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { QueryClientProvider } from "@/providers/query-client-provider";
 import { Provider as NiceModalProvider } from "@/components/modal";
+import { TailwindIndicator } from "@/components/tailwind-indicator";
+import { QueryClientProvider } from "@/providers/query-client-provider";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ThemeProvider } from "next-themes";
 
 export const metadata: Metadata = {
   title: "Hexa",

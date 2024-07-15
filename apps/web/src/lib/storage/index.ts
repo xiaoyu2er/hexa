@@ -12,14 +12,15 @@ class StorageClient {
 
   constructor() {
     this.client = new AwsClient({
-      accessKeyId: process.env.STORAGE_ACCESS_KEY_ID!,
-      secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY!,
+      accessKeyId: process.env.STORAGE_ACCESS_KEY_ID ?? "",
+      secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY ?? "",
       service: "s3",
       region: "auto",
     });
   }
 
   async upload(key: string, body: Blob | string, opts?: imageOptions) {
+    // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
     let uploadBody;
     if (typeof body === "string") {
       if (this.isBase64(body)) {
@@ -40,37 +41,33 @@ class StorageClient {
     };
     if (opts?.contentType) headers["Content-Type"] = opts.contentType;
 
-    try {
-      const res = await this.client.fetch(
-        `${process.env.STORAGE_ENDPOINT!}/${key}`,
-        {
-          method: "PUT",
-          headers,
-          body: uploadBody,
-        },
-      );
+    const res = await this.client.fetch(
+      `${process.env.STORAGE_ENDPOINT ?? ""}/${key}`,
+      {
+        method: "PUT",
+        headers,
+        body: uploadBody,
+      },
+    );
 
-      const json = await res.text();
-      console.log("upload:", json);
+    const json = await res.text();
+    console.log("upload:", json);
 
-      return {
-        url: `${process.env.STORAGE_BASE_URL!}/${key}`,
-      };
-    } catch (error: any) {
-      throw new Error(`Failed to upload file: ${error.message}`);
-    }
+    return {
+      url: `${process.env.STORAGE_BASE_URL ?? ""}/${key}`,
+    };
   }
 
   async delete(url: string) {
-    if (!url.startsWith(process.env.STORAGE_BASE_URL!)) {
+    if (!url.startsWith(process.env.STORAGE_BASE_URL ?? "")) {
       return {
         success: false,
-        message: `Url not stored on ${process.env.STORAGE_BASE_URL!}`,
+        message: `Url not stored on ${process.env.STORAGE_BASE_URL ?? ""}`,
       };
     }
-    const key = url.replace(process.env.STORAGE_BASE_URL! + "/", "");
+    const key = url.replace(`${process.env.STORAGE_BASE_URL ?? ""}/`, "");
 
-    await this.client.fetch(`${process.env.STORAGE_ENDPOINT!}/${key}`, {
+    await this.client.fetch(`${process.env.STORAGE_ENDPOINT ?? ""}/${key}`, {
       method: "DELETE",
     });
 
@@ -91,7 +88,7 @@ class StorageClient {
     }
     const blobProps: { type?: string } = {};
 
-    if (opts?.contentType) blobProps["type"] = opts.contentType;
+    if (opts?.contentType) blobProps.type = opts.contentType;
     return new Blob([byteArray], blobProps);
   }
 
@@ -139,5 +136,5 @@ class StorageClient {
 export const storage = new StorageClient();
 
 export const isStored = (url: string) => {
-  return url.startsWith(process.env.STORAGE_BASE_URL! || "");
+  return url.startsWith(process.env.STORAGE_BASE_URL ?? "");
 };

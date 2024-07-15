@@ -1,9 +1,9 @@
 "use client";
 
-import { WorkspaceModel } from "@/lib/db";
-import { Card, CardHeader, CardDescription, CardContent } from "@hexa/ui/card";
-import { BarChart2Icon, GlobeIcon, Link2Icon } from "@hexa/ui/icons";
+import type { WorkspaceModel } from "@/lib/db";
 import { Badge } from "@hexa/ui/badge";
+import { Card, CardContent, CardDescription, CardHeader } from "@hexa/ui/card";
+import { BarChart2Icon, GlobeIcon, Link2Icon } from "@hexa/ui/icons";
 import Link from "next/link";
 import { WorkspaceAvatar } from "./workspace-avatar";
 

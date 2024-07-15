@@ -1,8 +1,8 @@
 "use client";
 
-import { Dialog, DialogTrigger, DialogContent } from "@hexa/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@hexa/ui/dialog";
+import type { ReactNode } from "react";
 import { useBoolean } from "usehooks-ts";
-import { ReactNode } from "react";
 import { CreateWorkspaceForm } from "./create-workspace-form";
 
 export function CreateWorkspaceModal({ children }: { children: ReactNode }) {

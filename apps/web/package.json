@@ -6,7 +6,6 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
     "check-types": "tsc --noEmit",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "db:generate": "drizzle-kit generate",

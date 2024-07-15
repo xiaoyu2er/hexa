@@ -1,20 +1,22 @@
 "use client";
 
+import { useMediaQuery } from "@hexa/ui/hooks";
+import { cn } from "@hexa/utils";
 import {
-  useState,
-  type ReactNode,
   type Dispatch,
+  type ReactNode,
   type SetStateAction,
+  useState,
 } from "react";
 import { Button } from "./ui/button";
 import {
   Dialog,
-  DialogTitle,
   DialogContent,
   DialogDescription,
-  DialogHeader,
-  DialogTrigger,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "./ui/dialog";
 import {
   Drawer,
@@ -26,8 +28,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "./ui/drawer";
-import { useMediaQuery } from "@hexa/ui/hooks";
-import { cn } from "@hexa/utils";
 
 type StatefulContent = (_props: {
   open: boolean;

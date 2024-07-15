@@ -17,22 +17,22 @@ import {
 } from "@hexa/ui/form";
 import { Input } from "@hexa/ui/input";
 
-import { toast } from "@hexa/ui/sonner";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useServerAction } from "zsa-react";
 import { updateWorkspaceSlugAction } from "@/lib/actions/workspace";
-import {
-  UpdateWorkspaceSlugInput,
-  UpdateWorkspaceSlugSchema,
-} from "@/lib/zod/schemas/workspace";
-import { useRouter } from "next/navigation";
 import {
   invalidateWorkspacesQuery,
   queryWorkspaceBySlugOptions,
 } from "@/lib/queries/workspace";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import {
+  type UpdateWorkspaceSlugInput,
+  UpdateWorkspaceSlugSchema,
+} from "@/lib/zod/schemas/workspace";
 import { Button } from "@hexa/ui/button";
+import { toast } from "@hexa/ui/sonner";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { useServerAction } from "zsa-react";
 
 export function EditWorkspaceSlug({ slug }: { slug: string }) {
   const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));

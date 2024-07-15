@@ -1,8 +1,8 @@
 "use client";
 
-import * as React from "react";
 import { DashIcon } from "@radix-ui/react-icons";
 import { OTPInput, OTPInputContext } from "input-otp";
+import * as React from "react";
 
 import { cn } from "@hexa/utils";
 
@@ -35,7 +35,7 @@ const InputOTPSlot = React.forwardRef<
   React.ComponentPropsWithoutRef<"div"> & { index: number }
 >(({ index, className, ...props }, ref) => {
   const inputOTPContext = React.useContext(OTPInputContext);
-  const { char, hasFakeCaret, isActive } = inputOTPContext.slots[index]!;
+  const { char, hasFakeCaret, isActive } = inputOTPContext.slots[index] ?? {};
 
   return (
     <div
@@ -62,7 +62,14 @@ const InputOTPSeparator = React.forwardRef<
   React.ElementRef<"div">,
   React.ComponentPropsWithoutRef<"div">
 >(({ ...props }, ref) => (
-  <div ref={ref} role="separator" {...props}>
+  <div
+    ref={ref}
+    role="separator"
+    aria-valuemax={0}
+    aria-valuemin={0}
+    aria-valuenow={0}
+    {...props}
+  >
     <DashIcon />
   </div>
 ));

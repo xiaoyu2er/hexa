@@ -4,7 +4,7 @@ import { and, eq } from "drizzle-orm";
 import { createDate, isWithinExpirationDate } from "oslo";
 import { ZSAError } from "zsa";
 import { db } from "../db";
-import { TokenType, tokenTable } from "../schema";
+import { type TokenType, tokenTable } from "../schema";
 
 export async function deleteDBToken(userId: string, type: TokenType) {
   return await db

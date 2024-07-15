@@ -1,9 +1,9 @@
 "use client";
 
+import { Check, Copy } from "@hexa/ui/icons";
+import { toast } from "@hexa/ui/sonner";
 import { cn } from "@hexa/utils";
 import { useState } from "react";
-import { toast } from "@hexa/ui/sonner";
-import { Copy, Check } from "@hexa/ui/icons";
 import { Button } from "./ui/button";
 
 export function CopyButton({

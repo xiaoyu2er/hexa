@@ -1,7 +1,12 @@
-import { and, eq, ne } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { EmailModal, UserModel, emailTable, userTable } from "@/lib/db/schema";
+import {
+  type EmailModal,
+  type UserModel,
+  emailTable,
+  userTable,
+} from "@/lib/db/schema";
 import { getHash } from "@/lib/utils";
+import { and, eq, ne } from "drizzle-orm";
 
 export async function getUser(uid: string) {
   const user = await db.query.userTable.findFirst({
