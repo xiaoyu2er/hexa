@@ -38,6 +38,7 @@ import {
   VerifyCodeActionReturnData,
   VerifyCodeActionReturnType,
 } from "@/lib/actions/reset-password";
+import { VerifyEmailByCodeReturnType } from "@/lib/actions/user";
 
 export interface VerifyCodeProps {
   email: string;
@@ -45,7 +46,9 @@ export interface VerifyCodeProps {
   onSuccess?: (_data: VerifyCodeActionReturnData) => void;
   onCancel?: () => void;
   className?: string;
-  onVerify: (_input: VerifyCodeActionInput) => VerifyCodeActionReturnType;
+  onVerify: (
+    _input: VerifyCodeActionInput,
+  ) => VerifyCodeActionReturnType | VerifyEmailByCodeReturnType;
   onResend: (_input: ResendCodeActionInput) => ResendCodeActionReturnType;
 }
 
