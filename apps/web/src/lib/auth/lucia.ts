@@ -15,6 +15,7 @@ export const lucia = new Lucia(adapter, {
     return attributes;
   },
   getUserAttributes: (attributes) => {
+    // @ts-ignore - We return the user attributes with the password removed
     const hasPassword = !!attributes.password;
     return {
       ...pick(attributes, [
