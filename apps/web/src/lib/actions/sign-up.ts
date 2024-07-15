@@ -58,6 +58,7 @@ export const signupAction = turnstileProcedure
       await updateUserPassword(user.id, password);
     } else {
       user = await createUser({
+        name: null,
         email,
         verified: false,
         password,
@@ -92,7 +93,7 @@ export const oauthSignupAction = turnstileProcedure
       email: oauthAcccount.email,
       verified: true,
       // we don't need password for oauth signup
-      // password: password,
+      password: null,
       username,
       avatarUrl: oauthAcccount.avatarUrl,
       name: oauthAcccount.name,
