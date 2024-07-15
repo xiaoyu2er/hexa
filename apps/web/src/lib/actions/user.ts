@@ -35,7 +35,11 @@ import {
   OnlyTokenSchema,
 } from "../zod/schemas/auth";
 import { updateTokenAndSendVerifyEmail } from "./sign-up";
-import { ZSAError, createServerAction } from "zsa";
+import {
+  ZSAError,
+  createServerAction,
+  inferServerActionReturnTypeHot,
+} from "zsa";
 import { getTokenByToken, verifyDBTokenByCode } from "../db/data-access/token";
 import {
   getUserOAuthAccounts,
@@ -136,6 +140,9 @@ export const verifyEmailByCodeAction = getUserEmailProcedure
     }
   });
 
+export type VerifyEmailByCodeReturnType = inferServerActionReturnTypeHot<
+  typeof verifyEmailByCodeAction
+>;
 export const verifyEmailByTokenAction = createServerAction()
   .input(OnlyTokenSchema)
   .handler(async ({ input }) => {
