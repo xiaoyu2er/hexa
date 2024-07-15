@@ -1,9 +1,9 @@
 "use client";
 
-import * as React from "react";
-import { EyeOpenIcon, EyeCloseIcon } from "@hexa/ui/icons";
 import { Button } from "@hexa/ui/button";
+import { EyeCloseIcon, EyeOpenIcon } from "@hexa/ui/icons";
 import { Input, type InputProps } from "@hexa/ui/input";
+import * as React from "react";
 
 import { cn } from "@hexa/utils";
 

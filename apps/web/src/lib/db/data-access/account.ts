@@ -1,12 +1,12 @@
-import { and, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
+import type { GitHubUser, GoogleUser } from "@/types";
+import { and, eq } from "drizzle-orm";
 import {
-  OAuthAccountModel,
-  ProviderType,
-  UserModel,
+  type OAuthAccountModel,
+  type ProviderType,
+  type UserModel,
   oauthAccountTable,
 } from "../schema";
-import { GitHubUser, GoogleUser } from "@/types";
 
 export async function getAccountByGoogleId(googleId: string) {
   return await db.query.oauthAccountTable.findFirst({

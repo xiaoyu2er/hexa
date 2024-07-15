@@ -1,5 +1,6 @@
 "use client";
 
+import { queryUserOAuthAccountsOptions } from "@/lib/queries/user";
 import {
   Card,
   CardContent,
@@ -7,10 +8,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@hexa/ui/card";
-import { queryUserOAuthAccountsOptions } from "@/lib/queries/user";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
+import { useModal } from "@ebay/nice-modal-react";
 import { Button } from "@hexa/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@hexa/ui/dropdown-menu";
 import {
   EllipsisIcon,
   GithubIcon,
@@ -18,17 +25,10 @@ import {
   MoveRightIcon,
   UserPlusIcon,
 } from "@hexa/ui/icons";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@hexa/ui/dropdown-menu";
-import { useModal } from "@ebay/nice-modal-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@hexa/ui/popover";
 
-import { DeleteOAuthAccountModal } from "./delete-account-modal";
 import Link from "next/link";
+import { DeleteOAuthAccountModal } from "./delete-account-modal";
 
 export function EditOAuthAccount() {
   const { data: accounts, refetch } = useSuspenseQuery(
@@ -52,43 +52,45 @@ export function EditOAuthAccount() {
               // .sort((a, b) => (a.primary ? -1 : 1))
               .map((account) => {
                 return (
-                  <>
-                    <Button className="justify-between" variant="ghost">
-                      <p className="text-sm font-medium leading-none flex gap-2 items-center">
-                        {account.provider === "GITHUB" && (
-                          <GithubIcon className="w-4 h-4" />
-                        )}
-                        {account.provider === "GOOGLE" && (
-                          <GoogleIcon className="w-4 h-4" />
-                        )}
-                        {account.provider[0] +
-                          account.provider.slice(1).toLowerCase()}{" "}
-                        {account.username && (
-                          <span className="text-sm text-gray-600">
-                            {account.username}
-                          </span>
-                        )}
-                      </p>
+                  <Button
+                    key={account.provider}
+                    className="justify-between"
+                    variant="ghost"
+                  >
+                    <p className="text-sm font-medium leading-none flex gap-2 items-center">
+                      {account.provider === "GITHUB" && (
+                        <GithubIcon className="w-4 h-4" />
+                      )}
+                      {account.provider === "GOOGLE" && (
+                        <GoogleIcon className="w-4 h-4" />
+                      )}
+                      {account.provider[0] +
+                        account.provider.slice(1).toLowerCase()}{" "}
+                      {account.username && (
+                        <span className="text-sm text-gray-600">
+                          {account.username}
+                        </span>
+                      )}
+                    </p>
 
-                      <DropdownMenu>
-                        <DropdownMenuTrigger>
-                          <EllipsisIcon className="h4 w-4" />
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                          <DropdownMenuItem
-                            className="cursor-pointer text-destructive focus:text-destructive"
-                            onClick={() => {
-                              modal
-                                .show({ provider: account.provider })
-                                .then(() => refetch());
-                            }}
-                          >
-                            Remove account
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </Button>
-                  </>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger>
+                        <EllipsisIcon className="h4 w-4" />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuItem
+                          className="cursor-pointer text-destructive focus:text-destructive"
+                          onClick={() => {
+                            modal
+                              .show({ provider: account.provider })
+                              .then(() => refetch());
+                          }}
+                        >
+                          Remove account
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </Button>
                 );
               })}
 

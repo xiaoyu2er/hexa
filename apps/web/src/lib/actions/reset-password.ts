@@ -6,6 +6,7 @@ import {
   getTokenByToken,
   verifyDBTokenByCode,
 } from "@/lib/db/data-access/token";
+import { updateUserPassword } from "@/lib/db/data-access/user";
 import { sendVerifyCodeAndUrlEmail } from "@/lib/emails";
 import { invalidateUserSessions, setSession } from "@/lib/session";
 import { getHash } from "@/lib/utils";
@@ -19,11 +20,10 @@ import {
   ZSAError,
   chainServerActionProcedures,
   createServerAction,
-  inferServerActionInput,
-  inferServerActionReturnData,
-  inferServerActionReturnTypeHot,
+  type inferServerActionInput,
+  type inferServerActionReturnData,
+  type inferServerActionReturnTypeHot,
 } from "zsa";
-import { updateUserPassword } from "@/lib/db/data-access/user";
 import { getUserEmailProcedure } from "./procedures";
 import { turnstileProcedure } from "./turnstile";
 

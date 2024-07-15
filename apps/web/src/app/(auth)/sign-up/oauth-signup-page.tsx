@@ -1,9 +1,9 @@
 "use client";
 
-import { FC } from "react";
+import type { OAuthAccountModel } from "@/lib/db";
 import { useRouter } from "next/navigation";
+import type { FC } from "react";
 import { OAuthSignup } from "./oauth-signup-form";
-import { OAuthAccountModel } from "@/lib/db";
 
 export interface SignupPageProps {
   oauthAccount: OAuthAccountModel;

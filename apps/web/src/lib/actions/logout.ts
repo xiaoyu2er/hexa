@@ -1,10 +1,10 @@
 "use server";
 
+import { validateRequest } from "@/lib/auth/validate-request";
+import { invalidateSession, setBlankSessionCookie } from "@/lib/session";
+import { EmptySchema } from "@/lib/zod/schemas/auth";
 import { redirect } from "next/navigation";
 import { ZSAError } from "zsa";
-import { validateRequest } from "@/lib/auth/validate-request";
-import { EmptySchema } from "@/lib/zod/schemas/auth";
-import { invalidateSession, setBlankSessionCookie } from "@/lib/session";
 import { authenticatedProcedure } from "./procedures";
 
 export const logoutAction = authenticatedProcedure

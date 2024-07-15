@@ -1,9 +1,9 @@
-import { WorkspaceModel } from "@/lib/db";
+import type { WorkspaceModel } from "@/lib/db";
 import {
   getWorkspaceAvatarFallbackName,
   getWorkspaceAvatarFallbackUrl,
 } from "@/lib/workspace";
-import { Avatar, AvatarImage, AvatarFallback } from "@hexa/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@hexa/ui/avatar";
 import { cn } from "@hexa/utils";
 
 export function WorkspaceAvatar({

@@ -15,17 +15,12 @@ import {
 import { Button } from "@hexa/ui/button";
 
 import {
-  LoginPasswordInput,
+  type LoginPasswordInput,
   LoginPasswordSchema,
 } from "@/lib/zod/schemas/auth";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useServerAction } from "zsa-react";
-import { PasswordInput } from "@hexa/ui/password-input";
-import { FormErrorMessage } from "@hexa/ui/form-error-message";
-import { Divider } from "@hexa/ui/divider";
+import { OAuthButtons } from "@/components/auth/oauth-buttons";
+import { useTurnstile } from "@/hooks/use-turnstile";
 import {
   Card,
   CardContent,
@@ -33,9 +28,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@hexa/ui/card";
+import { Divider } from "@hexa/ui/divider";
+import { FormErrorMessage } from "@hexa/ui/form-error-message";
 import { Input } from "@hexa/ui/input";
-import { useTurnstile } from "@/hooks/use-turnstile";
-import { OAuthButtons } from "@/components/auth/oauth-buttons";
+import { PasswordInput } from "@hexa/ui/password-input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useServerAction } from "zsa-react";
 
 interface LoginPasswordProps {
   onPasscode: () => void;
@@ -60,13 +60,13 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
   const { execute } = useServerAction(loginPasswordAction, {
     onError: ({ err }) => {
       if (err.code === "INPUT_PARSE_ERROR") {
-        Object.entries(err.fieldErrors).forEach(([field, message]) => {
+        for (const [field, message] of Object.entries(err.fieldErrors)) {
           if (message) {
             setError(field as keyof LoginPasswordInput, {
               message: message[0],
             });
           }
-        });
+        }
         if (err.formErrors?.length) {
           setError("root", { message: err.formErrors[0] });
         }
@@ -79,7 +79,7 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
   });
   useEffect(() => {
     setFocus("email");
-  }, []);
+  }, [setFocus]);
 
   return (
     <>

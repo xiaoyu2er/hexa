@@ -1,6 +1,7 @@
 "use client";
 
-import React, { FC } from "react";
+import type React from "react";
+import type { FC } from "react";
 
 interface DividerProps {
   children?: React.ReactNode;

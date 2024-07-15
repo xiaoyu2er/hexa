@@ -1,5 +1,6 @@
 "use client";
 
+import { queryUserOptions } from "@/lib/queries/user";
 import {
   Card,
   CardContent,
@@ -7,9 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@hexa/ui/card";
-import { Input } from "@hexa/ui/input";
 import { CopyButton } from "@hexa/ui/copy-button";
-import { queryUserOptions } from "@/lib/queries/user";
+import { Input } from "@hexa/ui/input";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 export function UserId() {

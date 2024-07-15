@@ -2,13 +2,18 @@
 
 import { Input } from "@hexa/ui/input";
 
-import { useServerAction } from "zsa-react";
-import { toast } from "@hexa/ui/sonner";
+import { createWorkspaceAction } from "@/lib/actions/workspace";
+import { invalidateWorkspacesQuery } from "@/lib/queries/workspace";
 import {
-  DialogHeader,
-  DialogTitle,
+  type CreateWorkspaceInput,
+  CreateWorkspaceSchema,
+} from "@/lib/zod/schemas/workspace";
+import { Button } from "@hexa/ui/button";
+import {
   DialogDescription,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from "@hexa/ui/dialog";
 import {
   Form,
@@ -18,16 +23,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@hexa/ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  CreateWorkspaceInput,
-  CreateWorkspaceSchema,
-} from "@/lib/zod/schemas/workspace";
-import { createWorkspaceAction } from "@/lib/actions/workspace";
 import { FormErrorMessage } from "@hexa/ui/form-error-message";
-import { invalidateWorkspacesQuery } from "@/lib/queries/workspace";
-import { Button } from "@hexa/ui/button";
+import { toast } from "@hexa/ui/sonner";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useServerAction } from "zsa-react";
 
 export interface CreateWorkspaceFormProps {
   onSuccess?: () => void;
@@ -51,13 +51,13 @@ export function CreateWorkspaceForm({ onSuccess }: CreateWorkspaceFormProps) {
   const { execute } = useServerAction(createWorkspaceAction, {
     onError: ({ err }) => {
       if (err.code === "INPUT_PARSE_ERROR") {
-        Object.entries(err.fieldErrors).forEach(([field, message]) => {
+        for (const [field, message] of Object.entries(err.fieldErrors)) {
           if (message) {
             setError(field as keyof CreateWorkspaceInput, {
               message: message[0],
             });
           }
-        });
+        }
         if (err.formErrors?.length) {
           setError("root", { message: err.formErrors[0] });
         }

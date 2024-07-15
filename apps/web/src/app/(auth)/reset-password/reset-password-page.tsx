@@ -1,15 +1,15 @@
 "use client";
 
-import { FC, useState } from "react";
+import { VerifyCode } from "@/components/auth/verify-code-form";
+import {
+  resendResetPasswordCodeAction,
+  verifyResetPasswordCodeAction,
+} from "@/lib/actions/reset-password";
+import { useRouter, useSearchParams } from "next/navigation";
+import { type FC, useState } from "react";
 import { useStep } from "usehooks-ts";
 import { ForgetPasswordCard } from "./forget-password-form";
 import { ResetPasswordCard } from "./reset-password-form";
-import { useRouter, useSearchParams } from "next/navigation";
-import { VerifyCode } from "@/components/auth/verify-code-form";
-import {
-  verifyResetPasswordCodeAction,
-  resendResetPasswordCodeAction,
-} from "@/lib/actions/reset-password";
 
 export interface ResetPasswordProps {
   token?: string;

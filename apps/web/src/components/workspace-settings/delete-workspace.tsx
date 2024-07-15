@@ -9,17 +9,23 @@ import {
 } from "@hexa/ui/card";
 import { Input } from "@hexa/ui/input";
 
-import { useServerAction } from "zsa-react";
-import { toast } from "@hexa/ui/sonner";
+import { deleteWorkspaceAction } from "@/lib/actions/workspace";
+import { invalidateWorkspacesQuery } from "@/lib/queries/workspace";
+import type { DeleteUserInput } from "@/lib/zod/schemas/user";
+import {
+  DELETE_WORKSPACE_CONFIRMATION,
+  type DeleteWorkspaceInput,
+  DeleteWorkspaceSchema,
+} from "@/lib/zod/schemas/workspace";
 import { Button } from "@hexa/ui/button";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogDescription,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@hexa/ui/dialog";
 import {
   Form,
@@ -29,17 +35,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@hexa/ui/form";
-import { useForm } from "react-hook-form";
-import { DeleteUserInput } from "@/lib/zod/schemas/user";
+import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  DELETE_WORKSPACE_CONFIRMATION,
-  DeleteWorkspaceInput,
-  DeleteWorkspaceSchema,
-} from "@/lib/zod/schemas/workspace";
-import { deleteWorkspaceAction } from "@/lib/actions/workspace";
 import { useRouter } from "next/navigation";
-import { invalidateWorkspacesQuery } from "@/lib/queries/workspace";
+import { useForm } from "react-hook-form";
+import { useServerAction } from "zsa-react";
 
 export function DeleteWorkspace() {
   const router = useRouter();
@@ -60,13 +60,13 @@ export function DeleteWorkspace() {
   const { execute } = useServerAction(deleteWorkspaceAction, {
     onError: ({ err }) => {
       if (err.code === "INPUT_PARSE_ERROR") {
-        Object.entries(err.fieldErrors).forEach(([field, message]) => {
+        for (const [field, message] of Object.entries(err.fieldErrors)) {
           if (message) {
             setError(field as keyof DeleteUserInput, {
               message: message[0],
             });
           }
-        });
+        }
         if (err.formErrors?.length) {
           setError("confirm", { message: err.formErrors[0] });
         }

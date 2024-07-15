@@ -1,4 +1,4 @@
-import { User } from "lucia";
+import type { User } from "lucia";
 
 export const getAvatarFallbackUrl = (user: User | null) => {
   return `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${user?.id}`;

@@ -1,5 +1,6 @@
 "use client";
 
+import { UserAvatar } from "@/components/user/user-avatar";
 import { logoutAction } from "@/lib/actions/logout";
 import { queryUserOptions } from "@/lib/queries/user";
 import { Button } from "@hexa/ui/button";
@@ -11,11 +12,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@hexa/ui/dropdown-menu";
-import { Settings, LogOut } from "@hexa/ui/icons";
+import { LogOut, Settings } from "@hexa/ui/icons";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useServerAction } from "zsa-react";
-import { UserAvatar } from "@/components/user/user-avatar";
 
 export function UserAccountNav() {
   const { data: user } = useSuspenseQuery(queryUserOptions);

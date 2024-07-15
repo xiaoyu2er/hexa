@@ -1,13 +1,13 @@
-import { cookies } from "next/headers";
-import { OAuth2RequestError } from "arctic";
 import { github, validateRequest } from "@/lib/auth";
-import { NextRequest, NextResponse } from "next/server";
 import {
   createGithubAccount,
   getAccountByGithubId,
 } from "@/lib/db/data-access/account";
-import { GitHubEmail, GitHubUser } from "@/types";
 import { setSession } from "@/lib/session";
+import type { GitHubEmail, GitHubUser } from "@/types";
+import { OAuth2RequestError } from "arctic";
+import { cookies } from "next/headers";
+import { type NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unverified email" }, { status: 400 });
     }
 
-    let { user } = await validateRequest();
+    const { user } = await validateRequest();
     // Find existing oauthAccount
     const existingAccount = await getAccountByGithubId(githubUser.id);
 

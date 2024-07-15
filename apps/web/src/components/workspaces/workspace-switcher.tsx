@@ -1,27 +1,27 @@
 "use client";
 
-import * as React from "react";
 import { CaretSortIcon, CheckIcon, PlusCircledIcon } from "@hexa/ui/icons";
+import * as React from "react";
 
-import { cn } from "@hexa/utils";
 import { Button } from "@hexa/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@hexa/ui/popover";
+import { cn } from "@hexa/utils";
 
-import { WorkspaceAvatar } from "./workspace-avatar";
-import { WorkspaceModel } from "@/lib/db";
-import { Badge } from "@hexa/ui/badge";
-import { useServerAction } from "zsa-react";
+import { UserAvatar } from "@/components/user/user-avatar";
 import { setUserDefaultWorkspaceAction } from "@/lib/actions/workspace";
+import type { WorkspaceModel } from "@/lib/db";
+import { queryUserOptions } from "@/lib/queries/user";
+import { queryWorkspacesOptions } from "@/lib/queries/workspace";
+import { Badge } from "@hexa/ui/badge";
+import { Dialog, DialogContent } from "@hexa/ui/dialog";
 import { toast } from "@hexa/ui/sonner";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useBoolean } from "usehooks-ts";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { queryWorkspacesOptions } from "@/lib/queries/workspace";
-import { queryUserOptions } from "@/lib/queries/user";
-import { UserAvatar } from "@/components/user/user-avatar";
-import Link from "next/link";
-import { Dialog, DialogContent } from "@hexa/ui/dialog";
+import { useServerAction } from "zsa-react";
 import { CreateWorkspaceForm } from "./create-workspace-form";
+import { WorkspaceAvatar } from "./workspace-avatar";
 
 export function WorkspaceSwitcher() {
   const { slug } = useParams() as { slug?: string };
@@ -52,7 +52,7 @@ export function WorkspaceSwitcher() {
       router.push(`/${slug}`);
     },
     onError({ err }) {
-      toast.error("Failed to switch workspace" + err.message);
+      toast.error(`Failed to switch workspace${err.message}`);
     },
   });
   return (
@@ -106,6 +106,7 @@ export function WorkspaceSwitcher() {
 
           {workspaces.map((ws) => (
             <Button
+              key={ws.id}
               variant="ghost"
               className="w-full h-11 justify-start"
               onClick={() => {

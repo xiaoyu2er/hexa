@@ -1,9 +1,9 @@
-import { queryOptions } from "@tanstack/react-query";
 import {
   getWorkspaceBySlugAction,
   getWorkspacesAction,
 } from "@/lib/actions/workspace";
 import { getQueryClient } from "@/providers/get-query-client";
+import { queryOptions } from "@tanstack/react-query";
 
 export const queryWorkspacesOptions = queryOptions({
   queryKey: ["workspaces"],

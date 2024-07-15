@@ -1,5 +1,6 @@
 import { validateRequest } from "@/lib/auth/validate-request";
 
+import { Header } from "@/components/header/header";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,7 +13,6 @@ import {
   AlertDialogTrigger,
 } from "@hexa/ui/alert-dialog";
 import { Button } from "@hexa/ui/button";
-import { Header } from "@/components/header/header";
 
 function AlertDialogDemo() {
   return (

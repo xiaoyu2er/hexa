@@ -1,4 +1,4 @@
-import { WorkspaceModel } from "./db";
+import type { WorkspaceModel } from "./db";
 
 export const getWorkspaceAvatarFallbackUrl = (ws: WorkspaceModel | null) => {
   return `https://api.dicebear.com/9.x/icons/svg?seed=${ws?.id}`;

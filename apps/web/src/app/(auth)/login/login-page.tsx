@@ -1,14 +1,14 @@
 "use client";
 
 import { VerifyCode } from "@/components/auth/verify-code-form";
-import { LoginPassword } from "./login-password-form";
-import { useState } from "react";
-import { useStep } from "usehooks-ts";
-import { LoginPasscode } from "./login-passcode-form";
 import {
   loginByCodeAction,
   resendLoginPasscodeAction,
 } from "@/lib/actions/login";
+import { useState } from "react";
+import { useStep } from "usehooks-ts";
+import { LoginPasscode } from "./login-passcode-form";
+import { LoginPassword } from "./login-password-form";
 
 export function LoginPage() {
   const [loginType, setLoginType] = useState<"password" | "passcode">(

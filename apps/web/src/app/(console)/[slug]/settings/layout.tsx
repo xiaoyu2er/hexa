@@ -1,7 +1,7 @@
 "use client";
 
 import { SettingsLayout } from "@/components/layouts/setting-layout";
-import { NavTab } from "@/types";
+import type { NavTab } from "@/types";
 import { SettingsIcon } from "@hexa/ui/icons";
 
 const SETTINGS_NAVBARS: NavTab[] = [

@@ -2,7 +2,7 @@
 
 import { updateUserNameAction } from "@/lib/actions/user";
 import {
-  UpdateUserNameInput,
+  type UpdateUserNameInput,
   UpdateUserNameSchema,
 } from "@/lib/zod/schemas/user";
 import {
@@ -22,14 +22,14 @@ import {
 } from "@hexa/ui/form";
 import { Input } from "@hexa/ui/input";
 
+import { queryUserOptions } from "@/lib/queries/user";
+import { Button } from "@hexa/ui/button";
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
-import { queryUserOptions } from "@/lib/queries/user";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { Button } from "@hexa/ui/button";
 
 export function EditName() {
   const { data: user, refetch } = useSuspenseQuery(queryUserOptions);
@@ -54,7 +54,7 @@ export function EditName() {
     reset({
       name: user?.name ?? "",
     });
-  }, [user?.name]);
+  }, [reset, user?.name]);
 
   const { execute } = useServerAction(updateUserNameAction, {
     onError: ({ err }) => {

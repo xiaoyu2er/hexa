@@ -1,7 +1,7 @@
-import { createServerActionProcedure, ZSAError } from "zsa";
-import { OnlyEmailSchema } from "../zod/schemas/auth";
 import { assertAuthenticated } from "@/lib/session";
+import { ZSAError, createServerActionProcedure } from "zsa";
 import { getUserEmail } from "../db/data-access/user";
+import { OnlyEmailSchema } from "../zod/schemas/auth";
 
 export const getUserEmailProcedure = createServerActionProcedure()
   .input(OnlyEmailSchema)
@@ -13,7 +13,7 @@ export const getUserEmailProcedure = createServerActionProcedure()
       throw new ZSAError(
         "NOT_FOUND",
         process.env.NODE_ENV === "development"
-          ? "[dev] User not found by email: " + email
+          ? `[dev] User not found by email: ${email}`
           : "Email not found",
       );
     }

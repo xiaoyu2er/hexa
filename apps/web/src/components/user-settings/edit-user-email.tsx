@@ -4,7 +4,7 @@ import {
   setUserPrimaryEmailAction,
   verifyEmailByCodeAction,
 } from "@/lib/actions/user";
-import { useState } from "react";
+import { queryUserEmailsOptions } from "@/lib/queries/user";
 import {
   Card,
   CardContent,
@@ -13,26 +13,26 @@ import {
   CardTitle,
 } from "@hexa/ui/card";
 import { toast } from "@hexa/ui/sonner";
-import { queryUserEmailsOptions } from "@/lib/queries/user";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
-import { Button } from "@hexa/ui/button";
+import { VerifyCode } from "@/components/auth/verify-code-form";
+import { resendVerifyEmailAction } from "@/lib/actions/sign-up";
+import { MAX_EMAILS } from "@/lib/const";
+import { useModal } from "@ebay/nice-modal-react";
 import { Badge } from "@hexa/ui/badge";
-import { EllipsisIcon, MailPlusIcon, MoveRightIcon } from "@hexa/ui/icons";
+import { Button } from "@hexa/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@hexa/ui/dropdown-menu";
+import { EllipsisIcon, MailPlusIcon, MoveRightIcon } from "@hexa/ui/icons";
 import { useBoolean } from "usehooks-ts";
-import { VerifyCode } from "@/components/auth/verify-code-form";
-import { MAX_EMAILS } from "@/lib/const";
-import { DeleteUserEmailModal } from "./delete-user-email-modal";
-import { useModal } from "@ebay/nice-modal-react";
-import { AddUserEmailForm } from "./add-user-email-form";
 import { useServerAction } from "zsa-react";
-import { resendVerifyEmailAction } from "@/lib/actions/sign-up";
+import { AddUserEmailForm } from "./add-user-email-form";
+import { DeleteUserEmailModal } from "./delete-user-email-modal";
 
 export function EditUserEmails() {
   const { data: emails, refetch } = useSuspenseQuery(queryUserEmailsOptions);
@@ -45,7 +45,7 @@ export function EditUserEmails() {
     setUserPrimaryEmailAction,
     {
       onError: ({ err }) => {
-        toast.error("Failed to set primary email" + err.message);
+        toast.error(`Failed to set primary email${err.message}`);
         refetch();
       },
       onSuccess: () => {
@@ -71,7 +71,11 @@ export function EditUserEmails() {
               .map((email) => {
                 return (
                   <>
-                    <Button className="justify-between" variant="ghost">
+                    <Button
+                      className="justify-between"
+                      variant="ghost"
+                      key={email.email}
+                    >
                       <p className="text-sm font-medium leading-none flex gap-2 items-center overflow-auto">
                         <span className="shrink text-nowrap text-ellipsis overflow-hidden">
                           {email.email}

@@ -1,5 +1,8 @@
 "use client";
 
+import { queryUserOptions } from "@/lib/queries/user";
+import { useModal } from "@ebay/nice-modal-react";
+import { Button } from "@hexa/ui/button";
 import {
   Card,
   CardContent,
@@ -8,12 +11,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@hexa/ui/card";
-import { Input } from "@hexa/ui/input";
 import { CopyButton } from "@hexa/ui/copy-button";
-import { queryUserOptions } from "@/lib/queries/user";
+import { Input } from "@hexa/ui/input";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Button } from "@hexa/ui/button";
-import { useModal } from "@ebay/nice-modal-react";
 import { ChangeUsernameModal } from "./change-username-modal";
 
 export function EditUsername() {

@@ -1,7 +1,7 @@
-import { cookies } from "next/headers";
-import { SignupPage } from "./signup-page";
 import { getOAuthAccount } from "@/lib/db/data-access/account";
+import { cookies } from "next/headers";
 import { OAuthSignupPage } from "./oauth-signup-page";
+import { SignupPage } from "./signup-page";
 
 export const metadata = {
   title: "Sign Up",

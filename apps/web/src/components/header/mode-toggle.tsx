@@ -1,8 +1,8 @@
 "use client";
 
-import * as React from "react";
 import { Moon, Sun } from "@hexa/ui/icons";
 import { useTheme } from "next-themes";
+import * as React from "react";
 
 import { Button } from "@hexa/ui/button";
 import {

@@ -1,11 +1,11 @@
 const pkg = require("../package.json");
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 const uiFiles = fs.readdirSync(path.resolve(__dirname, "../src/ui"));
 
 const uiExports = uiFiles.reduce((acc, file) => {
   const name = file.replace(/\.tsx$/, "");
-  acc[`./${name}`] = "./src/ui/" + file;
+  acc[`./${name}`] = `./src/ui/${file}`;
   return acc;
 }, {});
 
@@ -20,7 +20,7 @@ console.log(
 
 const otherExports = otherFiles.reduce((acc, file) => {
   const name = file.replace(/\.tsx$/, "");
-  acc[`./${name}`] = "./src/" + file;
+  acc[`./${name}`] = `./src/${file}`;
   return acc;
 }, {});
 
@@ -35,5 +35,5 @@ pkg.exports = {
 // udpate package.json
 fs.writeFileSync(
   path.resolve(__dirname, "../package.json"),
-  JSON.stringify(pkg, null, 2) + "\n",
+  `${JSON.stringify(pkg, null, 2)}\n`,
 );

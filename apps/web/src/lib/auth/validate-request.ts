@@ -1,5 +1,5 @@
-import { cache } from "react";
 import type { Session, User } from "lucia";
+import { cache } from "react";
 import {
   getSessionId,
   setBlankSessionCookie,
@@ -19,7 +19,7 @@ const uncachedValidateRequest = async (): Promise<
   try {
     // If Session.fresh is true, it indicates the session expiration has been extended and you should set a new session cookie.
     // see https://lucia-auth.com/basics/sessions
-    if (result.session && result.session.fresh) {
+    if (result.session?.fresh) {
       await setSessionCookie(result.session.id);
     }
     if (!result.session) {

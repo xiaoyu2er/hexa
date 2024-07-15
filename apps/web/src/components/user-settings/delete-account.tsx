@@ -9,18 +9,21 @@ import {
 } from "@hexa/ui/card";
 import { Input } from "@hexa/ui/input";
 
-import { useServerAction } from "zsa-react";
 import { deleteUserAction } from "@/lib/actions/user";
-import { toast } from "@hexa/ui/sonner";
+import {
+  DELETE_USER_CONFIRMATION,
+  type DeleteUserInput,
+  DeleteUserSchema,
+} from "@/lib/zod/schemas/user";
 import { Button } from "@hexa/ui/button";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogDescription,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@hexa/ui/dialog";
 import {
   Form,
@@ -30,13 +33,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@hexa/ui/form";
-import { useForm } from "react-hook-form";
-import {
-  DELETE_USER_CONFIRMATION,
-  DeleteUserInput,
-  DeleteUserSchema,
-} from "@/lib/zod/schemas/user";
+import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useServerAction } from "zsa-react";
 
 export function DeleteAccount() {
   const form = useForm<DeleteUserInput>({
@@ -55,13 +55,13 @@ export function DeleteAccount() {
   const { execute } = useServerAction(deleteUserAction, {
     onError: ({ err }) => {
       if (err.code === "INPUT_PARSE_ERROR") {
-        Object.entries(err.fieldErrors).forEach(([field, message]) => {
+        for (const [field, message] of Object.entries(err.fieldErrors)) {
           if (message) {
             setError(field as keyof DeleteUserInput, {
               message: message[0],
             });
           }
-        });
+        }
         if (err.formErrors?.length) {
           setError("confirm", { message: err.formErrors[0] });
         }
