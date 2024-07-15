@@ -80,10 +80,8 @@ export async function createUser({
   username,
   avatarUrl,
   name,
-}: Omit<Partial<UserModel>, "password"> & { password?: string } & Pick<
-    EmailModal,
-    "email" | "verified"
-  >) {
+}: Pick<UserModel, "password" | "username" | "avatarUrl" | "name"> &
+  Pick<EmailModal, "email" | "verified">) {
   const user = (
     await db
       .insert(userTable)
