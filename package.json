@@ -11,7 +11,6 @@
     "@biomejs/biome": "^1.8.3",
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
-    "prettier": "^3.2.5",
     "turbo": "^2.0.4",
     "typescript": "5.4.5"
   },
