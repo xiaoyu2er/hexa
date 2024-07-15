@@ -5,11 +5,7 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "format-and-lint": "biome check .",
-    "format-and-lint:fix": "biome check . --write",
-    "lint": "turbo lint",
-    "check-types": "turbo check-types",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "preclean": "turbo format && turbo lint"
+    "format-and-lint:fix": "biome check . --write"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",

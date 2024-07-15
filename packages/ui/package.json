@@ -62,8 +62,6 @@
     ".": "./src/index.tsx"
   },
   "scripts": {
-    "lint": "eslint src/",
-    "check-types": "tsc --noEmit",
     "update-ui": "pnpm dlx shadcn-ui@latest add $(ls src/ui/*.tsx | xargs -n1 basename | sed 's/.tsx$//' | tr '\n' ' ')",
     "add": "pnpm dlx shadcn-ui@latest add",
     "postadd": "pnpm run update-exports && pnpm run format",
@@ -72,16 +70,13 @@
     "dev": "node --watch-path=./src ./scripts/update-exports.js"
   },
   "devDependencies": {
-    "@hexa/eslint-config": "workspace:*",
     "@hexa/tailwind-config": "workspace:*",
     "@hexa/typescript-config": "workspace:*",
     "@turbo/gen": "^1.12.4",
-    "@types/eslint": "^8.56.5",
     "@types/lodash": "^4.17.5",
     "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.3.0",
-    "eslint": "^8.57.0",
     "tailwindcss": "^3.4.4",
     "tsup": "^8.1.0",
     "typescript": "5.4.5"
