@@ -1,5 +1,4 @@
-import { Suspense } from "react";
-import { ResetPassword } from "./reset-password";
+import { ResetPasswordPage } from "./reset-password-page";
 
 export const metadata = {
   title: "Verify Email",
@@ -7,9 +6,5 @@ export const metadata = {
 };
 
 export default function () {
-  return (
-    <Suspense>
-      <ResetPassword />
-    </Suspense>
-  );
+  return <ResetPasswordPage />;
 }

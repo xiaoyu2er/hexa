@@ -102,7 +102,7 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
           <form
             onSubmit={handleSubmit((form) => execute(form))}
             method="POST"
-            className="space-y-4"
+            className="space-y-2"
           >
             <FormField
               control={form.control}

@@ -35,12 +35,7 @@ import {
   OnlyTokenSchema,
 } from "../zod/schemas/auth";
 import { updateTokenAndSendVerifyEmail } from "./sign-up";
-import {
-  ZSAError,
-  createServerAction,
-  inferServerActionInput,
-  inferServerActionReturnTypeHot,
-} from "zsa";
+import { ZSAError, createServerAction } from "zsa";
 import { getTokenByToken, verifyDBTokenByCode } from "../db/data-access/token";
 import {
   getUserOAuthAccounts,
@@ -141,14 +136,6 @@ export const verifyEmailByCodeAction = getUserEmailProcedure
     }
   });
 
-export type VerifyEmailByCodeActionInput = inferServerActionInput<
-  typeof verifyEmailByCodeAction
->;
-
-export type VerifyEmailByCodeActionReturnType = inferServerActionReturnTypeHot<
-  typeof verifyEmailByCodeAction
->;
-
 export const verifyEmailByTokenAction = createServerAction()
   .input(OnlyTokenSchema)
   .handler(async ({ input }) => {
@@ -165,13 +152,14 @@ export const verifyEmailByTokenAction = createServerAction()
     tokenItem = await verifyDBTokenByCode(
       tokenItem.userId,
       { token },
-      "VERIFY_EMAIL",
+      tokenItem.type,
       true,
     );
 
     const { user } = await validateRequest();
     await updateUserEmailVerified(tokenItem.userId, tokenItem.email);
     if (!user) {
+      // if user is not logged in, set session
       await invalidateUserSessions(tokenItem.userId);
       await setSession(tokenItem.userId);
     }

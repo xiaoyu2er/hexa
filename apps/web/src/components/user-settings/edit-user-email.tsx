@@ -26,12 +26,13 @@ import {
   DropdownMenuTrigger,
 } from "@hexa/ui/dropdown-menu";
 import { useBoolean } from "usehooks-ts";
-import { VerifyEmail } from "@/components/auth/verify-email-form";
+import { VerifyCode } from "@/components/auth/verify-code-form";
 import { MAX_EMAILS } from "@/lib/const";
 import { DeleteUserEmailModal } from "./delete-user-email-modal";
 import { useModal } from "@ebay/nice-modal-react";
 import { AddUserEmailForm } from "./add-user-email-form";
 import { useServerAction } from "zsa-react";
+import { resendVerifyEmailAction } from "@/lib/actions/sign-up";
 
 export function EditUserEmails() {
   const { data: emails, refetch } = useSuspenseQuery(queryUserEmailsOptions);
@@ -126,11 +127,12 @@ export function EditUserEmails() {
                     </Button>
 
                     {!email.verified && verifingEmail === email.email && (
-                      <VerifyEmail
+                      <VerifyCode
                         className="my-2"
                         email={email.email}
                         showEmail={false}
                         onVerify={verifyEmailByCodeAction}
+                        onResend={resendVerifyEmailAction}
                         onSuccess={() => {
                           refetch();
                           setVerifingEmail(undefined);

@@ -1,16 +1,29 @@
 "use server";
 
-import { LoginSchema } from "@/lib/zod/schemas/auth";
+import {
+  LoginPasscodeSchema,
+  LoginPasswordSchema,
+  OTPSchema,
+  OnlyTokenSchema,
+} from "@/lib/zod/schemas/auth";
 import { redirect } from "next/navigation";
-import { ZSAError } from "zsa";
-import { setSession } from "@/lib/session";
+import { ZSAError, chainServerActionProcedures, createServerAction } from "zsa";
+import { invalidateUserSessions, setSession } from "@/lib/session";
 import { isHashValid } from "@/lib/utils";
 import { turnstileProcedure } from "./turnstile";
 import { getUserEmail } from "../db/data-access/user";
+import { getUserEmailProcedure } from "./procedures";
+import { PUBLIC_URL } from "../const";
+import {
+  addDBToken,
+  getTokenByToken,
+  verifyDBTokenByCode,
+} from "../db/data-access/token";
+import { sendVerifyCodeAndUrlEmail } from "../emails";
 
-export const loginAction = turnstileProcedure
+export const loginPasswordAction = turnstileProcedure
   .createServerAction()
-  .input(LoginSchema)
+  .input(LoginPasswordSchema)
   .handler(async ({ input }) => {
     const { email, password } = input;
     const emailItem = await getUserEmail(email);
@@ -48,4 +61,98 @@ export const loginAction = turnstileProcedure
     await setSession(existingUser.id);
 
     redirect("/");
+  });
+
+async function updateTokenAndSendVerifyEmail(
+  userId: string,
+  email: string,
+): Promise<{ email: string }> {
+  const { code: verificationCode, token } = await addDBToken(
+    userId,
+    email,
+    "LOGIN_PASSCODE",
+  );
+  const url = `${PUBLIC_URL}/login/passtoken?token=${token}`;
+  const data = await sendVerifyCodeAndUrlEmail(email, verificationCode, url);
+  console.log("sendVerifyCodeAndUrlEmail", data);
+  return data;
+}
+
+export const loginPasscodeAction = chainServerActionProcedures(
+  turnstileProcedure,
+  getUserEmailProcedure,
+)
+  .createServerAction()
+  .input(LoginPasscodeSchema)
+  .handler(async ({ ctx }) => {
+    const {
+      email: {
+        email,
+        user: { id: userId },
+      },
+    } = ctx;
+
+    return await updateTokenAndSendVerifyEmail(userId, email);
+  });
+
+export const resendLoginPasscodeAction = getUserEmailProcedure
+  .createServerAction()
+  .input(LoginPasscodeSchema.pick({ email: true }))
+  .handler(async ({ ctx }) => {
+    const {
+      email: {
+        email,
+        user: { id: userId },
+      },
+    } = ctx;
+
+    return await updateTokenAndSendVerifyEmail(userId, email);
+  });
+
+export const loginByCodeAction = getUserEmailProcedure
+  .createServerAction()
+  .input(OTPSchema)
+  .handler(async ({ input, ctx }) => {
+    const { code } = input;
+    const {
+      email: {
+        user: { id: userId },
+      },
+    } = ctx;
+
+    const tokenItem = await verifyDBTokenByCode(
+      userId,
+      { code },
+      "LOGIN_PASSCODE",
+      true,
+    );
+
+    await invalidateUserSessions(tokenItem.userId);
+    await setSession(tokenItem.userId);
+    redirect("/settings");
+  });
+
+export const loginByTokenAction = createServerAction()
+  .input(OnlyTokenSchema)
+  .handler(async ({ input }) => {
+    const { token } = input;
+    let tokenItem = await getTokenByToken(token, "LOGIN_PASSCODE");
+    if (!tokenItem) {
+      throw new ZSAError(
+        "FORBIDDEN",
+        process.env.NODE_ENV === "development"
+          ? "[dev]Code is not found"
+          : "Code is invalid or expired",
+      );
+    }
+    tokenItem = await verifyDBTokenByCode(
+      tokenItem.userId,
+      { token },
+      tokenItem.type,
+      true,
+    );
+
+    await invalidateUserSessions(tokenItem.userId);
+    await setSession(tokenItem.userId);
+    redirect("/settings");
   });
