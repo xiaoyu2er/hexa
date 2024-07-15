@@ -67,9 +67,14 @@ export const TurnstileSchema = z.object({
   "cf-turnstile-response": cfTurnstileResponse,
 });
 
-export const LoginSchema = z.object({
+export const LoginPasswordSchema = z.object({
   email,
   password,
+  "cf-turnstile-response": cfTurnstileResponse,
+});
+
+export const LoginPasscodeSchema = z.object({
+  email,
   "cf-turnstile-response": cfTurnstileResponse,
 });
 
@@ -104,7 +109,8 @@ export const OnlyTokenSchema = z.object({
 
 export type SignupForm = z.infer<typeof SignupSchema>;
 export type OAuthSignupInput = z.infer<typeof OAuthSignupSchema>;
-export type LoginForm = z.infer<typeof LoginSchema>;
+export type LoginPasswordInput = z.infer<typeof LoginPasswordSchema>;
+export type LoginPasscodeInput = z.infer<typeof LoginPasscodeSchema>;
 export type ForgetPasswordForm = z.infer<typeof ForgetPasswordSchema>;
 export type VerifyResetPasswordCodeForm = z.infer<
   typeof VerifyResetPasswordCodeSchema

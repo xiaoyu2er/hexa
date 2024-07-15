@@ -1,6 +1,9 @@
 "use client";
 
-import { resendVerifyEmailAction } from "@/lib/actions/sign-up";
+import {
+  ResendCodeActionInput,
+  ResendCodeActionReturnType,
+} from "@/lib/actions/sign-up";
 
 import { useServerAction } from "zsa-react";
 
@@ -31,30 +34,29 @@ import { PencilLine } from "@hexa/ui/icons";
 
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@hexa/ui/input-otp";
 import {
-  VerifyEmailByCodeActionInput,
-  VerifyEmailByCodeActionReturnType,
-} from "@/lib/actions/user";
+  VerifyCodeActionInput,
+  VerifyCodeActionReturnData,
+  VerifyCodeActionReturnType,
+} from "@/lib/actions/reset-password";
 
-export interface VerifyEmailProps {
+export interface VerifyCodeProps {
   email: string;
   showEmail?: boolean;
-  onSuccess?: () => void;
+  onSuccess?: (_data: VerifyCodeActionReturnData) => void;
   onCancel?: () => void;
-  isMobile?: boolean;
   className?: string;
-  onVerify: (
-    input: VerifyEmailByCodeActionInput,
-  ) => VerifyEmailByCodeActionReturnType;
+  onVerify: (_input: VerifyCodeActionInput) => VerifyCodeActionReturnType;
+  onResend: (_input: ResendCodeActionInput) => ResendCodeActionReturnType;
 }
 
-export const VerifyEmail: FC<VerifyEmailProps> = ({
+export const VerifyCode: FC<VerifyCodeProps> = ({
   email,
   showEmail = true,
-  onCancel,
   onSuccess,
+  onCancel,
   className,
-  isMobile = true,
   onVerify,
+  onResend,
 }) => {
   const form = useForm<OTPForm>({
     resolver: zodResolver(OTPSchema),
@@ -95,13 +97,13 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({
       }
       reset(undefined, { keepErrors: true });
     },
-    onSuccess: () => {
-      onSuccess?.();
+    onSuccess: ({ data }) => {
+      onSuccess?.(data);
     },
   });
 
   const { execute: execResend, isPending: isRensedPending } = useServerAction(
-    resendVerifyEmailAction,
+    onResend,
     {
       onError: ({ err }) => {
         setError("code", { message: err.message });
@@ -125,30 +127,30 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({
   };
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={handleSubmit(execVerify)}
-        ref={formRef}
-        method="POST"
-        className="space-y-4"
-      >
-        <Card className={cn(className)}>
-          <CardHeader className="text-center pb-2">
-            <CardTitle>Verify Email</CardTitle>
-            <CardDescription>
-              Enter the verification code sent to your email
-            </CardDescription>
-            {email && showEmail ? (
-              <CardDescription
-                className="flex items-end justify-center hover:cursor-pointer"
-                onClick={onCancel}
-              >
-                {email}&nbsp;
-                <PencilLine className="h-4 w-4" aria-hidden="true" />
-              </CardDescription>
-            ) : null}
-          </CardHeader>
-          <CardContent>
+    <Card className={cn(className)}>
+      <CardHeader className="text-center pb-2">
+        <CardTitle>Verify Code</CardTitle>
+        <CardDescription>
+          Enter the verification code sent to your email
+        </CardDescription>
+        {email && showEmail ? (
+          <CardDescription
+            className="flex items-end justify-center hover:cursor-pointer"
+            onClick={onCancel}
+          >
+            {email}&nbsp;
+            <PencilLine className="h-4 w-4" aria-hidden="true" />
+          </CardDescription>
+        ) : null}
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form
+            onSubmit={handleSubmit(execVerify)}
+            ref={formRef}
+            method="POST"
+            className="space-y-4"
+          >
             <FormField
               control={form.control}
               name="code"
@@ -192,30 +194,17 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({
               Didn't receive a code? Resend{" "}
               {count > 0 ? `(${count}s)` : isRensedPending ? "..." : ""}
             </p>
-          </CardContent>
-          <CardFooter
-            className={cn(
-              "flex gap-2",
-              !isMobile ? "flex-row-reverse justify-end" : "flex-col",
-            )}
-          >
-            <Button
-              className={!isMobile ? "w-fit" : "w-full"}
-              loading={isSubmitting}
-              type="submit"
-            >
-              Verify
-            </Button>
-            <Button
-              variant="outline"
-              className={!isMobile ? "w-fit" : "w-full"}
-              onClick={onCancel}
-            >
-              Cancel
-            </Button>
-          </CardFooter>
-        </Card>
-      </form>
-    </Form>
+          </form>
+        </Form>
+      </CardContent>
+      <CardFooter className={cn("flex gap-2", "flex-col")}>
+        <Button className={"w-full"} loading={isSubmitting} type="submit">
+          Verify
+        </Button>
+        <Button variant="outline" className={"w-full"} onClick={onCancel}>
+          Cancel
+        </Button>
+      </CardFooter>
+    </Card>
   );
 };

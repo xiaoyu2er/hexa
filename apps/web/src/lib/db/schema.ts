@@ -51,6 +51,7 @@ export const sessionTable = pgTable("session", {
 export const tokenTypeEnum = pgEnum("tokenType", [
   "RESET_PASSWORD",
   "VERIFY_EMAIL",
+  "LOGIN_PASSCODE",
 ]);
 export type TokenType = (typeof tokenTypeEnum.enumValues)[number];
 

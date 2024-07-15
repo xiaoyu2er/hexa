@@ -3,9 +3,10 @@
 import { FC, useState } from "react";
 import { useStep } from "usehooks-ts";
 import { Signup } from "./signup-form";
-import { VerifyEmail } from "@/components/auth/verify-email-form";
+import { VerifyCode } from "@/components/auth/verify-code-form";
 import { useRouter } from "next/navigation";
 import { verifyEmailByCodeAction } from "@/lib/actions/user";
+import { resendVerifyEmailAction } from "@/lib/actions/sign-up";
 
 export interface SignupPageProps {}
 
@@ -14,9 +15,6 @@ export const SignupPage: FC<SignupPageProps> = () => {
   const router = useRouter();
   const [currentStep, { goToNextStep, reset }] = useStep(2);
 
-  const onCancel = () => {
-    reset();
-  };
   return (
     <div>
       {currentStep === 1 && (
@@ -32,13 +30,14 @@ export const SignupPage: FC<SignupPageProps> = () => {
         />
       )}
       {currentStep === 2 && (
-        <VerifyEmail
+        <VerifyCode
           email={email}
           onVerify={verifyEmailByCodeAction}
+          onResend={resendVerifyEmailAction}
           onSuccess={() => {
             console.log("Signup success");
           }}
-          onCancel={onCancel}
+          onCancel={reset}
         />
       )}
     </div>

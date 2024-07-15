@@ -1,10 +1,10 @@
-import { Login } from "./login-form";
+import { LoginPage } from "./login-page";
 
 export const metadata = {
   title: "Login",
   description: "Login Page",
 };
 
-export default function LoginPage() {
-  return <Login />;
+export default function () {
+  return <LoginPage />;
 }

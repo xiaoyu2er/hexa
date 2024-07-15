@@ -4,20 +4,24 @@ import { FC, useState } from "react";
 import { useStep } from "usehooks-ts";
 import { ForgetPasswordCard } from "./forget-password-form";
 import { ResetPasswordCard } from "./reset-password-form";
-import { VerifyResetPasswordCodeCard } from "./verfiy-code-form";
 import { useRouter, useSearchParams } from "next/navigation";
+import { VerifyCode } from "@/components/auth/verify-code-form";
+import {
+  verifyResetPasswordCodeAction,
+  resendResetPasswordCodeAction,
+} from "@/lib/actions/reset-password";
 
 export interface ResetPasswordProps {
   token?: string;
 }
 
-export const ResetPassword: FC<ResetPasswordProps> = () => {
+export const ResetPasswordPage: FC<ResetPasswordProps> = () => {
   const params = useSearchParams();
   const initToken = params.get("token");
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
-  const [currentStep, { goToNextStep }] = useStep(3);
+  const [currentStep, { goToNextStep, goToPrevStep, reset }] = useStep(3);
 
   const onCancel = () => {
     router.push("/");
@@ -46,20 +50,22 @@ export const ResetPassword: FC<ResetPasswordProps> = () => {
         />
       )}
       {currentStep === 2 && (
-        <VerifyResetPasswordCodeCard
+        <VerifyCode
           email={email}
+          onVerify={verifyResetPasswordCodeAction}
+          onResend={resendResetPasswordCodeAction}
           onSuccess={({ token }) => {
             goToNextStep();
             setToken(token);
           }}
-          onCancel={onCancel}
+          onCancel={goToPrevStep}
         />
       )}
       {currentStep === 3 && (
         <ResetPasswordCard
           token={token}
           onSuccess={() => console.log("Reset success")}
-          onCancel={onCancel}
+          onCancel={reset}
         />
       )}
     </div>

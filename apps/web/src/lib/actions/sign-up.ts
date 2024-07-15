@@ -1,21 +1,25 @@
 "use server";
 
-import { OAuthSignupSchema, SignupSchema } from "@/lib/zod/schemas/auth";
-import { ZSAError } from "zsa";
+import { PUBLIC_URL } from "@/lib/const";
+import { addDBToken } from "@/lib/db/data-access/token";
 import {
   createUser,
   getEmail,
   getUserEmail,
   updateUserPassword,
 } from "@/lib/db/data-access/user";
-import { turnstileProcedure } from "./turnstile";
 import { sendVerifyCodeAndUrlEmail } from "@/lib/emails";
-import { PUBLIC_URL } from "@/lib/const";
-import { addDBToken } from "@/lib/db/data-access/token";
-import { getUserEmailProcedure } from "./procedures";
+import { OAuthSignupSchema, SignupSchema } from "@/lib/zod/schemas/auth";
+import { redirect } from "next/navigation";
+import {
+  ZSAError,
+  inferServerActionInput,
+  inferServerActionReturnTypeHot,
+} from "zsa";
 import { getOAuthAccount, updateOAuthAccount } from "../db/data-access/account";
 import { invalidateUserSessions, setSession } from "../session";
-import { redirect } from "next/navigation";
+import { getUserEmailProcedure } from "./procedures";
+import { turnstileProcedure } from "./turnstile";
 
 export async function updateTokenAndSendVerifyEmail(
   uid: string,
@@ -116,3 +120,11 @@ export const resendVerifyEmailAction = getUserEmailProcedure
 
     return await updateTokenAndSendVerifyEmail(email.user.id, email.email);
   });
+
+export type ResendCodeActionInput = inferServerActionInput<
+  typeof resendVerifyEmailAction
+>;
+
+export type ResendCodeActionReturnType = inferServerActionReturnTypeHot<
+  typeof resendVerifyEmailAction
+>;

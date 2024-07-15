@@ -15,7 +15,14 @@ import {
   VerifyResetPasswordCodeSchema,
 } from "@/lib/zod/schemas/auth";
 import { redirect } from "next/navigation";
-import { ZSAError, chainServerActionProcedures, createServerAction } from "zsa";
+import {
+  ZSAError,
+  chainServerActionProcedures,
+  createServerAction,
+  inferServerActionInput,
+  inferServerActionReturnData,
+  inferServerActionReturnTypeHot,
+} from "zsa";
 import { updateUserPassword } from "@/lib/db/data-access/user";
 import { getUserEmailProcedure } from "./procedures";
 import { turnstileProcedure } from "./turnstile";
@@ -84,6 +91,26 @@ export const verifyResetPasswordCodeAction = getUserEmailProcedure
     );
     return { token: tokenRow.token };
   });
+
+export type VerifyCodeActionInput = inferServerActionInput<
+  typeof verifyResetPasswordCodeAction
+>;
+
+export type VerifyCodeActionReturnType = inferServerActionReturnTypeHot<
+  typeof verifyResetPasswordCodeAction
+>;
+
+export type VerifyCodeActionReturnData = inferServerActionReturnData<
+  typeof verifyResetPasswordCodeAction
+>;
+
+export type ResendCodeActionInput = inferServerActionInput<
+  typeof resendResetPasswordCodeAction
+>;
+
+export type ResendCodeActionReturnType = inferServerActionReturnTypeHot<
+  typeof resendResetPasswordCodeAction
+>;
 
 export const resetPasswordAction = createServerAction()
   .input(ResetPasswordSchema)
