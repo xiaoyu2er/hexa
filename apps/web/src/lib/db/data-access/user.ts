@@ -16,6 +16,14 @@ export async function getUser(uid: string) {
   return user;
 }
 
+export async function getUserByUsername(username: string) {
+  const user = await db.query.userTable.findFirst({
+    where: eq(userTable.username, username),
+  });
+
+  return user;
+}
+
 export async function getEmail(email: string) {
   const emailItem = await db.query.emailTable.findFirst({
     where: (table, { eq }) => eq(table.email, email),

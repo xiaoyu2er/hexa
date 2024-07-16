@@ -1,7 +1,7 @@
 "use server";
 
 import { invalidateUserSessions, setSession } from "@/lib/session";
-import { isHashValid } from "@/lib/utils";
+import { getHash, isHashValid } from "@/lib/utils";
 import {
   LoginPasscodeSchema,
   LoginPasswordSchema,
@@ -16,7 +16,7 @@ import {
   getTokenByToken,
   verifyDBTokenByCode,
 } from "../db/data-access/token";
-import { getUserEmail } from "../db/data-access/user";
+import { getUserByUsername, getUserEmail } from "../db/data-access/user";
 import { sendVerifyCodeAndUrlEmail } from "../emails";
 import { getUserEmailProcedure } from "./procedures";
 import { turnstileProcedure } from "./turnstile";
@@ -25,24 +25,27 @@ export const loginPasswordAction = turnstileProcedure
   .createServerAction()
   .input(LoginPasswordSchema)
   .handler(async ({ input }) => {
-    const { email, password } = input;
-    const emailItem = await getUserEmail(email);
-    const existingUser = emailItem?.user;
-
+    const { username, password } = input;
+    let existingUser = await getUserByUsername(username);
     if (!existingUser) {
-      throw new ZSAError(
-        "FORBIDDEN",
-        process.env.NODE_ENV === "development"
-          ? "User does not exist"
-          : "Incorrect email or password",
-      );
+      const emailItem = await getUserEmail(username);
+      existingUser = emailItem?.user;
+
+      if (!existingUser) {
+        throw new ZSAError(
+          "FORBIDDEN",
+          process.env.NODE_ENV === "development"
+            ? "[dev] Incorrect email or password"
+            : "Incorrect email or password",
+        );
+      }
     }
 
     if (!existingUser.password) {
       throw new ZSAError(
         "FORBIDDEN",
         process.env.NODE_ENV === "development"
-          ? "No password set"
+          ? "[dev] Password is not set"
           : "Incorrect email or password",
       );
     }
@@ -53,7 +56,7 @@ export const loginPasswordAction = turnstileProcedure
       throw new ZSAError(
         "FORBIDDEN",
         process.env.NODE_ENV === "development"
-          ? "Incorrect password"
+          ? "[dev] Incorrect password"
           : "Incorrect email or password",
       );
     }

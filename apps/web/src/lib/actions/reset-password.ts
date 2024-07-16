@@ -128,7 +128,7 @@ export const resetPasswordAction = createServerAction()
     );
 
     // update the password
-    await updateUserPassword(tokenRow.userId, await getHash(password));
+    await updateUserPassword(tokenRow.userId, password);
 
     // invalidate all sessions & update a new sssion
     await invalidateUserSessions(tokenRow.userId);

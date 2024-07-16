@@ -60,12 +60,13 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
 
   const { execute } = useServerAction(loginPasswordAction, {
     onError: ({ err }) => {
+      console.log(err);
       setFormError(err, setError);
       resetTurnstile();
     },
   });
   useEffect(() => {
-    setFocus("email");
+    setFocus("username");
   }, [setFocus]);
 
   return (
@@ -88,16 +89,15 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
             >
               <FormField
                 control={form.control}
-                name="email"
+                name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Username or Email</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="email@example.com"
                         autoComplete="email"
                         {...field}
-                        type="email"
                       />
                     </FormControl>
                     <FormMessage />

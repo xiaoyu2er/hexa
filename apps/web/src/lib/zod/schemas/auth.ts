@@ -68,7 +68,7 @@ export const TurnstileSchema = z.object({
 });
 
 export const LoginPasswordSchema = z.object({
-  email,
+  username: z.string().min(3, "Please enter a valid username or email"),
   password,
   "cf-turnstile-response": cfTurnstileResponse,
 });
