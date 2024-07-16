@@ -1,6 +1,7 @@
 "use client";
 
 import { resetPasswordAction } from "@/lib/actions/reset-password";
+import { setFormError } from "@/lib/form";
 import {
   type ResetPasswordForm,
   ResetPasswordSchema,
@@ -56,21 +57,7 @@ export const ResetPasswordCard: FC<ResetParsswordCardProps> = ({
   } = form;
   const { execute } = useServerAction(resetPasswordAction, {
     onError: ({ err }) => {
-      console.error("resetPasswordAction", err);
-      if (err.code === "INPUT_PARSE_ERROR") {
-        for (const [field, message] of Object.entries(err.fieldErrors)) {
-          if (message) {
-            setError(field as keyof ResetPasswordForm, {
-              message: message[0],
-            });
-          }
-        }
-        if (err.formErrors?.length) {
-          setError("password", { message: err.formErrors[0] });
-        }
-      } else {
-        setError("password", { message: err.message });
-      }
+      setFormError(err, setError, "password");
     },
     onSuccess: () => {
       onSuccess?.();

@@ -10,6 +10,7 @@ import {
 import { Input } from "@hexa/ui/input";
 
 import { deleteUserAction } from "@/lib/actions/user";
+import { setFormError } from "@/lib/form";
 import {
   DELETE_USER_CONFIRMATION,
   type DeleteUserInput,
@@ -54,20 +55,7 @@ export function DeleteAccount() {
 
   const { execute } = useServerAction(deleteUserAction, {
     onError: ({ err }) => {
-      if (err.code === "INPUT_PARSE_ERROR") {
-        for (const [field, message] of Object.entries(err.fieldErrors)) {
-          if (message) {
-            setError(field as keyof DeleteUserInput, {
-              message: message[0],
-            });
-          }
-        }
-        if (err.formErrors?.length) {
-          setError("confirm", { message: err.formErrors[0] });
-        }
-      } else {
-        setError("confirm", { message: err.message });
-      }
+      setFormError(err, setError, "confirm");
     },
     onSuccess: () => {
       toast.success("Account deleted successfully");

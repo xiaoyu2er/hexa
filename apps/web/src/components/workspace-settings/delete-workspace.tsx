@@ -10,6 +10,7 @@ import {
 import { Input } from "@hexa/ui/input";
 
 import { deleteWorkspaceAction } from "@/lib/actions/workspace";
+import { setFormError } from "@/lib/form";
 import { invalidateWorkspacesQuery } from "@/lib/queries/workspace";
 import type { DeleteUserInput } from "@/lib/zod/schemas/user";
 import {
@@ -59,20 +60,7 @@ export function DeleteWorkspace() {
 
   const { execute } = useServerAction(deleteWorkspaceAction, {
     onError: ({ err }) => {
-      if (err.code === "INPUT_PARSE_ERROR") {
-        for (const [field, message] of Object.entries(err.fieldErrors)) {
-          if (message) {
-            setError(field as keyof DeleteUserInput, {
-              message: message[0],
-            });
-          }
-        }
-        if (err.formErrors?.length) {
-          setError("confirm", { message: err.formErrors[0] });
-        }
-      } else {
-        setError("confirm", { message: err.message });
-      }
+      setFormError(err, setError, "confirm");
     },
     onSuccess: () => {
       toast.success("Account deleted successfully");

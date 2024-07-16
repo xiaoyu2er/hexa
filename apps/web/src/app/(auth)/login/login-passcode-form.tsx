@@ -18,6 +18,7 @@ import {
 } from "@/lib/zod/schemas/auth";
 
 import { useTurnstile } from "@/hooks/use-turnstile";
+import { setFormError } from "@/lib/form";
 import {
   Card,
   CardContent,
@@ -55,25 +56,10 @@ export function LoginPasscode({ onPassword, onSuccess }: LoginPasscodeProps) {
 
   const { execute } = useServerAction(loginPasscodeAction, {
     onError: ({ err }) => {
-      if (err.code === "INPUT_PARSE_ERROR") {
-        for (const [field, message] of Object.entries(err.fieldErrors)) {
-          if (message) {
-            setError(field as keyof LoginPasscodeInput, {
-              message: message[0],
-            });
-          }
-        }
-        if (err.formErrors?.length) {
-          setError("root", { message: err.formErrors[0] });
-        }
-      } else {
-        setError("root", { message: err.message });
-      }
-
+      setFormError(err, setError);
       resetTurnstile();
     },
     onSuccess: ({ data }) => {
-      console.log("sign-up", data);
       onSuccess?.(data);
     },
   });

@@ -38,6 +38,7 @@ import type {
   VerifyCodeActionReturnType,
 } from "@/lib/actions/reset-password";
 import type { VerifyEmailByCodeReturnType } from "@/lib/actions/user";
+import { setFormError } from "@/lib/form";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@hexa/ui/input-otp";
 
 export interface VerifyCodeProps {
@@ -86,18 +87,7 @@ export const VerifyCode: FC<VerifyCodeProps> = ({
 
   const { execute: execVerify } = useServerAction(onVerify, {
     onError: ({ err }) => {
-      if (err.code === "INPUT_PARSE_ERROR") {
-        for (const [field, message] of Object.entries(err.fieldErrors)) {
-          if (message) {
-            setError(field as keyof OTPForm, { message: message[0] });
-          }
-        }
-        if (err.formErrors?.length) {
-          setError("code", { message: err.formErrors[0] });
-        }
-      } else {
-        setError("code", { message: err.message });
-      }
+      setFormError(err, setError, "code");
       reset(undefined, { keepErrors: true });
     },
     onSuccess: ({ data }) => {

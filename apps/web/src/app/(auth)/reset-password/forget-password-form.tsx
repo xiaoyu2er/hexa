@@ -24,6 +24,7 @@ import {
 } from "@hexa/ui/form";
 import { Input } from "@hexa/ui/input";
 
+import { setFormError } from "@/lib/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { type FC, useEffect } from "react";
@@ -63,20 +64,7 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
   const { execute } = useServerAction(forgetPasswordAction, {
     onError: ({ err }) => {
       console.error("sign-up", err);
-      if (err.code === "INPUT_PARSE_ERROR") {
-        for (const [field, message] of Object.entries(err.fieldErrors)) {
-          if (message) {
-            setError(field as keyof ForgetPasswordForm, {
-              message: message[0],
-            });
-          }
-        }
-        if (err.formErrors?.length) {
-          setError("email", { message: err.formErrors[0] });
-        }
-      } else {
-        setError("email", { message: err.message });
-      }
+      setFormError(err, setError, "email");
       resetTurnstile();
     },
     onSuccess: ({ data }) => {

@@ -8,6 +8,7 @@ import { toast } from "@hexa/ui/sonner";
 import { useServerAction } from "zsa-react";
 
 import type { ProviderType } from "@/lib/db";
+import { setFormError } from "@/lib/form";
 import {
   type ChangeUsernameInput,
   ChangeUsernameSchema,
@@ -58,20 +59,7 @@ export const ChangeUsernameModal = NiceModal.create(
 
     const { execute } = useServerAction(changeUsernameAction, {
       onError: ({ err }) => {
-        if (err.code === "INPUT_PARSE_ERROR") {
-          for (const [field, message] of Object.entries(err.fieldErrors)) {
-            if (message) {
-              setError(field as keyof ChangeUsernameInput, {
-                message: message[0],
-              });
-            }
-          }
-          if (err.formErrors?.length) {
-            setError("username", { message: err.formErrors[0] });
-          }
-        } else {
-          setError("username", { message: err.message });
-        }
+        setFormError(err, setError, "username");
         modal.reject(err);
       },
       onSuccess: () => {
