@@ -21,6 +21,7 @@ import {
 
 import { OAuthButtons } from "@/components/auth/oauth-buttons";
 import { useTurnstile } from "@/hooks/use-turnstile";
+import { setFormError } from "@/lib/form";
 import {
   Card,
   CardContent,
@@ -59,21 +60,7 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
 
   const { execute } = useServerAction(loginPasswordAction, {
     onError: ({ err }) => {
-      if (err.code === "INPUT_PARSE_ERROR") {
-        for (const [field, message] of Object.entries(err.fieldErrors)) {
-          if (message) {
-            setError(field as keyof LoginPasswordInput, {
-              message: message[0],
-            });
-          }
-        }
-        if (err.formErrors?.length) {
-          setError("root", { message: err.formErrors[0] });
-        }
-      } else {
-        setError("root", { message: err.message });
-      }
-
+      setFormError(err, setError);
       resetTurnstile();
     },
   });

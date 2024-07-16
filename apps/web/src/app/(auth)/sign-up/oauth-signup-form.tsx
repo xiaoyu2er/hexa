@@ -30,6 +30,7 @@ import { useServerAction } from "zsa-react";
 
 import { useTurnstile } from "@/hooks/use-turnstile";
 import type { OAuthAccountModel } from "@/lib/db";
+import { setFormError } from "@/lib/form";
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -63,20 +64,7 @@ export const OAuthSignup: FC<OAuthSignupProps> = ({
   const { resetTurnstile, turnstile, disableNext } = useTurnstile({ form });
   const { execute } = useServerAction(oauthSignupAction, {
     onError: ({ err }) => {
-      console.error("sign-up", err);
-      if (err.code === "INPUT_PARSE_ERROR") {
-        for (const [field, message] of Object.entries(err.fieldErrors)) {
-          if (message) {
-            setError(field as keyof OAuthSignupInput, { message: message[0] });
-          }
-        }
-        if (err.formErrors?.length) {
-          setError("root", { message: err.formErrors[0] });
-        }
-      } else {
-        console.log("err", err);
-        setError("root", { message: err.message });
-      }
+      setFormError(err, setError);
       resetTurnstile();
     },
     onSuccess: () => {

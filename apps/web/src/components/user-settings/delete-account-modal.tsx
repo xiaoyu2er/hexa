@@ -8,6 +8,7 @@ import { toast } from "@hexa/ui/sonner";
 import { useServerAction } from "zsa-react";
 
 import type { ProviderType } from "@/lib/db";
+import { setFormError } from "@/lib/form";
 import {
   type DeleteOAuthAccountInput,
   DeleteOAuthAccountSchema,
@@ -54,20 +55,7 @@ export const DeleteOAuthAccountModal = NiceModal.create(
 
     const { execute } = useServerAction(removeUserOAuthAccountAction, {
       onError: ({ err }) => {
-        if (err.code === "INPUT_PARSE_ERROR") {
-          for (const [field, message] of Object.entries(err.fieldErrors)) {
-            if (message) {
-              setError(field as keyof DeleteOAuthAccountInput, {
-                message: message[0],
-              });
-            }
-          }
-          if (err.formErrors?.length) {
-            setError("provider", { message: err.formErrors[0] });
-          }
-        } else {
-          setError("provider", { message: err.message });
-        }
+        setFormError(err, setError, "provider");
         modal.reject(err);
       },
       onSuccess: () => {
