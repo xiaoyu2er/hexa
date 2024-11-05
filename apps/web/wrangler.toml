@@ -11,6 +11,9 @@ minify = true
 # Use the new Workers + Assets to host the static frontend files
 assets = { directory = ".worker-next/assets", binding = "ASSETS" }
 
+[vars]
+hello = 'Hello World from the cloudflare context!'
+
 [[d1_databases]]
 binding = "DB"
 database_name = "hexa"
