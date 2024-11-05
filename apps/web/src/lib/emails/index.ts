@@ -1,15 +1,13 @@
 import VerifyCodeAndUrlTemplate from "@hexa/email-templates/VerifyCodeAndUrl";
-import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { Resend } from "resend";
 import { ZSAError } from "zsa";
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendVerifyCodeAndUrlEmail(
   email: string,
   code: string,
   url: string,
 ) {
-  const { env } = await getCloudflareContext();
-  const resend = new Resend(env.RESEND_API_KEY);
   if (process.env.NODE_ENV === "development") {
     // sleep 1000;
     await new Promise((resolve) => setTimeout(resolve, 1000));
