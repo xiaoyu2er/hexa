@@ -1,5 +1,5 @@
 #:schema node_modules/wrangler/config-schema.json
-name = "nextjs-worker"
+name = "hexa"
 main = ".worker-next/index.mjs"
 
 compatibility_date = "2024-09-26"
@@ -10,9 +10,6 @@ minify = true
 
 # Use the new Workers + Assets to host the static frontend files
 assets = { directory = ".worker-next/assets", binding = "ASSETS" }
-
-[vars]
-hello = 'Hello World from the cloudflare context!'
 
 [[d1_databases]]
 binding = "DB"
