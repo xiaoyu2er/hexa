@@ -1,6 +1,4 @@
 import { TimeSpan } from "oslo";
-// APP
-export const APP_TITLE = "Hexa";
 // AUTH
 export const MIN_PASSWORD_LENGTH =
   process.env.NODE_ENV === "development" ? 3 : 8;

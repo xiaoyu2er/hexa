@@ -28,7 +28,8 @@ export function EditPassword() {
         {!user.hasPassword ? (
           <CardDescription>
             Set a password to have an alternative way to log into your{" "}
-            {APP_TITLE} account using your username ({user.username}){" "}
+            {process.env.NEXT_PUBLIC_APP_NAME} account using your username (
+            {user.username}){" "}
             {primaryEmail ? `or email (${primaryEmail.email})` : ""}
           </CardDescription>
         ) : (
