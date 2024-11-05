@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { getDrizzle } from "@/lib/db";
 import {
   type EmailModal,
   type UserModel,
@@ -9,6 +9,7 @@ import { getHash } from "@/lib/utils";
 import { and, eq, ne } from "drizzle-orm";
 
 export async function getUser(uid: string) {
+  const db = await getDrizzle();
   const user = await db.query.userTable.findFirst({
     where: eq(userTable.id, uid),
   });
@@ -17,6 +18,7 @@ export async function getUser(uid: string) {
 }
 
 export async function getUserByUsername(username: string) {
+  const db = await getDrizzle();
   const user = await db.query.userTable.findFirst({
     where: eq(userTable.username, username),
   });
@@ -25,6 +27,7 @@ export async function getUserByUsername(username: string) {
 }
 
 export async function getEmail(email: string) {
+  const db = await getDrizzle();
   const emailItem = await db.query.emailTable.findFirst({
     where: (table, { eq }) => eq(table.email, email),
     with: {
@@ -36,6 +39,7 @@ export async function getEmail(email: string) {
 }
 
 export async function getUserPrimaryEmail(uid: string) {
+  const db = await getDrizzle();
   return await db.query.emailTable.findFirst({
     where: (table, { eq }) =>
       and(eq(table.userId, uid), eq(table.primary, true)),
@@ -43,13 +47,14 @@ export async function getUserPrimaryEmail(uid: string) {
 }
 
 export async function getUserEmails(uid: string) {
+  const db = await getDrizzle();
   return await db.query.emailTable.findMany({
     where: (table, { eq }) => eq(table.userId, uid),
-    orderBy: emailTable.createdAt,
   });
 }
 
 export async function getUserEmail(email: string) {
+  const db = await getDrizzle();
   const emailItem = await db.query.emailTable.findFirst({
     where: (table, { eq }) => eq(table.email, email),
     with: {
@@ -67,6 +72,7 @@ export async function createUserEmail({
 }: Pick<EmailModal, "email" | "verified" | "primary"> & {
   userId: UserModel["id"];
 }) {
+  const db = await getDrizzle();
   return (
     await db
       .insert(emailTable)
@@ -81,6 +87,7 @@ export async function createUserEmail({
 }
 
 export async function removeUserEmail(uid: string, email: string) {
+  const db = await getDrizzle();
   await db
     .delete(emailTable)
     .where(and(eq(emailTable.email, email), eq(emailTable.userId, uid)));
@@ -95,6 +102,7 @@ export async function createUser({
   name,
 }: Pick<UserModel, "password" | "username" | "avatarUrl" | "name"> &
   Pick<EmailModal, "email" | "verified">) {
+  const db = await getDrizzle();
   const user = (
     await db
       .insert(userTable)
@@ -104,6 +112,7 @@ export async function createUser({
         name: name ?? null,
         ...(password ? { password: await getHash(password) } : {}),
       })
+      // .onConflictDoNothing()
       .returning()
   )[0];
 
@@ -125,6 +134,7 @@ export async function createUser({
 }
 
 export async function updateUserPassword(uid: string, password: string) {
+  const db = await getDrizzle();
   await db
     .update(userTable)
     .set({ password: await getHash(password) })
@@ -133,7 +143,7 @@ export async function updateUserPassword(uid: string, password: string) {
 }
 
 export async function updateUserPrimaryEmail(uid: string, email: string) {
-  // set email as primary
+  const db = await getDrizzle();
   await db
     .update(emailTable)
     .set({ primary: true })
@@ -147,6 +157,8 @@ export async function updateUserPrimaryEmail(uid: string, email: string) {
 }
 
 export async function updateUserEmailVerified(uid: string, email: string) {
+  console.log("updateUserEmailVerified", uid, email);
+  const db = await getDrizzle();
   await db
     .update(emailTable)
     .set({ verified: true })
@@ -154,6 +166,7 @@ export async function updateUserEmailVerified(uid: string, email: string) {
 }
 
 export async function updateUserProfile(uid: string, imageUrl: string) {
+  const db = await getDrizzle();
   await db
     .update(userTable)
     .set({ avatarUrl: imageUrl })
@@ -161,6 +174,7 @@ export async function updateUserProfile(uid: string, imageUrl: string) {
 }
 
 export async function updateProfileName(uid: string, name: string) {
+  const db = await getDrizzle();
   await db
     .update(userTable)
     // we set name to null if it's an empty string
@@ -169,13 +183,16 @@ export async function updateProfileName(uid: string, name: string) {
 }
 
 export async function updateUsername(uid: string, username: string) {
+  const db = await getDrizzle();
   await db.update(userTable).set({ username }).where(eq(userTable.id, uid));
 }
 
 export async function updateUserAvatar(uid: string, avatarUrl: string) {
+  const db = await getDrizzle();
   await db.update(userTable).set({ avatarUrl }).where(eq(userTable.id, uid));
 }
 
 export async function deleteUser(uid: string) {
+  const db = await getDrizzle();
   await db.delete(userTable).where(eq(userTable.id, uid));
 }

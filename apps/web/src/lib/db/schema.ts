@@ -1,15 +1,20 @@
 import { generateId } from "@/lib/utils";
-import { relations } from "drizzle-orm";
-import {
-  boolean,
-  pgEnum,
-  pgTable,
-  primaryKey,
-  text,
-  timestamp,
-} from "drizzle-orm/pg-core";
+import { relations, sql } from "drizzle-orm";
 
-export const userTable = pgTable("user", {
+import {
+  integer,
+  primaryKey,
+  sqliteTable,
+  text,
+} from "drizzle-orm/sqlite-core";
+
+const expiresAt = {
+  expiresAt: integer("expires_at", { mode: "timestamp" })
+    .notNull()
+    .default(sql`(unixepoch())`),
+};
+
+export const userTable = sqliteTable("user", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => generateId("u")),
@@ -17,69 +22,44 @@ export const userTable = pgTable("user", {
   username: text("username").unique().notNull(),
   password: text("password"),
   avatarUrl: text("avatar_url"),
-  createdAt: timestamp("created_at", {
-    withTimezone: true,
-    mode: "date",
-  })
-    .notNull()
-    .defaultNow(),
-  updatedAt: timestamp("updated_at", {
-    withTimezone: true,
-    mode: "date",
-  }).$onUpdate(() => new Date()),
 
   defaultWorkspaceId: text("default_workspace_id").references(
     () => workspaceTable.id,
   ),
 });
 
-export const sessionTable = pgTable("session", {
-  id: text("id").primaryKey(),
+const userIdNotNull = {
   userId: text("user_id")
     .notNull()
     .references(() => userTable.id, { onDelete: "cascade" }),
-  expiresAt: timestamp("expires_at", {
-    withTimezone: true,
-    mode: "date",
-  }).notNull(),
-  updatedAt: timestamp("updated_at", {
-    withTimezone: true,
-    mode: "date",
-  }).$onUpdate(() => new Date()),
+};
+
+const userIdNullable = {
+  userId: text("user_id").references(() => userTable.id, {
+    onDelete: "cascade",
+  }),
+};
+
+export const sessionTable = sqliteTable("session", {
+  id: text("id").primaryKey(),
+  ...userIdNotNull,
+  ...expiresAt,
 });
 
-export const tokenTypeEnum = pgEnum("tokenType", [
-  "RESET_PASSWORD",
-  "VERIFY_EMAIL",
-  "LOGIN_PASSCODE",
-]);
-export type TokenType = (typeof tokenTypeEnum.enumValues)[number];
-
-export const tokenTable = pgTable("token", {
+export type TokenType = "RESET_PASSWORD" | "VERIFY_EMAIL" | "LOGIN_PASSCODE";
+const tokenType = {
+  type: text("type").$type<TokenType>().notNull(),
+};
+export const tokenTable = sqliteTable("token", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => generateId("token")),
-  userId: text("user_id")
-    .notNull()
-    .references(() => userTable.id, { onDelete: "cascade" }),
+  ...userIdNotNull,
   email: text("email").notNull(),
-  type: tokenTypeEnum("type").notNull(),
+  ...tokenType,
   code: text("code").notNull(),
   token: text("token").notNull(),
-  expiresAt: timestamp("expires_at", {
-    withTimezone: true,
-    mode: "date",
-  }).notNull(),
-  createdAt: timestamp("created_at", {
-    withTimezone: true,
-    mode: "date",
-  })
-    .notNull()
-    .defaultNow(),
-  updatedAt: timestamp("updated_at", {
-    withTimezone: true,
-    mode: "date",
-  }).$onUpdate(() => new Date()),
+  ...expiresAt,
 });
 
 export const userTokenRelation = relations(userTable, ({ many }) => ({
@@ -93,41 +73,27 @@ export const tokenUserRelation = relations(tokenTable, ({ one }) => ({
   }),
 }));
 
-export const providerEnum = pgEnum("providerEnum", ["GOOGLE", "GITHUB"]);
-export type ProviderType = (typeof providerEnum.enumValues)[number];
-
-export const oauthAccountTable = pgTable(
+export type ProviderType = "GOOGLE" | "GITHUB";
+const providerType = {
+  provider: text("provider").$type<ProviderType>().default("GOOGLE").notNull(),
+};
+export const oauthAccountTable = sqliteTable(
   "oauth_account",
   {
     id: text("id")
       .notNull()
-      .$defaultFn(() => generateId("oauth")),
-    // .primaryKey(),
-    userId: text("user_id")
-      // userId can be null if the user didn't finish the sign-up process (setup passwo  rd and username)
-      // .notNull()
-      .references(() => userTable.id, { onDelete: "cascade" }),
-    provider: providerEnum("provider").notNull(),
+      .$defaultFn(() => generateId("oauth"))
+      .primaryKey(),
+    ...userIdNullable,
+    ...providerType,
     name: text("name"),
     avatarUrl: text("avatar_url"),
     email: text("email").notNull(),
     providerAccountId: text("provider_account_id").notNull(),
     username: text("username"),
-    createdAt: timestamp("created_at", {
-      withTimezone: true,
-      mode: "date",
-    })
-      .notNull()
-      .defaultNow(),
-    updatedAt: timestamp("updated_at", {
-      withTimezone: true,
-      mode: "date",
-    }).$onUpdate(() => new Date()),
   },
-  // primaryKey [provider, providerAccountId]
   (t) => ({
     pk: primaryKey({ columns: [t.provider, t.providerAccountId] }),
-    // unq: unique().on(t.provider, t.providerAccountId),
   }),
 );
 
@@ -145,7 +111,7 @@ export const oauthAccountUserRelation = relations(
   }),
 );
 
-export const emailTable = pgTable("email", {
+export const emailTable = sqliteTable("email", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => generateId("em")),
@@ -153,18 +119,8 @@ export const emailTable = pgTable("email", {
     .notNull()
     .references(() => userTable.id, { onDelete: "cascade" }),
   email: text("email").notNull(),
-  primary: boolean("primary").notNull().default(false),
-  verified: boolean("verified").notNull().default(false),
-  createdAt: timestamp("created_at", {
-    withTimezone: true,
-    mode: "date",
-  })
-    .notNull()
-    .defaultNow(),
-  updatedAt: timestamp("updated_at", {
-    withTimezone: true,
-    mode: "date",
-  }).$onUpdate(() => new Date()),
+  primary: integer("primary", { mode: "boolean" }).notNull().default(false),
+  verified: integer("verified", { mode: "boolean" }).notNull().default(false),
 });
 
 export const userEmailRelations = relations(userTable, ({ many }) => ({
@@ -178,24 +134,13 @@ export const emailUserRelations = relations(emailTable, ({ one }) => ({
   }),
 }));
 
-export const workspaceTable = pgTable("workspace", {
+export const workspaceTable = sqliteTable("workspace", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => generateId("ws")),
   name: text("name").notNull(),
   slug: text("slug").notNull().unique(),
   avatarUrl: text("avatar_url"),
-  createdAt: timestamp("created_at", {
-    withTimezone: true,
-    mode: "date",
-  })
-    .notNull()
-    .defaultNow(),
-
-  updatedAt: timestamp("updated_at", {
-    withTimezone: true,
-    mode: "date",
-  }).$onUpdate(() => new Date()),
 });
 
 export const userWorkspaceRelations = relations(userTable, ({ many, one }) => ({
@@ -212,39 +157,28 @@ export const workspaceMemberRelations = relations(
     workspaceMembers: many(workspaceMemberTable),
   }),
 );
+export type WorkspaceUserRole = "OWNER" | "ADMIN" | "MEMBER";
+export const workspaceUserRoleType = {
+  role: text("workspaceUserRole")
+    .$type<WorkspaceUserRole>()
+    .default("MEMBER")
+    .notNull(),
+};
 
-export const workspaceUserRoleEnum = pgEnum("workspaceUserRole", [
-  "OWNER",
-  "ADMIN",
-  "MEMBER",
-]);
-
-export type WorkspaceUserRole =
-  (typeof workspaceUserRoleEnum.enumValues)[number];
-export const workspaceMemberTable = pgTable(
+const workspaceId = {
+  workspaceId: text("workspace_id")
+    .notNull()
+    .references(() => workspaceTable.id, { onDelete: "cascade" }),
+};
+export const workspaceMemberTable = sqliteTable(
   "workspace_member",
   {
     id: text("id")
       // .primaryKey()
       .$defaultFn(() => generateId("wsm")),
-    workspaceId: text("workspace_id")
-      .notNull()
-      .references(() => workspaceTable.id, { onDelete: "cascade" }),
-    userId: text("user_id")
-      .notNull()
-      .references(() => userTable.id, { onDelete: "cascade" }),
-    role: workspaceUserRoleEnum("role").notNull(),
-    createdAt: timestamp("created_at", {
-      withTimezone: true,
-      mode: "date",
-    })
-      .notNull()
-      .defaultNow(),
-
-    updatedAt: timestamp("updated_at", {
-      withTimezone: true,
-      mode: "date",
-    }).$onUpdate(() => new Date()),
+    ...workspaceId,
+    ...userIdNotNull,
+    ...workspaceUserRoleType,
   },
   (t) => ({
     pk: primaryKey({ columns: [t.userId, t.workspaceId] }),
@@ -264,36 +198,6 @@ export const usersToWorkspaceRelation = relations(
     }),
   }),
 );
-
-// export const inviteTable = pgTable(
-//   "invite",
-//   {
-//     id: text("id")
-//       .primaryKey()
-//       .$defaultFn(() => generateId("i")),
-//     email: text("email").notNull(),
-//     workspaceId: text("workspace_id")
-//       .notNull()
-//       .references(() => workspaceTable.id, { onDelete: "cascade" }),
-//     role: workspaceUserRoleEnum("role").notNull(),
-//     createdAt: timestamp("created_at", {
-//       withTimezone: true,
-//       mode: "date",
-//     })
-//       .notNull()
-//       .defaultNow(),
-//     expiresAt: timestamp("expires_at", {
-//       withTimezone: true,
-//       mode: "date",
-//     })
-//       .notNull()
-//       // Expires in 24 hours
-//       .$defaultFn(() => new Date(Date.now() + 24 * 60 * 60 * 1000)),
-//   },
-//   (t) => ({
-//     unq: unique().on(t.email, t.workspaceId),
-//   })
-// );
 
 export type UserModel = typeof userTable.$inferSelect;
 export type OAuthAccountModel = typeof oauthAccountTable.$inferSelect;

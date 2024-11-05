@@ -5,6 +5,7 @@ import { addDBToken } from "@/lib/db/data-access/token";
 import {
   createUser,
   getEmail,
+  getUserByUsername,
   getUserEmail,
   updateUserPassword,
 } from "@/lib/db/data-access/user";
@@ -17,6 +18,7 @@ import {
   type inferServerActionReturnTypeHot,
 } from "zsa";
 import { getOAuthAccount, updateOAuthAccount } from "../db/data-access/account";
+import type { UserModel } from "../db/schema";
 import { invalidateUserSessions, setSession } from "../session";
 import { getUserEmailProcedure } from "./procedures";
 import { turnstileProcedure } from "./turnstile";
@@ -42,7 +44,6 @@ export const signupAction = turnstileProcedure
   .handler(async ({ input }) => {
     const { email, password, username } = input;
     const emailItem = await getEmail(email);
-
     if (emailItem?.verified) {
       throw new ZSAError(
         "FORBIDDEN",
@@ -53,10 +54,15 @@ export const signupAction = turnstileProcedure
     }
 
     let user = emailItem?.user;
+    console.log("user", emailItem, user);
 
     if (user) {
       await updateUserPassword(user.id, password);
     } else {
+      user = await getUserByUsername(username);
+      if (user) {
+        throw new ZSAError("FORBIDDEN", "Username already exists");
+      }
       user = await createUser({
         name: null,
         email,

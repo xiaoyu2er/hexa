@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { getDrizzle } from "@/lib/db";
 import type { GitHubUser, GoogleUser } from "@/types";
 import { and, eq } from "drizzle-orm";
 import {
@@ -9,6 +9,7 @@ import {
 } from "../schema";
 
 export async function getAccountByGoogleId(googleId: string) {
+  const db = await getDrizzle();
   return await db.query.oauthAccountTable.findFirst({
     where: and(
       eq(oauthAccountTable.provider, "GOOGLE"),
@@ -18,6 +19,8 @@ export async function getAccountByGoogleId(googleId: string) {
 }
 
 export async function getAccountByGithubId(githubId: number) {
+  const db = await getDrizzle();
+
   return await db.query.oauthAccountTable.findFirst({
     where: and(
       eq(oauthAccountTable.provider, "GITHUB"),
@@ -33,6 +36,8 @@ export async function createGithubAccount(
   userId: UserModel["id"] | null,
   githubUser: GitHubUser,
 ) {
+  const db = await getDrizzle();
+
   return (
     await db
       .insert(oauthAccountTable)
@@ -65,6 +70,8 @@ export async function createGoogleAccount(
   userId: UserModel["id"] | null,
   googleUser: GoogleUser,
 ) {
+  const db = await getDrizzle();
+
   return (
     await db
       .insert(oauthAccountTable)
@@ -94,12 +101,16 @@ export async function createGoogleAccount(
 }
 
 export async function getUserOAuthAccounts(userId: UserModel["id"]) {
+  const db = await getDrizzle();
+
   return await db.query.oauthAccountTable.findMany({
     where: eq(oauthAccountTable.userId, userId),
   });
 }
 
 export async function getOAuthAccount(id: string) {
+  const db = await getDrizzle();
+
   return await db.query.oauthAccountTable.findFirst({
     where: eq(oauthAccountTable.id, id),
   });
@@ -109,6 +120,8 @@ export async function updateOAuthAccount(
   id: string,
   data: Partial<OAuthAccountModel>,
 ) {
+  const db = await getDrizzle();
+
   return (
     await db
       .update(oauthAccountTable)
@@ -122,6 +135,7 @@ export async function removeUserOAuthAccount(
   uid: UserModel["id"],
   provider: ProviderType,
 ) {
+  const db = await getDrizzle();
   return await db
     .delete(oauthAccountTable)
     .where(

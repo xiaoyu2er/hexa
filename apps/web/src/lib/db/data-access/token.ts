@@ -3,16 +3,18 @@ import { generateCode, generateId } from "@/lib/utils";
 import { and, eq } from "drizzle-orm";
 import { createDate, isWithinExpirationDate } from "oslo";
 import { ZSAError } from "zsa";
-import { db } from "../db";
+import { getDrizzle } from "../db";
 import { type TokenType, tokenTable } from "../schema";
 
 export async function deleteDBToken(userId: string, type: TokenType) {
-  return await db
+  const db = await getDrizzle();
+  return db
     .delete(tokenTable)
     .where(and(eq(tokenTable.userId, userId), eq(tokenTable.type, type)));
 }
 
 export async function findDBTokenByUserId(userId: string, type: TokenType) {
+  const db = await getDrizzle();
   return db.query.tokenTable.findFirst({
     where: (table, { eq, and }) =>
       and(eq(table.userId, userId), eq(table.type, type)),
@@ -24,6 +26,7 @@ export async function addDBToken(
   email: string,
   type: TokenType,
 ) {
+  const db = await getDrizzle();
   await db
     .delete(tokenTable)
     .where(and(eq(tokenTable.userId, userId), eq(tokenTable.type, type)));
@@ -50,6 +53,7 @@ export async function addDBToken(
 }
 
 export async function getTokenByToken(token: string, type: TokenType) {
+  const db = await getDrizzle();
   return db.query.tokenTable.findFirst({
     where: (table, { eq, and }) =>
       and(eq(table.token, token), eq(table.type, type)),

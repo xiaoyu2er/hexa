@@ -3,16 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "build:worker": "cloudflare",
+    "dev:worker": "wrangler dev --port 8771",
+    "preview:worker": "npm run build:worker && npm run dev:worker",
+    "deploy:worker": "npm run build:worker && wrangler deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv env.d.ts",
     "db:generate": "drizzle-kit generate",
+    "db:up": "drizzle-kit up",
     "db:migrate": "drizzle-kit migrate",
+    "db:migrate:local": "wrangler d1 migrations apply hexa --local",
     "db:drop": "drizzle-kit drop",
-    "db:migrate:prod": "NODE_ENV=production drizzle-kit migrate",
+    "db:migrate:prod": "wrangler d1 migrations apply hexa --remote",
     "db:push": "drizzle-kit push",
     "db:push:prod": "NODE_ENV=production drizzle-kit push",
-    "db:studio": "drizzle-kit studio",
+    "db:studio:local": "DB_LOCAL_PATH=$(find .wrangler/state/v3/d1/miniflare-D1DatabaseObject -type f -name '*.sqlite' -print -quit) drizzle-kit studio",
     "db:studio:prod": "NODE_ENV=production drizzle-kit studio --port 3456"
   },
   "dependencies": {
@@ -23,6 +30,7 @@
     "@hexa/utils": "workspace:*",
     "@hookform/resolvers": "^3.6.0",
     "@lucia-auth/adapter-drizzle": "^1.0.7",
+    "@lucia-auth/adapter-sqlite": "^3.0.2",
     "@marsidev/react-turnstile": "^0.7.1",
     "@tanstack/react-query": "^5.50.1",
     "@tanstack/react-query-next-experimental": "^5.50.1",
@@ -31,6 +39,7 @@
     "@vercel/speed-insights": "^1.0.12",
     "arctic": "^1.9.1",
     "aws4fetch": "^1.0.18",
+    "better-sqlite3": "^11.5.0",
     "date-fns": "^3.6.0",
     "drizzle-orm": "^0.31.2",
     "lodash": "^4.17.21",
@@ -53,6 +62,7 @@
   },
   "devDependencies": {
     "@hexa/typescript-config": "workspace:*",
+    "@opennextjs/cloudflare": "^0.2.1",
     "@tanstack/react-query-devtools": "^5.50.1",
     "@types/lodash": "^4.17.5",
     "@types/node": "^20",
@@ -65,6 +75,7 @@
     "postcss": "^8.4.38",
     "postcss-import": "^16.1.0",
     "tailwindcss": "^3.4.4",
-    "typescript": "5.4.5"
+    "typescript": "5.4.5",
+    "wrangler": "^3.84.1"
   }
 }
