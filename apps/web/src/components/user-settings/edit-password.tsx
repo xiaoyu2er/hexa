@@ -1,5 +1,7 @@
 "use client";
 
+import { queryUserEmailsOptions, queryUserOptions } from "@/lib/queries/user";
+import { Button } from "@hexa/ui/button";
 import {
   Card,
   CardContent,
@@ -8,10 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@hexa/ui/card";
-
-import { APP_TITLE } from "@/lib/const";
-import { queryUserEmailsOptions, queryUserOptions } from "@/lib/queries/user";
-import { Button } from "@hexa/ui/button";
 import { Input } from "@hexa/ui/input";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import Link from "next/link";
