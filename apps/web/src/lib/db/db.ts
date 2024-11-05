@@ -1,9 +1,14 @@
-import { type NodePgDatabase, drizzle } from "drizzle-orm/node-postgres";
-import { Pool } from "pg";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { drizzle } from "drizzle-orm/d1";
+
 import * as schema from "./schema";
 
-const pool = new Pool({
-  connectionString: process.env.DB_URL ?? "",
-});
+export const getDB = async () => {
+  const { env } = await getCloudflareContext();
+  return env.DB;
+};
 
-export const db = drizzle(pool, { schema }) as NodePgDatabase<typeof schema>;
+export const getDrizzle = async () => {
+  const { env } = await getCloudflareContext();
+  return drizzle(env.DB, { schema });
+};

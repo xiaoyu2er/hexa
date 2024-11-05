@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { db } from "../db";
+import { getDrizzle } from "../db";
 import {
   type WorkspaceMemberModel,
   type WorkspaceModel,
@@ -12,6 +12,7 @@ export const setUserDefaultWorkspace = async (
   userId: string,
   workspaceId: string,
 ) => {
+  const db = await getDrizzle();
   return (
     await db
       .update(userTable)
@@ -22,6 +23,7 @@ export const setUserDefaultWorkspace = async (
 };
 
 export const getWorkspacesByUserId = async (userId: string) => {
+  const db = await getDrizzle();
   return (
     await db.query.workspaceMemberTable.findMany({
       where: (table, { eq }) => eq(table.userId, userId),
@@ -33,12 +35,14 @@ export const getWorkspacesByUserId = async (userId: string) => {
 };
 
 export const getWorkspaceBySlug = async (slug: string) => {
+  const db = await getDrizzle();
   return db.query.workspaceTable.findFirst({
     where: (table, { eq }) => eq(table.slug, slug),
   });
 };
 
 export const getWorkspaceByWsId = async (wsId: string) => {
+  const db = await getDrizzle();
   return db.query.workspaceTable.findFirst({
     where: (table, { eq }) => eq(table.id, wsId),
   });
@@ -48,6 +52,7 @@ export const createWorkspace = async ({
   name,
   slug,
 }: Pick<WorkspaceModel, "name" | "slug">) => {
+  const db = await getDrizzle();
   return (
     await db
       .insert(workspaceTable)
@@ -65,6 +70,7 @@ export const addWorkspaceMember = async ({
   workspaceId,
   role,
 }: Pick<WorkspaceMemberModel, "userId" | "workspaceId" | "role">) => {
+  const db = await getDrizzle();
   return (
     await db
       .insert(workspaceMemberTable)
@@ -78,6 +84,7 @@ export const addWorkspaceMember = async ({
 };
 
 export const deleteWorkspace = async (workspaceId: string) => {
+  const db = await getDrizzle();
   await db
     .delete(workspaceTable)
     .where(eq(workspaceTable.id, workspaceId))
@@ -85,6 +92,7 @@ export const deleteWorkspace = async (workspaceId: string) => {
 };
 
 export const clearWorkspaceAsDefault = async (workspaceId: string) => {
+  const db = await getDrizzle();
   await db
     .update(userTable)
     .set({ defaultWorkspaceId: null })
@@ -94,6 +102,7 @@ export const clearWorkspaceAsDefault = async (workspaceId: string) => {
 
 // update name
 export async function updateWorkspaceName(id: string, name: string) {
+  const db = await getDrizzle();
   return (
     await db
       .update(workspaceTable)
@@ -104,6 +113,7 @@ export async function updateWorkspaceName(id: string, name: string) {
 }
 // update slug
 export async function updateWorkspaceSlug(id: string, slug: string) {
+  const db = await getDrizzle();
   return (
     await db
       .update(workspaceTable)
@@ -115,6 +125,7 @@ export async function updateWorkspaceSlug(id: string, slug: string) {
 
 // update avatar
 export async function updateWorkspaceAvatar(id: string, avatarUrl: string) {
+  const db = await getDrizzle();
   return (
     await db
       .update(workspaceTable)

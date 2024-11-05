@@ -133,10 +133,15 @@ export const verifyEmailByCodeAction = getUserEmailProcedure
     const { user } = await validateRequest();
     console.log("user", user);
     await updateUserEmailVerified(tokenItem.userId, tokenItem.email);
+    console.log("0~afterVerifyEmailByCode", tokenItem.userId);
     if (!user) {
+      console.log("1~invalidateUserSessions", tokenItem.userId);
       await invalidateUserSessions(tokenItem.userId);
+      console.log("2~setSession", tokenItem.userId);
       await setSession(tokenItem.userId);
       redirect("/settings");
+    } else {
+      console.log("3~hasUser");
     }
   });
 
