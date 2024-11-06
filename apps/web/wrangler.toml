@@ -11,6 +11,11 @@ minify = true
 # Use the new Workers + Assets to host the static frontend files
 assets = { directory = ".worker-next/assets", binding = "ASSETS" }
 
+# wrangler.toml (wrangler v3.79.0^)
+[observability]
+enabled = true
+head_sampling_rate = 1
+
 [vars]
 hello = 'Hello World from the cloudflare context!'
 
