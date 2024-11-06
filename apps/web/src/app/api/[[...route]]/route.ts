@@ -5,11 +5,13 @@ import { handle } from "hono/vercel";
 import test from "./test";
 import user from "./user";
 
-const app = new Hono().basePath("/api");
+const app = new Hono()
+  .basePath("/api")
+  .use("/*", cors())
+  .route("/test", test)
+  .route("/", user);
 
-app.use("/*", cors());
-app.route("/test", test);
-app.route("/", user);
+export type AppType = typeof user;
 
 export const GET = handle(app);
 export const POST = handle(app);

@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 
-import { loginPasswordAction } from "@/lib/actions/login";
 import {
   Form,
   FormControl,
@@ -21,7 +20,7 @@ import {
 
 import { OAuthButtons } from "@/components/auth/oauth-buttons";
 import { useTurnstile } from "@/hooks/use-turnstile";
-import { setFormError } from "@/lib/form";
+import { client } from "@/lib/queries";
 import {
   Card,
   CardContent,
@@ -34,15 +33,19 @@ import { FormErrorMessage } from "@hexa/ui/form-error-message";
 import { Input } from "@hexa/ui/input";
 import { PasswordInput } from "@hexa/ui/password-input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import type { InferRequestType } from "hono";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useServerAction } from "zsa-react";
 
 interface LoginPasswordProps {
   onPasscode: () => void;
 }
 
 export function LoginPassword({ onPasscode }: LoginPasswordProps) {
+  const router = useRouter();
+
   const form = useForm<LoginPasswordInput>({
     resolver: zodResolver(LoginPasswordSchema),
   });
@@ -50,21 +53,43 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
   const {
     handleSubmit,
     setError,
+    clearErrors,
     formState: { isSubmitting, errors },
     setFocus,
   } = form;
 
   const { resetTurnstile, turnstile, disableNext } = useTurnstile({
     form,
+    onSuccess: () => {
+      clearErrors("root");
+    },
   });
+  const $login = client.login.$post;
 
-  const { execute } = useServerAction(loginPasswordAction, {
-    onError: ({ err }) => {
-      console.log(err);
-      setFormError(err, setError);
+  const mutation = useMutation<
+    Response,
+    Error,
+    InferRequestType<typeof $login>["form"]
+  >({
+    mutationFn: async (form) => {
+      console.log("form", form);
+      return $login({ form });
+    },
+    onSuccess: async (res) => {
+      if (!res.ok) {
+        const err = await res.json();
+        setError("root", { message: err.error });
+        resetTurnstile();
+      } else {
+        router.push("/settings");
+      }
+    },
+    onError: (error) => {
+      console.log("err", error);
       resetTurnstile();
     },
   });
+
   useEffect(() => {
     setFocus("username");
   }, [setFocus]);
@@ -83,7 +108,7 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
           <Divider>or</Divider>
           <Form {...form}>
             <form
-              onSubmit={handleSubmit((form) => execute(form))}
+              onSubmit={handleSubmit((form) => mutation.mutate(form))}
               method="POST"
               className="space-y-2"
             >

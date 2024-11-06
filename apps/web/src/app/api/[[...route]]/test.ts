@@ -2,9 +2,7 @@ import { DISABLE_CLOUDFLARE_TURNSTILE, PUBLIC_URL } from "@/lib/const";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { Hono } from "hono";
 
-const test = new Hono();
-
-test
+const test = new Hono()
   .get("/hello", async (c) => {
     const { env } = await getCloudflareContext();
     return c.json({

@@ -28,6 +28,7 @@
     "@hexa/tailwind-config": "workspace:*",
     "@hexa/ui": "workspace:*",
     "@hexa/utils": "workspace:*",
+    "@hono/zod-validator": "^0.4.1",
     "@hookform/resolvers": "^3.6.0",
     "@lucia-auth/adapter-drizzle": "^1.0.7",
     "@lucia-auth/adapter-sqlite": "^3.0.2",

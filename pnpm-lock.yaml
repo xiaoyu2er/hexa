@@ -41,6 +41,9 @@ importers:
       '@hexa/utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      '@hono/zod-validator':
+        specifier: ^0.4.1
+        version: 0.4.1(hono@4.6.9)(zod@3.23.8)
       '@hookform/resolvers':
         specifier: ^3.6.0
         version: 3.6.0(react-hook-form@7.52.0(react@19.0.0-rc-f994737d14-20240522))
@@ -1497,6 +1500,12 @@ packages:
 
   '@floating-ui/utils@0.2.3':
     resolution: {integrity: sha512-XGndio0l5/Gvd6CLIABvsav9HHezgDFFhDfHk1bvLfr9ni8dojqLSvBbotJEjmIwNHL7vK4QzBJTdBRoB+c1ww==}
+
+  '@hono/zod-validator@0.4.1':
+    resolution: {integrity: sha512-I8LyfeJfvVmC5hPjZ2Iij7RjexlgSBT7QJudZ4JvNPLxn0JQ3sqclz2zydlwISAnw21D2n4LQ0nfZdoiv9fQQA==}
+    peerDependencies:
+      hono: '>=3.9.0'
+      zod: ^3.19.1
 
   '@hookform/resolvers@3.6.0':
     resolution: {integrity: sha512-UBcpyOX3+RR+dNnqBd0lchXpoL8p4xC21XP8H6Meb8uve5Br1GCnmg0PcBoKKqPKgGu9GHQ/oygcmPrQhetwqw==}
@@ -7205,6 +7214,11 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
 
   '@floating-ui/utils@0.2.3': {}
+
+  '@hono/zod-validator@0.4.1(hono@4.6.9)(zod@3.23.8)':
+    dependencies:
+      hono: 4.6.9
+      zod: 3.23.8
 
   '@hookform/resolvers@3.6.0(react-hook-form@7.52.0(react@18.2.0))':
     dependencies:

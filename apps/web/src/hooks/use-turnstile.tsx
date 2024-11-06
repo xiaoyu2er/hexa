@@ -13,10 +13,14 @@ import type { FieldValues, UseFormReturn } from "react-hook-form";
 export function useTurnstile<T extends FieldValues>({
   form,
   errorField = "root",
+  onError,
+  onSuccess,
 }: {
   errorField?: string;
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   form: UseFormReturn<T, any, undefined>;
+  onError?: (err: string) => void;
+  onSuccess?: (res: string) => void;
 }) {
   const { setError, setValue, watch } = form;
   const ref = useRef();
@@ -50,14 +54,15 @@ export function useTurnstile<T extends FieldValues>({
               ? `[dev][client-side] Cloudflare Turnstile failed - ${err}`
               : "Only humans are allowed to login. Please try again.",
         });
+        onError?.(err);
       }}
       onSuccess={() => {
         // @ts-ignore
         const res = ref.current?.getResponse();
         console.log("cf-turnstile-response", res);
-
         // @ts-ignore
         setValue("cf-turnstile-response", res);
+        onSuccess?.(res);
       }}
     />
   );
