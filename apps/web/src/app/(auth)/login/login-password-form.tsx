@@ -108,7 +108,10 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
           <Divider>or</Divider>
           <Form {...form}>
             <form
-              onSubmit={handleSubmit((form) => mutation.mutate(form))}
+              onSubmit={handleSubmit((form) => {
+                // @ts-ignore
+                return mutation.mutate(form);
+              })}
               method="POST"
               className="space-y-2"
             >
