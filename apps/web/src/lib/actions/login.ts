@@ -8,13 +8,14 @@ import {
   OTPSchema,
   OnlyTokenSchema,
 } from "@/lib/zod/schemas/auth";
-import { getDB } from "@/server/db";
+import { type TokenType, getDB } from "@/server/db";
 import {
   addDBToken,
   getTokenByToken,
   verifyDBTokenByCode,
 } from "@/server/db/data-access/token";
 import { getUserByUsername, getUserEmail } from "@/server/db/data-access/user";
+import type { DBType } from "@/server/types";
 import { redirect } from "next/navigation";
 import { ZSAError, chainServerActionProcedures, createServerAction } from "zsa";
 import { PUBLIC_URL } from "../const";
@@ -22,39 +23,37 @@ import { sendVerifyCodeAndUrlEmail } from "../emails";
 import { getUserEmailProcedure } from "./procedures";
 import { turnstileProcedure } from "./turnstile";
 
-async function updateTokenAndSendVerifyEmail(
+export async function updateTokenAndSendPasscode(
+  db: DBType,
   userId: string,
   email: string,
+  type: TokenType,
 ): Promise<{ email: string }> {
-  const db = await getDB();
   const { code: verificationCode, token } = await addDBToken(
     db,
     userId,
     email,
-    "LOGIN_PASSCODE",
+    type,
   );
-  const url = `${PUBLIC_URL}/login/passtoken?token=${token}`;
+  const url = `${PUBLIC_URL}/token-verify/${type.toLowerCase()}?token=${token}`;
   const data = await sendVerifyCodeAndUrlEmail(email, verificationCode, url);
   console.log("sendVerifyCodeAndUrlEmail", data);
   return data;
 }
 
-export const loginPasscodeAction = chainServerActionProcedures(
-  turnstileProcedure,
-  getUserEmailProcedure,
-)
-  .createServerAction()
-  .input(LoginPasscodeSchema)
-  .handler(async ({ ctx }) => {
-    const {
-      email: {
-        email,
-        user: { id: userId },
-      },
-    } = ctx;
+export const getUserEmailOrThrowError = async (db: DBType, email: string) => {
+  const emailItem = await getUserEmail(db, email);
 
-    return await updateTokenAndSendVerifyEmail(userId, email);
-  });
+  if (!emailItem || !emailItem.user) {
+    throw new ZSAError(
+      "NOT_FOUND",
+      process.env.NODE_ENV === "development"
+        ? `[dev] User not found by email: ${email}`
+        : "Email not found",
+    );
+  }
+  return emailItem;
+};
 
 export const resendLoginPasscodeAction = getUserEmailProcedure
   .createServerAction()
@@ -67,7 +66,7 @@ export const resendLoginPasscodeAction = getUserEmailProcedure
       },
     } = ctx;
 
-    return await updateTokenAndSendVerifyEmail(userId, email);
+    return await updateTokenAndSendPasscode(userId, email);
   });
 
 export const loginByCodeAction = getUserEmailProcedure

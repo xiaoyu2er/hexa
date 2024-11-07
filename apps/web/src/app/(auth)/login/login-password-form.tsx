@@ -63,7 +63,7 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
       clearErrors("root");
     },
   });
-  const $login = client.login.$post;
+  const $login = client["login-password"].$post;
 
   const mutation = useMutation({
     mutationKey: ["login"],

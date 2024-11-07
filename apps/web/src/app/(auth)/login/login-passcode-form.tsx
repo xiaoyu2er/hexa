@@ -1,6 +1,5 @@
 "use client";
 
-import { loginPasscodeAction } from "@/lib/actions/login";
 import {
   Form,
   FormControl,
@@ -18,7 +17,7 @@ import {
 } from "@/lib/zod/schemas/auth";
 
 import { useTurnstile } from "@/hooks/use-turnstile";
-import { setFormError } from "@/lib/form";
+import { client } from "@/lib/queries";
 import {
   Card,
   CardContent,
@@ -29,14 +28,15 @@ import {
 import { FormErrorMessage } from "@hexa/ui/form-error-message";
 import { Input } from "@hexa/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useServerAction } from "zsa-react";
 
 interface LoginPasscodeProps {
   onPassword: () => void;
   onSuccess?: (_data: { email: string }) => void;
 }
+const $login = client["login-passcode"].$post;
 
 export function LoginPasscode({ onPassword, onSuccess }: LoginPasscodeProps) {
   const form = useForm<LoginPasscodeInput>({
@@ -54,15 +54,27 @@ export function LoginPasscode({ onPassword, onSuccess }: LoginPasscodeProps) {
     form,
   });
 
-  const { execute } = useServerAction(loginPasscodeAction, {
-    onError: ({ err }) => {
-      setFormError(err, setError);
+  const mutation = useMutation({
+    mutationFn: $login,
+    onSuccess: async (res) => {
+      if (!res.ok) {
+        try {
+          const err = await res.json();
+          setError("root", { message: err.error });
+        } catch (e) {
+          setError("root", { message: `[${res.status}] ${res.statusText}` });
+        }
+        resetTurnstile();
+      } else {
+        onSuccess?.(await res.json());
+      }
+    },
+    onError: (error) => {
+      console.log("err", error);
       resetTurnstile();
     },
-    onSuccess: ({ data }) => {
-      onSuccess?.(data);
-    },
   });
+
   useEffect(() => {
     setFocus("email");
   }, [setFocus]);
@@ -77,7 +89,7 @@ export function LoginPasscode({ onPassword, onSuccess }: LoginPasscodeProps) {
         <CardContent>
           <Form {...form}>
             <form
-              onSubmit={handleSubmit((form) => execute(form))}
+              onSubmit={handleSubmit((json) => mutation.mutateAsync({ json }))}
               method="POST"
               className="space-y-2"
             >
