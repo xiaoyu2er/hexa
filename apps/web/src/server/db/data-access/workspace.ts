@@ -1,5 +1,6 @@
+import type { DBType } from "@/server/types";
 import { eq } from "drizzle-orm";
-import { getDrizzle } from "../db";
+import { getDB } from "../db";
 import {
   type WorkspaceMemberModel,
   type WorkspaceModel,
@@ -9,10 +10,10 @@ import {
 } from "../schema";
 
 export const setUserDefaultWorkspace = async (
+  db: DBType,
   userId: string,
   workspaceId: string,
 ) => {
-  const db = await getDrizzle();
   return (
     await db
       .update(userTable)
@@ -22,8 +23,7 @@ export const setUserDefaultWorkspace = async (
   )[0];
 };
 
-export const getWorkspacesByUserId = async (userId: string) => {
-  const db = await getDrizzle();
+export const getWorkspacesByUserId = async (db: DBType, userId: string) => {
   return (
     await db.query.workspaceMemberTable.findMany({
       where: (table, { eq }) => eq(table.userId, userId),
@@ -34,25 +34,22 @@ export const getWorkspacesByUserId = async (userId: string) => {
   ).map((wm) => wm.workspace);
 };
 
-export const getWorkspaceBySlug = async (slug: string) => {
-  const db = await getDrizzle();
+export const getWorkspaceBySlug = async (db: DBType, slug: string) => {
   return db.query.workspaceTable.findFirst({
     where: (table, { eq }) => eq(table.slug, slug),
   });
 };
 
-export const getWorkspaceByWsId = async (wsId: string) => {
-  const db = await getDrizzle();
+export const getWorkspaceByWsId = async (db: DBType, wsId: string) => {
   return db.query.workspaceTable.findFirst({
     where: (table, { eq }) => eq(table.id, wsId),
   });
 };
 
-export const createWorkspace = async ({
-  name,
-  slug,
-}: Pick<WorkspaceModel, "name" | "slug">) => {
-  const db = await getDrizzle();
+export const createWorkspace = async (
+  db: DBType,
+  { name, slug }: Pick<WorkspaceModel, "name" | "slug">,
+) => {
   return (
     await db
       .insert(workspaceTable)
@@ -65,12 +62,14 @@ export const createWorkspace = async ({
   )[0];
 };
 
-export const addWorkspaceMember = async ({
-  userId,
-  workspaceId,
-  role,
-}: Pick<WorkspaceMemberModel, "userId" | "workspaceId" | "role">) => {
-  const db = await getDrizzle();
+export const addWorkspaceMember = async (
+  db: DBType,
+  {
+    userId,
+    workspaceId,
+    role,
+  }: Pick<WorkspaceMemberModel, "userId" | "workspaceId" | "role">,
+) => {
   return (
     await db
       .insert(workspaceMemberTable)
@@ -83,16 +82,17 @@ export const addWorkspaceMember = async ({
   )[0];
 };
 
-export const deleteWorkspace = async (workspaceId: string) => {
-  const db = await getDrizzle();
+export const deleteWorkspace = async (db: DBType, workspaceId: string) => {
   await db
     .delete(workspaceTable)
     .where(eq(workspaceTable.id, workspaceId))
     .returning();
 };
 
-export const clearWorkspaceAsDefault = async (workspaceId: string) => {
-  const db = await getDrizzle();
+export const clearWorkspaceAsDefault = async (
+  db: DBType,
+  workspaceId: string,
+) => {
   await db
     .update(userTable)
     .set({ defaultWorkspaceId: null })
@@ -101,8 +101,11 @@ export const clearWorkspaceAsDefault = async (workspaceId: string) => {
 };
 
 // update name
-export async function updateWorkspaceName(id: string, name: string) {
-  const db = await getDrizzle();
+export async function updateWorkspaceName(
+  db: DBType,
+  id: string,
+  name: string,
+) {
   return (
     await db
       .update(workspaceTable)
@@ -112,8 +115,11 @@ export async function updateWorkspaceName(id: string, name: string) {
   )[0];
 }
 // update slug
-export async function updateWorkspaceSlug(id: string, slug: string) {
-  const db = await getDrizzle();
+export async function updateWorkspaceSlug(
+  db: DBType,
+  id: string,
+  slug: string,
+) {
   return (
     await db
       .update(workspaceTable)
@@ -124,8 +130,11 @@ export async function updateWorkspaceSlug(id: string, slug: string) {
 }
 
 // update avatar
-export async function updateWorkspaceAvatar(id: string, avatarUrl: string) {
-  const db = await getDrizzle();
+export async function updateWorkspaceAvatar(
+  db: DBType,
+  id: string,
+  avatarUrl: string,
+) {
   return (
     await db
       .update(workspaceTable)

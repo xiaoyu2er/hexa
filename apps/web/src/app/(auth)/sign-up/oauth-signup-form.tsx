@@ -29,8 +29,8 @@ import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
 
 import { useTurnstile } from "@/hooks/use-turnstile";
-import type { OAuthAccountModel } from "@/lib/db";
 import { setFormError } from "@/lib/form";
+import type { OAuthAccountModel } from "@/server/db";
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";

@@ -1,18 +1,15 @@
 import { validateRequest } from "@/lib/auth";
-import { getUserByUsername, getUserEmail } from "@/lib/db/data-access/user";
 import { setSession } from "@/lib/session";
 import { isHashValid } from "@/lib/utils";
-import {
-  LoginPasscodeSchema,
-  LoginPasswordSchema,
-} from "@/lib/zod/schemas/auth";
+import { LoginPasswordSchema } from "@/lib/zod/schemas/auth";
+import { getUserByUsername, getUserEmail } from "@/server/db/data-access/user";
+import type { ContextVariables } from "@/server/types";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
-// import { redirect } from "next/navigation";
 import { ZSAError } from "zsa";
 import { turnstile } from "./turnstile";
 
-const user = new Hono()
+const user = new Hono<{ Variables: ContextVariables }>()
   .use("/me", async (c, next) => {
     const { user } = await validateRequest();
     if (!user) {
@@ -29,14 +26,15 @@ const user = new Hono()
   })
   .post(
     "/login",
-    zValidator("form", LoginPasswordSchema),
+    zValidator("json", LoginPasswordSchema),
     turnstile,
     async (c) => {
-      const { username, password } = c.req.valid("form");
+      const { username, password } = c.req.valid("json");
+      const db = c.get("db");
       console.log("username", username);
-      let existingUser = await getUserByUsername(username);
+      let existingUser = await getUserByUsername(db, username);
       if (!existingUser) {
-        const emailItem = await getUserEmail(username);
+        const emailItem = await getUserEmail(db, username);
         existingUser = emailItem?.user;
 
         if (!existingUser) {

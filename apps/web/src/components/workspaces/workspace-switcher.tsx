@@ -9,9 +9,9 @@ import { cn } from "@hexa/utils";
 
 import { UserAvatar } from "@/components/user/user-avatar";
 import { setUserDefaultWorkspaceAction } from "@/lib/actions/workspace";
-import type { WorkspaceModel } from "@/lib/db";
 import { queryUserOptions } from "@/lib/queries/user";
 import { queryWorkspacesOptions } from "@/lib/queries/workspace";
+import type { WorkspaceModel } from "@/server/db";
 import { Badge } from "@hexa/ui/badge";
 import { Dialog, DialogContent } from "@hexa/ui/dialog";
 import { toast } from "@hexa/ui/sonner";

@@ -8,69 +8,27 @@ import {
   OTPSchema,
   OnlyTokenSchema,
 } from "@/lib/zod/schemas/auth";
-import { redirect } from "next/navigation";
-import { ZSAError, chainServerActionProcedures, createServerAction } from "zsa";
-import { PUBLIC_URL } from "../const";
+import { getDB } from "@/server/db";
 import {
   addDBToken,
   getTokenByToken,
   verifyDBTokenByCode,
-} from "../db/data-access/token";
-import { getUserByUsername, getUserEmail } from "../db/data-access/user";
+} from "@/server/db/data-access/token";
+import { getUserByUsername, getUserEmail } from "@/server/db/data-access/user";
+import { redirect } from "next/navigation";
+import { ZSAError, chainServerActionProcedures, createServerAction } from "zsa";
+import { PUBLIC_URL } from "../const";
 import { sendVerifyCodeAndUrlEmail } from "../emails";
 import { getUserEmailProcedure } from "./procedures";
 import { turnstileProcedure } from "./turnstile";
-
-export const loginPasswordAction = turnstileProcedure
-  .createServerAction()
-  .input(LoginPasswordSchema)
-  .handler(async ({ input }) => {
-    const { username, password } = input;
-    let existingUser = await getUserByUsername(username);
-    if (!existingUser) {
-      const emailItem = await getUserEmail(username);
-      existingUser = emailItem?.user;
-
-      if (!existingUser) {
-        throw new ZSAError(
-          "FORBIDDEN",
-          process.env.NODE_ENV === "development"
-            ? "[dev] Incorrect email or password"
-            : "Incorrect email or password",
-        );
-      }
-    }
-
-    if (!existingUser.password) {
-      throw new ZSAError(
-        "FORBIDDEN",
-        process.env.NODE_ENV === "development"
-          ? "[dev] Password is not set"
-          : "Incorrect email or password",
-      );
-    }
-
-    const validPassword = await isHashValid(existingUser.password, password);
-
-    if (!validPassword) {
-      throw new ZSAError(
-        "FORBIDDEN",
-        process.env.NODE_ENV === "development"
-          ? "[dev] Incorrect password"
-          : "Incorrect email or password",
-      );
-    }
-
-    await setSession(existingUser.id);
-
-    redirect("/");
-  });
 
 async function updateTokenAndSendVerifyEmail(
   userId: string,
   email: string,
 ): Promise<{ email: string }> {
+  const db = await getDB();
   const { code: verificationCode, token } = await addDBToken(
+    db,
     userId,
     email,
     "LOGIN_PASSCODE",
@@ -122,8 +80,9 @@ export const loginByCodeAction = getUserEmailProcedure
         user: { id: userId },
       },
     } = ctx;
-
+    const db = await getDB();
     const tokenItem = await verifyDBTokenByCode(
+      db,
       userId,
       { code },
       "LOGIN_PASSCODE",
@@ -139,7 +98,8 @@ export const loginByTokenAction = createServerAction()
   .input(OnlyTokenSchema)
   .handler(async ({ input }) => {
     const { token } = input;
-    let tokenItem = await getTokenByToken(token, "LOGIN_PASSCODE");
+    const db = await getDB();
+    let tokenItem = await getTokenByToken(db, token, "LOGIN_PASSCODE");
     if (!tokenItem) {
       throw new ZSAError(
         "FORBIDDEN",
@@ -149,6 +109,7 @@ export const loginByTokenAction = createServerAction()
       );
     }
     tokenItem = await verifyDBTokenByCode(
+      db,
       tokenItem.userId,
       { token },
       tokenItem.type,

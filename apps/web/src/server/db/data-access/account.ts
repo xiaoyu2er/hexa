@@ -1,4 +1,5 @@
-import { getDrizzle } from "@/lib/db";
+import { getDB } from "@/server/db";
+import type { DBType } from "@/server/types";
 import type { GitHubUser, GoogleUser } from "@/types";
 import { and, eq } from "drizzle-orm";
 import {
@@ -8,8 +9,7 @@ import {
   oauthAccountTable,
 } from "../schema";
 
-export async function getAccountByGoogleId(googleId: string) {
-  const db = await getDrizzle();
+export async function getAccountByGoogleId(db: DBType, googleId: string) {
   return await db.query.oauthAccountTable.findFirst({
     where: and(
       eq(oauthAccountTable.provider, "GOOGLE"),
@@ -18,9 +18,7 @@ export async function getAccountByGoogleId(googleId: string) {
   });
 }
 
-export async function getAccountByGithubId(githubId: number) {
-  const db = await getDrizzle();
-
+export async function getAccountByGithubId(db: DBType, githubId: number) {
   return await db.query.oauthAccountTable.findFirst({
     where: and(
       eq(oauthAccountTable.provider, "GITHUB"),
@@ -33,11 +31,10 @@ export async function getAccountByGithubId(githubId: number) {
 }
 
 export async function createGithubAccount(
+  db: DBType,
   userId: UserModel["id"] | null,
   githubUser: GitHubUser,
 ) {
-  const db = await getDrizzle();
-
   return (
     await db
       .insert(oauthAccountTable)
@@ -67,11 +64,10 @@ export async function createGithubAccount(
 }
 
 export async function createGoogleAccount(
+  db: DBType,
   userId: UserModel["id"] | null,
   googleUser: GoogleUser,
 ) {
-  const db = await getDrizzle();
-
   return (
     await db
       .insert(oauthAccountTable)
@@ -100,28 +96,26 @@ export async function createGoogleAccount(
   )[0];
 }
 
-export async function getUserOAuthAccounts(userId: UserModel["id"]) {
-  const db = await getDrizzle();
-
+export async function getUserOAuthAccounts(
+  db: DBType,
+  userId: UserModel["id"],
+) {
   return await db.query.oauthAccountTable.findMany({
     where: eq(oauthAccountTable.userId, userId),
   });
 }
 
-export async function getOAuthAccount(id: string) {
-  const db = await getDrizzle();
-
+export async function getOAuthAccount(db: DBType, id: string) {
   return await db.query.oauthAccountTable.findFirst({
     where: eq(oauthAccountTable.id, id),
   });
 }
 
 export async function updateOAuthAccount(
+  db: DBType,
   id: string,
   data: Partial<OAuthAccountModel>,
 ) {
-  const db = await getDrizzle();
-
   return (
     await db
       .update(oauthAccountTable)
@@ -132,10 +126,10 @@ export async function updateOAuthAccount(
 }
 
 export async function removeUserOAuthAccount(
+  db: DBType,
   uid: UserModel["id"],
   provider: ProviderType,
 ) {
-  const db = await getDrizzle();
   return await db
     .delete(oauthAccountTable)
     .where(

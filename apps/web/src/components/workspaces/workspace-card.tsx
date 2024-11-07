@@ -1,6 +1,6 @@
 "use client";
 
-import type { WorkspaceModel } from "@/lib/db";
+import type { WorkspaceModel } from "@/server/db";
 import { Badge } from "@hexa/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader } from "@hexa/ui/card";
 import { BarChart2Icon, GlobeIcon, Link2Icon } from "@hexa/ui/icons";

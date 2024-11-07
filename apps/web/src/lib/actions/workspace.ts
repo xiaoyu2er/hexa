@@ -1,5 +1,17 @@
 "use server";
 
+import { isStored, storage } from "@/lib/storage";
+import { generateId } from "@/lib/utils";
+import {
+  CreateWorkspaceSchema,
+  DeleteWorkspaceSchema,
+  GetWorkspaceBySlugSchema,
+  SetUserDefaultWorkspaceSchema,
+  UpdateWorkspaceAvatarSchema,
+  UpdateWorkspaceSlugSchema,
+  UpdateWorkspacerNameSchema,
+} from "@/lib/zod/schemas/workspace";
+import { getDB } from "@/server/db";
 import {
   addWorkspaceMember,
   clearWorkspaceAsDefault,
@@ -12,18 +24,7 @@ import {
   updateWorkspaceAvatar,
   updateWorkspaceName,
   updateWorkspaceSlug,
-} from "@/lib/db/data-access/workspace";
-import { isStored, storage } from "@/lib/storage";
-import { generateId } from "@/lib/utils";
-import {
-  CreateWorkspaceSchema,
-  DeleteWorkspaceSchema,
-  GetWorkspaceBySlugSchema,
-  SetUserDefaultWorkspaceSchema,
-  UpdateWorkspaceAvatarSchema,
-  UpdateWorkspaceSlugSchema,
-  UpdateWorkspacerNameSchema,
-} from "@/lib/zod/schemas/workspace";
+} from "@/server/db/data-access/workspace";
 import { waitUntil } from "@vercel/functions";
 import { revalidatePath } from "next/cache";
 import { ZSAError } from "zsa";
@@ -33,7 +34,8 @@ export const getWorkspacesAction = authenticatedProcedure
   .createServerAction()
   .handler(async ({ ctx }) => {
     const { user } = ctx;
-    const workspaces = await getWorkspacesByUserId(user.id);
+    const db = await getDB();
+    const workspaces = await getWorkspacesByUserId(db, user.id);
     return {
       workspaces,
     };
@@ -44,7 +46,8 @@ export const getWorkspaceBySlugAction = authenticatedProcedure
   .input(GetWorkspaceBySlugSchema)
   .handler(async ({ input }) => {
     const { slug } = input;
-    const ws = await getWorkspaceBySlug(slug);
+    const db = await getDB();
+    const ws = await getWorkspaceBySlug(db, slug);
     if (!ws) {
       throw new ZSAError("NOT_FOUND", "Workspace not found");
     }
@@ -59,11 +62,12 @@ export const setUserDefaultWorkspaceAction = authenticatedProcedure
   .handler(async ({ input, ctx }) => {
     const { user } = ctx;
     const { workspaceId } = input;
-    const ws = await getWorkspaceByWsId(workspaceId);
+    const db = await getDB();
+    const ws = await getWorkspaceByWsId(db, workspaceId);
     if (!ws) {
       throw new ZSAError("NOT_FOUND", "Workspace not found");
     }
-    waitUntil(setUserDefaultWorkspace(user.id, workspaceId));
+    waitUntil(setUserDefaultWorkspace(db, user.id, workspaceId));
 
     // revalidatePath("/");
 
@@ -78,16 +82,17 @@ export const createWorkspaceAction = authenticatedProcedure
   .handler(async ({ input, ctx }) => {
     const { user } = ctx;
     const { name, slug } = input;
-    const ws = await getWorkspaceBySlug(slug);
+    const db = await getDB();
+    const ws = await getWorkspaceBySlug(db, slug);
     if (ws) {
       throw new ZSAError("CONFLICT", "Workspace with this slug already exists");
     }
-    const workspace = await createWorkspace({ name, slug });
+    const workspace = await createWorkspace(db, { name, slug });
     if (!workspace) {
       throw new ZSAError("INTERNAL_SERVER_ERROR", "Failed to create workspace");
     }
 
-    const member = await addWorkspaceMember({
+    const member = await addWorkspaceMember(db, {
       userId: user.id,
       workspaceId: workspace.id,
       role: "OWNER",
@@ -113,8 +118,9 @@ export const deleteWorkspaceAction = authenticatedProcedure
   .input(DeleteWorkspaceSchema)
   .handler(async ({ input }) => {
     const { workspaceId } = input;
-    await clearWorkspaceAsDefault(workspaceId);
-    await deleteWorkspace(workspaceId);
+    const db = await getDB();
+    await clearWorkspaceAsDefault(db, workspaceId);
+    await deleteWorkspace(db, workspaceId);
     return {};
   });
 
@@ -123,7 +129,8 @@ export const updateWorkspaceNameAction = authenticatedProcedure
   .input(UpdateWorkspacerNameSchema)
   .handler(async ({ input }) => {
     const { name, workspaceId } = input;
-    await updateWorkspaceName(workspaceId, name);
+    const db = await getDB();
+    await updateWorkspaceName(db, workspaceId, name);
     revalidatePath("/");
     return {};
   });
@@ -133,7 +140,8 @@ export const updateWorkspaceSlugAction = authenticatedProcedure
   .input(UpdateWorkspaceSlugSchema)
   .handler(async ({ input }) => {
     const { slug, workspaceId } = input;
-    const ws = await updateWorkspaceSlug(workspaceId, slug);
+    const db = await getDB();
+    const ws = await updateWorkspaceSlug(db, workspaceId, slug);
     revalidatePath("/");
     return {
       workspace: ws,
@@ -145,13 +153,14 @@ export const updateWorkspaceAvatarAction = authenticatedProcedure
   .input(UpdateWorkspaceAvatarSchema)
   .handler(async ({ input }) => {
     const { image, workspaceId } = input;
-    const ws = await getWorkspaceByWsId(workspaceId);
+    const db = await getDB();
+    const ws = await getWorkspaceByWsId(db, workspaceId);
     if (!ws) {
       throw new ZSAError("NOT_FOUND", "Workspace not found");
     }
 
     const { url } = await storage.upload(`ws-avatars/${generateId()}`, image);
-    await updateWorkspaceAvatar(workspaceId, url);
+    await updateWorkspaceAvatar(db, workspaceId, url);
     waitUntil(
       (async () => {
         if (ws.avatarUrl && isStored(ws.avatarUrl)) {

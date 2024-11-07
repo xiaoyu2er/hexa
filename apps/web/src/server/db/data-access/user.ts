@@ -1,15 +1,15 @@
-import { getDrizzle } from "@/lib/db";
+import { getHash } from "@/lib/utils";
+import { getDB } from "@/server/db";
 import {
   type EmailModal,
   type UserModel,
   emailTable,
   userTable,
-} from "@/lib/db/schema";
-import { getHash } from "@/lib/utils";
+} from "@/server/db/schema";
+import type { DBType } from "@/server/types";
 import { and, eq, ne } from "drizzle-orm";
 
-export async function getUser(uid: string) {
-  const db = await getDrizzle();
+export async function getUser(db: DBType, uid: string) {
   const user = await db.query.userTable.findFirst({
     where: eq(userTable.id, uid),
   });
@@ -17,8 +17,7 @@ export async function getUser(uid: string) {
   return user;
 }
 
-export async function getUserByUsername(username: string) {
-  const db = await getDrizzle();
+export async function getUserByUsername(db: DBType, username: string) {
   const user = await db.query.userTable.findFirst({
     where: eq(userTable.username, username),
   });
@@ -26,8 +25,7 @@ export async function getUserByUsername(username: string) {
   return user;
 }
 
-export async function getEmail(email: string) {
-  const db = await getDrizzle();
+export async function getEmail(db: DBType, email: string) {
   const emailItem = await db.query.emailTable.findFirst({
     where: (table, { eq }) => eq(table.email, email),
     with: {
@@ -38,23 +36,20 @@ export async function getEmail(email: string) {
   return emailItem;
 }
 
-export async function getUserPrimaryEmail(uid: string) {
-  const db = await getDrizzle();
+export async function getUserPrimaryEmail(db: DBType, uid: string) {
   return await db.query.emailTable.findFirst({
     where: (table, { eq }) =>
       and(eq(table.userId, uid), eq(table.primary, true)),
   });
 }
 
-export async function getUserEmails(uid: string) {
-  const db = await getDrizzle();
+export async function getUserEmails(db: DBType, uid: string) {
   return await db.query.emailTable.findMany({
     where: (table, { eq }) => eq(table.userId, uid),
   });
 }
 
-export async function getUserEmail(email: string) {
-  const db = await getDrizzle();
+export async function getUserEmail(db: DBType, email: string) {
   const emailItem = await db.query.emailTable.findFirst({
     where: (table, { eq }) => eq(table.email, email),
     with: {
@@ -64,15 +59,17 @@ export async function getUserEmail(email: string) {
   return emailItem;
 }
 
-export async function createUserEmail({
-  email,
-  verified,
-  primary,
-  userId,
-}: Pick<EmailModal, "email" | "verified" | "primary"> & {
-  userId: UserModel["id"];
-}) {
-  const db = await getDrizzle();
+export async function createUserEmail(
+  db: DBType,
+  {
+    email,
+    verified,
+    primary,
+    userId,
+  }: Pick<EmailModal, "email" | "verified" | "primary"> & {
+    userId: UserModel["id"];
+  },
+) {
   return (
     await db
       .insert(emailTable)
@@ -86,23 +83,24 @@ export async function createUserEmail({
   )[0];
 }
 
-export async function removeUserEmail(uid: string, email: string) {
-  const db = await getDrizzle();
+export async function removeUserEmail(db: DBType, uid: string, email: string) {
   await db
     .delete(emailTable)
     .where(and(eq(emailTable.email, email), eq(emailTable.userId, uid)));
 }
 
-export async function createUser({
-  email,
-  verified,
-  password,
-  username,
-  avatarUrl,
-  name,
-}: Pick<UserModel, "password" | "username" | "avatarUrl" | "name"> &
-  Pick<EmailModal, "email" | "verified">) {
-  const db = await getDrizzle();
+export async function createUser(
+  db: DBType,
+  {
+    email,
+    verified,
+    password,
+    username,
+    avatarUrl,
+    name,
+  }: Pick<UserModel, "password" | "username" | "avatarUrl" | "name"> &
+    Pick<EmailModal, "email" | "verified">,
+) {
   const user = (
     await db
       .insert(userTable)
@@ -118,7 +116,7 @@ export async function createUser({
 
   if (!user) return;
 
-  await createUserEmail({
+  await createUserEmail(db, {
     email,
     verified,
     primary: true,
@@ -133,8 +131,11 @@ export async function createUser({
   });
 }
 
-export async function updateUserPassword(uid: string, password: string) {
-  const db = await getDrizzle();
+export async function updateUserPassword(
+  db: DBType,
+  uid: string,
+  password: string,
+) {
   await db
     .update(userTable)
     .set({ password: await getHash(password) })
@@ -142,8 +143,11 @@ export async function updateUserPassword(uid: string, password: string) {
     .returning();
 }
 
-export async function updateUserPrimaryEmail(uid: string, email: string) {
-  const db = await getDrizzle();
+export async function updateUserPrimaryEmail(
+  db: DBType,
+  uid: string,
+  email: string,
+) {
   await db
     .update(emailTable)
     .set({ primary: true })
@@ -156,25 +160,30 @@ export async function updateUserPrimaryEmail(uid: string, email: string) {
     .where(and(ne(emailTable.email, email), eq(emailTable.userId, uid)));
 }
 
-export async function updateUserEmailVerified(uid: string, email: string) {
+export async function updateUserEmailVerified(
+  db: DBType,
+  uid: string,
+  email: string,
+) {
   console.log("updateUserEmailVerified", uid, email);
-  const db = await getDrizzle();
   await db
     .update(emailTable)
     .set({ verified: true })
     .where(and(eq(emailTable.email, email), eq(emailTable.userId, uid)));
 }
 
-export async function updateUserProfile(uid: string, imageUrl: string) {
-  const db = await getDrizzle();
+export async function updateUserProfile(
+  db: DBType,
+  uid: string,
+  imageUrl: string,
+) {
   await db
     .update(userTable)
     .set({ avatarUrl: imageUrl })
     .where(eq(userTable.id, uid));
 }
 
-export async function updateProfileName(uid: string, name: string) {
-  const db = await getDrizzle();
+export async function updateProfileName(db: DBType, uid: string, name: string) {
   await db
     .update(userTable)
     // we set name to null if it's an empty string
@@ -182,17 +191,22 @@ export async function updateProfileName(uid: string, name: string) {
     .where(eq(userTable.id, uid));
 }
 
-export async function updateUsername(uid: string, username: string) {
-  const db = await getDrizzle();
+export async function updateUsername(
+  db: DBType,
+  uid: string,
+  username: string,
+) {
   await db.update(userTable).set({ username }).where(eq(userTable.id, uid));
 }
 
-export async function updateUserAvatar(uid: string, avatarUrl: string) {
-  const db = await getDrizzle();
+export async function updateUserAvatar(
+  db: DBType,
+  uid: string,
+  avatarUrl: string,
+) {
   await db.update(userTable).set({ avatarUrl }).where(eq(userTable.id, uid));
 }
 
-export async function deleteUser(uid: string) {
-  const db = await getDrizzle();
+export async function deleteUser(db: DBType, uid: string) {
   await db.delete(userTable).where(eq(userTable.id, uid));
 }

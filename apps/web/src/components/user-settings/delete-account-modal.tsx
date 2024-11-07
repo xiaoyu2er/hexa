@@ -7,12 +7,12 @@ import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import { toast } from "@hexa/ui/sonner";
 import { useServerAction } from "zsa-react";
 
-import type { ProviderType } from "@/lib/db";
 import { setFormError } from "@/lib/form";
 import {
   type DeleteOAuthAccountInput,
   DeleteOAuthAccountSchema,
 } from "@/lib/zod/schemas/user";
+import type { ProviderType } from "@/server/db";
 import { Button } from "@hexa/ui/button";
 import {
   Dialog,
@@ -43,7 +43,7 @@ export const DeleteOAuthAccountModal = NiceModal.create(
     const form = useForm<DeleteOAuthAccountInput>({
       resolver: zodResolver(DeleteOAuthAccountSchema),
       defaultValues: {
-        provider: "",
+        provider: undefined,
       },
     });
 

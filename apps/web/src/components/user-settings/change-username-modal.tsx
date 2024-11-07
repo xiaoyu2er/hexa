@@ -7,12 +7,12 @@ import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import { toast } from "@hexa/ui/sonner";
 import { useServerAction } from "zsa-react";
 
-import type { ProviderType } from "@/lib/db";
 import { setFormError } from "@/lib/form";
 import {
   type ChangeUsernameInput,
   ChangeUsernameSchema,
 } from "@/lib/zod/schemas/user";
+import type { ProviderType } from "@/server/db";
 import { Alert, AlertDescription, AlertTitle } from "@hexa/ui/alert";
 import { Button } from "@hexa/ui/button";
 import {
