@@ -46,7 +46,7 @@ import { generateId } from "../utils";
 import {
   OTPSchema,
   OnlyEmailSchema,
-  OnlyTokenSchema,
+  VerifyTokenSchema,
 } from "../zod/schemas/auth";
 import { authenticatedProcedure, getUserEmailProcedure } from "./procedures";
 import { updateTokenAndSendVerifyEmail } from "./sign-up";
@@ -157,7 +157,7 @@ export type VerifyEmailByCodeReturnType = inferServerActionReturnTypeHot<
   typeof verifyEmailByCodeAction
 >;
 export const verifyEmailByTokenAction = createServerAction()
-  .input(OnlyTokenSchema)
+  .input(VerifyTokenSchema)
   .handler(async ({ input }) => {
     const { token } = input;
     let tokenItem = await getTokenByToken(token, "VERIFY_EMAIL");

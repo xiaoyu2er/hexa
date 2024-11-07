@@ -27,8 +27,8 @@ import { useCountdown } from "usehooks-ts";
 
 import type { VerifyCodeActionReturnData } from "@/lib/actions/reset-password";
 import type { client } from "@/lib/queries";
+import useMutation from "@/lib/queries/useMutation";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@hexa/ui/input-otp";
-import { useMutation } from "@tanstack/react-query";
 
 export interface VerifyCodeProps {
   email: string;
@@ -76,40 +76,22 @@ export const VerifyCode: FC<VerifyCodeProps> = ({
     mutationKey: ["veryfy-code"],
     mutationFn: onVerify,
     onSuccess: async (res) => {
-      if (!res.ok) {
-        try {
-          const err = await res.json();
-          setError("root", { message: err.error });
-        } catch (e) {
-          setError("root", { message: `[${res.status}] ${res.statusText}` });
-        }
-      } else {
-        onSuccess?.(await res.json());
-      }
+      onSuccess?.(await res.json());
     },
-    onError: (error) => {
-      console.log("err", error);
+    onError: (error: Error) => {
+      setError("root", { message: error.message });
     },
   });
 
   const { mutateAsync: execResend, isPending: isRensedPending } = useMutation({
     mutationFn: onResend,
-    onSuccess: async (res) => {
-      if (!res.ok) {
-        try {
-          const err = await res.json();
-          setError("root", { message: err.error });
-        } catch (e) {
-          setError("root", { message: `[${res.status}] ${res.statusText}` });
-        }
-      } else {
-        resetCountdown();
-        startCountdown();
-        reset();
-      }
+    onSuccess: async () => {
+      resetCountdown();
+      startCountdown();
+      reset();
     },
-    onError: (error) => {
-      console.log("err", error);
+    onError: (error: Error) => {
+      setError("root", { message: error.message });
     },
   });
 
