@@ -1,12 +1,5 @@
 "use client";
 
-import type {
-  ResendCodeActionInput,
-  ResendCodeActionReturnType,
-} from "@/lib/actions/sign-up";
-
-import { useServerAction } from "zsa-react";
-
 import { RESEND_VERIFY_CODE_TIME_SPAN, VERIFY_CODE_LENGTH } from "@/lib/const";
 import { type OTPForm, OTPSchema } from "@/lib/zod/schemas/auth";
 import { Button } from "@hexa/ui/button";
@@ -32,14 +25,10 @@ import { type FC, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useCountdown } from "usehooks-ts";
 
-import type {
-  VerifyCodeActionInput,
-  VerifyCodeActionReturnData,
-  VerifyCodeActionReturnType,
-} from "@/lib/actions/reset-password";
-import type { VerifyEmailByCodeReturnType } from "@/lib/actions/user";
-import { setFormError } from "@/lib/form";
+import type { VerifyCodeActionReturnData } from "@/lib/actions/reset-password";
+import type { client } from "@/lib/queries";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@hexa/ui/input-otp";
+import { useMutation } from "@tanstack/react-query";
 
 export interface VerifyCodeProps {
   email: string;
@@ -47,10 +36,8 @@ export interface VerifyCodeProps {
   onSuccess?: (_data: VerifyCodeActionReturnData) => void;
   onCancel?: () => void;
   className?: string;
-  onVerify: (
-    _input: VerifyCodeActionInput,
-  ) => VerifyCodeActionReturnType | VerifyEmailByCodeReturnType;
-  onResend: (_input: ResendCodeActionInput) => ResendCodeActionReturnType;
+  onVerify: (typeof client)["verify-login-passcode"]["$post"];
+  onResend: (typeof client)["resend-passcode"]["$post"];
 }
 
 export const VerifyCode: FC<VerifyCodeProps> = ({
@@ -85,38 +72,51 @@ export const VerifyCode: FC<VerifyCodeProps> = ({
     startCountdown();
   }, [startCountdown]);
 
-  const { execute: execVerify } = useServerAction(onVerify, {
-    onError: ({ err }) => {
-      setFormError(err, setError, "code");
-      reset(undefined, { keepErrors: true });
+  const { mutateAsync: execVerifyCode } = useMutation({
+    mutationKey: ["veryfy-code"],
+    mutationFn: onVerify,
+    onSuccess: async (res) => {
+      if (!res.ok) {
+        try {
+          const err = await res.json();
+          setError("root", { message: err.error });
+        } catch (e) {
+          setError("root", { message: `[${res.status}] ${res.statusText}` });
+        }
+      } else {
+        onSuccess?.(await res.json());
+      }
     },
-    onSuccess: ({ data }) => {
-      onSuccess?.(data);
+    onError: (error) => {
+      console.log("err", error);
     },
   });
 
-  const { execute: execResend, isPending: isRensedPending } = useServerAction(
-    onResend,
-    {
-      onError: ({ err }) => {
-        setError("code", { message: err.message });
-      },
+  const { mutateAsync: execResend, isPending: isRensedPending } = useMutation({
+    mutationFn: onResend,
+    onSuccess: async (res) => {
+      if (!res.ok) {
+        try {
+          const err = await res.json();
+          setError("root", { message: err.error });
+        } catch (e) {
+          setError("root", { message: `[${res.status}] ${res.statusText}` });
+        }
+      } else {
+        resetCountdown();
+        startCountdown();
+        reset();
+      }
     },
-  );
+    onError: (error) => {
+      console.log("err", error);
+    },
+  });
 
   const resed = async () => {
     if (count > 0) return;
     if (isRensedPending) return;
-    const [data, error] = await execResend({ email });
-    if (data) {
-      resetCountdown();
-      startCountdown();
-      reset();
-      console.log(JSON.stringify(data));
-    } else {
-      console.log(error);
-      setError("code", { message: error?.message });
-    }
+    execResend({ json: { email } });
   };
 
   return (
@@ -139,7 +139,7 @@ export const VerifyCode: FC<VerifyCodeProps> = ({
       <CardContent>
         <Form {...form}>
           <form
-            onSubmit={handleSubmit(execVerify)}
+            onSubmit={handleSubmit((json) => execVerifyCode({ json }))}
             ref={formRef}
             method="POST"
             className="space-y-4"
@@ -155,7 +155,9 @@ export const VerifyCode: FC<VerifyCodeProps> = ({
                       autoFocus
                       {...field}
                       containerClassName="justify-center"
-                      onComplete={handleSubmit(execVerify)}
+                      onComplete={handleSubmit((json) =>
+                        execVerifyCode({ json }),
+                      )}
                     >
                       {[...Array(VERIFY_CODE_LENGTH).keys()].map((index) => (
                         <InputOTPGroup key={index}>

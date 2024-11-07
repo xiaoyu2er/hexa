@@ -1,7 +1,17 @@
+import {
+  getUserEmailOrThrowError,
+  updateTokenAndSendPasscode,
+} from "@/lib/actions/login";
+import { updateTokenAndSendVerifyEmail } from "@/lib/actions/sign-up";
 import { validateRequest } from "@/lib/auth";
-import { setSession } from "@/lib/session";
+import { invalidateUserSessions, setSession } from "@/lib/session";
 import { isHashValid } from "@/lib/utils";
-import { LoginPasswordSchema } from "@/lib/zod/schemas/auth";
+import {
+  LoginPasscodeSchema,
+  LoginPasswordSchema,
+  OTPSchema,
+} from "@/lib/zod/schemas/auth";
+import { verifyDBTokenByCode } from "@/server/db/data-access/token";
 import { getUserByUsername, getUserEmail } from "@/server/db/data-access/user";
 import type { ContextVariables } from "@/server/types";
 import { zValidator } from "@hono/zod-validator";
@@ -25,7 +35,7 @@ const user = new Hono<{ Variables: ContextVariables }>()
     return c.json({ user });
   })
   .post(
-    "/login",
+    "/login-password",
     zValidator("json", LoginPasswordSchema),
     turnstile,
     async (c) => {
@@ -71,5 +81,59 @@ const user = new Hono<{ Variables: ContextVariables }>()
 
       return c.json({ user: existingUser });
     },
-  );
+  )
+  .post(
+    "/login-passcode",
+    zValidator("json", LoginPasscodeSchema),
+    turnstile,
+    async (c) => {
+      const db = c.get("db");
+      const { email } = c.req.valid("json");
+      const {
+        user: { id: userId },
+      } = await getUserEmailOrThrowError(db, email);
+      const data = await updateTokenAndSendPasscode(
+        db,
+        userId,
+        email,
+        "LOGIN_PASSCODE",
+      );
+      return c.json(data);
+    },
+  )
+  .post(
+    "/resend-passcode",
+    zValidator("json", LoginPasscodeSchema.pick({ email: true })),
+    async (c) => {
+      const db = c.get("db");
+      const { email } = c.req.valid("json");
+      const {
+        user: { id: userId },
+      } = await getUserEmailOrThrowError(db, email);
+      const data = await updateTokenAndSendPasscode(
+        db,
+        userId,
+        email,
+        "LOGIN_PASSCODE",
+      );
+      return c.json(data);
+    },
+  )
+  .post("/verify-login-passcode", zValidator("json", OTPSchema), async (c) => {
+    const db = c.get("db");
+    const { email, code } = c.req.valid("json");
+    const {
+      user: { id: userId },
+    } = await getUserEmailOrThrowError(db, email);
+    const tokenItem = await verifyDBTokenByCode(
+      db,
+      userId,
+      { code },
+      "LOGIN_PASSCODE",
+      true,
+    );
+    await invalidateUserSessions(tokenItem.userId);
+    await setSession(tokenItem.userId);
+    return c.json({}, 200);
+  });
 export default user;
