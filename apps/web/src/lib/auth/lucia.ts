@@ -1,16 +1,16 @@
-import { getDB } from "@/lib/db";
+import { getD1, getDB } from "@/server/db";
 import {
   type UserModel as DbUser,
   sessionTable,
   userTable,
-} from "@/lib/db/schema";
+} from "@/server/db/schema";
 import { D1Adapter } from "@lucia-auth/adapter-sqlite";
 import pick from "lodash/pick";
 import { Lucia, TimeSpan } from "lucia";
 
 export const getLucia = async () => {
-  const db = await getDB();
-  const adapter = new D1Adapter(db, { user: "user", session: "session" });
+  const d1 = await getD1();
+  const adapter = new D1Adapter(d1, { user: "user", session: "session" });
   const lucia = new Lucia(adapter, {
     getSessionAttributes: (attributes) => {
       return attributes;

@@ -1,13 +1,15 @@
 import { assertAuthenticated } from "@/lib/session";
+import { OnlyEmailSchema } from "@/lib/zod/schemas/auth";
+import { getDB } from "@/server/db";
+import { getUserEmail } from "@/server/db/data-access/user";
 import { ZSAError, createServerActionProcedure } from "zsa";
-import { getUserEmail } from "../db/data-access/user";
-import { OnlyEmailSchema } from "../zod/schemas/auth";
 
 export const getUserEmailProcedure = createServerActionProcedure()
   .input(OnlyEmailSchema)
   .handler(async ({ input }) => {
     const { email } = input;
-    const emailItem = await getUserEmail(email);
+    const db = await getDB();
+    const emailItem = await getUserEmail(db, email);
 
     if (!emailItem || !emailItem.user) {
       throw new ZSAError(

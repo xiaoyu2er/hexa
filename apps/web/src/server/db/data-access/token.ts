@@ -1,20 +1,26 @@
 import { RESET_PASSWORD_EXPIRE_TIME_SPAN } from "@/lib/const";
 import { generateCode, generateId } from "@/lib/utils";
+import type { DBType } from "@/server/types";
 import { and, eq } from "drizzle-orm";
 import { createDate, isWithinExpirationDate } from "oslo";
 import { ZSAError } from "zsa";
-import { getDrizzle } from "../db";
 import { type TokenType, tokenTable } from "../schema";
 
-export async function deleteDBToken(userId: string, type: TokenType) {
-  const db = await getDrizzle();
+export async function deleteDBToken(
+  db: DBType,
+  userId: string,
+  type: TokenType,
+) {
   return db
     .delete(tokenTable)
     .where(and(eq(tokenTable.userId, userId), eq(tokenTable.type, type)));
 }
 
-export async function findDBTokenByUserId(userId: string, type: TokenType) {
-  const db = await getDrizzle();
+export async function findDBTokenByUserId(
+  db: DBType,
+  userId: string,
+  type: TokenType,
+) {
   return db.query.tokenTable.findFirst({
     where: (table, { eq, and }) =>
       and(eq(table.userId, userId), eq(table.type, type)),
@@ -22,11 +28,11 @@ export async function findDBTokenByUserId(userId: string, type: TokenType) {
 }
 
 export async function addDBToken(
+  db: DBType,
   userId: string,
   email: string,
   type: TokenType,
 ) {
-  const db = await getDrizzle();
   await db
     .delete(tokenTable)
     .where(and(eq(tokenTable.userId, userId), eq(tokenTable.type, type)));
@@ -52,8 +58,11 @@ export async function addDBToken(
   return row;
 }
 
-export async function getTokenByToken(token: string, type: TokenType) {
-  const db = await getDrizzle();
+export async function getTokenByToken(
+  db: DBType,
+  token: string,
+  type: TokenType,
+) {
   return db.query.tokenTable.findFirst({
     where: (table, { eq, and }) =>
       and(eq(table.token, token), eq(table.type, type)),
@@ -61,6 +70,7 @@ export async function getTokenByToken(token: string, type: TokenType) {
 }
 
 export async function verifyDBTokenByCode(
+  db: DBType,
   userId: string,
   codeOrToken: {
     code?: string;
@@ -74,7 +84,7 @@ export async function verifyDBTokenByCode(
   }
 
   console.log("findDBTokenByUserId", userId, type);
-  const tokenRow = await findDBTokenByUserId(userId, type);
+  const tokenRow = await findDBTokenByUserId(db, userId, type);
 
   // No record
   if (!tokenRow) {
@@ -90,7 +100,7 @@ export async function verifyDBTokenByCode(
   if (!isWithinExpirationDate(tokenRow.expiresAt)) {
     // Delete the verification row
     if (deleteRow) {
-      await deleteDBToken(userId, type);
+      await deleteDBToken(db, userId, type);
     }
 
     throw new ZSAError(
@@ -126,7 +136,7 @@ export async function verifyDBTokenByCode(
   }
 
   if (deleteRow) {
-    await deleteDBToken(userId, type);
+    await deleteDBToken(db, userId, type);
   }
 
   return tokenRow;

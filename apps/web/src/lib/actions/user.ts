@@ -1,6 +1,22 @@
 "use server";
 
 import {
+  ChangeUsernameSchema,
+  DeleteOAuthAccountSchema,
+  DeleteUserSchema,
+  UpdateAvatarSchema,
+  UpdateUserNameSchema,
+} from "@/lib/zod/schemas/user";
+import { type ProviderType, getDB } from "@/server/db";
+import {
+  getUserOAuthAccounts,
+  removeUserOAuthAccount,
+} from "@/server/db/data-access/account";
+import {
+  getTokenByToken,
+  verifyDBTokenByCode,
+} from "@/server/db/data-access/token";
+import {
   createUserEmail,
   deleteUser,
   getUserEmails,
@@ -10,14 +26,7 @@ import {
   updateUserEmailVerified,
   updateUserPrimaryEmail,
   updateUsername,
-} from "@/lib/db/data-access/user";
-import {
-  ChangeUsernameSchema,
-  DeleteOAuthAccountSchema,
-  DeleteUserSchema,
-  UpdateAvatarSchema,
-  UpdateUserNameSchema,
-} from "@/lib/zod/schemas/user";
+} from "@/server/db/data-access/user";
 import { waitUntil } from "@vercel/functions";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -27,12 +36,6 @@ import {
   type inferServerActionReturnTypeHot,
 } from "zsa";
 import { validateRequest } from "../auth";
-import type { ProviderType } from "../db";
-import {
-  getUserOAuthAccounts,
-  removeUserOAuthAccount,
-} from "../db/data-access/account";
-import { getTokenByToken, verifyDBTokenByCode } from "../db/data-access/token";
 import {
   invalidateUserSessions,
   setBlankSessionCookie,
@@ -63,7 +66,8 @@ export const updateUserNameAction = authenticatedProcedure
   .handler(async ({ input, ctx }) => {
     const { name } = input;
     const { user } = ctx;
-    await updateProfileName(user.id, name);
+    const db = await getDB();
+    await updateProfileName(db, user.id, name);
     revalidatePath("/");
   });
 
@@ -71,7 +75,8 @@ export const getUserEmailsAction = authenticatedProcedure
   .createServerAction()
   .handler(async ({ ctx }) => {
     const { user } = ctx;
-    const emails = await getUserEmails(user.id);
+    const db = await getDB();
+    const emails = await getUserEmails(db, user.id);
     return {
       emails,
     };
@@ -83,8 +88,8 @@ export const addUserEmailAction = authenticatedProcedure
   .handler(async ({ input, ctx }) => {
     const { email } = input;
     const { user } = ctx;
-
-    await createUserEmail({
+    const db = await getDB();
+    await createUserEmail(db, {
       email,
       verified: false,
       primary: false,
@@ -100,7 +105,8 @@ export const setUserPrimaryEmailAction = authenticatedProcedure
   .handler(async ({ input, ctx }) => {
     const { email } = input;
     const { user } = ctx;
-    await updateUserPrimaryEmail(user.id, email);
+    const db = await getDB();
+    await updateUserPrimaryEmail(db, user.id, email);
   });
 
 export const removeUserEmailAction = authenticatedProcedure
@@ -109,7 +115,8 @@ export const removeUserEmailAction = authenticatedProcedure
   .handler(async ({ input, ctx }) => {
     const { email } = input;
     const { user } = ctx;
-    await removeUserEmail(user.id, email);
+    const db = await getDB();
+    await removeUserEmail(db, user.id, email);
   });
 
 export const verifyEmailByCodeAction = getUserEmailProcedure
@@ -132,7 +139,8 @@ export const verifyEmailByCodeAction = getUserEmailProcedure
 
     const { user } = await validateRequest();
     console.log("user", user);
-    await updateUserEmailVerified(tokenItem.userId, tokenItem.email);
+    const db = await getDB();
+    await updateUserEmailVerified(db, tokenItem.userId, tokenItem.email);
     console.log("0~afterVerifyEmailByCode", tokenItem.userId);
     if (!user) {
       console.log("1~invalidateUserSessions", tokenItem.userId);
@@ -169,7 +177,8 @@ export const verifyEmailByTokenAction = createServerAction()
     );
 
     const { user } = await validateRequest();
-    await updateUserEmailVerified(tokenItem.userId, tokenItem.email);
+    const db = await getDB();
+    await updateUserEmailVerified(db, tokenItem.userId, tokenItem.email);
     if (!user) {
       // if user is not logged in, set session
       await invalidateUserSessions(tokenItem.userId);
@@ -184,8 +193,9 @@ export const updateUserAvatarAction = authenticatedProcedure
   .handler(async ({ input, ctx }) => {
     const { image } = input;
     const { user } = ctx;
+    const db = await getDB();
     const { url } = await storage.upload(`avatars/${generateId()}`, image);
-    await updateUserAvatar(user.id, url);
+    await updateUserAvatar(db, user.id, url);
     waitUntil(
       (async () => {
         if (user.avatarUrl && isStored(user.avatarUrl)) {
@@ -201,7 +211,8 @@ export const deleteUserAction = authenticatedProcedure
   .input(DeleteUserSchema)
   .handler(async ({ ctx }) => {
     const { user } = ctx;
-    await deleteUser(user.id);
+    const db = await getDB();
+    await deleteUser(db, user.id);
     await invalidateUserSessions(user.id);
     setBlankSessionCookie();
     return redirect("/");
@@ -211,7 +222,8 @@ export const getUserOAuthAccountsAction = authenticatedProcedure
   .createServerAction()
   .handler(async ({ ctx }) => {
     const { user } = ctx;
-    const oauthAccounts = await getUserOAuthAccounts(user.id);
+    const db = await getDB();
+    const oauthAccounts = await getUserOAuthAccounts(db, user.id);
     return {
       oauthAccounts,
     };
@@ -223,7 +235,8 @@ export const removeUserOAuthAccountAction = authenticatedProcedure
   .handler(async ({ input, ctx }) => {
     const { provider } = input;
     const { user } = ctx;
-    await removeUserOAuthAccount(user.id, provider as ProviderType);
+    const db = await getDB();
+    await removeUserOAuthAccount(db, user.id, provider as ProviderType);
   });
 
 export const changeUsernameAction = authenticatedProcedure
@@ -232,5 +245,6 @@ export const changeUsernameAction = authenticatedProcedure
   .handler(async ({ input, ctx }) => {
     const { username } = input;
     const { user } = ctx;
-    await updateUsername(user.id, username);
+    const db = await getDB();
+    await updateUsername(db, user.id, username);
   });

@@ -1,6 +1,6 @@
 "use client";
 
-import type { OAuthAccountModel } from "@/lib/db";
+import type { OAuthAccountModel } from "@/server/db";
 import { useRouter } from "next/navigation";
 import type { FC } from "react";
 import { OAuthSignup } from "./oauth-signup-form";

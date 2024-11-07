@@ -1,9 +1,10 @@
 import { google, validateRequest } from "@/lib/auth";
+import { setSession } from "@/lib/session";
+import { getDB } from "@/server/db";
 import {
   createGoogleAccount,
   getAccountByGoogleId,
-} from "@/lib/db/data-access/account";
-import { setSession } from "@/lib/session";
+} from "@/server/db/data-access/account";
 import type { GoogleUser } from "@/types";
 import { OAuth2RequestError } from "arctic";
 import { cookies } from "next/headers";
@@ -26,6 +27,7 @@ export async function GET(request: Request): Promise<Response> {
     return NextResponse.json({ error: "Invalid state" }, { status: 400 });
   }
 
+  const db = await getDB();
   try {
     const tokens = await google.validateAuthorizationCode(code, codeVerifier);
     const response = await fetch(
@@ -43,7 +45,7 @@ export async function GET(request: Request): Promise<Response> {
     }
 
     const { user } = await validateRequest();
-    const existingAccount = await getAccountByGoogleId(googleUser.sub);
+    const existingAccount = await getAccountByGoogleId(db, googleUser.sub);
 
     if (existingAccount) {
       // If account is already linked to a user, set session and redirect to settings
@@ -59,7 +61,7 @@ export async function GET(request: Request): Promise<Response> {
     if (user) {
       // If user is logged in, bind the account, even if it's already linked, update the account
       // it's possible that the user goes to /oauth/google
-      await createGoogleAccount(user.id, googleUser);
+      await createGoogleAccount(db, user.id, googleUser);
       return new Response(null, {
         status: 302,
         headers: { Location: "/settings" },
@@ -68,7 +70,7 @@ export async function GET(request: Request): Promise<Response> {
 
     // If user is not logged in, create a new account, but don't set session, we need to redirect to /sign-up
     // We still need user to set a username
-    const account = await createGoogleAccount(null, googleUser);
+    const account = await createGoogleAccount(db, null, googleUser);
     if (!account) {
       return NextResponse.json(
         { error: "Failed to create account" },

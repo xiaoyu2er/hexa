@@ -1,9 +1,10 @@
 import { github, validateRequest } from "@/lib/auth";
+import { setSession } from "@/lib/session";
+import { getDB } from "@/server/db";
 import {
   createGithubAccount,
   getAccountByGithubId,
-} from "@/lib/db/data-access/account";
-import { setSession } from "@/lib/session";
+} from "@/server/db/data-access/account";
 import type { GitHubEmail, GitHubUser } from "@/types";
 import { OAuth2RequestError } from "arctic";
 import { cookies } from "next/headers";
@@ -18,6 +19,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Invalid state" }, { status: 400 });
   }
 
+  const db = await getDB();
   try {
     const tokens = await github.validateAuthorizationCode(code);
     const githubUserResponse = await fetch("https://api.github.com/user", {
@@ -50,7 +52,8 @@ export async function GET(request: NextRequest) {
 
     const { user } = await validateRequest();
     // Find existing oauthAccount
-    const existingAccount = await getAccountByGithubId(githubUser.id);
+    const db = await getDB();
+    const existingAccount = await getAccountByGithubId(db, githubUser.id);
 
     if (existingAccount) {
       // If account is already linked to a user, set session and redirect to settings
@@ -66,7 +69,7 @@ export async function GET(request: NextRequest) {
     if (user) {
       // If user is logged in, bind the account, even if it's already linked, update the account
       // it's possible that the user goes to /oauth/github
-      await createGithubAccount(user.id, githubUser);
+      await createGithubAccount(db, user.id, githubUser);
       return new Response(null, {
         status: 302,
         headers: { Location: "/settings" },
@@ -75,7 +78,7 @@ export async function GET(request: NextRequest) {
 
     // If user is not logged in, create a new account, but don't set session, we need to redirect to /sign-up
     // We still need user to set a username
-    const account = await createGithubAccount(null, githubUser);
+    const account = await createGithubAccount(db, null, githubUser);
     if (!account) {
       return NextResponse.json(
         { error: "Failed to create account" },

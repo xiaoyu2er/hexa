@@ -1,4 +1,4 @@
-import type { UserModel } from "@/lib/db";
+import type { UserModel } from "@/server/db";
 import { cookies } from "next/headers";
 import { ZSAError } from "zsa";
 import { validateRequest } from "./auth";

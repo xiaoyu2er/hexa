@@ -34,7 +34,6 @@ import { Input } from "@hexa/ui/input";
 import { PasswordInput } from "@hexa/ui/password-input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import type { InferRequestType } from "hono";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -66,19 +65,17 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
   });
   const $login = client.login.$post;
 
-  const mutation = useMutation<
-    Response,
-    Error,
-    InferRequestType<typeof $login>["form"]
-  >({
-    mutationFn: async (form) => {
-      console.log("form", form);
-      return $login({ form });
-    },
+  const mutation = useMutation({
+    mutationKey: ["login"],
+    mutationFn: $login,
     onSuccess: async (res) => {
       if (!res.ok) {
-        const err = await res.json();
-        setError("root", { message: err.error });
+        try {
+          const err = await res.json();
+          setError("root", { message: err.error });
+        } catch (e) {
+          setError("root", { message: `[${res.status}] ${res.statusText}` });
+        }
         resetTurnstile();
       } else {
         router.push("/settings");
@@ -108,10 +105,7 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
           <Divider>or</Divider>
           <Form {...form}>
             <form
-              onSubmit={handleSubmit((form) => {
-                // @ts-ignore
-                return mutation.mutate(form);
-              })}
+              onSubmit={handleSubmit((json) => mutation.mutateAsync({ json }))}
               method="POST"
               className="space-y-2"
             >
