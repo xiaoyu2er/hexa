@@ -20,7 +20,9 @@ import {
 
 import { OAuthButtons } from "@/components/auth/oauth-buttons";
 import { useTurnstile } from "@/hooks/use-turnstile";
+import { setFormError2 } from "@/lib/form";
 import { client } from "@/lib/queries";
+import useMutation from "@/lib/queries/useMutation";
 import {
   Card,
   CardContent,
@@ -33,7 +35,6 @@ import { FormErrorMessage } from "@hexa/ui/form-error-message";
 import { Input } from "@hexa/ui/input";
 import { PasswordInput } from "@hexa/ui/password-input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -68,22 +69,12 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
   const mutation = useMutation({
     mutationKey: ["login"],
     mutationFn: $login,
-    onSuccess: async (res) => {
-      if (!res.ok) {
-        try {
-          const err = await res.json();
-          setError("root", { message: err.error });
-        } catch (e) {
-          setError("root", { message: `[${res.status}] ${res.statusText}` });
-        }
-        resetTurnstile();
-      } else {
-        router.push("/settings");
-      }
+    onSuccess: async () => {
+      router.push("/settings");
     },
     onError: (error) => {
-      console.log("err", error);
       resetTurnstile();
+      setFormError2(error, setError);
     },
   });
 

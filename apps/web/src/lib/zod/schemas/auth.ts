@@ -103,8 +103,9 @@ export const OnlyEmailSchema = z.object({
   email,
 });
 
-export const OnlyTokenSchema = z.object({
+export const VerifyTokenSchema = z.object({
   token,
+  type: z.enum(["RESET_PASSWORD", "VERIFY_EMAIL", "LOGIN_PASSCODE"]),
 });
 
 export type SignupForm = z.infer<typeof SignupSchema>;
@@ -117,5 +118,4 @@ export type VerifyResetPasswordCodeForm = z.infer<
 >;
 export type ResetPasswordForm = z.infer<typeof ResetPasswordSchema>;
 export type OTPForm = z.infer<typeof OTPSchema>;
-export type OnlyTokenInput = z.infer<typeof OnlyTokenSchema>;
 export type OnlyEmailInput = z.infer<typeof OnlyEmailSchema>;

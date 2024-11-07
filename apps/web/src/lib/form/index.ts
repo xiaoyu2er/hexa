@@ -1,4 +1,5 @@
 import type { FieldPath, FieldValues, UseFormSetError } from "react-hook-form";
+import { ZodError } from "zod";
 import type { TAnyZodSafeFunctionHandler, inferServerActionError } from "zsa";
 
 export function setFormError<
@@ -22,5 +23,27 @@ export function setFormError<
     }
   } else {
     setError(defaultField, { message: err.message });
+  }
+}
+
+export function setFormError2<TFieldValues extends FieldValues>(
+  err: ZodError | Error,
+  setError: UseFormSetError<TFieldValues>,
+  defaultField:
+    | FieldPath<TFieldValues>
+    | `root.${string}`
+    | "root"
+    | undefined = "root",
+) {
+  if (err instanceof ZodError) {
+    for (const { path, message } of err.issues) {
+      // @ts-ignore
+      setError(path.join("."), {
+        message: message,
+      });
+    }
+  }
+  if (err.message) {
+    setError(defaultField ?? "root", { message: err.message });
   }
 }

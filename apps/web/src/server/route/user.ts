@@ -2,7 +2,6 @@ import {
   getUserEmailOrThrowError,
   updateTokenAndSendPasscode,
 } from "@/lib/actions/login";
-import { updateTokenAndSendVerifyEmail } from "@/lib/actions/sign-up";
 import { validateRequest } from "@/lib/auth";
 import { invalidateUserSessions, setSession } from "@/lib/session";
 import { isHashValid } from "@/lib/utils";
@@ -10,14 +9,18 @@ import {
   LoginPasscodeSchema,
   LoginPasswordSchema,
   OTPSchema,
+  VerifyTokenSchema,
 } from "@/lib/zod/schemas/auth";
-import { verifyDBTokenByCode } from "@/server/db/data-access/token";
+import {
+  getTokenByToken,
+  verifyDBTokenByCode,
+} from "@/server/db/data-access/token";
 import { getUserByUsername, getUserEmail } from "@/server/db/data-access/user";
 import type { ContextVariables } from "@/server/types";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
-import { ZSAError } from "zsa";
-import { turnstile } from "./turnstile";
+import { ApiError } from "../../lib/error/error";
+import { turnstile } from "../middleware/turnstile";
 
 const user = new Hono<{ Variables: ContextVariables }>()
   .use("/me", async (c, next) => {
@@ -34,6 +37,7 @@ const user = new Hono<{ Variables: ContextVariables }>()
     const { user } = await validateRequest();
     return c.json({ user });
   })
+  // Login by password
   .post(
     "/login-password",
     zValidator("json", LoginPasswordSchema),
@@ -48,7 +52,7 @@ const user = new Hono<{ Variables: ContextVariables }>()
         existingUser = emailItem?.user;
 
         if (!existingUser) {
-          throw new ZSAError(
+          throw new ApiError(
             "FORBIDDEN",
             process.env.NODE_ENV === "development"
               ? "[dev] Incorrect email or password"
@@ -58,7 +62,7 @@ const user = new Hono<{ Variables: ContextVariables }>()
       }
 
       if (!existingUser.password) {
-        throw new ZSAError(
+        throw new ApiError(
           "FORBIDDEN",
           process.env.NODE_ENV === "development"
             ? "[dev] Password is not set"
@@ -69,7 +73,7 @@ const user = new Hono<{ Variables: ContextVariables }>()
       const validPassword = await isHashValid(existingUser.password, password);
 
       if (!validPassword) {
-        throw new ZSAError(
+        throw new ApiError(
           "FORBIDDEN",
           process.env.NODE_ENV === "development"
             ? "[dev] Incorrect password"
@@ -79,9 +83,10 @@ const user = new Hono<{ Variables: ContextVariables }>()
 
       await setSession(existingUser.id);
 
-      return c.json({ user: existingUser });
+      return c.json({});
     },
   )
+  // Login by passcode
   .post(
     "/login-passcode",
     zValidator("json", LoginPasscodeSchema),
@@ -101,6 +106,7 @@ const user = new Hono<{ Variables: ContextVariables }>()
       return c.json(data);
     },
   )
+  // Resend passcode
   .post(
     "/resend-passcode",
     zValidator("json", LoginPasscodeSchema.pick({ email: true })),
@@ -119,6 +125,7 @@ const user = new Hono<{ Variables: ContextVariables }>()
       return c.json(data);
     },
   )
+  // Login by verify passcode sent to email
   .post("/verify-login-passcode", zValidator("json", OTPSchema), async (c) => {
     const db = c.get("db");
     const { email, code } = c.req.valid("json");
@@ -134,6 +141,33 @@ const user = new Hono<{ Variables: ContextVariables }>()
     );
     await invalidateUserSessions(tokenItem.userId);
     await setSession(tokenItem.userId);
-    return c.json({}, 200);
+    return c.json({});
+  })
+  // Login by verify token sent to email
+  .get("/verify-token", zValidator("query", VerifyTokenSchema), async (c) => {
+    const db = c.get("db");
+    const { token, type } = c.req.valid("query");
+
+    const tokenItem = await getTokenByToken(db, token, type);
+    if (!tokenItem) {
+      throw new ApiError(
+        "FORBIDDEN",
+        process.env.NODE_ENV === "development"
+          ? "[dev]Code is not found"
+          : "Code is invalid or expired",
+      );
+    }
+    await verifyDBTokenByCode(
+      db,
+      tokenItem.userId,
+      { token },
+      tokenItem.type,
+      true,
+    );
+
+    await invalidateUserSessions(tokenItem.userId);
+    await setSession(tokenItem.userId);
+    return c.redirect("/settings");
   });
+
 export default user;
