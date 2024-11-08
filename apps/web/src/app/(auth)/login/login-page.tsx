@@ -1,7 +1,6 @@
 "use client";
 
-import { VerifyCode } from "@/components/auth/verify-code-form";
-import { client } from "@/lib/queries";
+import { VerifyPasscode } from "@/components/auth/verify-passcode-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useStep } from "usehooks-ts";
@@ -15,8 +14,6 @@ export function LoginPage() {
   const [email, setEmail] = useState("");
   const [currentStep, { goToNextStep, reset }] = useStep(2);
   const router = useRouter();
-  const verifyCode = client["verify-login-passcode"].$post;
-  const resendCode = client["resend-passcode"].$post;
 
   if (loginType === "password") {
     return <LoginPassword onPasscode={() => setLoginType("passcode")} />;
@@ -37,10 +34,9 @@ export function LoginPage() {
           />
         )}
         {currentStep === 2 && (
-          <VerifyCode
+          <VerifyPasscode
             email={email}
-            onVerify={verifyCode}
-            onResend={resendCode}
+            type="LOGIN_PASSCODE"
             onSuccess={() => {
               router.push("/settings");
             }}

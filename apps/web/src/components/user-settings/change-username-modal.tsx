@@ -7,7 +7,7 @@ import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import { toast } from "@hexa/ui/sonner";
 import { useServerAction } from "zsa-react";
 
-import { setFormError } from "@/lib/form";
+import { setFormError3 } from "@/lib/form";
 import {
   type ChangeUsernameInput,
   ChangeUsernameSchema,
@@ -59,7 +59,7 @@ export const ChangeUsernameModal = NiceModal.create(
 
     const { execute } = useServerAction(changeUsernameAction, {
       onError: ({ err }) => {
-        setFormError(err, setError, "username");
+        setFormError3(err, setError, "username");
         modal.reject(err);
       },
       onSuccess: () => {

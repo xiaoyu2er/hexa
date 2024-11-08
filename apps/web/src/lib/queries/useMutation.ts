@@ -26,8 +26,8 @@ const useCustomMutation: typeof useMutation = ({
           }
           throw res;
         } catch (e) {
-          // @ts-ignore
           return onError?.(
+            // @ts-ignore
             new Error(`[${res.status}] ${res.statusText}`),
             ...args,
           );

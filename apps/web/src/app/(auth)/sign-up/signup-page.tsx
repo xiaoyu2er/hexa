@@ -1,6 +1,6 @@
 "use client";
 
-import { VerifyCode } from "@/components/auth/verify-code-form";
+import { VerifyPasscode } from "@/components/auth/verify-passcode-form";
 import { resendVerifyEmailAction } from "@/lib/actions/sign-up";
 import { verifyEmailByCodeAction } from "@/lib/actions/user";
 import { useRouter } from "next/navigation";
@@ -28,12 +28,11 @@ export const SignupPage: FC = () => {
         />
       )}
       {currentStep === 2 && (
-        <VerifyCode
+        <VerifyPasscode
           email={email}
-          onVerify={verifyEmailByCodeAction}
-          onResend={resendVerifyEmailAction}
+          type="VERIFY_EMAIL"
           onSuccess={() => {
-            console.log("Signup success");
+            router.push("/settings");
           }}
           onCancel={reset}
         />

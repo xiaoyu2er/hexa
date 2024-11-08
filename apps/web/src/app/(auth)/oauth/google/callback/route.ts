@@ -1,10 +1,10 @@
 import { google, validateRequest } from "@/lib/auth";
 import { setSession } from "@/lib/session";
-import { getDB } from "@/server/db";
 import {
   createGoogleAccount,
   getAccountByGoogleId,
-} from "@/server/db/data-access/account";
+} from "@/server/data-access/account";
+import { getDB } from "@/server/db";
 import type { GoogleUser } from "@/types";
 import { OAuth2RequestError } from "arctic";
 import { cookies } from "next/headers";

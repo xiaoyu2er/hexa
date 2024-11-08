@@ -7,7 +7,7 @@ import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import { toast } from "@hexa/ui/sonner";
 import { useServerAction } from "zsa-react";
 
-import { setFormError } from "@/lib/form";
+import { setFormError3 } from "@/lib/form";
 import { type OnlyEmailInput, OnlyEmailSchema } from "@/lib/zod/schemas/auth";
 import { Button } from "@hexa/ui/button";
 import {
@@ -51,7 +51,7 @@ export const DeleteUserEmailModal = NiceModal.create(
 
     const { execute } = useServerAction(removeUserEmailAction, {
       onError: ({ err }) => {
-        setFormError(err, setError, "email");
+        setFormError3(err, setError, "email");
         modal.reject(err);
       },
       onSuccess: () => {

@@ -3,7 +3,7 @@
 import { Input } from "@hexa/ui/input";
 
 import { createWorkspaceAction } from "@/lib/actions/workspace";
-import { setFormError } from "@/lib/form";
+import { setFormError3 } from "@/lib/form";
 import { invalidateWorkspacesQuery } from "@/lib/queries/workspace";
 import {
   type CreateWorkspaceInput,
@@ -51,7 +51,7 @@ export function CreateWorkspaceForm({ onSuccess }: CreateWorkspaceFormProps) {
 
   const { execute } = useServerAction(createWorkspaceAction, {
     onError: ({ err }) => {
-      setFormError(err, setError);
+      setFormError3(err, setError);
     },
     onSuccess: () => {
       toast.success("Workspace created successfully");

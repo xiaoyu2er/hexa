@@ -72,20 +72,32 @@ export const LoginPasswordSchema = z.object({
   password,
   "cf-turnstile-response": cfTurnstileResponse,
 });
+const PasscodeType = z.enum([
+  "RESET_PASSWORD",
+  "VERIFY_EMAIL",
+  "LOGIN_PASSCODE",
+]);
 
-export const LoginPasscodeSchema = z.object({
+export const SendPasscodeSchema = z.object({
   email,
+  type: PasscodeType,
   "cf-turnstile-response": cfTurnstileResponse,
 });
 
-export const ForgetPasswordSchema = z.object({
-  email,
-  "cf-turnstile-response": cfTurnstileResponse,
+export const ResendPasscodeSchema = SendPasscodeSchema.pick({
+  email: true,
+  type: true,
 });
 
-export const VerifyResetPasswordCodeSchema = z.object({
-  email,
+export const VerifyPasscodeSchema = z.object({
   code,
+  email,
+  type: PasscodeType,
+});
+
+export const VerifyPassTokenSchema = z.object({
+  token,
+  type: PasscodeType,
 });
 
 export const ResetPasswordSchema = z.object({
@@ -93,29 +105,15 @@ export const ResetPasswordSchema = z.object({
   password,
 });
 
-// one-time password
-export const OTPSchema = z.object({
-  code,
-  email,
-});
-
 export const OnlyEmailSchema = z.object({
   email,
-});
-
-export const VerifyTokenSchema = z.object({
-  token,
-  type: z.enum(["RESET_PASSWORD", "VERIFY_EMAIL", "LOGIN_PASSCODE"]),
 });
 
 export type SignupForm = z.infer<typeof SignupSchema>;
 export type OAuthSignupInput = z.infer<typeof OAuthSignupSchema>;
 export type LoginPasswordInput = z.infer<typeof LoginPasswordSchema>;
-export type LoginPasscodeInput = z.infer<typeof LoginPasscodeSchema>;
-export type ForgetPasswordForm = z.infer<typeof ForgetPasswordSchema>;
-export type VerifyResetPasswordCodeForm = z.infer<
-  typeof VerifyResetPasswordCodeSchema
->;
+export type SendPasscodeForm = z.infer<typeof SendPasscodeSchema>;
+export type VerifyPasscodeForm = z.infer<typeof VerifyPasscodeSchema>;
+export type VerifyResetPasswordCodeForm = z.infer<typeof VerifyPasscodeSchema>;
 export type ResetPasswordForm = z.infer<typeof ResetPasswordSchema>;
-export type OTPForm = z.infer<typeof OTPSchema>;
 export type OnlyEmailInput = z.infer<typeof OnlyEmailSchema>;

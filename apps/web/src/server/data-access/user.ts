@@ -1,3 +1,4 @@
+import { ApiError } from "@/lib/error/error";
 import { getHash } from "@/lib/utils";
 import { getDB } from "@/server/db";
 import {
@@ -114,7 +115,8 @@ export async function createUser(
       .returning()
   )[0];
 
-  if (!user) return;
+  if (!user)
+    throw new ApiError("INTERNAL_SERVER_ERROR", "Failed to create user");
 
   await createUserEmail(db, {
     email,

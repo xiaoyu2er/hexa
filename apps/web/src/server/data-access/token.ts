@@ -1,16 +1,12 @@
 import { RESET_PASSWORD_EXPIRE_TIME_SPAN } from "@/lib/const";
 import { generateCode, generateId } from "@/lib/utils";
+import { type OTPType, tokenTable } from "@/server/db/schema";
 import type { DBType } from "@/server/types";
 import { and, eq } from "drizzle-orm";
 import { createDate, isWithinExpirationDate } from "oslo";
 import { ZSAError } from "zsa";
-import { type TokenType, tokenTable } from "../schema";
 
-export async function deleteDBToken(
-  db: DBType,
-  userId: string,
-  type: TokenType,
-) {
+export async function deleteDBToken(db: DBType, userId: string, type: OTPType) {
   return db
     .delete(tokenTable)
     .where(and(eq(tokenTable.userId, userId), eq(tokenTable.type, type)));
@@ -19,7 +15,7 @@ export async function deleteDBToken(
 export async function findDBTokenByUserId(
   db: DBType,
   userId: string,
-  type: TokenType,
+  type: OTPType,
 ) {
   return db.query.tokenTable.findFirst({
     where: (table, { eq, and }) =>
@@ -31,7 +27,7 @@ export async function addDBToken(
   db: DBType,
   userId: string,
   email: string,
-  type: TokenType,
+  type: OTPType,
 ) {
   await db
     .delete(tokenTable)
@@ -61,7 +57,7 @@ export async function addDBToken(
 export async function getTokenByToken(
   db: DBType,
   token: string,
-  type: TokenType,
+  type: OTPType,
 ) {
   return db.query.tokenTable.findFirst({
     where: (table, { eq, and }) =>
@@ -71,15 +67,21 @@ export async function getTokenByToken(
 
 export async function verifyDBTokenByCode(
   db: DBType,
-  userId: string,
-  codeOrToken: {
+  {
+    userId,
+    code,
+    token,
+    type,
+    deleteRow = true,
+  }: {
+    userId: string;
     code?: string;
     token?: string;
+    type: OTPType;
+    deleteRow?: boolean;
   },
-  type: TokenType,
-  deleteRow: boolean,
 ) {
-  if (!codeOrToken.code && !codeOrToken.token) {
+  if (!code && !token) {
     throw new ZSAError("CONFLICT", "Code or token is required");
   }
 
@@ -111,9 +113,9 @@ export async function verifyDBTokenByCode(
     );
   }
 
-  if (codeOrToken.code) {
+  if (code) {
     // Not matching code
-    if (tokenRow.code !== codeOrToken.code) {
+    if (tokenRow.code !== code) {
       throw new ZSAError(
         "CONFLICT",
         process.env.NODE_ENV === "development"
@@ -121,11 +123,9 @@ export async function verifyDBTokenByCode(
           : "Code is invalid or expired",
       );
     }
-  }
-
-  if (codeOrToken.token) {
+  } else if (token) {
     // Not matching token
-    if (tokenRow.token !== codeOrToken.token) {
+    if (tokenRow.token !== token) {
       throw new ZSAError(
         "CONFLICT",
         process.env.NODE_ENV === "development"

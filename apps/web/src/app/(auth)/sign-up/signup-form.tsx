@@ -1,6 +1,5 @@
 "use client";
 
-import { signupAction } from "@/lib/actions/sign-up";
 import Link from "next/link";
 
 import { type SignupForm, SignupSchema } from "@/lib/zod/schemas/auth";
@@ -25,11 +24,12 @@ import { FormErrorMessage } from "@hexa/ui/form-error-message";
 import { Input } from "@hexa/ui/input";
 import { type FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useServerAction } from "zsa-react";
 
 import { OAuthButtons } from "@/components/auth/oauth-buttons";
 import { useTurnstile } from "@/hooks/use-turnstile";
-import { setFormError } from "@/lib/form";
+import { setFormError, setFormError3 } from "@/lib/form";
+import useMutation from "@/lib/queries/useMutation";
+import { $signup } from "@/server/client";
 import { PasswordInput } from "@hexa/ui/password-input";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -56,13 +56,15 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
     setFocus,
   } = form;
   const { resetTurnstile, turnstile, disableNext } = useTurnstile({ form });
-  const { execute } = useServerAction(signupAction, {
-    onError: ({ err }) => {
-      setFormError(err, setError);
-      resetTurnstile();
+
+  const { mutateAsync: signup } = useMutation({
+    mutationFn: $signup,
+    onSuccess: async (res) => {
+      onSuccess?.(await res.json());
     },
-    onSuccess: ({ data }) => {
-      onSuccess?.(data);
+    onError: (error) => {
+      resetTurnstile();
+      setFormError(error, setError);
     },
   });
 
@@ -81,7 +83,7 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
         <Divider>or</Divider>
         <Form {...form}>
           <form
-            onSubmit={handleSubmit((form) => execute(form))}
+            onSubmit={handleSubmit((json) => signup({ json }))}
             method="POST"
             className="space-y-2"
           >

@@ -1,18 +1,18 @@
 "use server";
 
-import type { TokenType } from "@/server/db";
-import { addDBToken } from "@/server/db/data-access/token";
-import { getUserEmail } from "@/server/db/data-access/user";
+import { PUBLIC_URL } from "@/lib/const";
+import { sendVerifyCodeAndUrlEmail } from "@/lib/emails";
+import { addDBToken } from "@/server/data-access/token";
+import { getUserEmail } from "@/server/data-access/user";
+import type { OTPType } from "@/server/db";
 import type { DBType } from "@/server/types";
 import { ZSAError } from "zsa";
-import { PUBLIC_URL } from "../const";
-import { sendVerifyCodeAndUrlEmail } from "../emails";
 
 export async function updateTokenAndSendPasscode(
   db: DBType,
   userId: string,
   email: string,
-  type: TokenType,
+  type: OTPType,
 ): Promise<{ email: string }> {
   const { code: verificationCode, token } = await addDBToken(
     db,

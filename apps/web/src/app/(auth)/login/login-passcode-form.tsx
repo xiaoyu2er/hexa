@@ -12,14 +12,14 @@ import {
 import { Button } from "@hexa/ui/button";
 
 import {
-  type LoginPasscodeInput,
-  LoginPasscodeSchema,
+  type SendPasscodeForm,
+  SendPasscodeSchema,
 } from "@/lib/zod/schemas/auth";
 
 import { useTurnstile } from "@/hooks/use-turnstile";
-import { setFormError2 } from "@/lib/form";
-import { client } from "@/lib/queries";
+import { setFormError } from "@/lib/form";
 import useMutation from "@/lib/queries/useMutation";
+import { $sendPasscode, type SendPasscodeRes } from "@/server/client";
 import {
   Card,
   CardContent,
@@ -35,13 +35,15 @@ import { useForm } from "react-hook-form";
 
 interface LoginPasscodeProps {
   onPassword: () => void;
-  onSuccess?: (_data: { email: string }) => void;
+  onSuccess?: (_data: SendPasscodeRes) => void;
 }
-const $login = client["login-passcode"].$post;
 
 export function LoginPasscode({ onPassword, onSuccess }: LoginPasscodeProps) {
-  const form = useForm<LoginPasscodeInput>({
-    resolver: zodResolver(LoginPasscodeSchema),
+  const form = useForm<SendPasscodeForm>({
+    resolver: zodResolver(SendPasscodeSchema),
+    defaultValues: {
+      type: "LOGIN_PASSCODE",
+    },
   });
 
   const {
@@ -56,12 +58,12 @@ export function LoginPasscode({ onPassword, onSuccess }: LoginPasscodeProps) {
   });
 
   const mutation = useMutation({
-    mutationFn: $login,
+    mutationFn: $sendPasscode,
     onSuccess: async (res) => {
       onSuccess?.(await res.json());
     },
     onError: (error) => {
-      setFormError2(error, setError);
+      setFormError(error, setError);
       resetTurnstile();
     },
   });
@@ -81,7 +83,6 @@ export function LoginPasscode({ onPassword, onSuccess }: LoginPasscodeProps) {
           <Form {...form}>
             <form
               onSubmit={handleSubmit((json) => mutation.mutateAsync({ json }))}
-              method="POST"
               className="space-y-2"
             >
               <FormField

@@ -8,7 +8,7 @@ config({
 
 console.log("process.env.DB_LOCAL_PATH", process.env.DB_LOCAL_PATH);
 export default defineConfig({
-  schema: "./src/lib/db/schema.ts",
+  schema: "./src/server/db/schema.ts",
   out: "./drizzle/migrations",
   dialect: "sqlite",
   dbCredentials: {

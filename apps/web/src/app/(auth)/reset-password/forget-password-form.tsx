@@ -1,11 +1,6 @@
 "use client";
 
 import { useTurnstile } from "@/hooks/use-turnstile";
-import { forgetPasswordAction } from "@/lib/actions/reset-password";
-import {
-  type ForgetPasswordForm,
-  ForgetPasswordSchema,
-} from "@/lib/zod/schemas/auth";
 import { Button } from "@hexa/ui/button";
 import {
   Card,
@@ -24,7 +19,13 @@ import {
 } from "@hexa/ui/form";
 import { Input } from "@hexa/ui/input";
 
-import { setFormError } from "@/lib/form";
+import { setFormError, setFormError3 } from "@/lib/form";
+import useMutation from "@/lib/queries/useMutation";
+import {
+  type SendPasscodeForm,
+  SendPasscodeSchema,
+} from "@/lib/zod/schemas/auth";
+import { $sendPasscode } from "@/server/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { type FC, useEffect } from "react";
@@ -42,10 +43,11 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
   onSuccess,
   onCancel,
 }) => {
-  const form = useForm<ForgetPasswordForm>({
-    resolver: zodResolver(ForgetPasswordSchema),
+  const form = useForm<SendPasscodeForm>({
+    resolver: zodResolver(SendPasscodeSchema),
     defaultValues: {
       email,
+      type: "RESET_PASSWORD",
     },
   });
 
@@ -61,15 +63,14 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
     errorField: "email",
   });
 
-  const { execute } = useServerAction(forgetPasswordAction, {
-    onError: ({ err }) => {
-      console.error("sign-up", err);
-      setFormError(err, setError, "email");
-      resetTurnstile();
+  const { mutateAsync: sendPasscode } = useMutation({
+    mutationFn: $sendPasscode,
+    onSuccess: async (res) => {
+      onSuccess?.(await res.json());
     },
-    onSuccess: ({ data }) => {
-      console.log("Forget password success", data);
-      onSuccess?.(data);
+    onError: (error) => {
+      setFormError(error, setError);
+      resetTurnstile();
     },
   });
 
@@ -88,7 +89,7 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
       <CardContent>
         <Form {...form}>
           <form
-            onSubmit={handleSubmit((form) => execute(form))}
+            onSubmit={handleSubmit((json) => sendPasscode({ json }))}
             method="POST"
             className="space-y-2"
           >

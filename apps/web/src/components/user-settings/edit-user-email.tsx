@@ -16,7 +16,7 @@ import { toast } from "@hexa/ui/sonner";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
-import { VerifyCode } from "@/components/auth/verify-code-form";
+import { VerifyPasscode } from "@/components/auth/verify-passcode-form";
 import { resendVerifyEmailAction } from "@/lib/actions/sign-up";
 import { MAX_EMAILS } from "@/lib/const";
 import { useModal } from "@ebay/nice-modal-react";
@@ -131,7 +131,7 @@ export function EditUserEmails() {
                     </Button>
 
                     {!email.verified && verifingEmail === email.email && (
-                      <VerifyCode
+                      <VerifyPasscode
                         className="my-2"
                         email={email.email}
                         showEmail={false}
