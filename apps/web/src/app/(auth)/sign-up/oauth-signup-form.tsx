@@ -1,7 +1,5 @@
 "use client";
 
-import { oauthSignupAction } from "@/lib/actions/sign-up";
-
 import {
   type OAuthSignupInput,
   OAuthSignupSchema,
@@ -26,10 +24,11 @@ import { FormErrorMessage } from "@hexa/ui/form-error-message";
 import { Input } from "@hexa/ui/input";
 import { type FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useServerAction } from "zsa-react";
 
 import { useTurnstile } from "@/hooks/use-turnstile";
-import { setFormError3 } from "@/lib/form";
+import { setFormError } from "@/lib/form";
+import useMutation from "@/lib/queries/useMutation";
+import { $oauthSignup } from "@/server/client";
 import type { OAuthAccountModel } from "@/server/db";
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -62,15 +61,17 @@ export const OAuthSignup: FC<OAuthSignupProps> = ({
     setFocus,
   } = form;
   const { resetTurnstile, turnstile, disableNext } = useTurnstile({ form });
-  const { execute } = useServerAction(oauthSignupAction, {
-    onError: ({ err }) => {
-      setFormError3(err, setError);
-      resetTurnstile();
-    },
-    onSuccess: () => {
+
+  const { mutateAsync: oauthSignup } = useMutation({
+    mutationFn: $oauthSignup,
+    onSuccess: async () => {
       console.log("oauth-sign-up");
       toast.success("Sign up success");
       onSuccess?.();
+    },
+    onError: (error) => {
+      resetTurnstile();
+      setFormError(error, setError);
     },
   });
 
@@ -89,7 +90,7 @@ export const OAuthSignup: FC<OAuthSignupProps> = ({
       <CardContent>
         <Form {...form}>
           <form
-            onSubmit={handleSubmit((form) => execute(form))}
+            onSubmit={handleSubmit((json) => oauthSignup({ json }))}
             method="POST"
             className="space-y-4"
           >

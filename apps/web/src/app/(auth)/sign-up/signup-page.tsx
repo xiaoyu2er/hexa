@@ -1,8 +1,6 @@
 "use client";
 
 import { VerifyPasscode } from "@/components/auth/verify-passcode-form";
-import { resendVerifyEmailAction } from "@/lib/actions/sign-up";
-import { verifyEmailByCodeAction } from "@/lib/actions/user";
 import { useRouter } from "next/navigation";
 import { type FC, useState } from "react";
 import { useStep } from "usehooks-ts";
