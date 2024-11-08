@@ -1,8 +1,8 @@
 import type { UserModel } from "@/server/db";
 import { cookies } from "next/headers";
-import { ZSAError } from "zsa";
 import { validateRequest } from "./auth";
 import { getLucia } from "./auth/lucia";
+import { ApiError } from "./error/error";
 
 export async function getSessionId() {
   const lucia = await getLucia();
@@ -50,7 +50,7 @@ export async function setBlankSessionCookie() {
 export async function assertAuthenticated() {
   const { user, session } = await validateRequest();
   if (!user) {
-    throw new ZSAError(
+    throw new ApiError(
       "FORBIDDEN",
       "You must be logged in to access this resource",
     );

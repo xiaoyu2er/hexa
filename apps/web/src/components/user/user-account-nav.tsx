@@ -1,8 +1,9 @@
 "use client";
 
 import { UserAvatar } from "@/components/user/user-avatar";
-import { logoutAction } from "@/lib/actions/logout";
+import useMutation from "@/lib/queries/useMutation";
 import { queryUserOptions } from "@/lib/queries/user";
+import { $logout } from "@/server/client";
 import { Button } from "@hexa/ui/button";
 import {
   DropdownMenu,
@@ -15,11 +16,22 @@ import {
 import { LogOut, Settings } from "@hexa/ui/icons";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useServerAction } from "zsa-react";
+import { useRouter } from "next/navigation";
 
 export function UserAccountNav() {
   const { data: user } = useSuspenseQuery(queryUserOptions);
-  const { execute: execLogout, isPending } = useServerAction(logoutAction);
+  const router = useRouter();
+  const { mutateAsync: execLogout, isPending } = useMutation({
+    mutationFn: $logout,
+    onSuccess(res) {
+      console.log("Logged out", res);
+      const url = res.headers.get("Location");
+      if (url) router.push(url);
+    },
+    onError(e) {
+      console.error("Failed to logout", e);
+    },
+  });
 
   return (
     <DropdownMenu>
