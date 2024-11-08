@@ -12,3 +12,4 @@ export const $verifyPasscode = api["verify-passcode"].$post;
 export const $resetPassword = api["reset-password"].$post;
 export const $signup = api.signup.$post;
 export const $oauthSignup = api["oauth-signup"].$post;
+export const $logout = api.logout.$post;

@@ -9,6 +9,6 @@ export type DBType = DrizzleD1Database<DBSchema>;
 
 export type ContextVariables = {
   db: DBType;
-  user: User | null;
-  session: Session | null;
+  user: User;
+  session: Session;
 };

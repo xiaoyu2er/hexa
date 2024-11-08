@@ -1,12 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation as useReactQueryMuation } from "@tanstack/react-query";
 import { ZodError, type ZodIssue } from "zod";
 
-const useCustomMutation: typeof useMutation = ({
+const useMutation: typeof useReactQueryMuation = ({
   onSuccess,
   onError,
   ...others
 }) => {
-  return useMutation({
+  return useReactQueryMuation({
     ...others,
     onSuccess: async (res, ...args) => {
       // @ts-ignore
@@ -40,4 +40,4 @@ const useCustomMutation: typeof useMutation = ({
   });
 };
 
-export default useCustomMutation;
+export default useMutation;

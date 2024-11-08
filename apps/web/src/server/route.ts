@@ -4,6 +4,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import db from "./middleware/db";
 import login from "./route/login";
+import logout from "./route/logout";
 import oauth from "./route/oauth";
 import passcode from "./route/passcode";
 import resetPassword from "./route/reset-password";
@@ -17,6 +18,7 @@ export const app = new Hono<{ Variables: ContextVariables }>()
   .use(db)
   .route("/", test)
   .route("/", login)
+  .route("/", logout)
   .route("/", resetPassword)
   .route("/", signup)
   .route("/", user)
