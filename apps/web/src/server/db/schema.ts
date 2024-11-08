@@ -46,9 +46,9 @@ export const sessionTable = sqliteTable("session", {
   ...expiresAt,
 });
 
-export type TokenType = "RESET_PASSWORD" | "VERIFY_EMAIL" | "LOGIN_PASSCODE";
-const tokenType = {
-  type: text("type").$type<TokenType>().notNull(),
+export type OTPType = "RESET_PASSWORD" | "VERIFY_EMAIL" | "LOGIN_PASSCODE";
+const otpType = {
+  type: text("type").$type<OTPType>().notNull(),
 };
 export const tokenTable = sqliteTable("token", {
   id: text("id")
@@ -56,7 +56,7 @@ export const tokenTable = sqliteTable("token", {
     .$defaultFn(() => generateId("token")),
   ...userIdNotNull,
   email: text("email").notNull(),
-  ...tokenType,
+  ...otpType,
   code: text("code").notNull(),
   token: text("token").notNull(),
   ...expiresAt,

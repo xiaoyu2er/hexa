@@ -1,13 +1,13 @@
-import type { DBType } from "@/server/types";
-import { eq } from "drizzle-orm";
-import { getDB } from "../db";
 import {
   type WorkspaceMemberModel,
   type WorkspaceModel,
   userTable,
   workspaceMemberTable,
   workspaceTable,
-} from "../schema";
+} from "@/server/db/schema";
+import type { DBType } from "@/server/types";
+import { eq } from "drizzle-orm";
+import { getDB } from "../db";
 
 export const setUserDefaultWorkspace = async (
   db: DBType,

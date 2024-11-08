@@ -1,26 +1,16 @@
-import { ApiError, ERROR_CODE_TO_HTTP_STATUS } from "@/lib/error/error";
+import { getDB } from "@/server/db";
 import { createMiddleware } from "hono/factory";
 
 const error = createMiddleware(async (c, next) => {
   try {
-    console.log("!error middleware");
     await next();
-  } catch (error) {
-    console.error("!!!!Error in error middleware", error);
-    // if (error instanceof ApiError) {
-    //   const status = ERROR_CODE_TO_HTTP_STATUS[error.code] ?? 500;
-    //   return new Response(
-    //     {
-    //       error: {
-    //         code: error.code,
-    //         message: error.message,
-    //         data: error.data,
-    //       },
-    //     },
-    //     status
-    //   );
-    // }
-    throw error;
+  } catch (err) {
+    console.error("!!", err);
+
+    if (err instanceof Error) {
+      return c.json({ error: err.message }, 500);
+    }
+    return c.json({ error: "An error occurred" }, 500);
   }
 });
 

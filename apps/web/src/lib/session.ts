@@ -6,7 +6,8 @@ import { getLucia } from "./auth/lucia";
 
 export async function getSessionId() {
   const lucia = await getLucia();
-  return cookies().get(lucia.sessionCookieName)?.value ?? null;
+  const cookie = await cookies();
+  return cookie.get(lucia.sessionCookieName)?.value ?? null;
 }
 
 // Validates a session with the session ID. Extends the session expiration if in idle state.
@@ -19,11 +20,8 @@ export async function setSessionCookie(sessionId: string) {
   const lucia = await getLucia();
   const sessionCookie = lucia.createSessionCookie(sessionId);
   console.log("setSessionCookie", sessionCookie);
-  cookies().set(
-    sessionCookie.name,
-    sessionCookie.value,
-    sessionCookie.attributes,
-  );
+  const cookie = await cookies();
+  cookie.set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 }
 
 export async function setSession(userId: UserModel["id"]) {
@@ -45,11 +43,8 @@ export async function invalidateUserSessions(userId: UserModel["id"]) {
 export async function setBlankSessionCookie() {
   const lucia = await getLucia();
   const sessionCookie = lucia.createBlankSessionCookie();
-  cookies().set(
-    sessionCookie.name,
-    sessionCookie.value,
-    sessionCookie.attributes,
-  );
+  const cookie = await cookies();
+  cookie.set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 }
 
 export async function assertAuthenticated() {

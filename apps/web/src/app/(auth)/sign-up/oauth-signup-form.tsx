@@ -29,7 +29,7 @@ import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
 
 import { useTurnstile } from "@/hooks/use-turnstile";
-import { setFormError } from "@/lib/form";
+import { setFormError3 } from "@/lib/form";
 import type { OAuthAccountModel } from "@/server/db";
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -64,7 +64,7 @@ export const OAuthSignup: FC<OAuthSignupProps> = ({
   const { resetTurnstile, turnstile, disableNext } = useTurnstile({ form });
   const { execute } = useServerAction(oauthSignupAction, {
     onError: ({ err }) => {
-      setFormError(err, setError);
+      setFormError3(err, setError);
       resetTurnstile();
     },
     onSuccess: () => {

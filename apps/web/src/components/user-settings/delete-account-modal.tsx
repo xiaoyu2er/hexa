@@ -7,7 +7,7 @@ import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import { toast } from "@hexa/ui/sonner";
 import { useServerAction } from "zsa-react";
 
-import { setFormError } from "@/lib/form";
+import { setFormError3 } from "@/lib/form";
 import {
   type DeleteOAuthAccountInput,
   DeleteOAuthAccountSchema,
@@ -55,7 +55,7 @@ export const DeleteOAuthAccountModal = NiceModal.create(
 
     const { execute } = useServerAction(removeUserOAuthAccountAction, {
       onError: ({ err }) => {
-        setFormError(err, setError, "provider");
+        setFormError3(err, setError, "provider");
         modal.reject(err);
       },
       onSuccess: () => {

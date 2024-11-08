@@ -1,15 +1,11 @@
 "use client";
 
-import { VerifyCode } from "@/components/auth/verify-code-form";
-import {
-  resendResetPasswordCodeAction,
-  verifyResetPasswordCodeAction,
-} from "@/lib/actions/reset-password";
-import { useRouter, useSearchParams } from "next/navigation";
-import { type FC, useState } from "react";
+import { VerifyPasscode } from "@/components/auth/verify-passcode-form";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { type FC, useEffect, useState } from "react";
 import { useStep } from "usehooks-ts";
 import { ForgetPasswordCard } from "./forget-password-form";
-import { ResetPasswordCard } from "./reset-password-form";
+import { ResetPassword } from "./reset-password-form";
 
 export interface ResetPasswordProps {
   token?: string;
@@ -17,8 +13,10 @@ export interface ResetPasswordProps {
 
 export const ResetPasswordPage: FC<ResetPasswordProps> = () => {
   const params = useSearchParams();
-  const initToken = params.get("token");
+  // we use initToken to check if the user is coming from email link
+  const [initToken] = useState(() => params.get("token"));
   const router = useRouter();
+  const pathname = usePathname();
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
   const [currentStep, { goToNextStep, goToPrevStep, reset }] = useStep(3);
@@ -27,9 +25,17 @@ export const ResetPasswordPage: FC<ResetPasswordProps> = () => {
     router.push("/");
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (initToken) {
+      // remove token in url
+      router.replace(pathname);
+    }
+  }, []);
+
   if (initToken) {
     return (
-      <ResetPasswordCard
+      <ResetPassword
         token={initToken}
         onSuccess={() => console.log("Reset success")}
         onCancel={onCancel}
@@ -50,10 +56,9 @@ export const ResetPasswordPage: FC<ResetPasswordProps> = () => {
         />
       )}
       {currentStep === 2 && (
-        <VerifyCode
+        <VerifyPasscode
           email={email}
-          onVerify={verifyResetPasswordCodeAction}
-          onResend={resendResetPasswordCodeAction}
+          type="RESET_PASSWORD"
           onSuccess={({ token }) => {
             goToNextStep();
             setToken(token);
@@ -62,7 +67,7 @@ export const ResetPasswordPage: FC<ResetPasswordProps> = () => {
         />
       )}
       {currentStep === 3 && (
-        <ResetPasswordCard
+        <ResetPassword
           token={token}
           onSuccess={() => console.log("Reset success")}
           onCancel={reset}

@@ -1,11 +1,13 @@
 "use client";
 
 import { resetPasswordAction } from "@/lib/actions/reset-password";
-import { setFormError } from "@/lib/form";
+import { setFormError, setFormError3 } from "@/lib/form";
+import useMutation from "@/lib/queries/useMutation";
 import {
   type ResetPasswordForm,
   ResetPasswordSchema,
 } from "@/lib/zod/schemas/auth";
+import { $resetPassword } from "@/server/client";
 import { Button } from "@hexa/ui/button";
 import {
   Card,
@@ -26,6 +28,7 @@ import {
 import { PasswordInput } from "@hexa/ui/password-input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { type FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
@@ -36,11 +39,13 @@ export interface ResetParsswordCardProps {
   token?: string;
 }
 
-export const ResetPasswordCard: FC<ResetParsswordCardProps> = ({
+export const ResetPassword: FC<ResetParsswordCardProps> = ({
   onSuccess,
   onCancel,
   token,
 }) => {
+  const router = useRouter();
+
   const form = useForm<ResetPasswordForm>({
     resolver: zodResolver(ResetPasswordSchema),
     defaultValues: {
@@ -55,12 +60,15 @@ export const ResetPasswordCard: FC<ResetParsswordCardProps> = ({
     formState: { isSubmitting, errors },
     setFocus,
   } = form;
-  const { execute } = useServerAction(resetPasswordAction, {
-    onError: ({ err }) => {
-      setFormError(err, setError, "password");
+
+  const mutation = useMutation({
+    mutationFn: $resetPassword,
+    onSuccess: async () => {
+      router.push("/settings");
     },
-    onSuccess: () => {
-      onSuccess?.();
+    onError: (error) => {
+      // resetTurnstile();
+      setFormError(error, setError);
     },
   });
 
@@ -79,7 +87,7 @@ export const ResetPasswordCard: FC<ResetParsswordCardProps> = ({
       <CardContent>
         <Form {...form}>
           <form
-            onSubmit={handleSubmit((form) => execute(form))}
+            onSubmit={handleSubmit((json) => mutation.mutateAsync({ json }))}
             method="POST"
             className="space-y-2"
           >

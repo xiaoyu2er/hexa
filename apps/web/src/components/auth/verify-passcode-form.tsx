@@ -1,7 +1,10 @@
 "use client";
 
 import { RESEND_VERIFY_CODE_TIME_SPAN, VERIFY_CODE_LENGTH } from "@/lib/const";
-import { type OTPForm, OTPSchema } from "@/lib/zod/schemas/auth";
+import {
+  type VerifyPasscodeForm,
+  VerifyPasscodeSchema,
+} from "@/lib/zod/schemas/auth";
 import { Button } from "@hexa/ui/button";
 import {
   Card,
@@ -25,35 +28,37 @@ import { type FC, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useCountdown } from "usehooks-ts";
 
-import type { VerifyCodeActionReturnData } from "@/lib/actions/reset-password";
-import type { client } from "@/lib/queries";
+import { setFormError } from "@/lib/form";
 import useMutation from "@/lib/queries/useMutation";
+import { $rensedPasscode, $verifyPasscode } from "@/server/client";
+import type { OTPType } from "@/server/db";
+import { FormErrorMessage } from "@hexa/ui/form-error-message";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@hexa/ui/input-otp";
+import type { InferResponseType } from "hono/client";
 
-export interface VerifyCodeProps {
+export interface VerifyPasscodeProps {
   email: string;
   showEmail?: boolean;
-  onSuccess?: (_data: VerifyCodeActionReturnData) => void;
+  onSuccess?: (_data: InferResponseType<typeof $verifyPasscode>) => void;
   onCancel?: () => void;
   className?: string;
-  onVerify: (typeof client)["verify-login-passcode"]["$post"];
-  onResend: (typeof client)["resend-passcode"]["$post"];
+  type: OTPType;
 }
 
-export const VerifyCode: FC<VerifyCodeProps> = ({
+export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
   email,
   showEmail = true,
   onSuccess,
   onCancel,
   className,
-  onVerify,
-  onResend,
+  type,
 }) => {
-  const form = useForm<OTPForm>({
-    resolver: zodResolver(OTPSchema),
+  const form = useForm<VerifyPasscodeForm>({
+    resolver: zodResolver(VerifyPasscodeSchema),
     defaultValues: {
       code: "",
       email: email,
+      type,
     },
   });
   const formRef = useRef<HTMLFormElement>(null);
@@ -73,32 +78,31 @@ export const VerifyCode: FC<VerifyCodeProps> = ({
   }, [startCountdown]);
 
   const { mutateAsync: execVerifyCode } = useMutation({
-    mutationKey: ["veryfy-code"],
-    mutationFn: onVerify,
+    mutationFn: $verifyPasscode,
     onSuccess: async (res) => {
       onSuccess?.(await res.json());
     },
     onError: (error: Error) => {
-      setError("root", { message: error.message });
+      setFormError(error, setError);
     },
   });
 
   const { mutateAsync: execResend, isPending: isRensedPending } = useMutation({
-    mutationFn: onResend,
+    mutationFn: $rensedPasscode,
     onSuccess: async () => {
       resetCountdown();
       startCountdown();
       reset();
     },
     onError: (error: Error) => {
-      setError("root", { message: error.message });
+      setFormError(error, setError);
     },
   });
 
   const resed = async () => {
     if (count > 0) return;
     if (isRensedPending) return;
-    execResend({ json: { email } });
+    execResend({ json: { email, type } });
   };
 
   return (
@@ -155,10 +159,11 @@ export const VerifyCode: FC<VerifyCodeProps> = ({
                       ))}
                     </InputOTP>
                   </FormControl>
-                  <FormMessage className="text-center" />
                 </FormItem>
               )}
             />
+            <FormErrorMessage message={errors.root?.message} />
+
             {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
             <p
               className={cn(

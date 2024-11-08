@@ -20,9 +20,9 @@ import {
 
 import { OAuthButtons } from "@/components/auth/oauth-buttons";
 import { useTurnstile } from "@/hooks/use-turnstile";
-import { setFormError2 } from "@/lib/form";
-import { client } from "@/lib/queries";
+import { setFormError } from "@/lib/form";
 import useMutation from "@/lib/queries/useMutation";
+import { $loginPassword } from "@/server/client";
 import {
   Card,
   CardContent,
@@ -64,17 +64,15 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
       clearErrors("root");
     },
   });
-  const $login = client["login-password"].$post;
 
-  const mutation = useMutation({
-    mutationKey: ["login"],
-    mutationFn: $login,
+  const { mutateAsync: loginPassword } = useMutation({
+    mutationFn: $loginPassword,
     onSuccess: async () => {
       router.push("/settings");
     },
     onError: (error) => {
       resetTurnstile();
-      setFormError2(error, setError);
+      setFormError(error, setError);
     },
   });
 
@@ -96,7 +94,7 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
           <Divider>or</Divider>
           <Form {...form}>
             <form
-              onSubmit={handleSubmit((json) => mutation.mutateAsync({ json }))}
+              onSubmit={handleSubmit((json) => loginPassword({ json }))}
               method="POST"
               className="space-y-2"
             >

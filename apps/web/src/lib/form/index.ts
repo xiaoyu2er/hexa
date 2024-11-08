@@ -2,7 +2,7 @@ import type { FieldPath, FieldValues, UseFormSetError } from "react-hook-form";
 import { ZodError } from "zod";
 import type { TAnyZodSafeFunctionHandler, inferServerActionError } from "zsa";
 
-export function setFormError<
+export function setFormError3<
   TFieldValues extends FieldValues,
   TServerAction extends TAnyZodSafeFunctionHandler,
 >(
@@ -26,7 +26,7 @@ export function setFormError<
   }
 }
 
-export function setFormError2<TFieldValues extends FieldValues>(
+export function setFormError<TFieldValues extends FieldValues>(
   err: ZodError | Error,
   setError: UseFormSetError<TFieldValues>,
   defaultField:
