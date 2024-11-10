@@ -10,7 +10,7 @@ const logout = new Hono<Context>()
     const session = c.get("session");
     await invalidateSession(session.id);
     await setBlankSessionCookie();
-    return c.redirect("/");
+    return c.json({});
   });
 
 export default logout;

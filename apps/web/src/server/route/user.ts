@@ -16,7 +16,6 @@ import {
 import {
   createUserEmail,
   deleteUser,
-  getUser,
   getUserByUsername,
   getUserEmails,
   removeUserEmail,
@@ -37,11 +36,11 @@ const user = new Hono<Context>()
   .use("/user/*", auth)
   // Get user info
   .get("/user/info", async (c) => {
-    const { db, userId } = c.var;
-    const user = await getUser(db, userId);
-    if (!user) {
-      throw new ApiError("NOT_FOUND", "User not found");
-    }
+    const { db, user } = c.var;
+    // const user = await getUser(db, userId);
+    // if (!user) {
+    //   throw new ApiError("NOT_FOUND", "User not found");
+    // }
     return c.json(user);
   })
   // Get user email

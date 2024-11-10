@@ -28,7 +28,9 @@ const avatarImage = z
   )
   .refine(
     (file) => ACCEPTED_IMAGE_TYPES.includes(file.type),
-    `${ACCEPTED_IMAGE_TYPES.map((t) => t.replace("image/", "")).join(", ")} files are accepted.`,
+    `${ACCEPTED_IMAGE_TYPES.map((t) => t.replace("image/", "")).join(
+      ", ",
+    )} files are accepted.`,
   );
 
 export const UpdateAvatarSchema = z.object({
@@ -50,12 +52,7 @@ export const DeleteUserSchema = z.object({
 export type DeleteUserInput = z.infer<typeof DeleteUserSchema>;
 
 export const DeleteOAuthAccountSchema = z.object({
-  provider: z
-    .string()
-    .refine(
-      (provider) => provider === "GOOGLE" || provider === "GITHUB",
-      "Invalid connected account type",
-    ),
+  provider: z.enum(["GOOGLE", "GITHUB"]),
 });
 
 export type DeleteOAuthAccountInput = z.infer<typeof DeleteOAuthAccountSchema>;
