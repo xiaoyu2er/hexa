@@ -40,7 +40,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { useServerAction } from "zsa-react";
 
 export function DeleteWorkspace() {
   const router = useRouter();

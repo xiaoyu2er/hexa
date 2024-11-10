@@ -1,6 +1,4 @@
 "use server";
-
-import { PUBLIC_URL } from "@/lib/const";
 import { sendVerifyCodeAndUrlEmail } from "@/lib/emails";
 import { addDBToken } from "@/server/data-access/token";
 import type { OTPType } from "@/server/db";

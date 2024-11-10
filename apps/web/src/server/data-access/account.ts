@@ -1,4 +1,3 @@
-import { getDB } from "@/server/db";
 import {
   type OAuthAccountModel,
   type ProviderType,

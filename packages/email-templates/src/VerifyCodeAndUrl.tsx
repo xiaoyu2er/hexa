@@ -1,5 +1,4 @@
 import { Hr, Link, Section, Text } from "@react-email/components";
-import React from "react";
 
 import VerifyCodeTemplate from "./VerifyCode";
 

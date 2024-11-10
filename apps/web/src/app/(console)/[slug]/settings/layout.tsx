@@ -12,17 +12,19 @@ const SETTINGS_NAVBARS: NavTab[] = [
   },
 ] as const;
 
-export default function ({
+export default async function ({
   children,
   params,
 }: {
   children: React.ReactNode;
-  params: { slug: string };
+  // https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes#good-to-know
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = await params;
   const navbars = SETTINGS_NAVBARS.map((nav) => {
     return {
       ...nav,
-      href: `/${params.slug}${nav.href}`,
+      href: `/${slug}${nav.href}`,
     };
   });
 
