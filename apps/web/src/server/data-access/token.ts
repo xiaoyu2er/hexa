@@ -1,10 +1,10 @@
 import { RESET_PASSWORD_EXPIRE_TIME_SPAN } from "@/lib/const";
+import { ApiError } from "@/lib/error/error";
 import { generateCode, generateId } from "@/lib/utils";
 import { type OTPType, tokenTable } from "@/server/db/schema";
 import type { DBType } from "@/server/types";
 import { and, eq } from "drizzle-orm";
 import { createDate, isWithinExpirationDate } from "oslo";
-import { ZSAError } from "zsa";
 
 export async function deleteDBToken(db: DBType, userId: string, type: OTPType) {
   return db
@@ -49,7 +49,7 @@ export async function addDBToken(
   )[0];
 
   if (!row) {
-    throw new ZSAError("INTERNAL_SERVER_ERROR", "Failed to create token");
+    throw new ApiError("INTERNAL_SERVER_ERROR", "Failed to create token");
   }
   return row;
 }
@@ -82,7 +82,7 @@ export async function verifyDBTokenByCode(
   },
 ) {
   if (!code && !token) {
-    throw new ZSAError("CONFLICT", "Code or token is required");
+    throw new ApiError("CONFLICT", "Code or token is required");
   }
 
   console.log("findDBTokenByUserId", userId, type);
@@ -90,7 +90,7 @@ export async function verifyDBTokenByCode(
 
   // No record
   if (!tokenRow) {
-    throw new ZSAError(
+    throw new ApiError(
       "CONFLICT",
       process.env.NODE_ENV === "development"
         ? "[dev]Code was not sent"
@@ -105,7 +105,7 @@ export async function verifyDBTokenByCode(
       await deleteDBToken(db, userId, type);
     }
 
-    throw new ZSAError(
+    throw new ApiError(
       "CONFLICT",
       process.env.NODE_ENV === "development"
         ? "[dev]Code is expired"
@@ -116,7 +116,7 @@ export async function verifyDBTokenByCode(
   if (code) {
     // Not matching code
     if (tokenRow.code !== code) {
-      throw new ZSAError(
+      throw new ApiError(
         "CONFLICT",
         process.env.NODE_ENV === "development"
           ? "[dev]Code does not match"
@@ -126,7 +126,7 @@ export async function verifyDBTokenByCode(
   } else if (token) {
     // Not matching token
     if (tokenRow.token !== token) {
-      throw new ZSAError(
+      throw new ApiError(
         "CONFLICT",
         process.env.NODE_ENV === "development"
           ? "[dev]Token does not match"

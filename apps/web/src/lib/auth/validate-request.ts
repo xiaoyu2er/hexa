@@ -14,7 +14,6 @@ const uncachedValidateRequest = async (): Promise<
   if (!sessionId) {
     return { user: null, session: null };
   }
-  console.log("sessionId", sessionId);
   const result = await validateSession(sessionId);
   // next.js throws when you attempt to set cookie when rendering page
   try {

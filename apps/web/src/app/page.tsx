@@ -13,6 +13,7 @@ import {
   AlertDialogTrigger,
 } from "@hexa/ui/alert-dialog";
 import { Button } from "@hexa/ui/button";
+import { redirect } from "next/navigation";
 
 function AlertDialogDemo() {
   return (
@@ -38,7 +39,8 @@ function AlertDialogDemo() {
 }
 
 export default async function Home() {
-  const { user, session } = await validateRequest();
+  const { session, user } = await validateRequest();
+  if (session) return redirect("/settings");
   return (
     <>
       <Header />

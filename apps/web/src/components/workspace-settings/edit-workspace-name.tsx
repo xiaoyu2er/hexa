@@ -17,7 +17,6 @@ import {
 } from "@hexa/ui/form";
 import { Input } from "@hexa/ui/input";
 
-import { updateWorkspaceNameAction } from "@/lib/actions/workspace";
 import {
   invalidateWorkspaceBySlugQuery,
   invalidateWorkspacesQuery,
@@ -27,18 +26,18 @@ import {
   type UpdateWorkspaceNameInput,
   UpdateWorkspacerNameSchema,
 } from "@/lib/zod/schemas/workspace";
+import { $updateWorkspaceName } from "@/server/client";
 import { Button } from "@hexa/ui/button";
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { useServerAction } from "zsa-react";
 
 export function EditWorkspaceName({ slug }: { slug: string }) {
   const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
-  const form = useForm<Pick<UpdateWorkspaceNameInput, "name">>({
-    resolver: zodResolver(UpdateWorkspacerNameSchema.pick({ name: true })),
+  const form = useForm<UpdateWorkspaceNameInput>({
+    resolver: zodResolver(UpdateWorkspacerNameSchema),
     defaultValues: useMemo(() => {
       return {
         name: ws?.name ?? "",
@@ -59,8 +58,9 @@ export function EditWorkspaceName({ slug }: { slug: string }) {
     });
   }, [reset, ws]);
 
-  const { execute } = useServerAction(updateWorkspaceNameAction, {
-    onError: ({ err }) => {
+  const { mutateAsync: updateWorkspaceName } = useMutation({
+    mutationFn: $updateWorkspaceName,
+    onError: (err) => {
       setError("name", { message: err.message });
     },
     onSuccess: () => {
@@ -73,10 +73,10 @@ export function EditWorkspaceName({ slug }: { slug: string }) {
   return (
     <Form {...form}>
       <form
-        onSubmit={handleSubmit((form) =>
-          execute({
-            ...form,
-            workspaceId: ws.id,
+        onSubmit={handleSubmit((json) =>
+          updateWorkspaceName({
+            json,
+            param: { workspaceId: ws.id },
           }),
         )}
         method="POST"

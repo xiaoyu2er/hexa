@@ -2,16 +2,16 @@
 
 import { Input } from "@hexa/ui/input";
 
-import { changeUsernameAction } from "@/lib/actions/user";
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import { toast } from "@hexa/ui/sonner";
-import { useServerAction } from "zsa-react";
 
-import { setFormError3 } from "@/lib/form";
+import { setFormError } from "@/lib/form";
+import { invalidateUser } from "@/lib/queries/user";
 import {
   type ChangeUsernameInput,
   ChangeUsernameSchema,
 } from "@/lib/zod/schemas/user";
+import { $updateUsername } from "@/server/client";
 import type { ProviderType } from "@/server/db";
 import { Alert, AlertDescription, AlertTitle } from "@hexa/ui/alert";
 import { Button } from "@hexa/ui/button";
@@ -33,6 +33,7 @@ import {
 } from "@hexa/ui/form";
 import { ExclamationTriangleIcon } from "@hexa/ui/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useBoolean } from "usehooks-ts";
 
@@ -57,15 +58,17 @@ export const ChangeUsernameModal = NiceModal.create(
       formState: { isSubmitting, errors },
     } = form;
 
-    const { execute } = useServerAction(changeUsernameAction, {
-      onError: ({ err }) => {
-        setFormError3(err, setError, "username");
+    const { mutateAsync: changeUsername } = useMutation({
+      mutationFn: $updateUsername,
+      onError: (err) => {
+        setFormError(err, setError, "username");
         modal.reject(err);
       },
       onSuccess: () => {
         toast.success(`Your ${provider} account has been removed.`);
         modal.resolve();
         modal.remove();
+        invalidateUser();
       },
     });
 
@@ -87,7 +90,7 @@ export const ChangeUsernameModal = NiceModal.create(
               </DialogHeader>
               <Form {...form}>
                 <form
-                  onSubmit={handleSubmit((form) => execute(form))}
+                  onSubmit={handleSubmit((json) => changeUsername({ json }))}
                   method="POST"
                   className="space-y-4"
                 >

@@ -7,9 +7,16 @@ import {
 import { queryOptions } from "@tanstack/react-query";
 
 export const queryUserOptions = queryOptions({
-  queryKey: ["user"],
+  queryKey: ["user/info"],
   queryFn: $getUserInfo,
 });
+
+export const invalidateUser = () => {
+  const client = getQueryClient();
+  client.invalidateQueries({
+    queryKey: queryUserOptions.queryKey,
+  });
+};
 
 export const queryUserEmailsOptions = queryOptions({
   queryKey: ["user/emails"],

@@ -19,7 +19,7 @@ import {
 } from "@hexa/ui/form";
 import { Input } from "@hexa/ui/input";
 
-import { setFormError, setFormError3 } from "@/lib/form";
+import { setFormError } from "@/lib/form";
 import {
   type SendPasscodeForm,
   SendPasscodeSchema,

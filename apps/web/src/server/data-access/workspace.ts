@@ -1,4 +1,3 @@
-import { ApiError } from "@/lib/error/error";
 import {
   type WorkspaceMemberModel,
   type WorkspaceModel,
@@ -8,7 +7,6 @@ import {
 } from "@/server/db/schema";
 import type { DBType } from "@/server/types";
 import { eq } from "drizzle-orm";
-import { getDB } from "../db";
 
 export const setUserDefaultWorkspace = async (
   db: DBType,
@@ -41,9 +39,33 @@ export const getWorkspaceBySlug = async (db: DBType, slug: string) => {
   });
 };
 
+export const getWorkspaceBySlugWithMembers = async (
+  db: DBType,
+  slug: string,
+) => {
+  return db.query.workspaceTable.findFirst({
+    where: (table, { eq }) => eq(table.slug, slug),
+    with: {
+      members: true,
+    },
+  });
+};
+
 export const getWorkspaceByWsId = async (db: DBType, wsId: string) => {
   return db.query.workspaceTable.findFirst({
     where: (table, { eq }) => eq(table.id, wsId),
+  });
+};
+
+export const getWorkspaceByWsIdWithMembers = async (
+  db: DBType,
+  wsId: string,
+) => {
+  return db.query.workspaceTable.findFirst({
+    where: (table, { eq }) => eq(table.id, wsId),
+    with: {
+      members: true,
+    },
   });
 };
 
@@ -143,4 +165,15 @@ export async function updateWorkspaceAvatar(
       .where(eq(workspaceTable.id, id))
       .returning()
   )[0];
+}
+
+export async function getWorkspaceMember(
+  db: DBType,
+  workspaceId: string,
+  userId: string,
+) {
+  return db.query.workspaceMemberTable.findFirst({
+    where: (table, { and, eq }) =>
+      and(eq(table.userId, userId), eq(table.workspaceId, workspaceId)),
+  });
 }

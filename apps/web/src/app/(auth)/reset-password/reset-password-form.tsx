@@ -1,7 +1,6 @@
 "use client";
 
-import { resetPasswordAction } from "@/lib/actions/reset-password";
-import { setFormError, setFormError3 } from "@/lib/form";
+import { setFormError } from "@/lib/form";
 import {
   type ResetPasswordForm,
   ResetPasswordSchema,
@@ -31,7 +30,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { type FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useServerAction } from "zsa-react";
 
 export interface ResetParsswordCardProps {
   onSuccess?: () => void;

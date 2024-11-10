@@ -1,5 +1,4 @@
 import { getQueryClient } from "@/components/providers/get-query-client";
-import {} from "@/lib/actions/workspace";
 import { $getWorkspaceBySlug, $getWorkspaces } from "@/server/client";
 import { queryOptions } from "@tanstack/react-query";
 

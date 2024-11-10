@@ -1,6 +1,6 @@
+import { ApiError } from "@/lib/error/error";
 import VerifyCodeAndUrlTemplate from "@hexa/email-templates/VerifyCodeAndUrl";
 import { Resend } from "resend";
-import { ZSAError } from "zsa";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendVerifyCodeAndUrlEmail(
@@ -24,7 +24,7 @@ export async function sendVerifyCodeAndUrlEmail(
 
   if (error) {
     console.error("Failed to send email", error);
-    throw new ZSAError("INTERNAL_SERVER_ERROR", "Failed to send email");
+    throw new ApiError("INTERNAL_SERVER_ERROR", "Failed to send email");
   }
 
   return { email, ...data };

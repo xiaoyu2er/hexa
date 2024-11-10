@@ -12,11 +12,11 @@ const name = z
   .max(32, "Name must be less than 32 characters");
 // .nullable();
 
-export const UpdateUserNameSchema = z.object({
+export const UpdateDisplayNameSchema = z.object({
   name,
 });
 
-export type UpdateUserNameInput = z.infer<typeof UpdateUserNameSchema>;
+export type UpdateDisplayNameInput = z.infer<typeof UpdateDisplayNameSchema>;
 
 // https://github.com/colinhacks/zod/issues/387#issuecomment-1191390673
 const avatarImage = z

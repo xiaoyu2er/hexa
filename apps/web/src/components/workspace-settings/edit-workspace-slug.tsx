@@ -17,7 +17,6 @@ import {
 } from "@hexa/ui/form";
 import { Input } from "@hexa/ui/input";
 
-import { updateWorkspaceSlugAction } from "@/lib/actions/workspace";
 import {
   invalidateWorkspacesQuery,
   queryWorkspaceBySlugOptions,
@@ -26,10 +25,11 @@ import {
   type UpdateWorkspaceSlugInput,
   UpdateWorkspaceSlugSchema,
 } from "@/lib/zod/schemas/workspace";
+import { $updateWorkspaceSlug } from "@/server/client";
 import { Button } from "@hexa/ui/button";
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
@@ -37,10 +37,8 @@ import { useServerAction } from "zsa-react";
 export function EditWorkspaceSlug({ slug }: { slug: string }) {
   const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
   const router = useRouter();
-  const form = useForm<Omit<UpdateWorkspaceSlugInput, "workspaceId">>({
-    resolver: zodResolver(
-      UpdateWorkspaceSlugSchema.omit({ workspaceId: true }),
-    ),
+  const form = useForm<UpdateWorkspaceSlugInput>({
+    resolver: zodResolver(UpdateWorkspaceSlugSchema),
     defaultValues: {
       slug: ws.slug,
     },
@@ -52,12 +50,13 @@ export function EditWorkspaceSlug({ slug }: { slug: string }) {
     formState: { isSubmitting, isDirty },
   } = form;
 
-  const { execute } = useServerAction(updateWorkspaceSlugAction, {
-    onError: ({ err }) => {
+  const { mutateAsync: updateWorkspaceSlug } = useMutation({
+    mutationFn: $updateWorkspaceSlug,
+    onError: (err) => {
       setError("slug", { message: err.message });
     },
-    onSuccess: ({ data }) => {
-      const slug = data.workspace?.slug;
+    onSuccess: (workspace) => {
+      const slug = workspace.slug;
       toast.success("The workspace slug has been updated");
       invalidateWorkspacesQuery();
       router.replace(`/${slug}/settings`);
@@ -67,9 +66,11 @@ export function EditWorkspaceSlug({ slug }: { slug: string }) {
     <Form {...form}>
       <form
         onSubmit={handleSubmit((form) =>
-          execute({
-            ...form,
-            workspaceId: ws.id,
+          updateWorkspaceSlug({
+            json: {
+              slug: form.slug,
+            },
+            param: { workspaceId: ws.id },
           }),
         )}
         method="POST"

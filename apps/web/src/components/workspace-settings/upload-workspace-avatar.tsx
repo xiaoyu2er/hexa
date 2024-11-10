@@ -5,7 +5,6 @@ import { FileUpload } from "@hexa/ui/file-upload";
 import { toast } from "@hexa/ui/sonner";
 import { useEffect, useState } from "react";
 
-import { updateWorkspaceAvatarAction } from "@/lib/actions/workspace";
 import { queryUserOptions } from "@/lib/queries/user";
 import {
   invalidateWorkspaceBySlugQuery,
@@ -16,6 +15,7 @@ import {
   type UpdateWorkspaceAvatarInput,
   UpdateWorkspaceAvatarSchema,
 } from "@/lib/zod/schemas/workspace";
+import { $updateWorkspaceAvatar } from "@/server/client";
 import { Button } from "@hexa/ui/button";
 import {
   Card,
@@ -33,18 +33,15 @@ import {
   FormMessage,
 } from "@hexa/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { useServerAction } from "zsa-react";
 
 export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
   const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
   const { data: user } = useSuspenseQuery(queryUserOptions);
 
-  const form = useForm<Omit<UpdateWorkspaceAvatarInput, "workspaceId">>({
-    resolver: zodResolver(
-      UpdateWorkspaceAvatarSchema.omit({ workspaceId: true }),
-    ),
+  const form = useForm<UpdateWorkspaceAvatarInput>({
+    resolver: zodResolver(UpdateWorkspaceAvatarSchema),
   });
 
   const {
@@ -53,8 +50,9 @@ export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
     formState: { isSubmitting },
   } = form;
 
-  const { execute } = useServerAction(updateWorkspaceAvatarAction, {
-    onError: ({ err }) => {
+  const { mutateAsync: updateWorkspaceAvatar } = useMutation({
+    mutationFn: $updateWorkspaceAvatar,
+    onError: (err) => {
       setError("image", { message: err.message });
     },
     onSuccess: () => {
@@ -76,12 +74,14 @@ export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
   return (
     <Form {...form}>
       <form
-        onSubmit={handleSubmit((form) =>
-          execute({
-            ...form,
-            workspaceId: ws.id,
-          }),
-        )}
+        onSubmit={handleSubmit((form) => {
+          return updateWorkspaceAvatar({
+            form,
+            param: {
+              workspaceId: ws.id,
+            },
+          });
+        })}
         method="POST"
         className="grid gap-4"
       >
@@ -125,7 +125,7 @@ export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
             <Button
               className="shrink-0 mr-2"
               loading={isSubmitting}
-              disabled={avatarUrl === user?.avatarUrl}
+              disabled={avatarUrl === user.avatarUrl}
             >
               Update
             </Button>

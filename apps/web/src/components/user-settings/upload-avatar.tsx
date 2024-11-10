@@ -5,12 +5,12 @@ import { FileUpload } from "@hexa/ui/file-upload";
 import { toast } from "@hexa/ui/sonner";
 import { useEffect, useState } from "react";
 
-import { updateUserAvatarAction } from "@/lib/actions/user";
 import { queryUserOptions } from "@/lib/queries/user";
 import {
   type UpdateAvatarInput,
   UpdateAvatarSchema,
 } from "@/lib/zod/schemas/user";
+import { $updateUserAvatar } from "@/server/client";
 import { Button } from "@hexa/ui/button";
 import {
   Card,
@@ -28,9 +28,8 @@ import {
   FormMessage,
 } from "@hexa/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { useServerAction } from "zsa-react";
 
 export default function UploadAvatar() {
   const { data: user, refetch } = useSuspenseQuery(queryUserOptions);
@@ -45,8 +44,9 @@ export default function UploadAvatar() {
     formState: { isSubmitting },
   } = form;
 
-  const { execute } = useServerAction(updateUserAvatarAction, {
-    onError: ({ err }) => {
+  const { mutateAsync: updateUserAvatar } = useMutation({
+    mutationFn: $updateUserAvatar,
+    onError: (err) => {
       setError("image", { message: err.message });
     },
     onSuccess: () => {
@@ -66,7 +66,7 @@ export default function UploadAvatar() {
   return (
     <Form {...form}>
       <form
-        onSubmit={handleSubmit((form) => execute(form))}
+        onSubmit={handleSubmit((form) => updateUserAvatar({ form }))}
         method="POST"
         className="grid gap-4"
       >

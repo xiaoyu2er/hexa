@@ -4,11 +4,11 @@ import { isHashValid } from "@/lib/utils";
 import { LoginPasswordSchema } from "@/lib/zod/schemas/auth";
 import { getUserByUsername, getUserEmail } from "@/server/data-access/user";
 import { turnstile } from "@/server/middleware/turnstile";
-import type { ContextVariables } from "@/server/types";
+import type { Context } from "@/server/types";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 
-const login = new Hono<{ Variables: ContextVariables }>()
+const login = new Hono<Context>()
   // Login by password
   .post(
     "/login-password",

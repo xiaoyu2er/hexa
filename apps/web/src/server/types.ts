@@ -10,5 +10,12 @@ export type DBType = DrizzleD1Database<DBSchema>;
 export type ContextVariables = {
   db: DBType;
   user: User;
+  userId: User["id"];
   session: Session;
+  ws: schema.WorkspaceModel;
+  wsMember: schema.WorkspaceMemberModel;
+};
+
+export type Context = {
+  Variables: ContextVariables;
 };

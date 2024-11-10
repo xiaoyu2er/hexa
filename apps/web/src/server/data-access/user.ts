@@ -1,6 +1,5 @@
 import { ApiError } from "@/lib/error/error";
 import { getHash } from "@/lib/utils";
-import { getDB } from "@/server/db";
 import {
   type EmailModal,
   type UserModel,
@@ -59,6 +58,20 @@ export async function getUserEmail(db: DBType, email: string) {
   });
   return emailItem;
 }
+
+export const getUserEmailOrThrowError = async (db: DBType, email: string) => {
+  const emailItem = await getUserEmail(db, email);
+
+  if (!emailItem || !emailItem.user) {
+    throw new ApiError(
+      "NOT_FOUND",
+      process.env.NODE_ENV === "development"
+        ? `[dev] User not found by email: ${email}`
+        : "Email not found",
+    );
+  }
+  return emailItem;
+};
 
 export async function createUserEmail(
   db: DBType,

@@ -10,16 +10,14 @@ import {
   getTokenByToken,
   verifyDBTokenByCode,
 } from "@/server/data-access/token";
+import { getUserEmailOrThrowError } from "@/server/data-access/user";
 import { turnstile } from "@/server/middleware/turnstile";
-import {
-  getUserEmailOrThrowError,
-  updateTokenAndSendPasscode,
-} from "@/server/serverice/login";
-import type { ContextVariables } from "@/server/types";
+import { updatePasscodeAndSendEmail } from "@/server/serverice/passcode";
+import type { Context } from "@/server/types";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 
-const passcode = new Hono<{ Variables: ContextVariables }>()
+const passcode = new Hono<Context>()
   // Send passcode
   .post(
     "/send-passcode",
@@ -28,10 +26,16 @@ const passcode = new Hono<{ Variables: ContextVariables }>()
     async (c) => {
       const db = c.get("db");
       const { email, type } = c.req.valid("json");
+      const publicUrl = new URL(c.req.url).origin;
       const {
         user: { id: userId },
       } = await getUserEmailOrThrowError(db, email);
-      const data = await updateTokenAndSendPasscode(db, userId, email, type);
+      const data = await updatePasscodeAndSendEmail(db, {
+        userId,
+        email,
+        type,
+        publicUrl,
+      });
       return c.json(data);
     },
   )
@@ -42,10 +46,16 @@ const passcode = new Hono<{ Variables: ContextVariables }>()
     async (c) => {
       const db = c.get("db");
       const { email, type } = c.req.valid("json");
+      const publicUrl = new URL(c.req.url).origin;
       const {
         user: { id: userId },
       } = await getUserEmailOrThrowError(db, email);
-      const data = await updateTokenAndSendPasscode(db, userId, email, type);
+      const data = await updatePasscodeAndSendEmail(db, {
+        userId,
+        email,
+        type,
+        publicUrl,
+      });
       return c.json(data);
     },
   )

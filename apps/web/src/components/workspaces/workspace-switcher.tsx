@@ -10,7 +10,7 @@ import { cn } from "@hexa/utils";
 import { UserAvatar } from "@/components/user/user-avatar";
 import { queryUserOptions } from "@/lib/queries/user";
 import { queryWorkspacesOptions } from "@/lib/queries/workspace";
-import { $setUserDefaultWorkspace } from "@/server/client";
+import { $updateUserDefaultWorkspace } from "@/server/client";
 import type { WorkspaceModel } from "@/server/db";
 import { Badge } from "@hexa/ui/badge";
 import { Dialog, DialogContent } from "@hexa/ui/dialog";
@@ -44,7 +44,7 @@ export function WorkspaceSwitcher() {
   const defaultWs = workspaces.find((ws) => ws.slug === slug);
   const router = useRouter();
   const { mutateAsync: setUserDefaultWorkspace } = useMutation({
-    mutationFn: $setUserDefaultWorkspace,
+    mutationFn: $updateUserDefaultWorkspace,
     async onSuccess({ slug }) {
       toast.success("Workspace switched");
       setPopoverOpen(false);

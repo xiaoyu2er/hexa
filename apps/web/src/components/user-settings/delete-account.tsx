@@ -9,13 +9,13 @@ import {
 } from "@hexa/ui/card";
 import { Input } from "@hexa/ui/input";
 
-import { deleteUserAction } from "@/lib/actions/user";
-import { setFormError3 } from "@/lib/form";
+import { setFormError } from "@/lib/form";
 import {
   DELETE_USER_CONFIRMATION,
   type DeleteUserInput,
   DeleteUserSchema,
 } from "@/lib/zod/schemas/user";
+import { $deleteUser } from "@/server/client";
 import { Button } from "@hexa/ui/button";
 import {
   Dialog,
@@ -36,15 +36,13 @@ import {
 } from "@hexa/ui/form";
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { useServerAction } from "zsa-react";
 
 export function DeleteAccount() {
   const form = useForm<DeleteUserInput>({
     resolver: zodResolver(DeleteUserSchema),
-    defaultValues: {
-      confirm: "",
-    },
+    defaultValues: {},
   });
 
   const {
@@ -53,9 +51,10 @@ export function DeleteAccount() {
     formState: { isSubmitting, errors },
   } = form;
 
-  const { execute } = useServerAction(deleteUserAction, {
-    onError: ({ err }) => {
-      setFormError3(err, setError, "confirm");
+  const { mutateAsync: deleteUser } = useMutation({
+    mutationFn: $deleteUser,
+    onError: (err) => {
+      setFormError(err, setError, "confirm");
     },
     onSuccess: () => {
       toast.success("Account deleted successfully");
@@ -83,7 +82,7 @@ export function DeleteAccount() {
           <DialogContent className="sm:max-w-[425px]">
             <Form {...form}>
               <form
-                onSubmit={handleSubmit((form) => execute(form))}
+                onSubmit={handleSubmit(() => deleteUser({}))}
                 method="POST"
                 className="space-y-4"
               >
