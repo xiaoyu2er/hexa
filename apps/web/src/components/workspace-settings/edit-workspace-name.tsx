@@ -27,6 +27,7 @@ import {
   UpdateWorkspacerNameSchema,
 } from "@/lib/zod/schemas/workspace";
 import { $updateWorkspaceName } from "@/server/client";
+import { NEXT_PUBLIC_APP_NAME } from "@hexa/env";
 import { Button } from "@hexa/ui/button";
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -87,7 +88,7 @@ export function EditWorkspaceName({ slug }: { slug: string }) {
             <CardTitle>Workspace Name</CardTitle>
             <CardDescription>
               This will be the workspace's display name on{" "}
-              {process.env.NEXT_PUBLIC_APP_NAME}.
+              {NEXT_PUBLIC_APP_NAME}.
             </CardDescription>
           </CardHeader>
           <CardContent>

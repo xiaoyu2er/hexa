@@ -1,0 +1,13 @@
+{
+  "name": "@hexa/env",
+  "description": "Env for Hexa",
+  "version": "0.0.0",
+  "sideEffects": false,
+  "private": true,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {},
+  "devDependencies": {},
+  "dependencies": {}
+}

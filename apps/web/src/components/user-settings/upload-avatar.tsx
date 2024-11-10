@@ -11,6 +11,7 @@ import {
   UpdateAvatarSchema,
 } from "@/lib/zod/schemas/user";
 import { $updateUserAvatar } from "@/server/client";
+import { NEXT_PUBLIC_APP_NAME } from "@hexa/env";
 import { Button } from "@hexa/ui/button";
 import {
   Card,
@@ -74,7 +75,7 @@ export default function UploadAvatar() {
           <CardHeader>
             <CardTitle>Avatar</CardTitle>
             <CardDescription>
-              This is your avatar image on {process.env.NEXT_PUBLIC_APP_NAME}.
+              This is your avatar image on {NEXT_PUBLIC_APP_NAME}.
             </CardDescription>
           </CardHeader>
           <CardContent>

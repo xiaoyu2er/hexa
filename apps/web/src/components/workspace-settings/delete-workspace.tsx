@@ -17,6 +17,7 @@ import {
   DeleteWorkspaceSchema,
 } from "@/lib/zod/schemas/workspace";
 import { $deleteWorkspace } from "@/server/client";
+import { NEXT_PUBLIC_APP_NAME } from "@hexa/env";
 import { Button } from "@hexa/ui/button";
 import {
   Dialog,
@@ -71,9 +72,9 @@ export function DeleteWorkspace() {
       <CardHeader>
         <CardTitle>Delete Workspace</CardTitle>
         <CardDescription>
-          Permanently delete your {process.env.NEXT_PUBLIC_APP_NAME} workspace,
-          and it's respective stats. This action cannot be undone - please
-          proceed with caution.
+          Permanently delete your {NEXT_PUBLIC_APP_NAME} workspace, and it's
+          respective stats. This action cannot be undone - please proceed with
+          caution.
         </CardDescription>
       </CardHeader>
       <CardFooter className="border-t  border-red-600 px-6 py-4 items-center flex-row-reverse justify-between">
@@ -100,9 +101,9 @@ export function DeleteWorkspace() {
                 <DialogHeader>
                   <DialogTitle>Delete Workspace</DialogTitle>
                   <DialogDescription>
-                    Permanently delete your {process.env.NEXT_PUBLIC_APP_NAME}{" "}
-                    workspace, and it's respective stats. This action cannot be
-                    undone - please proceed with caution.
+                    Permanently delete your {NEXT_PUBLIC_APP_NAME} workspace,
+                    and it's respective stats. This action cannot be undone -
+                    please proceed with caution.
                   </DialogDescription>
                 </DialogHeader>
 

@@ -7,6 +7,7 @@ import {
   userTable,
 } from "@/server/db/schema";
 import type { DBType } from "@/server/types";
+import { IS_DEVELOPMENT } from "@hexa/env";
 import { and, eq, ne } from "drizzle-orm";
 
 export async function getUser(db: DBType, uid: string) {
@@ -65,7 +66,7 @@ export const getUserEmailOrThrowError = async (db: DBType, email: string) => {
   if (!emailItem || !emailItem.user) {
     throw new ApiError(
       "NOT_FOUND",
-      process.env.NODE_ENV === "development"
+      IS_DEVELOPMENT
         ? `[dev] User not found by email: ${email}`
         : "Email not found",
     );

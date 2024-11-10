@@ -5,6 +5,7 @@ import { LoginPasswordSchema } from "@/lib/zod/schemas/auth";
 import { getUserByUsername, getUserEmail } from "@/server/data-access/user";
 import { turnstile } from "@/server/middleware/turnstile";
 import type { Context } from "@/server/types";
+import { IS_DEVELOPMENT } from "@hexa/env";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 
@@ -26,7 +27,7 @@ const login = new Hono<Context>()
         if (!existingUser) {
           throw new ApiError(
             "FORBIDDEN",
-            process.env.NODE_ENV === "development"
+            IS_DEVELOPMENT
               ? "[dev] Incorrect email or password"
               : "Incorrect email or password",
           );
@@ -36,7 +37,7 @@ const login = new Hono<Context>()
       if (!existingUser.password) {
         throw new ApiError(
           "FORBIDDEN",
-          process.env.NODE_ENV === "development"
+          IS_DEVELOPMENT
             ? "[dev] Password is not set"
             : "Incorrect email or password",
         );
@@ -47,7 +48,7 @@ const login = new Hono<Context>()
       if (!validPassword) {
         throw new ApiError(
           "FORBIDDEN",
-          process.env.NODE_ENV === "development"
+          IS_DEVELOPMENT
             ? "[dev] Incorrect password"
             : "Incorrect email or password",
         );

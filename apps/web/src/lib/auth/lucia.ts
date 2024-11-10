@@ -1,5 +1,6 @@
 import { getD1 } from "@/server/db";
 import type { UserModel as DbUser } from "@/server/db/schema";
+import { IS_PRODUCTION } from "@hexa/env";
 import { D1Adapter } from "@lucia-auth/adapter-sqlite";
 import pick from "lodash/pick";
 import { Lucia, TimeSpan } from "lucia";
@@ -38,7 +39,7 @@ export const getLucia = async () => {
       // Set to false for cookies to persist indefinitely (default: true)
       expires: false,
       attributes: {
-        secure: process.env.NODE_ENV === "production",
+        secure: IS_PRODUCTION,
       },
     },
   });

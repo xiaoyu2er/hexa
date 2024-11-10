@@ -15,6 +15,7 @@ import {
 import { turnstile } from "@/server/middleware/turnstile";
 import { updatePasscodeAndSendEmail } from "@/server/serverice/passcode";
 import type { Context } from "@/server/types";
+import { IS_DEVELOPMENT } from "@hexa/env";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 
@@ -29,9 +30,7 @@ const signup = new Hono<Context>()
     if (emailItem?.verified) {
       throw new ApiError(
         "FORBIDDEN",
-        process.env.NODE_ENV === "development"
-          ? "[dev]Email already exists"
-          : "Email already exists",
+        IS_DEVELOPMENT ? "[dev]Email already exists" : "Email already exists",
       );
     }
 

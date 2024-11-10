@@ -3,6 +3,7 @@ import { ApiError } from "@/lib/error/error";
 import { generateCode, generateId } from "@/lib/utils";
 import { type OTPType, tokenTable } from "@/server/db/schema";
 import type { DBType } from "@/server/types";
+import { IS_DEVELOPMENT } from "@hexa/env";
 import { and, eq } from "drizzle-orm";
 import { createDate, isWithinExpirationDate } from "oslo";
 
@@ -92,9 +93,7 @@ export async function verifyDBTokenByCode(
   if (!tokenRow) {
     throw new ApiError(
       "CONFLICT",
-      process.env.NODE_ENV === "development"
-        ? "[dev]Code was not sent"
-        : "Code is invalid or expired",
+      IS_DEVELOPMENT ? "[dev]Code was not sent" : "Code is invalid or expired",
     );
   }
 
@@ -107,9 +106,7 @@ export async function verifyDBTokenByCode(
 
     throw new ApiError(
       "CONFLICT",
-      process.env.NODE_ENV === "development"
-        ? "[dev]Code is expired"
-        : "Code is invalid or expired",
+      IS_DEVELOPMENT ? "[dev]Code is expired" : "Code is invalid or expired",
     );
   }
 
@@ -118,7 +115,7 @@ export async function verifyDBTokenByCode(
     if (tokenRow.code !== code) {
       throw new ApiError(
         "CONFLICT",
-        process.env.NODE_ENV === "development"
+        IS_DEVELOPMENT
           ? "[dev]Code does not match"
           : "Code is invalid or expired",
       );
@@ -128,7 +125,7 @@ export async function verifyDBTokenByCode(
     if (tokenRow.token !== token) {
       throw new ApiError(
         "CONFLICT",
-        process.env.NODE_ENV === "development"
+        IS_DEVELOPMENT
           ? "[dev]Token does not match"
           : "Token is invalid or expired",
       );

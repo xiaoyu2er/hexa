@@ -1,3 +1,9 @@
+import {
+  STORAGE_ACCESS_KEY_ID,
+  STORAGE_BASE_URL,
+  STORAGE_ENDPOINT,
+  STORAGE_SECRET_ACCESS_KEY,
+} from "@hexa/env";
 import { fetchWithTimeout } from "@hexa/utils";
 import { AwsClient } from "aws4fetch";
 
@@ -12,8 +18,8 @@ class StorageClient {
 
   constructor() {
     this.client = new AwsClient({
-      accessKeyId: process.env.STORAGE_ACCESS_KEY_ID ?? "",
-      secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY ?? "",
+      accessKeyId: STORAGE_ACCESS_KEY_ID ?? "",
+      secretAccessKey: STORAGE_SECRET_ACCESS_KEY ?? "",
       service: "s3",
       region: "auto",
     });
@@ -41,33 +47,30 @@ class StorageClient {
     };
     if (opts?.contentType) headers["Content-Type"] = opts.contentType;
 
-    const res = await this.client.fetch(
-      `${process.env.STORAGE_ENDPOINT ?? ""}/${key}`,
-      {
-        method: "PUT",
-        headers,
-        body: uploadBody,
-      },
-    );
+    const res = await this.client.fetch(`${STORAGE_ENDPOINT ?? ""}/${key}`, {
+      method: "PUT",
+      headers,
+      body: uploadBody,
+    });
 
     const json = await res.text();
     console.log("upload:", json);
 
     return {
-      url: `${process.env.STORAGE_BASE_URL ?? ""}/${key}`,
+      url: `${STORAGE_BASE_URL ?? ""}/${key}`,
     };
   }
 
   async delete(url: string) {
-    if (!url.startsWith(process.env.STORAGE_BASE_URL ?? "")) {
+    if (!url.startsWith(STORAGE_BASE_URL ?? "")) {
       return {
         success: false,
-        message: `Url not stored on ${process.env.STORAGE_BASE_URL ?? ""}`,
+        message: `Url not stored on ${STORAGE_BASE_URL ?? ""}`,
       };
     }
-    const key = url.replace(`${process.env.STORAGE_BASE_URL ?? ""}/`, "");
+    const key = url.replace(`${STORAGE_BASE_URL ?? ""}/`, "");
 
-    await this.client.fetch(`${process.env.STORAGE_ENDPOINT ?? ""}/${key}`, {
+    await this.client.fetch(`${STORAGE_ENDPOINT ?? ""}/${key}`, {
       method: "DELETE",
     });
 
@@ -136,5 +139,5 @@ class StorageClient {
 export const storage = new StorageClient();
 
 export const isStored = (url: string) => {
-  return url.startsWith(process.env.STORAGE_BASE_URL ?? "");
+  return url.startsWith(STORAGE_BASE_URL ?? "");
 };

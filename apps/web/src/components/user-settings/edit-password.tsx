@@ -1,6 +1,7 @@
 "use client";
 
 import { queryUserEmailsOptions, queryUserOptions } from "@/lib/queries/user";
+import { NEXT_PUBLIC_APP_NAME } from "@hexa/env";
 import { Button } from "@hexa/ui/button";
 import {
   Card,
@@ -26,8 +27,7 @@ export function EditPassword() {
         {!user.hasPassword ? (
           <CardDescription>
             Set a password to have an alternative way to log into your{" "}
-            {process.env.NEXT_PUBLIC_APP_NAME} account using your username (
-            {user.username}){" "}
+            {NEXT_PUBLIC_APP_NAME} account using your username ({user.username}){" "}
             {primaryEmail ? `or email (${primaryEmail.email})` : ""}
           </CardDescription>
         ) : (
