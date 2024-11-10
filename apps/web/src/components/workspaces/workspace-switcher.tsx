@@ -1,7 +1,6 @@
 "use client";
 
 import { CaretSortIcon, CheckIcon, PlusCircledIcon } from "@hexa/ui/icons";
-import * as React from "react";
 
 import { Button } from "@hexa/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@hexa/ui/popover";
@@ -20,7 +19,6 @@ import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useBoolean } from "usehooks-ts";
-import { useServerAction } from "zsa-react";
 import { CreateWorkspaceForm } from "./create-workspace-form";
 import { WorkspaceAvatar } from "./workspace-avatar";
 

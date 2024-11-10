@@ -4,7 +4,13 @@ import { EditWorkspaceSlug } from "@/components/workspace-settings/edit-workspac
 import { UploadWorkspaceAvatar } from "@/components/workspace-settings/upload-workspace-avatar";
 import { WorkspaceId } from "@/components/workspace-settings/workspace-id";
 
-export default function ({ params: { slug } }: { params: { slug: string } }) {
+export default async function ({
+  params,
+}: {
+  // https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes#good-to-know
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
   return (
     <>
       <EditWorkspaceName slug={slug} />

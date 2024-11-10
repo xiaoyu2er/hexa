@@ -14,13 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@hexa/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@hexa/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@hexa/ui/form";
 import { PencilLine } from "@hexa/ui/icons";
 import { cn } from "@hexa/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -38,7 +32,6 @@ import type { OTPType } from "@/server/db";
 import { FormErrorMessage } from "@hexa/ui/form-error-message";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@hexa/ui/input-otp";
 import { useMutation } from "@tanstack/react-query";
-import type { InferResponseType } from "hono/client";
 
 export interface VerifyPasscodeProps {
   email: string;

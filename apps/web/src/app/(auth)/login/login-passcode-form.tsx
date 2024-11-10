@@ -18,11 +18,7 @@ import {
 
 import { useTurnstile } from "@/components/hooks/use-turnstile";
 import { setFormError } from "@/lib/form";
-import {
-  $sendPasscode,
-  type InferApiResponseType,
-  type SendPasscodeRes,
-} from "@/server/client";
+import { $sendPasscode, type InferApiResponseType } from "@/server/client";
 import {
   Card,
   CardContent,
