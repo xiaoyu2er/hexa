@@ -29,17 +29,21 @@ import { useForm } from "react-hook-form";
 import { useCountdown } from "usehooks-ts";
 
 import { setFormError } from "@/lib/form";
-import useMutation from "@/lib/queries/useMutation";
-import { $rensedPasscode, $verifyPasscode } from "@/server/client";
+import {
+  $rensedPasscode,
+  $verifyPasscode,
+  type InferApiResponseType,
+} from "@/server/client";
 import type { OTPType } from "@/server/db";
 import { FormErrorMessage } from "@hexa/ui/form-error-message";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@hexa/ui/input-otp";
+import { useMutation } from "@tanstack/react-query";
 import type { InferResponseType } from "hono/client";
 
 export interface VerifyPasscodeProps {
   email: string;
   showEmail?: boolean;
-  onSuccess?: (_data: InferResponseType<typeof $verifyPasscode>) => void;
+  onSuccess?: (data: InferApiResponseType<typeof $verifyPasscode>) => void;
   onCancel?: () => void;
   className?: string;
   type: OTPType;
@@ -79,9 +83,7 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
 
   const { mutateAsync: execVerifyCode } = useMutation({
     mutationFn: $verifyPasscode,
-    onSuccess: async (res) => {
-      onSuccess?.(await res.json());
-    },
+    onSuccess,
     onError: (error: Error) => {
       setFormError(error, setError);
     },
@@ -89,7 +91,7 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
 
   const { mutateAsync: execResend, isPending: isRensedPending } = useMutation({
     mutationFn: $rensedPasscode,
-    onSuccess: async () => {
+    onSuccess: () => {
       resetCountdown();
       startCountdown();
       reset();

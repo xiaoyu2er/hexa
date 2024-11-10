@@ -30,17 +30,6 @@
 // import { ZSAError } from "zsa";
 // import { authenticatedProcedure } from "./procedures";
 
-// export const getWorkspacesAction = authenticatedProcedure
-//   .createServerAction()
-//   .handler(async ({ ctx }) => {
-//     const { user } = ctx;
-//     const db = await getDB();
-//     const workspaces = await getWorkspacesByUserId(db, user.id);
-//     return {
-//       workspaces,
-//     };
-//   });
-
 // export const getWorkspaceBySlugAction = authenticatedProcedure
 //   .createServerAction()
 //   .input(GetWorkspaceBySlugSchema)

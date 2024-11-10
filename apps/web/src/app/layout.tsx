@@ -6,8 +6,8 @@ import { cn } from "@hexa/utils";
 import "./globals.css";
 import { Analytics } from "@/components/analytics";
 import { Provider as NiceModalProvider } from "@/components/modal";
+import { QueryClientProvider } from "@/components/providers/query-client-provider";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
-import { QueryClientProvider } from "@/providers/query-client-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "next-themes";
 

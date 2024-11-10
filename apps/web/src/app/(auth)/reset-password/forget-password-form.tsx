@@ -1,6 +1,6 @@
 "use client";
 
-import { useTurnstile } from "@/hooks/use-turnstile";
+import { useTurnstile } from "@/components/hooks/use-turnstile";
 import { Button } from "@hexa/ui/button";
 import {
   Card,
@@ -20,21 +20,20 @@ import {
 import { Input } from "@hexa/ui/input";
 
 import { setFormError, setFormError3 } from "@/lib/form";
-import useMutation from "@/lib/queries/useMutation";
 import {
   type SendPasscodeForm,
   SendPasscodeSchema,
 } from "@/lib/zod/schemas/auth";
-import { $sendPasscode } from "@/server/client";
+import { $sendPasscode, type InferApiResponseType } from "@/server/client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { type FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useServerAction } from "zsa-react";
 
 export interface ForgetPasswordCardProps {
   email: string;
-  onSuccess: (_data: { email: string }) => void;
+  onSuccess: (data: InferApiResponseType<typeof $sendPasscode>) => void;
   onCancel?: () => void;
 }
 
@@ -65,9 +64,7 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
 
   const { mutateAsync: sendPasscode } = useMutation({
     mutationFn: $sendPasscode,
-    onSuccess: async (res) => {
-      onSuccess?.(await res.json());
-    },
+    onSuccess,
     onError: (error) => {
       setFormError(error, setError);
       resetTurnstile();
