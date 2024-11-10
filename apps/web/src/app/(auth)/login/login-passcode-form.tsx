@@ -16,10 +16,13 @@ import {
   SendPasscodeSchema,
 } from "@/lib/zod/schemas/auth";
 
-import { useTurnstile } from "@/hooks/use-turnstile";
+import { useTurnstile } from "@/components/hooks/use-turnstile";
 import { setFormError } from "@/lib/form";
-import useMutation from "@/lib/queries/useMutation";
-import { $sendPasscode, type SendPasscodeRes } from "@/server/client";
+import {
+  $sendPasscode,
+  type InferApiResponseType,
+  type SendPasscodeRes,
+} from "@/server/client";
 import {
   Card,
   CardContent,
@@ -30,12 +33,13 @@ import {
 import { FormErrorMessage } from "@hexa/ui/form-error-message";
 import { Input } from "@hexa/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 interface LoginPasscodeProps {
   onPassword: () => void;
-  onSuccess?: (_data: SendPasscodeRes) => void;
+  onSuccess?: (data: InferApiResponseType<typeof $sendPasscode>) => void;
 }
 
 export function LoginPasscode({ onPassword, onSuccess }: LoginPasscodeProps) {
@@ -59,9 +63,7 @@ export function LoginPasscode({ onPassword, onSuccess }: LoginPasscodeProps) {
 
   const mutation = useMutation({
     mutationFn: $sendPasscode,
-    onSuccess: async (res) => {
-      onSuccess?.(await res.json());
-    },
+    onSuccess,
     onError: (error) => {
       setFormError(error, setError);
       resetTurnstile();

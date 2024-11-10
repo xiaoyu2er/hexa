@@ -1,9 +1,5 @@
 "use client";
 
-import {
-  setUserPrimaryEmailAction,
-  verifyEmailByCodeAction,
-} from "@/lib/actions/user";
 import { queryUserEmailsOptions } from "@/lib/queries/user";
 import {
   Card,
@@ -17,8 +13,8 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 import { VerifyPasscode } from "@/components/auth/verify-passcode-form";
-import { resendVerifyEmailAction } from "@/lib/actions/sign-up";
 import { MAX_EMAILS } from "@/lib/const";
+import { $setUserPrimaryEmail } from "@/server/client";
 import { useModal } from "@ebay/nice-modal-react";
 import { Badge } from "@hexa/ui/badge";
 import { Button } from "@hexa/ui/button";
@@ -29,8 +25,8 @@ import {
   DropdownMenuTrigger,
 } from "@hexa/ui/dropdown-menu";
 import { EllipsisIcon, MailPlusIcon, MoveRightIcon } from "@hexa/ui/icons";
+import { useMutation } from "@tanstack/react-query";
 import { useBoolean } from "usehooks-ts";
-import { useServerAction } from "zsa-react";
 import { AddUserEmailForm } from "./add-user-email-form";
 import { DeleteUserEmailModal } from "./delete-user-email-modal";
 
@@ -41,19 +37,17 @@ export function EditUserEmails() {
   const modal = useModal(DeleteUserEmailModal);
   const [verifingEmail, setVerifingEmail] = useState<string | undefined>();
 
-  const { execute: execSetUserPrimaryEmail, isPending } = useServerAction(
-    setUserPrimaryEmailAction,
-    {
-      onError: ({ err }) => {
-        toast.error(`Failed to set primary email${err.message}`);
-        refetch();
-      },
-      onSuccess: () => {
-        toast.success("Primary email set");
-        refetch();
-      },
+  const { mutateAsync: setUserPrimaryEmail, isPending } = useMutation({
+    mutationFn: $setUserPrimaryEmail,
+    onError: (error) => {
+      toast.error(`Failed to set primary email${error.message}`);
+      refetch();
     },
-  );
+    onSuccess: () => {
+      toast.success("Primary email set");
+      refetch();
+    },
+  });
 
   return (
     <>
@@ -99,7 +93,9 @@ export function EditUserEmails() {
                             className="cursor-pointer"
                             disabled={isPending}
                             onClick={() =>
-                              execSetUserPrimaryEmail({ email: email.email })
+                              setUserPrimaryEmail({
+                                json: { email: email.email },
+                              })
                             }
                           >
                             Set as primary
@@ -135,8 +131,7 @@ export function EditUserEmails() {
                         className="my-2"
                         email={email.email}
                         showEmail={false}
-                        onVerify={verifyEmailByCodeAction}
-                        onResend={resendVerifyEmailAction}
+                        type="VERIFY_EMAIL"
                         onSuccess={() => {
                           refetch();
                           setVerifingEmail(undefined);

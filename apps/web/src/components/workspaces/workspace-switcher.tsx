@@ -8,14 +8,15 @@ import { Popover, PopoverContent, PopoverTrigger } from "@hexa/ui/popover";
 import { cn } from "@hexa/utils";
 
 import { UserAvatar } from "@/components/user/user-avatar";
-import { setUserDefaultWorkspaceAction } from "@/lib/actions/workspace";
 import { queryUserOptions } from "@/lib/queries/user";
 import { queryWorkspacesOptions } from "@/lib/queries/workspace";
+import { $setUserDefaultWorkspace } from "@/server/client";
 import type { WorkspaceModel } from "@/server/db";
 import { Badge } from "@hexa/ui/badge";
 import { Dialog, DialogContent } from "@hexa/ui/dialog";
 import { toast } from "@hexa/ui/sonner";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useBoolean } from "usehooks-ts";
@@ -42,16 +43,14 @@ export function WorkspaceSwitcher() {
 
   const defaultWs = workspaces.find((ws) => ws.slug === slug);
   const router = useRouter();
-  const { execute } = useServerAction(setUserDefaultWorkspaceAction, {
-    onSuccess({ data }) {
-      const {
-        workspace: { slug },
-      } = data;
+  const { mutateAsync: setUserDefaultWorkspace } = useMutation({
+    mutationFn: $setUserDefaultWorkspace,
+    async onSuccess({ slug }) {
       toast.success("Workspace switched");
       setPopoverOpen(false);
       router.push(`/${slug}`);
     },
-    onError({ err }) {
+    onError(err) {
       toast.error(`Failed to switch workspace${err.message}`);
     },
   });
@@ -110,7 +109,7 @@ export function WorkspaceSwitcher() {
               variant="ghost"
               className="w-full h-11 justify-start"
               onClick={() => {
-                execute({ workspaceId: ws.id });
+                setUserDefaultWorkspace({ json: { workspaceId: ws.id } });
               }}
             >
               <WorkspaceAvatar workspace={ws} className="mr-2 h-6 w-6 " />

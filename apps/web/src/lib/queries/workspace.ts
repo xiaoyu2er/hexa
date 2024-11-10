@@ -1,20 +1,11 @@
-import {
-  getWorkspaceBySlugAction,
-  getWorkspacesAction,
-} from "@/lib/actions/workspace";
-import { getQueryClient } from "@/providers/get-query-client";
+import { getQueryClient } from "@/components/providers/get-query-client";
+import {} from "@/lib/actions/workspace";
+import { $getWorkspaceBySlug, $getWorkspaces } from "@/server/client";
 import { queryOptions } from "@tanstack/react-query";
 
 export const queryWorkspacesOptions = queryOptions({
   queryKey: ["workspaces"],
-  queryFn: async () => {
-    const [res, err] = await getWorkspacesAction();
-    if (err) {
-      throw err;
-    }
-
-    return res.workspaces ?? [];
-  },
+  queryFn: $getWorkspaces,
 });
 
 export const invalidateWorkspacesQuery = () => {
@@ -27,14 +18,7 @@ export const invalidateWorkspacesQuery = () => {
 export const queryWorkspaceBySlugOptions = (slug: string) =>
   queryOptions({
     queryKey: ["workspace/slug/", slug],
-    queryFn: async () => {
-      const [res, err] = await getWorkspaceBySlugAction({ slug });
-      if (err) {
-        throw err;
-      }
-
-      return res.workspace;
-    },
+    queryFn: () => $getWorkspaceBySlug({ param: { slug } }),
   });
 
 export const invalidateWorkspaceBySlugQuery = (slug: string) => {

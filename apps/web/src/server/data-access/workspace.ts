@@ -1,3 +1,4 @@
+import { ApiError } from "@/lib/error/error";
 import {
   type WorkspaceMemberModel,
   type WorkspaceModel,

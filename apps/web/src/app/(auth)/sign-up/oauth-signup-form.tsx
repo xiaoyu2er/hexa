@@ -25,13 +25,13 @@ import { Input } from "@hexa/ui/input";
 import { type FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { useTurnstile } from "@/hooks/use-turnstile";
+import { useTurnstile } from "@/components/hooks/use-turnstile";
 import { setFormError } from "@/lib/form";
-import useMutation from "@/lib/queries/useMutation";
 import { $oauthSignup } from "@/server/client";
 import type { OAuthAccountModel } from "@/server/db";
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 
 interface OAuthSignupProps {
@@ -64,8 +64,7 @@ export const OAuthSignup: FC<OAuthSignupProps> = ({
 
   const { mutateAsync: oauthSignup } = useMutation({
     mutationFn: $oauthSignup,
-    onSuccess: async () => {
-      console.log("oauth-sign-up");
+    onSuccess: () => {
       toast.success("Sign up success");
       onSuccess?.();
     },

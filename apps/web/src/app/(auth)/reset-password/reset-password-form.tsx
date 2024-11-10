@@ -2,7 +2,6 @@
 
 import { resetPasswordAction } from "@/lib/actions/reset-password";
 import { setFormError, setFormError3 } from "@/lib/form";
-import useMutation from "@/lib/queries/useMutation";
 import {
   type ResetPasswordForm,
   ResetPasswordSchema,
@@ -24,6 +23,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@hexa/ui/form";
+import { useMutation } from "@tanstack/react-query";
 
 import { PasswordInput } from "@hexa/ui/password-input";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -61,9 +61,9 @@ export const ResetPassword: FC<ResetParsswordCardProps> = ({
     setFocus,
   } = form;
 
-  const mutation = useMutation({
+  const { mutateAsync: resetPassword } = useMutation({
     mutationFn: $resetPassword,
-    onSuccess: async () => {
+    onSuccess: () => {
       router.push("/settings");
     },
     onError: (error) => {
@@ -87,7 +87,7 @@ export const ResetPassword: FC<ResetParsswordCardProps> = ({
       <CardContent>
         <Form {...form}>
           <form
-            onSubmit={handleSubmit((json) => mutation.mutateAsync({ json }))}
+            onSubmit={handleSubmit((json) => resetPassword({ json }))}
             method="POST"
             className="space-y-2"
           >

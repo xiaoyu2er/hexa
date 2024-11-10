@@ -1,27 +1,19 @@
+import { getQueryClient } from "@/components/providers/get-query-client";
 import {
-  getUserAction,
-  getUserEmailsAction,
-  getUserOAuthAccountsAction,
-} from "@/lib/actions/user";
-import { getQueryClient } from "@/providers/get-query-client";
+  $getUserEmails,
+  $getUserInfo,
+  $getUserOAuthAccounts,
+} from "@/server/client";
 import { queryOptions } from "@tanstack/react-query";
 
 export const queryUserOptions = queryOptions({
   queryKey: ["user"],
-  queryFn: async () => {
-    const [res, err] = await getUserAction();
-    if (err) throw err;
-    return res.user;
-  },
+  queryFn: $getUserInfo,
 });
 
 export const queryUserEmailsOptions = queryOptions({
   queryKey: ["user/emails"],
-  queryFn: async () => {
-    const [res, err] = await getUserEmailsAction();
-    if (err) throw err;
-    return res.emails;
-  },
+  queryFn: $getUserEmails,
 });
 
 export const invalidateUserEmails = () => {
@@ -33,9 +25,5 @@ export const invalidateUserEmails = () => {
 
 export const queryUserOAuthAccountsOptions = queryOptions({
   queryKey: ["user/oauth-accounts"],
-  queryFn: async () => {
-    const [res, err] = await getUserOAuthAccountsAction();
-    if (err) throw err;
-    return res.oauthAccounts;
-  },
+  queryFn: $getUserOAuthAccounts,
 });

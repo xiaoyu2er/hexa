@@ -19,9 +19,8 @@ import {
 } from "@/lib/zod/schemas/auth";
 
 import { OAuthButtons } from "@/components/auth/oauth-buttons";
-import { useTurnstile } from "@/hooks/use-turnstile";
+import { useTurnstile } from "@/components/hooks/use-turnstile";
 import { setFormError } from "@/lib/form";
-import useMutation from "@/lib/queries/useMutation";
 import { $loginPassword } from "@/server/client";
 import {
   Card,
@@ -35,6 +34,7 @@ import { FormErrorMessage } from "@hexa/ui/form-error-message";
 import { Input } from "@hexa/ui/input";
 import { PasswordInput } from "@hexa/ui/password-input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -67,7 +67,7 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
 
   const { mutateAsync: loginPassword } = useMutation({
     mutationFn: $loginPassword,
-    onSuccess: async () => {
+    onSuccess: () => {
       router.push("/settings");
     },
     onError: (error) => {

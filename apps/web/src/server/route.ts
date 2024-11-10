@@ -11,7 +11,9 @@ import resetPassword from "./route/reset-password";
 import signup from "./route/signup";
 import test from "./route/test";
 import user from "./route/user";
+import workspace from "./route/workspace";
 import type { ContextVariables } from "./types";
+
 export const app = new Hono<{ Variables: ContextVariables }>()
   .basePath("/api")
   .use(cors())
@@ -24,6 +26,7 @@ export const app = new Hono<{ Variables: ContextVariables }>()
   .route("/", user)
   .route("/", passcode)
   .route("/", oauth)
+  .route("/", workspace)
   .onError((error, c) => {
     // @ts-ignore
     const code = error.code;

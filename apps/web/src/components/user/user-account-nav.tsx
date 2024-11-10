@@ -1,7 +1,6 @@
 "use client";
 
 import { UserAvatar } from "@/components/user/user-avatar";
-import useMutation from "@/lib/queries/useMutation";
 import { queryUserOptions } from "@/lib/queries/user";
 import { $logout } from "@/server/client";
 import { Button } from "@hexa/ui/button";
@@ -14,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@hexa/ui/dropdown-menu";
 import { LogOut, Settings } from "@hexa/ui/icons";
+import { useMutation } from "@tanstack/react-query";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

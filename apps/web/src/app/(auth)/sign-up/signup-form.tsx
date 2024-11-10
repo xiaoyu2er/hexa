@@ -26,16 +26,16 @@ import { type FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { OAuthButtons } from "@/components/auth/oauth-buttons";
-import { useTurnstile } from "@/hooks/use-turnstile";
+import { useTurnstile } from "@/components/hooks/use-turnstile";
 import { setFormError, setFormError3 } from "@/lib/form";
-import useMutation from "@/lib/queries/useMutation";
-import { $signup } from "@/server/client";
+import { $signup, type InferApiResponseType } from "@/server/client";
 import { PasswordInput } from "@hexa/ui/password-input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 
 interface SignupProps {
   email: string | null | undefined;
-  onSuccess: (_data: { email: string }) => void;
+  onSuccess: (data: InferApiResponseType<typeof $signup>) => void;
   onCancel?: () => void;
 }
 
@@ -59,8 +59,8 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
 
   const { mutateAsync: signup } = useMutation({
     mutationFn: $signup,
-    onSuccess: async (res) => {
-      onSuccess?.(await res.json());
+    onSuccess: (res) => {
+      onSuccess?.(res);
     },
     onError: (error) => {
       resetTurnstile();
