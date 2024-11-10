@@ -1,5 +1,5 @@
-import { addUserEmailAction } from "@/lib/actions/user";
 import { type OnlyEmailInput, OnlyEmailSchema } from "@/lib/zod/schemas/auth";
+import { $addUserEmail, type InferApiResponseType } from "@/server/client";
 import { Button } from "@hexa/ui/button";
 import {
   Card,
@@ -21,16 +21,18 @@ import { Label } from "@hexa/ui/label";
 
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import type { FC } from "react";
 import { useForm } from "react-hook-form";
-import { useServerAction } from "zsa-react";
 
-export function AddUserEmailForm({
+interface AddUserEmailFormProps {
+  onSuccess?: (data: InferApiResponseType<typeof $addUserEmail>) => void;
+  onCancel?: () => void;
+}
+export const AddUserEmailForm: FC<AddUserEmailFormProps> = ({
   onSuccess,
   onCancel,
-}: {
-  onSuccess?: (data: { email: string }) => void;
-  onCancel?: () => void;
-}) {
+}) => {
   const form = useForm<OnlyEmailInput>({
     resolver: zodResolver(OnlyEmailSchema),
     defaultValues: {
@@ -44,11 +46,12 @@ export function AddUserEmailForm({
     formState: { isSubmitting, isDirty },
   } = form;
 
-  const { execute: execAddUserEmail } = useServerAction(addUserEmailAction, {
-    onError: ({ err }) => {
+  const { mutateAsync: addUserEmail } = useMutation({
+    mutationFn: $addUserEmail,
+    onError: (err) => {
       setError("email", { message: err.message });
     },
-    onSuccess: ({ data }) => {
+    onSuccess: (data) => {
       toast.success("You just aded a new email!");
       onSuccess?.(data);
     },
@@ -57,7 +60,7 @@ export function AddUserEmailForm({
   return (
     <Form {...form}>
       <form
-        onSubmit={handleSubmit((form) => execAddUserEmail(form))}
+        onSubmit={handleSubmit((json) => addUserEmail({ json }))}
         method="POST"
         className="grid gap-4"
       >
@@ -101,4 +104,4 @@ export function AddUserEmailForm({
       </form>
     </Form>
   );
-}
+};

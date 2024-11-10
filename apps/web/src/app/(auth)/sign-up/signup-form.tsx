@@ -27,7 +27,7 @@ import { useForm } from "react-hook-form";
 
 import { OAuthButtons } from "@/components/auth/oauth-buttons";
 import { useTurnstile } from "@/components/hooks/use-turnstile";
-import { setFormError, setFormError3 } from "@/lib/form";
+import { setFormError } from "@/lib/form";
 import { $signup, type InferApiResponseType } from "@/server/client";
 import { PasswordInput } from "@hexa/ui/password-input";
 import { zodResolver } from "@hookform/resolvers/zod";

@@ -9,15 +9,14 @@ import {
 } from "@hexa/ui/card";
 import { Input } from "@hexa/ui/input";
 
-import { deleteWorkspaceAction } from "@/lib/actions/workspace";
-import { setFormError3 } from "@/lib/form";
+import { setFormError } from "@/lib/form";
 import { invalidateWorkspacesQuery } from "@/lib/queries/workspace";
-import type { DeleteUserInput } from "@/lib/zod/schemas/user";
 import {
   DELETE_WORKSPACE_CONFIRMATION,
   type DeleteWorkspaceInput,
   DeleteWorkspaceSchema,
 } from "@/lib/zod/schemas/workspace";
+import { $deleteWorkspace } from "@/server/client";
 import { Button } from "@hexa/ui/button";
 import {
   Dialog,
@@ -38,6 +37,7 @@ import {
 } from "@hexa/ui/form";
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
@@ -46,10 +46,7 @@ export function DeleteWorkspace() {
   const router = useRouter();
   const form = useForm<DeleteWorkspaceInput>({
     resolver: zodResolver(DeleteWorkspaceSchema),
-    defaultValues: {
-      confirm: "",
-      workspaceId: "",
-    },
+    defaultValues: {},
   });
 
   const {
@@ -58,9 +55,10 @@ export function DeleteWorkspace() {
     formState: { isSubmitting, errors },
   } = form;
 
-  const { execute } = useServerAction(deleteWorkspaceAction, {
-    onError: ({ err }) => {
-      setFormError3(err, setError, "confirm");
+  const { mutateAsync: deleteWorkspace } = useMutation({
+    mutationFn: $deleteWorkspace,
+    onError: (err) => {
+      setFormError(err, setError, "confirm");
     },
     onSuccess: () => {
       toast.success("Account deleted successfully");
@@ -90,7 +88,13 @@ export function DeleteWorkspace() {
           <DialogContent className="sm:max-w-[425px]">
             <Form {...form}>
               <form
-                onSubmit={handleSubmit((form) => execute(form))}
+                onSubmit={handleSubmit((json) =>
+                  deleteWorkspace({
+                    param: {
+                      workspaceId: json.workspaceId,
+                    },
+                  }),
+                )}
                 method="POST"
                 className="space-y-4"
               >

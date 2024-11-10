@@ -6,11 +6,11 @@ import {
   verifyDBTokenByCode,
 } from "@/server/data-access/token";
 import { updateUserPassword } from "@/server/data-access/user";
-import type { ContextVariables } from "@/server/types";
+import type { Context } from "@/server/types";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 
-const resetPassword = new Hono<{ Variables: ContextVariables }>()
+const resetPassword = new Hono<Context>()
   // Reset password
   .post(
     "/reset-password",

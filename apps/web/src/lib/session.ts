@@ -1,8 +1,8 @@
+import { validateRequest } from "@/lib/auth";
+import { getLucia } from "@/lib/auth/lucia";
+import { ApiError } from "@/lib/error/error";
 import type { UserModel } from "@/server/db";
 import { cookies } from "next/headers";
-import { validateRequest } from "./auth";
-import { getLucia } from "./auth/lucia";
-import { ApiError } from "./error/error";
 
 export async function getSessionId() {
   const lucia = await getLucia();

@@ -78,10 +78,25 @@ export const $logout = h(api.logout.$post);
 export const $getUserInfo = h(api.user.info.$get);
 export const $getUserEmails = h(api.user.emails.$get);
 export const $getUserOAuthAccounts = h(api.user["oauth-accounts"].$get);
-export const $setUserPrimaryEmail = h(api.user.emails.primary.$post);
-
+export const $updateUserPrimaryEmail = h(api.user.emails.primary.$put);
+export const $updateUserDisplayName = h(api.user["display-name"].$put);
+export const $updateUsername = h(api.user.username.$put);
+export const $addUserEmail = h(api.user.emails.$post);
+export const $deleteUserEmail = h(api.user.emails.$delete);
+export const $updateUserAvatar = h(api.user.avatar.$put);
+export const $deleteUser = h(api.user.$delete);
+export const $deleteUserOAuthAccount = h(api.user["oauth-accounts"].$delete);
+export const $updateUserDefaultWorkspace = h(
+  api.user["default-workspace"].$put,
+);
 // ==================== Workspace ====================
 // workspace
 export const $getWorkspaces = h(api.workspace.all.$get);
 export const $getWorkspaceBySlug = h(api.workspace[":slug"].$get);
-export const $setUserDefaultWorkspace = h(api.workspace.default.$post);
+export const $createWorkspace = h(api.workspace.new.$post);
+export const $deleteWorkspace = h(api.workspace[":workspaceId"].$delete);
+export const $updateWorkspaceName = h(api.workspace[":workspaceId"].name.$put);
+export const $updateWorkspaceSlug = h(api.workspace[":workspaceId"].slug.$put);
+export const $updateWorkspaceAvatar = h(
+  api.workspace[":workspaceId"].avatar.$put,
+);

@@ -154,7 +154,7 @@ export const userWorkspaceRelations = relations(userTable, ({ many, one }) => ({
 export const workspaceMemberRelations = relations(
   workspaceTable,
   ({ many }) => ({
-    workspaceMembers: many(workspaceMemberTable),
+    members: many(workspaceMemberTable),
   }),
 );
 export type WorkspaceUserRole = "OWNER" | "ADMIN" | "MEMBER";
@@ -206,3 +206,6 @@ export type SessionModel = typeof sessionTable.$inferSelect;
 export type TokenModel = typeof tokenTable.$inferSelect;
 export type WorkspaceModel = typeof workspaceTable.$inferSelect;
 export type WorkspaceMemberModel = typeof workspaceMemberTable.$inferSelect;
+export type WorkspaceWithMembersModel = typeof workspaceTable.$inferSelect & {
+  members: WorkspaceMemberModel[];
+};

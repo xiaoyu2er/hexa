@@ -1,9 +1,8 @@
 "use client";
 
-import { updateUserNameAction } from "@/lib/actions/user";
 import {
-  type UpdateUserNameInput,
-  UpdateUserNameSchema,
+  type UpdateDisplayNameInput,
+  UpdateDisplayNameSchema,
 } from "@/lib/zod/schemas/user";
 import {
   Card,
@@ -22,20 +21,21 @@ import {
 } from "@hexa/ui/form";
 import { Input } from "@hexa/ui/input";
 
-import { queryUserOptions } from "@/lib/queries/user";
+import { setFormError } from "@/lib/form";
+import { invalidateUser, queryUserOptions } from "@/lib/queries/user";
+import { $updateUserDisplayName } from "@/server/client";
 import { Button } from "@hexa/ui/button";
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { useServerAction } from "zsa-react";
 
-export function EditName() {
-  const { data: user, refetch } = useSuspenseQuery(queryUserOptions);
+export function EditUserDisplayName() {
+  const { data: user } = useSuspenseQuery(queryUserOptions);
 
-  const form = useForm<UpdateUserNameInput>({
-    resolver: zodResolver(UpdateUserNameSchema),
+  const form = useForm<UpdateDisplayNameInput>({
+    resolver: zodResolver(UpdateDisplayNameSchema),
     defaultValues: useMemo(() => {
       return {
         name: user?.name ?? "",
@@ -56,19 +56,20 @@ export function EditName() {
     });
   }, [reset, user?.name]);
 
-  const { execute } = useServerAction(updateUserNameAction, {
-    onError: ({ err }) => {
-      setError("name", { message: err.message });
+  const { mutateAsync: updateDisplayName } = useMutation({
+    mutationFn: $updateUserDisplayName,
+    onError: (err) => {
+      setFormError(err, setError, "name");
     },
     onSuccess: () => {
       toast.success("Your name has been updated");
-      refetch();
+      invalidateUser();
     },
   });
   return (
     <Form {...form}>
       <form
-        onSubmit={handleSubmit((form) => execute(form))}
+        onSubmit={handleSubmit((json) => updateDisplayName({ json }))}
         method="POST"
         className="grid gap-4"
       >

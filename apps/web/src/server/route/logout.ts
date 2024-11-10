@@ -1,10 +1,10 @@
 import { invalidateSession, setBlankSessionCookie } from "@/lib/session";
-import type { ContextVariables } from "@/server/types";
+import type { Context } from "@/server/types";
 
-import auth from "@/server/middleware/auth";
+import auth from "@/server/middleware/auth-user";
 import { Hono } from "hono";
 
-const logout = new Hono<{ Variables: ContextVariables }>()
+const logout = new Hono<Context>()
   // Logout
   .post("/logout", auth, async (c) => {
     const session = c.get("session");

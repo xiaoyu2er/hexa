@@ -5,7 +5,7 @@ import {
   createGoogleAccount,
   getAccountByGoogleId,
 } from "@/server/data-access/account";
-import type { ContextVariables } from "@/server/types";
+import type { Context } from "@/server/types";
 import type { GoogleUser } from "@/types";
 import { GitHub, Google, generateState } from "arctic";
 import { generateCodeVerifier } from "arctic";
@@ -19,7 +19,7 @@ import {
 } from "@/server/data-access/account";
 import type { GitHubEmail, GitHubUser } from "@/types";
 
-const oauth = new Hono<{ Variables: ContextVariables }>()
+const oauth = new Hono<Context>()
   // Github OAuth
   .get("/oauth/github", async (c) => {
     const state = generateState();

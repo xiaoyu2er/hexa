@@ -2,13 +2,12 @@
 
 import { Input } from "@hexa/ui/input";
 
-import { removeUserEmailAction } from "@/lib/actions/user";
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import { toast } from "@hexa/ui/sonner";
-import { useServerAction } from "zsa-react";
 
-import { setFormError3 } from "@/lib/form";
+import { setFormError } from "@/lib/form";
 import { type OnlyEmailInput, OnlyEmailSchema } from "@/lib/zod/schemas/auth";
+import { $deleteUserEmail } from "@/server/client";
 import { Button } from "@hexa/ui/button";
 import {
   Dialog,
@@ -27,6 +26,7 @@ import {
   FormMessage,
 } from "@hexa/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 
 interface DeleteUserEmailProps {
@@ -49,9 +49,10 @@ export const DeleteUserEmailModal = NiceModal.create(
       formState: { isSubmitting, errors },
     } = form;
 
-    const { execute } = useServerAction(removeUserEmailAction, {
-      onError: ({ err }) => {
-        setFormError3(err, setError, "email");
+    const { mutateAsync: deleteUserEmail } = useMutation({
+      mutationFn: $deleteUserEmail,
+      onError: (err) => {
+        setFormError(err, setError, "email");
         modal.reject(err);
       },
       onSuccess: () => {
@@ -81,7 +82,7 @@ export const DeleteUserEmailModal = NiceModal.create(
           </DialogHeader>
           <Form {...form}>
             <form
-              onSubmit={handleSubmit((form) => execute(form))}
+              onSubmit={handleSubmit((json) => deleteUserEmail({ json }))}
               method="POST"
               className="space-y-4"
             >

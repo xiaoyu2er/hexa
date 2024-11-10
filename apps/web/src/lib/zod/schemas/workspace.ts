@@ -27,7 +27,7 @@ export const GetWorkspaceBySlugSchema = z.object({
 
 export const UpdateWorkspacerNameSchema = z.object({
   name,
-  workspaceId: z.string().min(1, "Please enter a workspace ID"),
+  // workspaceId: z.string().min(1, "Please enter a workspace ID"),
 });
 
 export type UpdateWorkspaceNameInput = z.infer<
@@ -37,7 +37,6 @@ export type UpdateWorkspaceNameInput = z.infer<
 // update slug
 export const UpdateWorkspaceSlugSchema = z.object({
   slug,
-  workspaceId,
 });
 
 export type UpdateWorkspaceSlugInput = z.infer<
@@ -65,9 +64,7 @@ export const DeleteWorkspaceSchema = z.object({
 
 export type DeleteWorkspaceInput = z.infer<typeof DeleteWorkspaceSchema>;
 
-export const UpdateWorkspaceAvatarSchema = UpdateAvatarSchema.extend({
-  workspaceId,
-});
+export const UpdateWorkspaceAvatarSchema = UpdateAvatarSchema;
 
 export type UpdateWorkspaceAvatarInput = z.infer<
   typeof UpdateWorkspaceAvatarSchema

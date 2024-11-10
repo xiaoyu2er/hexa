@@ -1,7 +1,11 @@
 import { ApiError } from "@/lib/error/error";
+import { isStored, storage } from "@/lib/storage";
+import { generateId } from "@/lib/utils";
 import {
   CreateWorkspaceSchema,
-  SetUserDefaultWorkspaceSchema,
+  UpdateWorkspaceAvatarSchema,
+  UpdateWorkspaceSlugSchema,
+  UpdateWorkspacerNameSchema,
 } from "@/lib/zod/schemas/workspace";
 import {
   addWorkspaceMember,
@@ -9,58 +13,38 @@ import {
   createWorkspace,
   deleteWorkspace,
   getWorkspaceBySlug,
-  getWorkspaceByWsId,
   getWorkspacesByUserId,
   setUserDefaultWorkspace,
+  updateWorkspaceAvatar,
+  updateWorkspaceName,
+  updateWorkspaceSlug,
 } from "@/server/data-access/workspace";
-import auth from "@/server/middleware/auth";
-import type { ContextVariables } from "@/server/types";
+import auth from "@/server/middleware/auth-user";
+import authWorkspace from "@/server/middleware/auth-workspace";
+import type { Context } from "@/server/types";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 
-const workspace = new Hono<{ Variables: ContextVariables }>()
+const workspace = new Hono<Context>()
   // Get all workspaces
   .use("/workspace/*", auth)
   .get("/workspace/all", async (c) => {
-    const db = c.get("db");
-    const user = c.get("user");
-    const workspaces = await getWorkspacesByUserId(db, user.id);
+    const { db, userId } = c.var;
+    const workspaces = await getWorkspacesByUserId(db, userId);
     return c.json(workspaces);
   })
   // Get workspace by slug
-  .get("/workspace/:slug", async (c) => {
-    const db = c.get("db");
-    const { slug } = c.req.param();
-    const ws = await getWorkspaceBySlug(db, slug);
-    if (!ws) {
-      throw new ApiError("NOT_FOUND", "Workspace not found");
-    }
+  .get("/workspace/:slug", authWorkspace, async (c) => {
+    const ws = c.get("ws");
     return c.json(ws);
   })
-  // Set user default workspace
-  .post(
-    "/workspace/default",
-    zValidator("json", SetUserDefaultWorkspaceSchema),
-    async (c) => {
-      const db = c.get("db");
-      const user = c.get("user");
-      const { workspaceId } = c.req.valid("json");
-      const ws = await getWorkspaceByWsId(db, workspaceId);
-      if (!ws) {
-        throw new ApiError("NOT_FOUND", "Workspace not found");
-      }
-      const defaultWs = await setUserDefaultWorkspace(db, user.id, workspaceId);
-      // revalidatePath("/");
-      return c.json(defaultWs);
-    },
-  )
+
   // Create workspace
   .post(
     "/workspace/new",
     zValidator("json", CreateWorkspaceSchema),
     async (c) => {
-      const db = c.get("db");
-      const user = c.get("user");
+      const { db, userId } = c.var;
       const { name, slug } = c.req.valid("json");
       const ws = await getWorkspaceBySlug(db, slug);
       if (ws) {
@@ -77,7 +61,7 @@ const workspace = new Hono<{ Variables: ContextVariables }>()
         );
       }
       const member = await addWorkspaceMember(db, {
-        userId: user.id,
+        userId,
         workspaceId: workspace.id,
         role: "OWNER",
       });
@@ -95,62 +79,66 @@ const workspace = new Hono<{ Variables: ContextVariables }>()
       });
     },
   )
+
   // Delete workspace
-  .delete("/workspace/:workspaceId", async (c) => {
-    const db = c.get("db");
-    // const user = c.get("user");
-    const { workspaceId } = c.req.param();
-    await clearWorkspaceAsDefault(db, workspaceId);
-    await deleteWorkspace(db, workspaceId);
+  .delete("/workspace/:workspaceId", authWorkspace, async (c) => {
+    const { db, ws } = c.var;
+    await clearWorkspaceAsDefault(db, ws.id);
+    await deleteWorkspace(db, ws.id);
     return c.json({});
   })
   // Update workspace name
-  .put("/workspace/:workspaceId", async (c) => {});
+  .put(
+    "/workspace/:workspaceId/name",
+    authWorkspace,
+    zValidator("json", UpdateWorkspacerNameSchema),
+    async (c) => {
+      const { db, ws } = c.var;
+      const { name } = c.req.valid("json");
+      const newWs = await updateWorkspaceName(db, ws.id, name);
+      return c.json(newWs);
+    },
+  )
+  // Update workspace slug
+  .put(
+    "/workspace/:workspaceId/slug",
+    authWorkspace,
+    zValidator("json", UpdateWorkspaceSlugSchema),
+    async (c) => {
+      const db = c.get("db");
+      const { workspaceId } = c.req.param();
+      const { slug } = c.req.valid("json");
+      const ws = await updateWorkspaceSlug(db, workspaceId, slug);
+      if (!ws) {
+        throw new ApiError(
+          "INTERNAL_SERVER_ERROR",
+          "Failed to update workspace slug",
+        );
+      }
+      return c.json(ws);
+    },
+  )
+  // Update workspace avatar
+  .put(
+    "/workspace/:workspaceId/avatar",
+    authWorkspace,
+    zValidator("form", UpdateWorkspaceAvatarSchema),
+    async (c) => {
+      const { db, ws } = c.var;
+      const { workspaceId } = c.req.param();
+      const { image } = c.req.valid("form");
+      const { url } = await storage.upload(`ws-avatars/${generateId()}`, image);
+      const newWs = await updateWorkspaceAvatar(db, workspaceId, url);
+      c.executionCtx.waitUntil(
+        (async () => {
+          if (ws.avatarUrl && isStored(ws.avatarUrl)) {
+            await storage.delete(ws.avatarUrl);
+          }
+        })(),
+      );
+      // revalidatePath("/");
+      return c.json(newWs);
+    },
+  );
 
-// export const updateWorkspaceNameAction = authenticatedProcedure
-//   .createServerAction()
-//   .input(UpdateWorkspacerNameSchema)
-//   .handler(async ({ input }) => {
-//     const { name, workspaceId } = input;
-//     const db = await getDB();
-//     await updateWorkspaceName(db, workspaceId, name);
-//     revalidatePath("/");
-//     return {};
-//   });
-
-// export const updateWorkspaceSlugAction = authenticatedProcedure
-//   .createServerAction()
-//   .input(UpdateWorkspaceSlugSchema)
-//   .handler(async ({ input }) => {
-//     const { slug, workspaceId } = input;
-//     const db = await getDB();
-//     const ws = await updateWorkspaceSlug(db, workspaceId, slug);
-//     revalidatePath("/");
-//     return {
-//       workspace: ws,
-//     };
-//   });
-
-// export const updateWorkspaceAvatarAction = authenticatedProcedure
-//   .createServerAction()
-//   .input(UpdateWorkspaceAvatarSchema)
-//   .handler(async ({ input }) => {
-//     const { image, workspaceId } = input;
-//     const db = await getDB();
-//     const ws = await getWorkspaceByWsId(db, workspaceId);
-//     if (!ws) {
-//       throw new ZSAError("NOT_FOUND", "Workspace not found");
-//     }
-
-//     const { url } = await storage.upload(`ws-avatars/${generateId()}`, image);
-//     await updateWorkspaceAvatar(db, workspaceId, url);
-//     waitUntil(
-//       (async () => {
-//         if (ws.avatarUrl && isStored(ws.avatarUrl)) {
-//           await storage.delete(ws.avatarUrl);
-//         }
-//       })(),
-//     );
-//     revalidatePath("/");
-//   });
 export default workspace;

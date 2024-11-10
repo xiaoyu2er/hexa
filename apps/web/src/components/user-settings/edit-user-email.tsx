@@ -14,7 +14,7 @@ import { useState } from "react";
 
 import { VerifyPasscode } from "@/components/auth/verify-passcode-form";
 import { MAX_EMAILS } from "@/lib/const";
-import { $setUserPrimaryEmail } from "@/server/client";
+import { $updateUserPrimaryEmail } from "@/server/client";
 import { useModal } from "@ebay/nice-modal-react";
 import { Badge } from "@hexa/ui/badge";
 import { Button } from "@hexa/ui/button";
@@ -38,7 +38,7 @@ export function EditUserEmails() {
   const [verifingEmail, setVerifingEmail] = useState<string | undefined>();
 
   const { mutateAsync: setUserPrimaryEmail, isPending } = useMutation({
-    mutationFn: $setUserPrimaryEmail,
+    mutationFn: $updateUserPrimaryEmail,
     onError: (error) => {
       toast.error(`Failed to set primary email${error.message}`);
       refetch();

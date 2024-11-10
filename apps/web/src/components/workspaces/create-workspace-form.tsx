@@ -2,13 +2,13 @@
 
 import { Input } from "@hexa/ui/input";
 
-import { createWorkspaceAction } from "@/lib/actions/workspace";
-import { setFormError3 } from "@/lib/form";
+import { setFormError } from "@/lib/form";
 import { invalidateWorkspacesQuery } from "@/lib/queries/workspace";
 import {
   type CreateWorkspaceInput,
   CreateWorkspaceSchema,
 } from "@/lib/zod/schemas/workspace";
+import { $createWorkspace } from "@/server/client";
 import { Button } from "@hexa/ui/button";
 import {
   DialogDescription,
@@ -27,6 +27,7 @@ import {
 import { FormErrorMessage } from "@hexa/ui/form-error-message";
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useServerAction } from "zsa-react";
 
@@ -49,9 +50,10 @@ export function CreateWorkspaceForm({ onSuccess }: CreateWorkspaceFormProps) {
     formState: { isSubmitting, errors },
   } = form;
 
-  const { execute } = useServerAction(createWorkspaceAction, {
-    onError: ({ err }) => {
-      setFormError3(err, setError);
+  const { mutateAsync: createWorkspace } = useMutation({
+    mutationFn: $createWorkspace,
+    onError: (err) => {
+      setFormError(err, setError);
     },
     onSuccess: () => {
       toast.success("Workspace created successfully");
@@ -63,7 +65,7 @@ export function CreateWorkspaceForm({ onSuccess }: CreateWorkspaceFormProps) {
   return (
     <Form {...form}>
       <form
-        onSubmit={handleSubmit((form) => execute(form))}
+        onSubmit={handleSubmit((json) => createWorkspace({ json }))}
         method="POST"
         className="space-y-4"
       >
