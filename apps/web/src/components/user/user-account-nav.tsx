@@ -23,10 +23,8 @@ export function UserAccountNav() {
   const router = useRouter();
   const { mutateAsync: execLogout, isPending } = useMutation({
     mutationFn: $logout,
-    onSuccess(res) {
-      console.log("Logged out", res);
-      const url = res.headers.get("Location");
-      if (url) router.push(url);
+    onSuccess() {
+      router.push("/");
     },
     onError(e) {
       console.error("Failed to logout", e);
