@@ -16,6 +16,7 @@ import {
   UpdateWorkspaceAvatarSchema,
 } from "@/lib/zod/schemas/workspace";
 import { $updateWorkspaceAvatar } from "@/server/client";
+import { NEXT_PUBLIC_APP_NAME } from "@hexa/env";
 import { Button } from "@hexa/ui/button";
 import {
   Card,
@@ -89,8 +90,7 @@ export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
           <CardHeader>
             <CardTitle>Workspace Avatar</CardTitle>
             <CardDescription>
-              This is workspace's avatar image on{" "}
-              {process.env.NEXT_PUBLIC_APP_NAME}.
+              This is workspace's avatar image on {NEXT_PUBLIC_APP_NAME}.
             </CardDescription>
           </CardHeader>
           <CardContent>

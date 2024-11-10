@@ -24,6 +24,7 @@ import { Input } from "@hexa/ui/input";
 import { setFormError } from "@/lib/form";
 import { invalidateUser, queryUserOptions } from "@/lib/queries/user";
 import { $updateUserDisplayName } from "@/server/client";
+import { NEXT_PUBLIC_APP_NAME } from "@hexa/env";
 import { Button } from "@hexa/ui/button";
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -77,8 +78,8 @@ export function EditUserDisplayName() {
           <CardHeader>
             <CardTitle>Name</CardTitle>
             <CardDescription>
-              Your name may appear around {process.env.NEXT_PUBLIC_APP_NAME}.
-              You can remove it at any time.
+              Your name may appear around {NEXT_PUBLIC_APP_NAME}. You can remove
+              it at any time.
             </CardDescription>
           </CardHeader>
           <CardContent>

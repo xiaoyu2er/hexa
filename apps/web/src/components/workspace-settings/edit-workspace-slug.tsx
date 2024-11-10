@@ -26,6 +26,7 @@ import {
   UpdateWorkspaceSlugSchema,
 } from "@/lib/zod/schemas/workspace";
 import { $updateWorkspaceSlug } from "@/server/client";
+import { NEXT_PUBLIC_APP_NAME } from "@hexa/env";
 import { Button } from "@hexa/ui/button";
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -79,8 +80,7 @@ export function EditWorkspaceSlug({ slug }: { slug: string }) {
           <CardHeader>
             <CardTitle>Workspace Slug</CardTitle>
             <CardDescription>
-              This will be the workspace's slug name on{" "}
-              {process.env.NEXT_PUBLIC_APP_NAME}.
+              This will be the workspace's slug name on {NEXT_PUBLIC_APP_NAME}.
             </CardDescription>
           </CardHeader>
           <CardContent>

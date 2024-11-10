@@ -1,5 +1,6 @@
 import { ApiError } from "@/lib/error/error";
 import VerifyCodeAndUrlTemplate from "@hexa/email-templates/VerifyCodeAndUrl";
+import { IS_DEVELOPMENT, RESEND_API_KEY } from "@hexa/env";
 import { Resend } from "resend";
 
 export async function sendVerifyCodeAndUrlEmail(
@@ -7,12 +8,12 @@ export async function sendVerifyCodeAndUrlEmail(
   code: string,
   url: string,
 ) {
-  if (process.env.NODE_ENV === "development") {
+  if (IS_DEVELOPMENT) {
     // sleep 1000;
     await new Promise((resolve) => setTimeout(resolve, 1000));
     return { code, email, url };
   }
-  const resend = new Resend(process.env.RESEND_API_KEY);
+  const resend = new Resend(RESEND_API_KEY);
   // @ts-ignore text is not required
   const { data, error } = await resend.emails.send({
     from: "Hexa <noreply@hexa.im>",

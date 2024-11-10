@@ -1,6 +1,7 @@
 "use client";
 
 import { queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
+import { NEXT_PUBLIC_APP_NAME } from "@hexa/env";
 import {
   Card,
   CardContent,
@@ -20,8 +21,7 @@ export async function WorkspaceId({ slug }: { slug: string }) {
       <CardHeader>
         <CardTitle>Workspace ID</CardTitle>
         <CardDescription>
-          This is the unique workspace identifier on{" "}
-          {process.env.NEXT_PUBLIC_APP_NAME}.
+          This is the unique workspace identifier on {NEXT_PUBLIC_APP_NAME}.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex items-center">

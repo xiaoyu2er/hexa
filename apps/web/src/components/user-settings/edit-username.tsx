@@ -2,6 +2,7 @@
 
 import { queryUserOptions } from "@/lib/queries/user";
 import { useModal } from "@ebay/nice-modal-react";
+import { NEXT_PUBLIC_APP_NAME } from "@hexa/env";
 import { Button } from "@hexa/ui/button";
 import {
   Card,
@@ -25,9 +26,8 @@ export function EditUsername() {
       <CardHeader>
         <CardTitle>Username</CardTitle>
         <CardDescription>
-          Your username is how other people on{" "}
-          {process.env.NEXT_PUBLIC_APP_NAME} will identify you. Changing your
-          username can have unintended side effects.
+          Your username is how other people on {NEXT_PUBLIC_APP_NAME} will
+          identify you. Changing your username can have unintended side effects.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex items-center">

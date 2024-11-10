@@ -1,6 +1,5 @@
 "use client";
 
-import { RESEND_VERIFY_CODE_TIME_SPAN, VERIFY_CODE_LENGTH } from "@/lib/const";
 import {
   type VerifyPasscodeForm,
   VerifyPasscodeSchema,
@@ -22,6 +21,7 @@ import { type FC, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useCountdown } from "usehooks-ts";
 
+import { RESEND_VERIFY_CODE_TIME_SPAN, VERIFY_CODE_LENGTH } from "@/lib/const";
 import { setFormError } from "@/lib/form";
 import {
   $rensedPasscode,

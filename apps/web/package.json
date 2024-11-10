@@ -25,6 +25,7 @@
   "dependencies": {
     "@ebay/nice-modal-react": "^1.2.13",
     "@hexa/email-templates": "workspace:*",
+    "@hexa/env": "workspace:*",
     "@hexa/tailwind-config": "workspace:*",
     "@hexa/ui": "workspace:*",
     "@hexa/utils": "workspace:*",

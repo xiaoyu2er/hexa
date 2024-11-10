@@ -16,6 +16,7 @@ import {
   DeleteUserSchema,
 } from "@/lib/zod/schemas/user";
 import { $deleteUser } from "@/server/client";
+import { NEXT_PUBLIC_APP_NAME } from "@hexa/env";
 import { Button } from "@hexa/ui/button";
 import {
   Dialog,
@@ -66,9 +67,9 @@ export function DeleteAccount() {
       <CardHeader>
         <CardTitle>Delete Account</CardTitle>
         <CardDescription>
-          Permanently delete your {process.env.NEXT_PUBLIC_APP_NAME} account,
-          and their respective stats. This action cannot be undone - please
-          proceed with caution.
+          Permanently delete your {NEXT_PUBLIC_APP_NAME} account, and their
+          respective stats. This action cannot be undone - please proceed with
+          caution.
         </CardDescription>
       </CardHeader>
       <CardFooter className="border-t  border-red-600 px-6 py-4 items-center flex-row-reverse justify-between">
@@ -90,9 +91,8 @@ export function DeleteAccount() {
                   <DialogTitle>Delete Account</DialogTitle>
                   <DialogDescription>
                     Warning: Permanently delete your
-                    {process.env.NEXT_PUBLIC_APP_NAME} account, and their
-                    respective stats. This action cannot be undone - please
-                    proceed with caution.
+                    {NEXT_PUBLIC_APP_NAME} account, and their respective stats.
+                    This action cannot be undone - please proceed with caution.
                   </DialogDescription>
                 </DialogHeader>
 

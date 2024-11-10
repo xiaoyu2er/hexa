@@ -1,5 +1,7 @@
+import { IS_PRODUCTION } from "@hexa/env";
+
 export function TailwindIndicator() {
-  if (process.env.NODE_ENV === "production") return null;
+  if (IS_PRODUCTION) return null;
 
   return (
     <div className="fixed top-2 left-2 z-50 flex h-6 w-6 items-center justify-center rounded-full bg-gray-800 p-3 font-mono text-xs text-white">

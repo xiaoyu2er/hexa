@@ -18,14 +18,21 @@ import {
   getAccountByGithubId,
 } from "@/server/data-access/account";
 import type { GitHubEmail, GitHubUser } from "@/types";
+import {
+  GITHUB_CLIENT_ID,
+  GITHUB_CLIENT_SECRET,
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  IS_PRODUCTION,
+} from "@hexa/env";
 
 const oauth = new Hono<Context>()
   // Github OAuth
   .get("/oauth/github", async (c) => {
     const state = generateState();
     const github = new GitHub(
-      process.env.GITHUB_CLIENT_ID ?? "",
-      process.env.GITHUB_CLIENT_SECRET ?? "",
+      GITHUB_CLIENT_ID ?? "",
+      GITHUB_CLIENT_SECRET ?? "",
     );
 
     const url = await github.createAuthorizationURL(state, {
@@ -34,7 +41,7 @@ const oauth = new Hono<Context>()
 
     setCookie(c, "github_oauth_state", state, {
       path: "/",
-      secure: process.env.NODE_ENV === "production",
+      secure: IS_PRODUCTION,
       httpOnly: true,
       maxAge: 60 * 10,
       sameSite: "lax",
@@ -55,8 +62,8 @@ const oauth = new Hono<Context>()
       throw new ApiError("FORBIDDEN", "Invalid state");
     }
     const github = new GitHub(
-      process.env.GITHUB_CLIENT_ID ?? "",
-      process.env.GITHUB_CLIENT_SECRET ?? "",
+      GITHUB_CLIENT_ID ?? "",
+      GITHUB_CLIENT_SECRET ?? "",
     );
     try {
       const tokens = await github.validateAuthorizationCode(code);
@@ -111,7 +118,7 @@ const oauth = new Hono<Context>()
       // we pass the new account id to the sign-up page, so we can bind the account to the user later
       setCookie(c, "oauth_account_id", account.id, {
         path: "/",
-        secure: process.env.NODE_ENV === "production",
+        secure: IS_PRODUCTION,
         httpOnly: true,
         maxAge: 60, // 1 minutes
         sameSite: "lax",
@@ -133,8 +140,8 @@ const oauth = new Hono<Context>()
     const publicUrl = new URL(c.req.url).origin;
 
     const google = new Google(
-      process.env.GOOGLE_CLIENT_ID ?? "",
-      process.env.GOOGLE_CLIENT_SECRET ?? "",
+      GOOGLE_CLIENT_ID ?? "",
+      GOOGLE_CLIENT_SECRET ?? "",
       `${publicUrl}/api/oauth/google/callback`,
     );
     const url = await google.createAuthorizationURL(state, codeVerifier, {
@@ -176,8 +183,8 @@ const oauth = new Hono<Context>()
     }
 
     const google = new Google(
-      process.env.GOOGLE_CLIENT_ID ?? "",
-      process.env.GOOGLE_CLIENT_SECRET ?? "",
+      GOOGLE_CLIENT_ID ?? "",
+      GOOGLE_CLIENT_SECRET ?? "",
       `${publickUrl}/api/oauth/google/callback`,
     );
 
@@ -227,7 +234,7 @@ const oauth = new Hono<Context>()
 
       setCookie(c, "oauth_account_id", account.id, {
         path: "/",
-        secure: process.env.NODE_ENV === "production",
+        secure: IS_PRODUCTION,
         httpOnly: true,
         maxAge: 60, // 1 minutes
         sameSite: "lax",

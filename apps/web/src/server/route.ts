@@ -1,5 +1,6 @@
 import { inspect } from "node:util";
 import { ERROR_CODE_TO_HTTP_STATUS } from "@/lib/error/error";
+import { IS_DEVELOPMENT } from "@hexa/env";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import db from "./middleware/db";
@@ -45,7 +46,7 @@ export const app = new Hono<{ Variables: ContextVariables }>()
     // we need to log this errors
     console.error(error);
 
-    if (process.env.NODE_ENV === "development") {
+    if (IS_DEVELOPMENT) {
       return c.json(
         {
           error: {
