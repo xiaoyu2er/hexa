@@ -1,4 +1,3 @@
-import { DISABLE_CLOUDFLARE_TURNSTILE, PUBLIC_URL } from "@/lib/const";
 import type { Context } from "@/server/types";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { Hono } from "hono";
@@ -11,11 +10,7 @@ const test = new Hono<Context>()
     });
   })
   .get("/env", async (c) => {
-    return c.json({
-      NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
-      PUBLIC_URL,
-      DISABLE_CLOUDFLARE_TURNSTILE,
-    });
+    return c.json(process.env);
   });
 
 export default test;
