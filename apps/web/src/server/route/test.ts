@@ -25,6 +25,7 @@ const test = new Hono<Context>()
       );
     return c.json({
       env: json,
+      process: process.env,
       IS_DEVELOPMENT,
       IS_PRODUCTION,
       NEXT_PUBLIC_APP_NAME,
