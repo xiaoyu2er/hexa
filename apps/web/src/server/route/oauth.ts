@@ -76,6 +76,8 @@ const oauth = new Hono<Context>()
       const githubUserResponse = await fetch("https://api.github.com/user", {
         headers: {
           Authorization: `Bearer ${tokens.accessToken}`,
+          Accept: "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28",
         },
       });
 
@@ -94,6 +96,8 @@ const oauth = new Hono<Context>()
       const emailsResponse = await fetch("https://api.github.com/user/emails", {
         headers: {
           Authorization: `Bearer ${tokens.accessToken}`,
+          Accept: "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28",
         },
       });
       const emails: GitHubEmail[] = await emailsResponse.json();
