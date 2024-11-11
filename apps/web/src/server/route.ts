@@ -1,9 +1,9 @@
 import { inspect } from "node:util";
+import { IS_DEVELOPMENT } from "@/lib/env";
 import { ERROR_CODE_TO_HTTP_STATUS } from "@/lib/error/error";
-import { IS_DEVELOPMENT } from "@hexa/env";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import db from "./middleware/db";
+import setEnv from "./middleware/set-env";
 import login from "./route/login";
 import logout from "./route/logout";
 import oauth from "./route/oauth";
@@ -13,12 +13,12 @@ import signup from "./route/signup";
 import test from "./route/test";
 import user from "./route/user";
 import workspace from "./route/workspace";
-import type { ContextVariables } from "./types";
+import type { Context } from "./types";
 
-export const app = new Hono<{ Variables: ContextVariables }>()
+export const app = new Hono<Context>()
   .basePath("/api")
   .use(cors())
-  .use(db)
+  .use(setEnv)
   .route("/", test)
   .route("/", login)
   .route("/", logout)

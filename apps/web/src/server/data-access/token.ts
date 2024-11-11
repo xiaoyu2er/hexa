@@ -1,9 +1,9 @@
 import { RESET_PASSWORD_EXPIRE_TIME_SPAN } from "@/lib/const";
+import { IS_DEVELOPMENT } from "@/lib/env";
 import { ApiError } from "@/lib/error/error";
 import { generateCode, generateId } from "@/lib/utils";
 import { type OTPType, tokenTable } from "@/server/db/schema";
 import type { DBType } from "@/server/types";
-import { IS_DEVELOPMENT } from "@hexa/env";
 import { and, eq } from "drizzle-orm";
 import { createDate, isWithinExpirationDate } from "oslo";
 

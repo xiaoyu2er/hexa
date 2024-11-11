@@ -132,7 +132,7 @@ const user = new Hono<Context>()
     const { url } = await storage.upload(`avatars/${generateId()}`, image);
     await updateUserAvatar(db, userId, url);
     // Delete old avatar
-    c.executionCtx.waitUntil(
+    c.ctx.waitUntil(
       (async () => {
         if (avatarUrl && isStored(avatarUrl)) {
           await storage.delete(avatarUrl);

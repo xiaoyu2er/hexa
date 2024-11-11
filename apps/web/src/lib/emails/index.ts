@@ -1,6 +1,7 @@
+import { IS_DEVELOPMENT, NEXT_PUBLIC_APP_NAME } from "@/lib/env";
 import { ApiError } from "@/lib/error/error";
 import VerifyCodeAndUrlTemplate from "@hexa/email-templates/VerifyCodeAndUrl";
-import { IS_DEVELOPMENT, RESEND_API_KEY } from "@hexa/env";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { Resend } from "resend";
 
 export async function sendVerifyCodeAndUrlEmail(
@@ -13,13 +14,19 @@ export async function sendVerifyCodeAndUrlEmail(
     await new Promise((resolve) => setTimeout(resolve, 1000));
     return { code, email, url };
   }
-  const resend = new Resend(RESEND_API_KEY);
+  const { env } = await getCloudflareContext();
+  const resend = new Resend(env.RESEND_API_KEY);
   // @ts-ignore text is not required
   const { data, error } = await resend.emails.send({
     from: "Hexa <noreply@hexa.im>",
     to: [email],
     subject: "Verify your code",
-    react: VerifyCodeAndUrlTemplate({ email, code, url }),
+    react: VerifyCodeAndUrlTemplate({
+      email,
+      code,
+      url,
+      appName: NEXT_PUBLIC_APP_NAME ?? "Hexa",
+    }),
   });
 
   if (error) {

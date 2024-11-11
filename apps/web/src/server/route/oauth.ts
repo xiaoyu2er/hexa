@@ -13,23 +13,18 @@ import { OAuth2RequestError } from "arctic";
 import { Hono } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
 
+import { IS_PRODUCTION } from "@/lib/env";
 import {
   createGithubAccount,
   getAccountByGithubId,
 } from "@/server/data-access/account";
 import type { GitHubEmail, GitHubUser } from "@/types";
-import {
-  GITHUB_CLIENT_ID,
-  GITHUB_CLIENT_SECRET,
-  GOOGLE_CLIENT_ID,
-  GOOGLE_CLIENT_SECRET,
-  IS_PRODUCTION,
-} from "@hexa/env";
 
 const oauth = new Hono<Context>()
   // Github OAuth
   .get("/oauth/github", async (c) => {
     const state = generateState();
+    const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = c.env;
     const github = new GitHub(
       GITHUB_CLIENT_ID ?? "",
       GITHUB_CLIENT_SECRET ?? "",
@@ -52,6 +47,7 @@ const oauth = new Hono<Context>()
   //  Github OAuth callback
   .get("/oauth/github/callback", async (c) => {
     const db = c.get("db");
+    const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = c.env;
     const { code, state } = c.req.query();
     const cookieState = getCookie(c, "github_oauth_state") ?? null;
     console.log({
@@ -135,6 +131,7 @@ const oauth = new Hono<Context>()
     }
   })
   .get("/oauth/google", async (c) => {
+    const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = c.env;
     const state = generateState();
     const codeVerifier = generateCodeVerifier();
     const publicUrl = new URL(c.req.url).origin;
@@ -167,6 +164,7 @@ const oauth = new Hono<Context>()
   // Google OAuth callback
   .get("/oauth/google/callback", async (c) => {
     const db = c.get("db");
+    const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = c.env;
     const { code, state } = c.req.query();
     const publickUrl = new URL(c.req.url).origin;
     const storedState = getCookie(c, "google_oauth_state");

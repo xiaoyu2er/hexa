@@ -1,14 +1,15 @@
-import { DISABLE_CLOUDFLARE_TURNSTILE } from "@/lib/const";
+import { DISABLE_CLOUDFLARE_TURNSTILE, IS_DEVELOPMENT } from "@/lib/env";
 import { ApiError } from "@/lib/error/error";
-import { CLOUDFLARE_TURNSTILE_SECRET_KEY, IS_DEVELOPMENT } from "@hexa/env";
 import type { TurnstileServerValidationResponse } from "@marsidev/react-turnstile";
 import { createMiddleware } from "hono/factory";
 
 export const turnstile = createMiddleware(async (c, next) => {
   if (DISABLE_CLOUDFLARE_TURNSTILE) return next();
+  const { CLOUDFLARE_TURNSTILE_SECRET_KEY } = c.env;
   // @ts-ignore
   const body = c.req.valid("json");
   const form = new FormData();
+
   form.set("secret", CLOUDFLARE_TURNSTILE_SECRET_KEY ?? "");
   form.set("response", (body["cf-turnstile-response"] ?? "") as string);
   form.set("remoteip", c.req.header("x-forwarded-for") as string);

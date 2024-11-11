@@ -1,7 +1,7 @@
 "use client";
 
+import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
 import { queryUserEmailsOptions, queryUserOptions } from "@/lib/queries/user";
-import { NEXT_PUBLIC_APP_NAME } from "@hexa/env";
 import { Button } from "@hexa/ui/button";
 import {
   Card,

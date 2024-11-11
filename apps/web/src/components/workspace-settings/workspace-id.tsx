@@ -1,7 +1,7 @@
 "use client";
 
+import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
 import { queryWorkspaceBySlugOptions } from "@/lib/queries/workspace";
-import { NEXT_PUBLIC_APP_NAME } from "@hexa/env";
 import {
   Card,
   CardContent,

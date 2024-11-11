@@ -4,11 +4,11 @@
  * @see demo https://react-turnstile.vercel.app/basic
  */
 
-import { DISABLE_CLOUDFLARE_TURNSTILE } from "@/lib/const";
 import {
+  DISABLE_CLOUDFLARE_TURNSTILE,
   IS_DEVELOPMENT,
   NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY,
-} from "@hexa/env";
+} from "@/lib/env";
 import { Turnstile } from "@marsidev/react-turnstile";
 import { useTheme } from "next-themes";
 import { useRef } from "react";

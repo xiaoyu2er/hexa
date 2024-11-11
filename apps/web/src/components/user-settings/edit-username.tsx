@@ -1,8 +1,8 @@
 "use client";
 
+import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
 import { queryUserOptions } from "@/lib/queries/user";
 import { useModal } from "@ebay/nice-modal-react";
-import { NEXT_PUBLIC_APP_NAME } from "@hexa/env";
 import { Button } from "@hexa/ui/button";
 import {
   Card,

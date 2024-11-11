@@ -1,4 +1,4 @@
-import { IS_PRODUCTION } from "@hexa/env";
+import { IS_PRODUCTION } from "@/lib/env";
 
 export function TailwindIndicator() {
   if (IS_PRODUCTION) return null;

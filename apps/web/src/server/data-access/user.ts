@@ -1,3 +1,4 @@
+import { IS_DEVELOPMENT } from "@/lib/env";
 import { ApiError } from "@/lib/error/error";
 import { getHash } from "@/lib/utils";
 import {
@@ -7,7 +8,6 @@ import {
   userTable,
 } from "@/server/db/schema";
 import type { DBType } from "@/server/types";
-import { IS_DEVELOPMENT } from "@hexa/env";
 import { and, eq, ne } from "drizzle-orm";
 
 export async function getUser(db: DBType, uid: string) {

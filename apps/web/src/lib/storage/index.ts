@@ -1,10 +1,9 @@
 import {
-  STORAGE_ACCESS_KEY_ID,
-  STORAGE_BASE_URL,
-  STORAGE_ENDPOINT,
-  STORAGE_SECRET_ACCESS_KEY,
-} from "@hexa/env";
+  NEXT_PUBLIC_STORAGE_BASE_URL,
+  NEXT_PUBLIC_STORAGE_ENDPOINT,
+} from "@/lib/env";
 import { fetchWithTimeout } from "@hexa/utils";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { AwsClient } from "aws4fetch";
 
 interface imageOptions {
@@ -14,14 +13,22 @@ interface imageOptions {
 }
 
 class StorageClient {
-  private client: AwsClient;
+  private $client: Promise<AwsClient>;
 
   constructor() {
-    this.client = new AwsClient({
-      accessKeyId: STORAGE_ACCESS_KEY_ID ?? "",
-      secretAccessKey: STORAGE_SECRET_ACCESS_KEY ?? "",
-      service: "s3",
-      region: "auto",
+    this.$client = new Promise((resolve) => {
+      getCloudflareContext().then(
+        ({ env: { STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY } }) => {
+          resolve(
+            new AwsClient({
+              accessKeyId: STORAGE_ACCESS_KEY_ID ?? "",
+              secretAccessKey: STORAGE_SECRET_ACCESS_KEY ?? "",
+              service: "s3",
+              region: "auto",
+            }),
+          );
+        },
+      );
     });
   }
 
@@ -46,31 +53,34 @@ class StorageClient {
       "Content-Length": uploadBody.size.toString(),
     };
     if (opts?.contentType) headers["Content-Type"] = opts.contentType;
-
-    const res = await this.client.fetch(`${STORAGE_ENDPOINT ?? ""}/${key}`, {
-      method: "PUT",
-      headers,
-      body: uploadBody,
-    });
+    const client = await this.$client;
+    const res = await client.fetch(
+      `${NEXT_PUBLIC_STORAGE_ENDPOINT ?? ""}/${key}`,
+      {
+        method: "PUT",
+        headers,
+        body: uploadBody,
+      },
+    );
 
     const json = await res.text();
     console.log("upload:", json);
 
     return {
-      url: `${STORAGE_BASE_URL ?? ""}/${key}`,
+      url: `${NEXT_PUBLIC_STORAGE_BASE_URL ?? ""}/${key}`,
     };
   }
 
   async delete(url: string) {
-    if (!url.startsWith(STORAGE_BASE_URL ?? "")) {
+    if (!url.startsWith(NEXT_PUBLIC_STORAGE_BASE_URL ?? "")) {
       return {
         success: false,
-        message: `Url not stored on ${STORAGE_BASE_URL ?? ""}`,
+        message: `Url not stored on ${NEXT_PUBLIC_STORAGE_BASE_URL ?? ""}`,
       };
     }
-    const key = url.replace(`${STORAGE_BASE_URL ?? ""}/`, "");
-
-    await this.client.fetch(`${STORAGE_ENDPOINT ?? ""}/${key}`, {
+    const key = url.replace(`${NEXT_PUBLIC_STORAGE_BASE_URL ?? ""}/`, "");
+    const client = await this.$client;
+    await client.fetch(`${NEXT_PUBLIC_STORAGE_ENDPOINT ?? ""}/${key}`, {
       method: "DELETE",
     });
 
@@ -139,5 +149,5 @@ class StorageClient {
 export const storage = new StorageClient();
 
 export const isStored = (url: string) => {
-  return url.startsWith(STORAGE_BASE_URL ?? "");
+  return url.startsWith(NEXT_PUBLIC_STORAGE_BASE_URL ?? "");
 };
