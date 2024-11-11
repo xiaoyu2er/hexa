@@ -58,7 +58,14 @@ export const app = new Hono<Context>()
       );
     }
 
-    throw error;
+    return c.json(
+      {
+        error: {
+          message: error.message,
+        },
+      },
+      500,
+    );
   });
 
 export type AppType = typeof app;

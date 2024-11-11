@@ -61,29 +61,19 @@ const oauth = new Hono<Context>()
     if (!code || !state || !cookieState || state !== cookieState) {
       throw new ApiError("FORBIDDEN", "Invalid state");
     }
-    console.log({
-      code,
-      state,
-      cookieState,
-    });
+
     const github = new GitHub(
       GITHUB_CLIENT_ID ?? "",
       GITHUB_CLIENT_SECRET ?? "",
     );
 
     const tokens = await github.validateAuthorizationCode(code);
-    console.log({ accessToken: tokens.accessToken });
+
     const githubUserResponse = await fetch("https://api.github.com/user", {
       headers: {
         Authorization: `Bearer ${tokens.accessToken}`,
-        Accept: "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": "hexa.im",
       },
-    });
-
-    console.log({
-      status: githubUserResponse.status,
-      statusText: githubUserResponse.statusText,
     });
 
     if (githubUserResponse.status !== 200) {
@@ -93,12 +83,10 @@ const oauth = new Hono<Context>()
       );
     }
     const githubUser: GitHubUser = await githubUserResponse.json();
-    console.log({ githubUser });
     const emailsResponse = await fetch("https://api.github.com/user/emails", {
       headers: {
         Authorization: `Bearer ${tokens.accessToken}`,
-        Accept: "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": "hexa.im",
       },
     });
     const emails: GitHubEmail[] = await emailsResponse.json();
@@ -184,7 +172,7 @@ const oauth = new Hono<Context>()
     const db = c.get("db");
     const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = c.env;
     const { code, state } = c.req.query();
-    const publickUrl = new URL(c.req.url).origin;
+    const publicUrl = new URL(c.req.url).origin;
     const storedState = getCookie(c, "google_oauth_state");
     const codeVerifier = getCookie(c, "google_code_verifier");
 
@@ -201,7 +189,7 @@ const oauth = new Hono<Context>()
     const google = new Google(
       GOOGLE_CLIENT_ID ?? "",
       GOOGLE_CLIENT_SECRET ?? "",
-      `${publickUrl}/api/oauth/google/callback`,
+      `${publicUrl}/api/oauth/google/callback`,
     );
 
     try {
@@ -214,6 +202,12 @@ const oauth = new Hono<Context>()
           },
         },
       );
+
+      if (response.status !== 200) {
+        console.log(await response.text());
+        throw new Error(`status: ${response.status} ${response.statusText}`);
+      }
+
       const googleUser: GoogleUser = await response.json();
 
       if (!googleUser.email_verified) {
