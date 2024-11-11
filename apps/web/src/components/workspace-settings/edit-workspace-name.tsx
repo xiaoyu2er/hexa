@@ -17,6 +17,7 @@ import {
 } from "@hexa/ui/form";
 import { Input } from "@hexa/ui/input";
 
+import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
 import {
   invalidateWorkspaceBySlugQuery,
   invalidateWorkspacesQuery,
@@ -27,7 +28,6 @@ import {
   UpdateWorkspacerNameSchema,
 } from "@/lib/zod/schemas/workspace";
 import { $updateWorkspaceName } from "@/server/client";
-import { NEXT_PUBLIC_APP_NAME } from "@hexa/env";
 import { Button } from "@hexa/ui/button";
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";

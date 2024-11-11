@@ -1,4 +1,5 @@
-import { DISABLE_CLOUDFLARE_TURNSTILE, MIN_PASSWORD_LENGTH } from "@/lib/const";
+import { MIN_PASSWORD_LENGTH } from "@/lib/const";
+import { DISABLE_CLOUDFLARE_TURNSTILE } from "@/lib/env";
 import { z } from "zod";
 
 const email = z.string().email("Please enter a valid email");

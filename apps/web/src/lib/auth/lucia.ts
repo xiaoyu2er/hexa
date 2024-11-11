@@ -1,6 +1,6 @@
+import { IS_PRODUCTION } from "@/lib/env";
 import { getD1 } from "@/server/db";
 import type { UserModel as DbUser } from "@/server/db/schema";
-import { IS_PRODUCTION } from "@hexa/env";
 import { D1Adapter } from "@lucia-auth/adapter-sqlite";
 import pick from "lodash/pick";
 import { Lucia, TimeSpan } from "lucia";

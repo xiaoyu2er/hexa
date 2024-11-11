@@ -9,6 +9,7 @@ import {
 } from "@hexa/ui/card";
 import { Input } from "@hexa/ui/input";
 
+import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
 import { setFormError } from "@/lib/form";
 import { invalidateWorkspacesQuery } from "@/lib/queries/workspace";
 import {
@@ -17,7 +18,6 @@ import {
   DeleteWorkspaceSchema,
 } from "@/lib/zod/schemas/workspace";
 import { $deleteWorkspace } from "@/server/client";
-import { NEXT_PUBLIC_APP_NAME } from "@hexa/env";
 import { Button } from "@hexa/ui/button";
 import {
   Dialog,

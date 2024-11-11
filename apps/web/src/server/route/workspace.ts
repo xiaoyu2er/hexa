@@ -128,7 +128,7 @@ const workspace = new Hono<Context>()
       const { image } = c.req.valid("form");
       const { url } = await storage.upload(`ws-avatars/${generateId()}`, image);
       const newWs = await updateWorkspaceAvatar(db, workspaceId, url);
-      c.executionCtx.waitUntil(
+      c.ctx.waitUntil(
         (async () => {
           if (ws.avatarUrl && isStored(ws.avatarUrl)) {
             await storage.delete(ws.avatarUrl);

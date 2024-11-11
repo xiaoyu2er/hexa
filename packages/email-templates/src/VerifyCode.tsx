@@ -15,12 +15,14 @@ import Footer from "./components/Footer";
 interface VerifyCodeTemplateProps {
   email: string;
   code: string;
+  appName: string;
   children?: React.ReactNode;
 }
 export default function VerifyCodeTemplate({
   email,
   code,
   children,
+  appName,
 }: VerifyCodeTemplateProps) {
   return (
     <Html>
@@ -33,7 +35,7 @@ export default function VerifyCodeTemplate({
               Verify your code
             </Heading>
             <Text className="text-sm leading-6 text-black">
-              Welcome to {process.env.NEXT_PUBLIC_APP_NAME}
+              Welcome to {appName}!
             </Text>
 
             <Text className="text-sm leading-6 text-black">
@@ -68,4 +70,5 @@ VerifyCodeTemplate.PreviewProps = {
   email: "test@example.com",
   code: "123456",
   url: "https://example.com",
+  appName: "Hexa",
 } as VerifyCodeTemplateProps;

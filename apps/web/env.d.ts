@@ -2,20 +2,14 @@
 
 interface CloudflareEnv {
   hello: "Hello World from the cloudflare context!";
-  NEXT_PUBLIC_APP_NAME: string;
   RESEND_API_KEY: string;
-  DB_URL: string;
   GITHUB_CLIENT_ID: string;
   GITHUB_CLIENT_SECRET: string;
   GOOGLE_CLIENT_ID: string;
   GOOGLE_CLIENT_SECRET: string;
-  NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY: string;
   CLOUDFLARE_TURNSTILE_SECRET_KEY: string;
   STORAGE_ACCESS_KEY_ID: string;
   STORAGE_SECRET_ACCESS_KEY: string;
-  STORAGE_ENDPOINT: string;
-  STORAGE_BASE_URL: string;
-  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: string;
   STRIPE_SECRET_KEY: string;
   STRIPE_WEBHOOK_SECRET: string;
   DB: D1Database;

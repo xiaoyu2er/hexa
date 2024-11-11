@@ -6,14 +6,16 @@ interface VerifyCodeAndUrlProps {
   email: string;
   code: string;
   url?: string;
+  appName: string;
 }
 export default function VerifyCodeAndUrlTemplate({
   email,
   code,
   url,
+  appName,
 }: VerifyCodeAndUrlProps) {
   return (
-    <VerifyCodeTemplate code={code} email={email}>
+    <VerifyCodeTemplate code={code} email={email} appName={appName}>
       {url && (
         <>
           <Hr />
@@ -44,4 +46,5 @@ VerifyCodeAndUrlTemplate.PreviewProps = {
   email: "test@example.com",
   code: "123456",
   url: "https://example.com",
+  appName: "Hexa",
 } as VerifyCodeAndUrlProps;

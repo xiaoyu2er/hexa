@@ -5,6 +5,7 @@ import { FileUpload } from "@hexa/ui/file-upload";
 import { toast } from "@hexa/ui/sonner";
 import { useEffect, useState } from "react";
 
+import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
 import { queryUserOptions } from "@/lib/queries/user";
 import {
   invalidateWorkspaceBySlugQuery,
@@ -16,7 +17,6 @@ import {
   UpdateWorkspaceAvatarSchema,
 } from "@/lib/zod/schemas/workspace";
 import { $updateWorkspaceAvatar } from "@/server/client";
-import { NEXT_PUBLIC_APP_NAME } from "@hexa/env";
 import { Button } from "@hexa/ui/button";
 import {
   Card,

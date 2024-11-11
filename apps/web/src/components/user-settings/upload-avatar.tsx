@@ -5,13 +5,13 @@ import { FileUpload } from "@hexa/ui/file-upload";
 import { toast } from "@hexa/ui/sonner";
 import { useEffect, useState } from "react";
 
+import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
 import { queryUserOptions } from "@/lib/queries/user";
 import {
   type UpdateAvatarInput,
   UpdateAvatarSchema,
 } from "@/lib/zod/schemas/user";
 import { $updateUserAvatar } from "@/server/client";
-import { NEXT_PUBLIC_APP_NAME } from "@hexa/env";
 import { Button } from "@hexa/ui/button";
 import {
   Card,
