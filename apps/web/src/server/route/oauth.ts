@@ -25,6 +25,7 @@ const oauth = new Hono<Context>()
   .get("/oauth/github", async (c) => {
     const state = generateState();
     const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = c.env;
+    console.log({ GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET });
     const github = new GitHub(
       GITHUB_CLIENT_ID ?? "",
       GITHUB_CLIENT_SECRET ?? "",
@@ -51,6 +52,8 @@ const oauth = new Hono<Context>()
     const { code, state } = c.req.query();
     const cookieState = getCookie(c, "github_oauth_state") ?? null;
     console.log({
+      GITHUB_CLIENT_ID,
+      GITHUB_CLIENT_SECRET,
       code,
       cookieState,
       state,
@@ -75,10 +78,17 @@ const oauth = new Hono<Context>()
           Authorization: `Bearer ${tokens.accessToken}`,
         },
       });
+
       console.log({
         status: githubUserResponse.status,
         statusText: githubUserResponse.statusText,
       });
+
+      if (githubUserResponse.status !== 200) {
+        throw new Error(
+          `status: ${githubUserResponse.status} ${githubUserResponse.statusText}`,
+        );
+      }
       const githubUser: GitHubUser = await githubUserResponse.json();
       console.log({ githubUser });
       const emailsResponse = await fetch("https://api.github.com/user/emails", {
@@ -138,6 +148,7 @@ const oauth = new Hono<Context>()
       if (e instanceof OAuth2RequestError) {
         throw new ApiError("BAD_REQUEST", e.message);
       }
+      if (e instanceof ApiError) throw e;
       throw new ApiError("INTERNAL_SERVER_ERROR", "Internal server error");
     }
   })
@@ -256,6 +267,8 @@ const oauth = new Hono<Context>()
       if (e instanceof OAuth2RequestError) {
         throw new ApiError("BAD_REQUEST", e.message);
       }
+      if (e instanceof ApiError) throw e;
+
       throw new ApiError("INTERNAL_SERVER_ERROR", "Internal server error");
     }
   });
