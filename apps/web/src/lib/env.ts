@@ -19,4 +19,4 @@ export const NEXT_PUBLIC_STORAGE_ENDPOINT =
 export const PUBLIC_URL =
   (process.env.NODE_ENV === "development"
     ? process.env.__NEXT_PRIVATE_ORIGIN
-    : process.env.PUBLIC_URL) ?? "";
+    : process.env.NEXT_PUBLIC_URL) ?? "";
