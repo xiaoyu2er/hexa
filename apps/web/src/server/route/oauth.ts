@@ -140,8 +140,9 @@ const oauth = new Hono<Context>()
     const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = c.env;
     const state = generateState();
     const codeVerifier = generateCodeVerifier();
-    const publicUrl = new URL(c.req.url).origin;
-
+    const publicUrl = new URL(c.req.raw.url).origin;
+    console.log("publicUrl1", new URL(c.req.url).origin);
+    console.log("publicUrl2", publicUrl);
     const google = new Google(
       GOOGLE_CLIENT_ID ?? "",
       GOOGLE_CLIENT_SECRET ?? "",
