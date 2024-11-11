@@ -1,3 +1,4 @@
+import { PUBLIC_URL } from "@/lib/env";
 import { ApiError } from "@/lib/error/error";
 import { invalidateUserSessions } from "@/lib/session";
 import { isStored, storage } from "@/lib/storage";
@@ -96,7 +97,6 @@ const user = new Hono<Context>()
   .post("/user/emails", zValidator("json", OnlyEmailSchema), async (c) => {
     const { db, userId } = c.var;
     const { email } = c.req.valid("json");
-    const publicUrl = new URL(c.req.url).origin;
 
     await createUserEmail(db, {
       email,
@@ -109,7 +109,7 @@ const user = new Hono<Context>()
       userId,
       email,
       type: "VERIFY_EMAIL",
-      publicUrl,
+      publicUrl: PUBLIC_URL,
     });
 
     return c.json(data);

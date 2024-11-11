@@ -1,4 +1,4 @@
-import { IS_DEVELOPMENT } from "@/lib/env";
+import { IS_DEVELOPMENT, PUBLIC_URL } from "@/lib/env";
 import { ApiError } from "@/lib/error/error";
 import { invalidateUserSessions, setSession } from "@/lib/session";
 import { OAuthSignupSchema, SignupSchema } from "@/lib/zod/schemas/auth";
@@ -25,7 +25,6 @@ const signup = new Hono<Context>()
     const db = c.get("db");
     const { email, password, username } = c.req.valid("json");
     const emailItem = await getEmail(db, email);
-    const publicUrl = new URL(c.req.url).origin;
 
     if (emailItem?.verified) {
       throw new ApiError(
@@ -61,7 +60,7 @@ const signup = new Hono<Context>()
       userId: user.id,
       email,
       type: "VERIFY_EMAIL",
-      publicUrl,
+      publicUrl: PUBLIC_URL,
     });
     return c.json(data);
   })

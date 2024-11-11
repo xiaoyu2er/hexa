@@ -1,4 +1,4 @@
-import { IS_DEVELOPMENT } from "@/lib/env";
+import { IS_DEVELOPMENT, PUBLIC_URL } from "@/lib/env";
 import { ApiError } from "@/lib/error/error";
 import { invalidateUserSessions, setSession } from "@/lib/session";
 import {
@@ -27,7 +27,6 @@ const passcode = new Hono<Context>()
     async (c) => {
       const db = c.get("db");
       const { email, type } = c.req.valid("json");
-      const publicUrl = new URL(c.req.url).origin;
       const {
         user: { id: userId },
       } = await getUserEmailOrThrowError(db, email);
@@ -35,7 +34,7 @@ const passcode = new Hono<Context>()
         userId,
         email,
         type,
-        publicUrl,
+        publicUrl: PUBLIC_URL,
       });
       return c.json(data);
     },
@@ -47,7 +46,6 @@ const passcode = new Hono<Context>()
     async (c) => {
       const db = c.get("db");
       const { email, type } = c.req.valid("json");
-      const publicUrl = new URL(c.req.url).origin;
       const {
         user: { id: userId },
       } = await getUserEmailOrThrowError(db, email);
@@ -55,7 +53,7 @@ const passcode = new Hono<Context>()
         userId,
         email,
         type,
-        publicUrl,
+        publicUrl: PUBLIC_URL,
       });
       return c.json(data);
     },
