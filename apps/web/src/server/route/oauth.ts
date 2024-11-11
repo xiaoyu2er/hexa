@@ -51,6 +51,7 @@ const oauth = new Hono<Context>()
     const { code, state } = c.req.query();
     const cookieState = getCookie(c, "github_oauth_state") ?? null;
     console.log({
+      code,
       cookieState,
       state,
     });
@@ -68,11 +69,15 @@ const oauth = new Hono<Context>()
     );
     try {
       const tokens = await github.validateAuthorizationCode(code);
-      console.log({ tokens, accessToken: tokens.accessToken });
+      console.log({ accessToken: tokens.accessToken });
       const githubUserResponse = await fetch("https://api.github.com/user", {
         headers: {
           Authorization: `Bearer ${tokens.accessToken}`,
         },
+      });
+      console.log({
+        status: githubUserResponse.status,
+        statusText: githubUserResponse.statusText,
       });
       const githubUser: GitHubUser = await githubUserResponse.json();
       console.log({ githubUser });
