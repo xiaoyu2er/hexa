@@ -13,7 +13,7 @@ import { OAuth2RequestError } from "arctic";
 import { Hono } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
 
-import { IS_PRODUCTION } from "@/lib/env";
+import { IS_PRODUCTION, PUBLIC_URL } from "@/lib/env";
 import {
   createGithubAccount,
   getAccountByGithubId,
@@ -140,14 +140,11 @@ const oauth = new Hono<Context>()
     const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = c.env;
     const state = generateState();
     const codeVerifier = generateCodeVerifier();
-    const publicUrl = new URL(c.req.raw.url).origin;
-    for (const [key, value] of Object.entries(c.req.raw)) {
-      console.log({ key, value });
-    }
+
     const google = new Google(
       GOOGLE_CLIENT_ID ?? "",
       GOOGLE_CLIENT_SECRET ?? "",
-      `${publicUrl}/api/oauth/google/callback`,
+      `${PUBLIC_URL}/api/oauth/google/callback`,
     );
     const url = await google.createAuthorizationURL(state, codeVerifier, {
       scopes: ["profile", "email"],
@@ -174,7 +171,6 @@ const oauth = new Hono<Context>()
     const db = c.get("db");
     const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = c.env;
     const { code, state } = c.req.query();
-    const publicUrl = new URL(c.req.url).origin;
     const storedState = getCookie(c, "google_oauth_state");
     const codeVerifier = getCookie(c, "google_code_verifier");
 
@@ -191,7 +187,7 @@ const oauth = new Hono<Context>()
     const google = new Google(
       GOOGLE_CLIENT_ID ?? "",
       GOOGLE_CLIENT_SECRET ?? "",
-      `${publicUrl}/api/oauth/google/callback`,
+      `${PUBLIC_URL}/api/oauth/google/callback`,
     );
 
     try {
