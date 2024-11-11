@@ -57,19 +57,25 @@ const oauth = new Hono<Context>()
     if (!code || !state || !cookieState || state !== cookieState) {
       throw new ApiError("FORBIDDEN", "Invalid state");
     }
+    console.log({
+      code,
+      state,
+      cookieState,
+    });
     const github = new GitHub(
       GITHUB_CLIENT_ID ?? "",
       GITHUB_CLIENT_SECRET ?? "",
     );
     try {
       const tokens = await github.validateAuthorizationCode(code);
+      console.log({ tokens, accessToken: tokens.accessToken });
       const githubUserResponse = await fetch("https://api.github.com/user", {
         headers: {
           Authorization: `Bearer ${tokens.accessToken}`,
         },
       });
       const githubUser: GitHubUser = await githubUserResponse.json();
-
+      console.log({ githubUser });
       const emailsResponse = await fetch("https://api.github.com/user/emails", {
         headers: {
           Authorization: `Bearer ${tokens.accessToken}`,
