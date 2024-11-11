@@ -4,11 +4,9 @@ import type { Metadata } from "next";
 import { Toaster } from "@hexa/ui/sonner";
 import { cn } from "@hexa/utils";
 import "./globals.css";
-import { Analytics } from "@/components/analytics";
 import { Provider as NiceModalProvider } from "@/components/modal";
 import { QueryClientProvider } from "@/components/providers/query-client-provider";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "next-themes";
 
 export const metadata: Metadata = {
@@ -35,8 +33,8 @@ export default function RootLayout({
               {children}
               <Toaster richColors position="top-center" />
               <TailwindIndicator />
-              <Analytics />
-              <SpeedInsights />
+              {/* <Analytics /> */}
+              {/* <SpeedInsights /> */}
             </ThemeProvider>
           </NiceModalProvider>
         </QueryClientProvider>
