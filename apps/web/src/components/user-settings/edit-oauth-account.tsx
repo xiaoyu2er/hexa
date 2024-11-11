@@ -114,7 +114,7 @@ export function EditOAuthAccount() {
                     className="w-full h-11 justify-start "
                     asChild
                   >
-                    <Link href="/api/oauth/github">
+                    <Link href="/api/oauth/github" prefetch={false}>
                       <GithubIcon className="w-4 h-4 mr-2" />
                       Github
                     </Link>
@@ -126,7 +126,7 @@ export function EditOAuthAccount() {
                     className="w-full h-11 justify-start"
                     asChild
                   >
-                    <Link href="/api/oauth/google">
+                    <Link href="/api/oauth/google" prefetch={false}>
                       <GoogleIcon className="w-4 h-4 mr-2" />
                       Google
                     </Link>

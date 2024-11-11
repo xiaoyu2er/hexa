@@ -70,91 +70,83 @@ const oauth = new Hono<Context>()
       GITHUB_CLIENT_ID ?? "",
       GITHUB_CLIENT_SECRET ?? "",
     );
-    try {
-      const tokens = await github.validateAuthorizationCode(code);
-      console.log({ accessToken: tokens.accessToken });
-      const githubUserResponse = await fetch("https://api.github.com/user", {
-        headers: {
-          Authorization: `Bearer ${tokens.accessToken}`,
-          Accept: "application/vnd.github+json",
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
-      });
 
-      console.log({
-        status: githubUserResponse.status,
-        statusText: githubUserResponse.statusText,
-      });
+    const tokens = await github.validateAuthorizationCode(code);
+    console.log({ accessToken: tokens.accessToken });
+    const githubUserResponse = await fetch("https://api.github.com/user", {
+      headers: {
+        Authorization: `Bearer ${tokens.accessToken}`,
+        Accept: "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+    });
 
-      if (githubUserResponse.status !== 200) {
-        throw new Error(
-          `status: ${githubUserResponse.status} ${githubUserResponse.statusText}`,
-        );
-      }
-      const githubUser: GitHubUser = await githubUserResponse.json();
-      console.log({ githubUser });
-      const emailsResponse = await fetch("https://api.github.com/user/emails", {
-        headers: {
-          Authorization: `Bearer ${tokens.accessToken}`,
-          Accept: "application/vnd.github+json",
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
-      });
-      const emails: GitHubEmail[] = await emailsResponse.json();
+    console.log({
+      status: githubUserResponse.status,
+      statusText: githubUserResponse.statusText,
+    });
 
-      const primaryEmail = emails.find((email) => email.primary) ?? null;
-      if (!primaryEmail) {
-        throw new ApiError("FORBIDDEN", "No primary email address");
-      }
+    if (githubUserResponse.status !== 200) {
+      console.log(await githubUserResponse.text());
+      throw new Error(
+        `status: ${githubUserResponse.status} ${githubUserResponse.statusText}`,
+      );
+    }
+    const githubUser: GitHubUser = await githubUserResponse.json();
+    console.log({ githubUser });
+    const emailsResponse = await fetch("https://api.github.com/user/emails", {
+      headers: {
+        Authorization: `Bearer ${tokens.accessToken}`,
+        Accept: "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+    });
+    const emails: GitHubEmail[] = await emailsResponse.json();
 
-      if (!primaryEmail.verified) {
-        throw new ApiError("FORBIDDEN", "Unverified email");
-      }
+    const primaryEmail = emails.find((email) => email.primary) ?? null;
+    if (!primaryEmail) {
+      throw new ApiError("FORBIDDEN", "No primary email address");
+    }
 
-      const { user } = await validateRequest();
-      // Find existing oauthAccount
-      const existingAccount = await getAccountByGithubId(db, githubUser.id);
+    if (!primaryEmail.verified) {
+      throw new ApiError("FORBIDDEN", "Unverified email");
+    }
 
-      if (existingAccount) {
-        // If account is already linked to a user, set session and redirect to settings
-        if (existingAccount.userId) {
-          await setSession(existingAccount.userId);
-          return c.redirect("/settings", 302);
-        }
-      }
-      // we don't need the old account, we can just override it
-      if (user) {
-        // If user is logged in, bind the account, even if it's already linked, update the account
-        // it's possible that the user goes to /api/oauth/github
-        await createGithubAccount(db, user.id, githubUser);
+    const { user } = await validateRequest();
+    // Find existing oauthAccount
+    const existingAccount = await getAccountByGithubId(db, githubUser.id);
+
+    if (existingAccount) {
+      // If account is already linked to a user, set session and redirect to settings
+      if (existingAccount.userId) {
+        await setSession(existingAccount.userId);
         return c.redirect("/settings", 302);
       }
-
-      // If user is not logged in, create a new account, but don't set session, we need to redirect to /sign-up
-      // We still need user to set a username
-      const account = await createGithubAccount(db, null, githubUser);
-      if (!account) {
-        throw new ApiError("INTERNAL_SERVER_ERROR", "Failed to create account");
-      }
-      // we pass the new account id to the sign-up page, so we can bind the account to the user later
-      setCookie(c, "oauth_account_id", account.id, {
-        path: "/",
-        secure: IS_PRODUCTION,
-        httpOnly: true,
-        maxAge: 60, // 1 minutes
-        sameSite: "lax",
-      });
-
-      return c.redirect("/sign-up");
-    } catch (e) {
-      console.error("/oauth/github/callback", e);
-      // the specific error message depends on the provider
-      if (e instanceof OAuth2RequestError) {
-        throw new ApiError("BAD_REQUEST", e.message);
-      }
-      if (e instanceof ApiError) throw e;
-      throw new ApiError("INTERNAL_SERVER_ERROR", "Internal server error");
     }
+    // we don't need the old account, we can just override it
+    if (user) {
+      // If user is logged in, bind the account, even if it's already linked, update the account
+      // it's possible that the user goes to /api/oauth/github
+      await createGithubAccount(db, user.id, githubUser);
+      return c.redirect("/settings", 302);
+    }
+
+    // If user is not logged in, create a new account, but don't set session, we need to redirect to /sign-up
+    // We still need user to set a username
+    const account = await createGithubAccount(db, null, githubUser);
+    if (!account) {
+      throw new ApiError("INTERNAL_SERVER_ERROR", "Failed to create account");
+    }
+    // we pass the new account id to the sign-up page, so we can bind the account to the user later
+    setCookie(c, "oauth_account_id", account.id, {
+      path: "/",
+      secure: IS_PRODUCTION,
+      httpOnly: true,
+      maxAge: 60, // 1 minutes
+      sameSite: "lax",
+    });
+
+    return c.redirect("/sign-up");
   })
   .get("/oauth/google", async (c) => {
     const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = c.env;
