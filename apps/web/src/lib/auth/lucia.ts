@@ -46,6 +46,8 @@ export const getLucia = async () => {
   return lucia;
 };
 
+export const $lucia = getLucia();
+
 declare module "lucia" {
   // @ts-ignore - We declare the Register interface to extend the default Register interface from Lucia
   interface Register {

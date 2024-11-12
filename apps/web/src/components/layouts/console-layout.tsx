@@ -26,9 +26,9 @@ export function ConsoleLayout({ children }: { children: ReactNode }) {
             </div>
             <div className="flex items-center space-x-6">
               <ModeToggle />
-              <Suspense fallback={<Skeleton className="h-8 w-8" />}>
-                <UserAccountNav />
-              </Suspense>
+              {/* <Suspense fallback={<Skeleton className="h-8 w-8" />}> */}
+              <UserAccountNav />
+              {/* </Suspense> */}
             </div>
           </div>
           <NavTabs />

@@ -5,8 +5,8 @@ import { FileUpload } from "@hexa/ui/file-upload";
 import { toast } from "@hexa/ui/sonner";
 import { useEffect, useState } from "react";
 
+import { useSession } from "@/components/providers/session-provider";
 import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
-import { queryUserOptions } from "@/lib/queries/user";
 import {
   type UpdateAvatarInput,
   UpdateAvatarSchema,
@@ -29,11 +29,11 @@ import {
   FormMessage,
 } from "@hexa/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 
 export default function UploadAvatar() {
-  const { data: user, refetch } = useSuspenseQuery(queryUserOptions);
+  const { user, refetch } = useSession();
 
   const form = useForm<UpdateAvatarInput>({
     resolver: zodResolver(UpdateAvatarSchema),

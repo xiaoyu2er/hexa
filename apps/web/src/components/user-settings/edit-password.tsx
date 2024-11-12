@@ -1,7 +1,8 @@
 "use client";
 
+import { useSession } from "@/components/providers/session-provider";
 import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
-import { queryUserEmailsOptions, queryUserOptions } from "@/lib/queries/user";
+import { queryUserEmailsOptions } from "@/lib/queries/user";
 import { Button } from "@hexa/ui/button";
 import {
   Card,
@@ -16,7 +17,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
 export function EditPassword() {
-  const { data: user } = useSuspenseQuery(queryUserOptions);
+  const { user, refetch } = useSession();
   const { data: emails } = useSuspenseQuery(queryUserEmailsOptions);
   const primaryEmail = emails?.find((email) => email.primary);
 

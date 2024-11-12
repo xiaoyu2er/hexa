@@ -6,8 +6,8 @@ import { Button } from "@hexa/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@hexa/ui/popover";
 import { cn } from "@hexa/utils";
 
+import { useSession } from "@/components/providers/session-provider";
 import { UserAvatar } from "@/components/user/user-avatar";
-import { queryUserOptions } from "@/lib/queries/user";
 import { queryWorkspacesOptions } from "@/lib/queries/workspace";
 import { $updateUserDefaultWorkspace } from "@/server/client";
 import type { WorkspaceModel } from "@/server/db";
@@ -25,7 +25,7 @@ import { WorkspaceAvatar } from "./workspace-avatar";
 export function WorkspaceSwitcher() {
   const { slug } = useParams() as { slug?: string };
   const { data: workspaces } = useSuspenseQuery(queryWorkspacesOptions);
-  const { data: user } = useSuspenseQuery(queryUserOptions);
+  const { user, refetch } = useSession();
   const {
     value: isPopoverOpen,
     setValue: setPopoverOpen,

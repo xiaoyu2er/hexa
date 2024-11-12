@@ -23,17 +23,18 @@ import { Input } from "@hexa/ui/input";
 
 import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
 import { setFormError } from "@/lib/form";
-import { invalidateUser, queryUserOptions } from "@/lib/queries/user";
+import { invalidateUser } from "@/lib/queries/user";
 import { $updateUserDisplayName } from "@/server/client";
 import { Button } from "@hexa/ui/button";
 import { toast } from "@hexa/ui/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
+import { useSession } from "../providers/session-provider";
 
 export function EditUserDisplayName() {
-  const { data: user } = useSuspenseQuery(queryUserOptions);
+  const { user } = useSession();
 
   const form = useForm<UpdateDisplayNameInput>({
     resolver: zodResolver(UpdateDisplayNameSchema),

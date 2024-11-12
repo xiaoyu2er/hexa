@@ -1,7 +1,7 @@
 "use client";
 
+import { useSession } from "@/components/providers/session-provider";
 import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
-import { queryUserOptions } from "@/lib/queries/user";
 import { useModal } from "@ebay/nice-modal-react";
 import { Button } from "@hexa/ui/button";
 import {
@@ -14,11 +14,10 @@ import {
 } from "@hexa/ui/card";
 import { CopyButton } from "@hexa/ui/copy-button";
 import { Input } from "@hexa/ui/input";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { ChangeUsernameModal } from "./change-username-modal";
 
 export function EditUsername() {
-  const { data: user, refetch } = useSuspenseQuery(queryUserOptions);
+  const { user, refetch } = useSession();
   const modal = useModal(ChangeUsernameModal);
 
   return (

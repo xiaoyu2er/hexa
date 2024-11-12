@@ -1,7 +1,7 @@
 "use client";
 
+import { useSession } from "@/components/providers/session-provider";
 import { UserAvatar } from "@/components/user/user-avatar";
-import { queryUserOptions } from "@/lib/queries/user";
 import { $logout } from "@/server/client";
 import { Button } from "@hexa/ui/button";
 import {
@@ -14,12 +14,12 @@ import {
 } from "@hexa/ui/dropdown-menu";
 import { LogOut, Settings } from "@hexa/ui/icons";
 import { useMutation } from "@tanstack/react-query";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export function UserAccountNav() {
-  const { data: user } = useSuspenseQuery(queryUserOptions);
+  const { user, refetch } = useSession();
+
   const router = useRouter();
   const { mutateAsync: execLogout, isPending } = useMutation({
     mutationFn: $logout,
