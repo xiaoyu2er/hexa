@@ -3,6 +3,16 @@
   "organizeImports": {
     "enabled": true
   },
+  "files": {
+    "ignore": [
+      "apps/web/.next/**/*",
+      "apps/web/.worker-next/**/*",
+      "apps/web/.wrangler/**/*",
+      "apps/web/drizzle/**/*",
+      "packages/ui/**/*",
+      "packages/email-templates/.react-email/**/*"
+    ]
+  },
   "vcs": {
     "enabled": true,
     "clientKind": "git",
