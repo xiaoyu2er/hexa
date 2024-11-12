@@ -21,7 +21,7 @@ enabled = true
 head_sampling_rate = 1
 
 [vars]
-hello = 'Hello World from the cloudflare context!'
+hello = 'Hello World from Hexa!'
 
 [[d1_databases]]
 binding = "DB"
@@ -35,3 +35,5 @@ name="hexa-xyz"
 routes = [
   { pattern = "app.xyz.hexa.im", custom_domain = true }
 ]
+[env.staging.vars]
+hello = 'Hello World from Hexa-XYZ!'
