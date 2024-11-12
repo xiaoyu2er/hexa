@@ -27,7 +27,6 @@ hello = 'Hello World from Hexa!'
 binding = "DB"
 database_name = "hexa"
 database_id = "da7f8a20-83d9-4dd1-9a33-4ffdf4956933"
-preview_database_id = "f1a166ed-95cd-42dd-887e-bb0e34395ebb"
 migrations_dir = "./drizzle/migrations"
 
 [env.staging]

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "build:worker": "cloudflare",
-    "dev:worker": "wrangler dev --port 8771 --env staging",
+    "dev:worker": "wrangler dev --port 8771",
     "preview:worker": "npm run dev:worker",
     "deploy:worker": "wrangler deploy",
     "deploy:worker:staging": "wrangler deploy --env staging",
