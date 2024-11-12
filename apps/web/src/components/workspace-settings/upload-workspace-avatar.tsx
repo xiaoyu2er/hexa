@@ -5,8 +5,8 @@ import { FileUpload } from "@hexa/ui/file-upload";
 import { toast } from "@hexa/ui/sonner";
 import { useEffect, useState } from "react";
 
+import { useSession } from "@/components/providers/session-provider";
 import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
-import { queryUserOptions } from "@/lib/queries/user";
 import {
   invalidateWorkspaceBySlugQuery,
   invalidateWorkspacesQuery,
@@ -39,7 +39,7 @@ import { useForm } from "react-hook-form";
 
 export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
   const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
-  const { data: user } = useSuspenseQuery(queryUserOptions);
+  const { user, refetch } = useSession();
 
   const form = useForm<UpdateWorkspaceAvatarInput>({
     resolver: zodResolver(UpdateWorkspaceAvatarSchema),

@@ -1,7 +1,7 @@
 "use client";
 
+import { useSession } from "@/components/providers/session-provider";
 import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
-import { queryUserOptions } from "@/lib/queries/user";
 import {
   Card,
   CardContent,
@@ -11,10 +11,9 @@ import {
 } from "@hexa/ui/card";
 import { CopyButton } from "@hexa/ui/copy-button";
 import { Input } from "@hexa/ui/input";
-import { useSuspenseQuery } from "@tanstack/react-query";
 
 export function UserId() {
-  const { data: user } = useSuspenseQuery(queryUserOptions);
+  const { user, refetch } = useSession();
 
   return (
     <Card x-chunk="dashboard-04-chunk-1">
