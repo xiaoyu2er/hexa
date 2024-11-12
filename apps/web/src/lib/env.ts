@@ -1,4 +1,6 @@
 export const IS_PRODUCTION = process.env.NODE_ENV === "production";
+export const IS_XYZ =
+  process.env.NODE_ENV === "production" && process.env.IS_XYZ === "true";
 export const IS_DEVELOPMENT = process.env.NODE_ENV === "development";
 export const NEXT_PUBLIC_APP_NAME = process.env.NEXT_PUBLIC_APP_NAME;
 export const NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY =
