@@ -1,6 +1,10 @@
 #:schema node_modules/wrangler/config-schema.json
-name = "hexa"
+name = "hexa-com"
 main = ".worker-next/index.mjs"
+workers_dev = false
+routes = [
+  { pattern = "app.hexa.im", custom_domain = true }
+]
 
 compatibility_date = "2024-09-26"
 compatibility_flags = ["nodejs_compat"]
@@ -23,4 +27,11 @@ hello = 'Hello World from the cloudflare context!'
 binding = "DB"
 database_name = "hexa"
 database_id = "da7f8a20-83d9-4dd1-9a33-4ffdf4956933"
+preview_database_id = "f1a166ed-95cd-42dd-887e-bb0e34395ebb"
 migrations_dir = "./drizzle/migrations"
+
+[env.staging]
+name="hexa-xyz"
+routes = [
+  { pattern = "app.xyz.hexa.im", custom_domain = true }
+]
