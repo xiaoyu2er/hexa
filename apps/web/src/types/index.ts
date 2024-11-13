@@ -1,3 +1,5 @@
+import type { FC, SVGProps } from 'react';
+
 export interface GitHubUser {
   login: string;
   id: number;
@@ -110,6 +112,6 @@ export interface GoogleUser {
 
 export interface NavTab {
   name: string;
-  icon: React.FC<React.SVGProps<SVGSVGElement>>;
+  icon: FC<SVGProps<SVGSVGElement>>;
   href: string;
 }

@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Install ultracite
+        run: npm install -g ultracite
       - name: Setup Biome
         uses: biomejs/setup-biome@v2
         with:
