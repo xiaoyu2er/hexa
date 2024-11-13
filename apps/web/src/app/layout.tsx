@@ -10,6 +10,7 @@ import { SessionProvider } from '@/components/providers/session-provider';
 import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { validateRequest } from '@/lib/auth';
 import { ThemeProvider } from 'next-themes';
+import type { ReactNode } from 'react';
 
 export const metadata: Metadata = {
   title: 'Hexa',
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   const session = await validateRequest();
   return (

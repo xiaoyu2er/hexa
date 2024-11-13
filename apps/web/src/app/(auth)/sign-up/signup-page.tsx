@@ -30,7 +30,7 @@ export const SignupPage: FC = () => {
           email={email}
           type="VERIFY_EMAIL"
           onSuccess={() => {
-            router.push('/settings');
+            router.push('/settings/profile');
           }}
           onCancel={reset}
         />

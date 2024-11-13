@@ -39,7 +39,7 @@ import { useForm } from 'react-hook-form';
 
 export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
   const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
-  const { user, refetch } = useSession();
+  const { user } = useSession();
 
   const form = useForm<UpdateWorkspaceAvatarInput>({
     resolver: zodResolver(UpdateWorkspaceAvatarSchema),

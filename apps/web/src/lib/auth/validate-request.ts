@@ -25,7 +25,9 @@ const uncachedValidateRequest = async (): Promise<
     if (!result.session) {
       setBlankSessionCookie();
     }
-  } catch {}
+  } catch {
+    //
+  }
   return result;
 };
 

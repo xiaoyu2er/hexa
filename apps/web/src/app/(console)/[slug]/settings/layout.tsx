@@ -3,11 +3,12 @@
 import { SettingsLayout } from '@/components/layouts/setting-layout';
 import type { NavTab } from '@/types';
 import { SettingsIcon } from '@hexa/ui/icons';
+import type { ReactNode } from 'react';
 
 const SETTINGS_NAVBARS: NavTab[] = [
   {
     name: 'General',
-    href: '/settings',
+    href: '/settings/profile',
     icon: SettingsIcon,
   },
 ] as const;
@@ -16,7 +17,7 @@ export default async function ({
   children,
   params,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   // https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes#good-to-know
   params: Promise<{ slug: string }>;
 }) {

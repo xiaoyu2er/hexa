@@ -38,7 +38,7 @@ export function LoginPage() {
             email={email}
             type="LOGIN_PASSCODE"
             onSuccess={() => {
-              router.push('/settings');
+              router.push('/settings/profile');
             }}
             onCancel={reset}
           />

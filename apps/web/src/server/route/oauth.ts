@@ -97,9 +97,10 @@ const oauth = new Hono<Context>()
 
     if (existingAccount) {
       // If account is already linked to a user, set session and redirect to settings
+      // biome-ignore lint/nursery/useCollapsedIf: <explanation>
       if (existingAccount.userId) {
         await setSession(existingAccount.userId);
-        return c.redirect('/settings', 302);
+        return c.redirect('/settings/profile', 302);
       }
     }
     // we don't need the old account, we can just override it
@@ -107,7 +108,7 @@ const oauth = new Hono<Context>()
       // If user is logged in, bind the account, even if it's already linked, update the account
       // it's possible that the user goes to /api/oauth/github
       await createGithubAccount(db, user.id, githubUser);
-      return c.redirect('/settings', 302);
+      return c.redirect('/settings/profile', 302);
     }
 
     // If user is not logged in, create a new account, but don't set session, we need to redirect to /sign-up
@@ -158,6 +159,7 @@ const oauth = new Hono<Context>()
     return c.redirect(url);
   })
   // Google Oauth callback
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   .get('/oauth/google/callback', async (c) => {
     const db = c.get('db');
     const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = c.env;
@@ -207,9 +209,10 @@ const oauth = new Hono<Context>()
 
       if (existingAccount) {
         // If account is already linked to a user, set session and redirect to settings
+        // biome-ignore lint/nursery/useCollapsedIf: <explanation>
         if (existingAccount.userId) {
           await setSession(existingAccount.userId);
-          return c.redirect('/settings');
+          return c.redirect('/settings/profile');
         }
       }
 
@@ -217,7 +220,7 @@ const oauth = new Hono<Context>()
         // If user is logged in, bind the account, even if it's already linked, update the account
         // it's possible that the user goes to /api/oauth/google
         await createGoogleAccount(db, user.id, googleUser);
-        return c.redirect('/settings', 302);
+        return c.redirect('/settings/profile', 302);
       }
 
       // If user is not logged in, create a new account, but don't set session, we need to redirect to /sign-up

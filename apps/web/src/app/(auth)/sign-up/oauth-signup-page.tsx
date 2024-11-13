@@ -21,7 +21,7 @@ export const OauthSignupPage: FC<SignupPageProps> = ({ oauthAccount }) => {
     <OauthSignup
       oauthAccount={oauthAccount}
       onSuccess={() => {
-        router.push('/settings');
+        router.push('/settings/profile');
       }}
       onCancel={() => {
         router.push('/');

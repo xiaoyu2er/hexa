@@ -20,6 +20,7 @@ export const getLucia = async () => {
           'id',
           'name',
           'avatarUrl',
+          // biome-ignore lint/nursery/noSecrets: <explanation>
           'defaultWorkspaceId',
           'username',
         ]),

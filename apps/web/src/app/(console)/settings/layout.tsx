@@ -3,6 +3,7 @@
 import { SettingsLayout } from '@/components/layouts/setting-layout';
 import type { NavTab } from '@/types';
 import { SettingsIcon, UserIcon } from '@hexa/ui/icons';
+import type { ReactNode } from 'react';
 
 const SETTINGS_NAVBARS: NavTab[] = [
   {
@@ -17,6 +18,6 @@ const SETTINGS_NAVBARS: NavTab[] = [
   },
 ] as const;
 
-export default function ({ children }: { children: React.ReactNode }) {
+export default function ({ children }: { children: ReactNode }) {
   return <SettingsLayout navbars={SETTINGS_NAVBARS}>{children}</SettingsLayout>;
 }

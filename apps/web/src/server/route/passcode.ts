@@ -112,7 +112,7 @@ const passcode = new Hono<Context>()
       if (!isResetPassword) {
         await invalidateUserSessions(tokenItem.userId);
         await setSession(tokenItem.userId);
-        return c.redirect('/settings');
+        return c.redirect('/settings/profile');
       }
 
       return c.redirect(`/reset-password?token=${tokenItem.token}`);

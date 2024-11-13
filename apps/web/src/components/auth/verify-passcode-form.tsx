@@ -94,7 +94,7 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
     },
   });
 
-  const resed = async () => {
+  const resed = () => {
     if (count > 0) {
       return;
     }
@@ -176,7 +176,12 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
               onClick={resed}
             >
               Didn't receive a code? Resend
-              {count > 0 ? `(${count}s)` : isRensedPending ? '...' : ''}
+              {count > 0
+                ? `(${count}s)`
+                : // biome-ignore lint/nursery/noNestedTernary: <explanation>
+                  isRensedPending
+                  ? '...'
+                  : ''}
             </p>
           </form>
         </Form>

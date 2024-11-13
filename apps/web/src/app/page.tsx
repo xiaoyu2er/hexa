@@ -41,7 +41,7 @@ function AlertDialogDemo() {
 export default async function Home() {
   const { session, user } = await validateRequest();
   if (session) {
-    return redirect('/settings');
+    return redirect('/settings/profile');
   }
   return (
     <>
