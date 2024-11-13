@@ -68,7 +68,7 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
   const { mutateAsync: loginPassword } = useMutation({
     mutationFn: $loginPassword,
     onSuccess: () => {
-      router.push('/settings');
+      router.push('/settings/profile');
     },
     onError: (error) => {
       resetTurnstile();

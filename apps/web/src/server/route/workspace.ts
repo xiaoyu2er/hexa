@@ -33,7 +33,7 @@ const workspace = new Hono<Context>()
     return c.json(workspaces);
   })
   // Get workspace by slug
-  .get('/workspace/:slug', authWorkspace, async (c) => {
+  .get('/workspace/:slug', authWorkspace, (c) => {
     const ws = c.get('ws');
     return c.json(ws);
   })

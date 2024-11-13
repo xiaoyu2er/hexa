@@ -159,6 +159,7 @@ export const workspaceMemberRelations = relations(
 );
 export type WorkspaceUserRole = 'OWNER' | 'ADMIN' | 'MEMBER';
 export const workspaceUserRoleType = {
+  // biome-ignore lint/nursery/noSecrets: <explanation>
   role: text('workspaceUserRole')
     .$type<WorkspaceUserRole>()
     .default('MEMBER')

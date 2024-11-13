@@ -12,7 +12,7 @@ import type { Context } from '@/server/types';
 import { Hono } from 'hono';
 
 const test = new Hono<Context>()
-  .get('/hello', async (c) => {
+  .get('/hello', (c) => {
     return c.text(c.env.hello);
   })
   // Get environment variables

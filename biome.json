@@ -1,1 +1,29 @@
-{ "extends": ["ultracite"] }
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "extends": ["ultracite"],
+  "files": {
+    "ignore": [
+      "apps/web/.next/**/*",
+      "apps/web/.worker-next/**/*",
+      "apps/web/.wrangler/**/*",
+      "apps/web/drizzle/**/*",
+      "packages/ui/**/*",
+      "packages/email-templates/.react-email/**/*",
+      "apps/web/env.d.ts"
+    ]
+  },
+  "linter": {
+    "rules": {
+      "correctness": {
+        "noUnusedImports": {
+          "level": "warn",
+          "fix": "safe"
+        },
+        "noNodejsModules": "off"
+      },
+      "style": {
+        "useNamingConvention": "off"
+      }
+    }
+  }
+}

@@ -13,7 +13,7 @@ import { CopyButton } from '@hexa/ui/copy-button';
 import { Input } from '@hexa/ui/input';
 
 export function UserId() {
-  const { user, refetch } = useSession();
+  const { user } = useSession();
 
   return (
     <Card x-chunk="dashboard-04-chunk-1">
@@ -24,12 +24,7 @@ export function UserId() {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex items-center">
-        <Input
-          type="text"
-          value={user?.id}
-          className="w-full md:max-w-md"
-          onClick={() => {}}
-        />
+        <Input type="text" value={user?.id} className="w-full md:max-w-md" />
         <CopyButton className="relative right-9" value={user.id} />
       </CardContent>
     </Card>

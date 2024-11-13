@@ -62,7 +62,8 @@ export const ResetPassword: FC<ResetParsswordCardProps> = ({
   const { mutateAsync: resetPassword } = useMutation({
     mutationFn: $resetPassword,
     onSuccess: () => {
-      router.push('/settings');
+      router.push('/settings/profile');
+      onSuccess?.();
     },
     onError: (error) => {
       // resetTurnstile();

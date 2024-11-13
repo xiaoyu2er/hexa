@@ -41,9 +41,9 @@ export const ERROR_CODE_TO_HTTP_STATUS = {
 
 export class ApiError extends Error {
   /** the Error object thrown */
-  public readonly data: unknown;
+  readonly data: unknown;
   /** the error code */
-  public readonly code: keyof typeof ERROR_CODES;
+  readonly code: keyof typeof ERROR_CODES;
 
   constructor(
     code: keyof typeof ERROR_CODES = ERROR_CODES.ERROR,

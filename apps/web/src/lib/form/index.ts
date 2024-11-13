@@ -1,7 +1,6 @@
 import type { FieldPath, FieldValues, UseFormSetError } from 'react-hook-form';
 import { ZodError } from 'zod';
 
-// biome-ignore lint/style/useNamingConvention: <explanation>
 export function setFormError<TFieldValues extends FieldValues>(
   err: ZodError | Error,
   setError: UseFormSetError<TFieldValues>,
