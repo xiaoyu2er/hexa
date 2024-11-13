@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Form,
@@ -7,31 +7,31 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@hexa/ui/form";
+} from '@hexa/ui/form';
 
-import { Button } from "@hexa/ui/button";
+import { Button } from '@hexa/ui/button';
 
 import {
   type SendPasscodeForm,
   SendPasscodeSchema,
-} from "@/lib/zod/schemas/auth";
+} from '@/lib/zod/schemas/auth';
 
-import { useTurnstile } from "@/components/hooks/use-turnstile";
-import { setFormError } from "@/lib/form";
-import { $sendPasscode, type InferApiResponseType } from "@/server/client";
+import { useTurnstile } from '@/components/hooks/use-turnstile';
+import { setFormError } from '@/lib/form';
+import { $sendPasscode, type InferApiResponseType } from '@/server/client';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@hexa/ui/card";
-import { FormErrorMessage } from "@hexa/ui/form-error-message";
-import { Input } from "@hexa/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+} from '@hexa/ui/card';
+import { FormErrorMessage } from '@hexa/ui/form-error-message';
+import { Input } from '@hexa/ui/input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
 interface LoginPasscodeProps {
   onPassword: () => void;
@@ -42,7 +42,7 @@ export function LoginPasscode({ onPassword, onSuccess }: LoginPasscodeProps) {
   const form = useForm<SendPasscodeForm>({
     resolver: zodResolver(SendPasscodeSchema),
     defaultValues: {
-      type: "LOGIN_PASSCODE",
+      type: 'LOGIN_PASSCODE',
     },
   });
 
@@ -67,7 +67,7 @@ export function LoginPasscode({ onPassword, onSuccess }: LoginPasscodeProps) {
   });
 
   useEffect(() => {
-    setFocus("email");
+    setFocus('email');
   }, [setFocus]);
 
   return (
@@ -108,7 +108,7 @@ export function LoginPasscode({ onPassword, onSuccess }: LoginPasscodeProps) {
 
               <Button
                 type="submit"
-                className="w-full !mt-4"
+                className="!mt-4 w-full"
                 loading={isSubmitting}
                 disabled={disableNext}
                 key="login"

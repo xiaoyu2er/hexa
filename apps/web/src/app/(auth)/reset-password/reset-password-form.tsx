@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { setFormError } from "@/lib/form";
+import { setFormError } from '@/lib/form';
 import {
   type ResetPasswordForm,
   ResetPasswordSchema,
-} from "@/lib/zod/schemas/auth";
-import { $resetPassword } from "@/server/client";
-import { Button } from "@hexa/ui/button";
+} from '@/lib/zod/schemas/auth';
+import { $resetPassword } from '@/server/client';
+import { Button } from '@hexa/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@hexa/ui/card";
+} from '@hexa/ui/card';
 import {
   Form,
   FormControl,
@@ -21,15 +21,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@hexa/ui/form";
-import { useMutation } from "@tanstack/react-query";
+} from '@hexa/ui/form';
+import { useMutation } from '@tanstack/react-query';
 
-import { PasswordInput } from "@hexa/ui/password-input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { type FC, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { PasswordInput } from '@hexa/ui/password-input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { type FC, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
 export interface ResetParsswordCardProps {
   onSuccess?: () => void;
@@ -47,7 +47,7 @@ export const ResetPassword: FC<ResetParsswordCardProps> = ({
   const form = useForm<ResetPasswordForm>({
     resolver: zodResolver(ResetPasswordSchema),
     defaultValues: {
-      password: "",
+      password: '',
       token,
     },
   });
@@ -62,7 +62,7 @@ export const ResetPassword: FC<ResetParsswordCardProps> = ({
   const { mutateAsync: resetPassword } = useMutation({
     mutationFn: $resetPassword,
     onSuccess: () => {
-      router.push("/settings");
+      router.push('/settings');
     },
     onError: (error) => {
       // resetTurnstile();
@@ -71,7 +71,7 @@ export const ResetPassword: FC<ResetParsswordCardProps> = ({
   });
 
   useEffect(() => {
-    setFocus("password");
+    setFocus('password');
   }, [setFocus]);
 
   return (
@@ -100,7 +100,7 @@ export const ResetPassword: FC<ResetParsswordCardProps> = ({
                       {...field}
                       autoComplete="current-password"
                       placeholder="********"
-                      className={errors.password ? "border-destructive" : ""}
+                      className={errors.password ? 'border-destructive' : ''}
                     />
                   </FormControl>
                   <FormMessage />
@@ -108,8 +108,8 @@ export const ResetPassword: FC<ResetParsswordCardProps> = ({
               )}
             />
 
-            <Button variant={"link"} size={"sm"} className="p-0" asChild>
-              <Link href={"/sign-up"}>Not signed up? Sign up now.</Link>
+            <Button variant="link" size="sm" className="p-0" asChild>
+              <Link href="/sign-up">Not signed up? Sign up now.</Link>
             </Button>
             <Button className="w-full" type="submit" loading={isSubmitting}>
               Reset Password

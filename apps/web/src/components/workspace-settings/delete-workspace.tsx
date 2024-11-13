@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Card,
@@ -6,19 +6,19 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@hexa/ui/card";
-import { Input } from "@hexa/ui/input";
+} from '@hexa/ui/card';
+import { Input } from '@hexa/ui/input';
 
-import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
-import { setFormError } from "@/lib/form";
-import { invalidateWorkspacesQuery } from "@/lib/queries/workspace";
+import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
+import { setFormError } from '@/lib/form';
+import { invalidateWorkspacesQuery } from '@/lib/queries/workspace';
 import {
   DELETE_WORKSPACE_CONFIRMATION,
   type DeleteWorkspaceInput,
   DeleteWorkspaceSchema,
-} from "@/lib/zod/schemas/workspace";
-import { $deleteWorkspace } from "@/server/client";
-import { Button } from "@hexa/ui/button";
+} from '@/lib/zod/schemas/workspace';
+import { $deleteWorkspace } from '@/server/client';
+import { Button } from '@hexa/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -27,7 +27,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@hexa/ui/dialog";
+} from '@hexa/ui/dialog';
 import {
   Form,
   FormControl,
@@ -35,12 +35,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@hexa/ui/form";
-import { toast } from "@hexa/ui/sonner";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+} from '@hexa/ui/form';
+import { toast } from '@hexa/ui/sonner';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 
 export function DeleteWorkspace() {
   const router = useRouter();
@@ -58,12 +58,12 @@ export function DeleteWorkspace() {
   const { mutateAsync: deleteWorkspace } = useMutation({
     mutationFn: $deleteWorkspace,
     onError: (err) => {
-      setFormError(err, setError, "confirm");
+      setFormError(err, setError, 'confirm');
     },
     onSuccess: () => {
-      toast.success("Account deleted successfully");
+      toast.success('Account deleted successfully');
       invalidateWorkspacesQuery();
-      router.replace("/workspaces");
+      router.replace('/workspaces');
     },
   });
 
@@ -77,7 +77,7 @@ export function DeleteWorkspace() {
           caution.
         </CardDescription>
       </CardHeader>
-      <CardFooter className="border-t  border-red-600 px-6 py-4 items-center flex-row-reverse justify-between">
+      <CardFooter className="flex-row-reverse items-center justify-between border-red-600 border-t px-6 py-4">
         <Dialog>
           <DialogTrigger asChild>
             <Button type="submit" variant="destructive" className="shrink-0">
@@ -93,7 +93,7 @@ export function DeleteWorkspace() {
                     param: {
                       workspaceId: json.workspaceId,
                     },
-                  }),
+                  })
                 )}
                 method="POST"
                 className="space-y-4"
@@ -116,7 +116,7 @@ export function DeleteWorkspace() {
                       <FormControl>
                         <Input
                           {...field}
-                          className={errors.confirm ? "border-destructive" : ""}
+                          className={errors.confirm ? 'border-destructive' : ''}
                         />
                       </FormControl>
                       <FormMessage />
@@ -130,16 +130,16 @@ export function DeleteWorkspace() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        To verify, type{" "}
+                        To verify, type
                         <span className="font-bold">
                           {DELETE_WORKSPACE_CONFIRMATION}
-                        </span>{" "}
+                        </span>
                         below
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
-                          className={errors.confirm ? "border-destructive" : ""}
+                          className={errors.confirm ? 'border-destructive' : ''}
                         />
                       </FormControl>
                       <FormMessage />

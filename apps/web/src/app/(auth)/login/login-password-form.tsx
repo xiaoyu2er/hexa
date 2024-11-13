@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import Link from "next/link";
+import Link from 'next/link';
 
 import {
   Form,
@@ -9,35 +9,35 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@hexa/ui/form";
+} from '@hexa/ui/form';
 
-import { Button } from "@hexa/ui/button";
+import { Button } from '@hexa/ui/button';
 
 import {
   type LoginPasswordInput,
   LoginPasswordSchema,
-} from "@/lib/zod/schemas/auth";
+} from '@/lib/zod/schemas/auth';
 
-import { OAuthButtons } from "@/components/auth/oauth-buttons";
-import { useTurnstile } from "@/components/hooks/use-turnstile";
-import { setFormError } from "@/lib/form";
-import { $loginPassword } from "@/server/client";
+import { OauthButtons } from '@/components/auth/oauth-buttons';
+import { useTurnstile } from '@/components/hooks/use-turnstile';
+import { setFormError } from '@/lib/form';
+import { $loginPassword } from '@/server/client';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@hexa/ui/card";
-import { Divider } from "@hexa/ui/divider";
-import { FormErrorMessage } from "@hexa/ui/form-error-message";
-import { Input } from "@hexa/ui/input";
-import { PasswordInput } from "@hexa/ui/password-input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+} from '@hexa/ui/card';
+import { Divider } from '@hexa/ui/divider';
+import { FormErrorMessage } from '@hexa/ui/form-error-message';
+import { Input } from '@hexa/ui/input';
+import { PasswordInput } from '@hexa/ui/password-input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
 interface LoginPasswordProps {
   onPasscode: () => void;
@@ -61,14 +61,14 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
   const { resetTurnstile, turnstile, disableNext } = useTurnstile({
     form,
     onSuccess: () => {
-      clearErrors("root");
+      clearErrors('root');
     },
   });
 
   const { mutateAsync: loginPassword } = useMutation({
     mutationFn: $loginPassword,
     onSuccess: () => {
-      router.push("/settings");
+      router.push('/settings');
     },
     onError: (error) => {
       resetTurnstile();
@@ -77,7 +77,7 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
   });
 
   useEffect(() => {
-    setFocus("username");
+    setFocus('username');
   }, [setFocus]);
 
   return (
@@ -90,7 +90,7 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <OAuthButtons />
+          <OauthButtons />
           <Divider>or</Divider>
           <Form {...form}>
             <form
@@ -127,7 +127,7 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
                         {...field}
                         autoComplete="current-password"
                         placeholder="********"
-                        className={errors.password ? "border-destructive" : ""}
+                        className={errors.password ? 'border-destructive' : ''}
                       />
                     </FormControl>
                     <FormMessage />
@@ -140,11 +140,11 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
               {turnstile}
 
               <div className="flex flex-wrap justify-between">
-                <Button variant={"link"} size={"sm"} className="p-0" asChild>
-                  <Link href={"/sign-up"}>Not signed up? Sign up now.</Link>
+                <Button variant="link" size="sm" className="p-0" asChild>
+                  <Link href="/sign-up">Not signed up? Sign up now.</Link>
                 </Button>
-                <Button variant={"link"} size={"sm"} className="p-0" asChild>
-                  <Link href={"/reset-password"}>Forget password?</Link>
+                <Button variant="link" size="sm" className="p-0" asChild>
+                  <Link href="/reset-password">Forget password?</Link>
                 </Button>
               </div>
 

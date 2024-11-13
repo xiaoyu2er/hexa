@@ -1,17 +1,19 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import Link from 'next/link';
+import { useParams, usePathname } from 'next/navigation';
 
 export default function NavTabs() {
   const pathname = usePathname();
   const { slug } = useParams() as { slug?: string };
 
-  if (!slug) return null;
+  if (!slug) {
+    return null;
+  }
 
   const tabs = [
-    { name: "Links", href: `/${slug}` },
-    { name: "Settings", href: `/${slug}/settings` },
+    { name: 'Links', href: `/${slug}` },
+    { name: 'Settings', href: `/${slug}/settings` },
   ];
 
   return (

@@ -1,9 +1,9 @@
-import { getDB } from "@/server/db";
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { createMiddleware } from "hono/factory";
+import { getDb } from '@/server/db';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
+import { createMiddleware } from 'hono/factory';
 
 const setEnv = createMiddleware(async (c, next) => {
-  c.set("db", await getDB());
+  c.set('db', await getDb());
   const { env, cf, ctx } = await getCloudflareContext();
   c.env = env;
   c.req.cf = cf;

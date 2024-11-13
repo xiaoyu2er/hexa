@@ -1,10 +1,10 @@
 import {
   getWorkspaceAvatarFallbackName,
   getWorkspaceAvatarFallbackUrl,
-} from "@/lib/workspace";
-import type { WorkspaceModel } from "@/server/db";
-import { Avatar, AvatarFallback, AvatarImage } from "@hexa/ui/avatar";
-import { cn } from "@hexa/utils";
+} from '@/lib/workspace';
+import type { WorkspaceModel } from '@/server/db';
+import { Avatar, AvatarFallback, AvatarImage } from '@hexa/ui/avatar';
+import { cn } from '@hexa/utils';
 
 export function WorkspaceAvatar({
   workspace,
@@ -14,7 +14,7 @@ export function WorkspaceAvatar({
   className: string;
 }) {
   return (
-    <Avatar className={cn("h-6 w-6", className)}>
+    <Avatar className={cn('h-6 w-6', className)}>
       <AvatarImage
         src={workspace?.avatarUrl || getWorkspaceAvatarFallbackUrl(workspace)}
         alt="Workspace Profile Picture"

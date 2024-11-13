@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import Link from "next/link";
+import Link from 'next/link';
 
-import { type SignupForm, SignupSchema } from "@/lib/zod/schemas/auth";
-import { Button } from "@hexa/ui/button";
+import { type SignupForm, SignupSchema } from '@/lib/zod/schemas/auth';
+import { Button } from '@hexa/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@hexa/ui/card";
-import { Divider } from "@hexa/ui/divider";
+} from '@hexa/ui/card';
+import { Divider } from '@hexa/ui/divider';
 import {
   Form,
   FormControl,
@@ -19,19 +19,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@hexa/ui/form";
-import { FormErrorMessage } from "@hexa/ui/form-error-message";
-import { Input } from "@hexa/ui/input";
-import { type FC, useEffect } from "react";
-import { useForm } from "react-hook-form";
+} from '@hexa/ui/form';
+import { FormErrorMessage } from '@hexa/ui/form-error-message';
+import { Input } from '@hexa/ui/input';
+import { type FC, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
-import { OAuthButtons } from "@/components/auth/oauth-buttons";
-import { useTurnstile } from "@/components/hooks/use-turnstile";
-import { setFormError } from "@/lib/form";
-import { $signup, type InferApiResponseType } from "@/server/client";
-import { PasswordInput } from "@hexa/ui/password-input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { OauthButtons } from '@/components/auth/oauth-buttons';
+import { useTurnstile } from '@/components/hooks/use-turnstile';
+import { setFormError } from '@/lib/form';
+import { $signup, type InferApiResponseType } from '@/server/client';
+import { PasswordInput } from '@hexa/ui/password-input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 
 interface SignupProps {
   email: string | null | undefined;
@@ -43,9 +43,9 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
   const form = useForm<SignupForm>({
     resolver: zodResolver(SignupSchema),
     defaultValues: {
-      email: email ?? "",
-      password: "",
-      username: "",
+      email: email ?? '',
+      password: '',
+      username: '',
     },
   });
 
@@ -69,7 +69,7 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
   });
 
   useEffect(() => {
-    setFocus("email");
+    setFocus('email');
   }, [setFocus]);
 
   return (
@@ -79,7 +79,7 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
         <CardDescription>Sign up to start using the app</CardDescription>
       </CardHeader>
       <CardContent>
-        <OAuthButtons />
+        <OauthButtons />
         <Divider>or</Divider>
         <Form {...form}>
           <form
@@ -99,7 +99,7 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
                       placeholder="email@example.com"
                       autoComplete="email"
                       type="email"
-                      className={errors.email ? "border-destructive" : ""}
+                      className={errors.email ? 'border-destructive' : ''}
                     />
                   </FormControl>
                   <FormMessage />
@@ -117,7 +117,7 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
                     <Input
                       {...field}
                       placeholder="username"
-                      className={errors.username ? "border-destructive" : ""}
+                      className={errors.username ? 'border-destructive' : ''}
                     />
                   </FormControl>
                   <FormMessage />
@@ -136,7 +136,7 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
                       {...field}
                       autoComplete="current-password"
                       placeholder="********"
-                      className={errors.password ? "border-destructive" : ""}
+                      className={errors.password ? 'border-destructive' : ''}
                     />
                   </FormControl>
                   <FormMessage />
@@ -145,8 +145,8 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
             />
             <FormErrorMessage message={errors.root?.message} />
             {turnstile}
-            <Button variant={"link"} size={"sm"} className="p-0" asChild>
-              <Link href={"/login"}>Have an account? Login</Link>
+            <Button variant="link" size="sm" className="p-0" asChild>
+              <Link href="/login">Have an account? Login</Link>
             </Button>
             <Button
               className="w-full"

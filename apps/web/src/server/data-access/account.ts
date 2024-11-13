@@ -1,27 +1,27 @@
 import {
-  type OAuthAccountModel,
+  type OauthAccountModel,
   type ProviderType,
   type UserModel,
   oauthAccountTable,
-} from "@/server/db/schema";
-import type { DBType } from "@/server/types";
-import type { GitHubUser, GoogleUser } from "@/types";
-import { and, eq } from "drizzle-orm";
+} from '@/server/db/schema';
+import type { DbType } from '@/server/types';
+import type { GitHubUser, GoogleUser } from '@/types';
+import { and, eq } from 'drizzle-orm';
 
-export async function getAccountByGoogleId(db: DBType, googleId: string) {
+export async function getAccountByGoogleId(db: DbType, googleId: string) {
   return await db.query.oauthAccountTable.findFirst({
     where: and(
-      eq(oauthAccountTable.provider, "GOOGLE"),
-      eq(oauthAccountTable.providerAccountId, googleId),
+      eq(oauthAccountTable.provider, 'GOOGLE'),
+      eq(oauthAccountTable.providerAccountId, googleId)
     ),
   });
 }
 
-export async function getAccountByGithubId(db: DBType, githubId: number) {
+export async function getAccountByGithubId(db: DbType, githubId: number) {
   return await db.query.oauthAccountTable.findFirst({
     where: and(
-      eq(oauthAccountTable.provider, "GITHUB"),
-      eq(oauthAccountTable.providerAccountId, String(githubId)),
+      eq(oauthAccountTable.provider, 'GITHUB'),
+      eq(oauthAccountTable.providerAccountId, String(githubId))
     ),
     with: {
       user: true,
@@ -30,16 +30,16 @@ export async function getAccountByGithubId(db: DBType, githubId: number) {
 }
 
 export async function createGithubAccount(
-  db: DBType,
-  userId: UserModel["id"] | null,
-  githubUser: GitHubUser,
+  db: DbType,
+  userId: UserModel['id'] | null,
+  githubUser: GitHubUser
 ) {
   return (
     await db
       .insert(oauthAccountTable)
       .values({
         userId: userId,
-        provider: "GITHUB",
+        provider: 'GITHUB',
         providerAccountId: String(githubUser.id),
         avatarUrl: githubUser.avatar_url,
         email: githubUser.email,
@@ -63,16 +63,16 @@ export async function createGithubAccount(
 }
 
 export async function createGoogleAccount(
-  db: DBType,
-  userId: UserModel["id"] | null,
-  googleUser: GoogleUser,
+  db: DbType,
+  userId: UserModel['id'] | null,
+  googleUser: GoogleUser
 ) {
   return (
     await db
       .insert(oauthAccountTable)
       .values({
         userId: userId,
-        provider: "GOOGLE",
+        provider: 'GOOGLE',
         providerAccountId: googleUser.sub,
         avatarUrl: googleUser.picture,
         email: googleUser.email,
@@ -95,25 +95,25 @@ export async function createGoogleAccount(
   )[0];
 }
 
-export async function getUserOAuthAccounts(
-  db: DBType,
-  userId: UserModel["id"],
+export async function getUserOauthAccounts(
+  db: DbType,
+  userId: UserModel['id']
 ) {
   return await db.query.oauthAccountTable.findMany({
     where: eq(oauthAccountTable.userId, userId),
   });
 }
 
-export async function getOAuthAccount(db: DBType, id: string) {
+export async function getOauthAccount(db: DbType, id: string) {
   return await db.query.oauthAccountTable.findFirst({
     where: eq(oauthAccountTable.id, id),
   });
 }
 
-export async function updateOAuthAccount(
-  db: DBType,
+export async function updateOauthAccount(
+  db: DbType,
   id: string,
-  data: Partial<OAuthAccountModel>,
+  data: Partial<OauthAccountModel>
 ) {
   return (
     await db
@@ -124,17 +124,17 @@ export async function updateOAuthAccount(
   )[0];
 }
 
-export async function removeUserOAuthAccount(
-  db: DBType,
-  uid: UserModel["id"],
-  provider: ProviderType,
+export async function removeUserOauthAccount(
+  db: DbType,
+  uid: UserModel['id'],
+  provider: ProviderType
 ) {
   return await db
     .delete(oauthAccountTable)
     .where(
       and(
         eq(oauthAccountTable.userId, uid),
-        eq(oauthAccountTable.provider, provider),
-      ),
+        eq(oauthAccountTable.provider, provider)
+      )
     );
 }

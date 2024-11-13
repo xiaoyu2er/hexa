@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { Input } from "@hexa/ui/input";
+import { Input } from '@hexa/ui/input';
 
-import NiceModal, { useModal } from "@ebay/nice-modal-react";
-import { toast } from "@hexa/ui/sonner";
+import NiceModal, { useModal } from '@ebay/nice-modal-react';
+import { toast } from '@hexa/ui/sonner';
 
-import { setFormError } from "@/lib/form";
-import { invalidateUser } from "@/lib/queries/user";
+import { setFormError } from '@/lib/form';
+import { invalidateUser } from '@/lib/queries/user';
 import {
   type ChangeUsernameInput,
   ChangeUsernameSchema,
-} from "@/lib/zod/schemas/user";
-import { $updateUsername } from "@/server/client";
-import type { ProviderType } from "@/server/db";
-import { Alert, AlertDescription, AlertTitle } from "@hexa/ui/alert";
-import { Button } from "@hexa/ui/button";
+} from '@/lib/zod/schemas/user';
+import { $updateUsername } from '@/server/client';
+import type { ProviderType } from '@/server/db';
+import { Alert, AlertDescription, AlertTitle } from '@hexa/ui/alert';
+import { Button } from '@hexa/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -22,7 +22,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@hexa/ui/dialog";
+} from '@hexa/ui/dialog';
 import {
   Form,
   FormControl,
@@ -30,25 +30,25 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@hexa/ui/form";
-import { ExclamationTriangleIcon } from "@hexa/ui/icons";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
-import { useBoolean } from "usehooks-ts";
+} from '@hexa/ui/form';
+import { ExclamationTriangleIcon } from '@hexa/ui/icons';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
+import { useBoolean } from 'usehooks-ts';
 
-interface DeleteOAuthAccountProps {
+interface DeleteOauthAccountProps {
   provider: ProviderType;
 }
 export const ChangeUsernameModal = NiceModal.create(
-  ({ provider }: DeleteOAuthAccountProps) => {
+  ({ provider }: DeleteOauthAccountProps) => {
     const modal = useModal();
     const understandBool = useBoolean();
 
     const form = useForm<ChangeUsernameInput>({
       resolver: zodResolver(ChangeUsernameSchema),
       defaultValues: {
-        username: "",
+        username: '',
       },
     });
 
@@ -61,7 +61,7 @@ export const ChangeUsernameModal = NiceModal.create(
     const { mutateAsync: changeUsername } = useMutation({
       mutationFn: $updateUsername,
       onError: (err) => {
-        setFormError(err, setError, "username");
+        setFormError(err, setError, 'username');
         modal.reject(err);
       },
       onSuccess: () => {
@@ -104,7 +104,7 @@ export const ChangeUsernameModal = NiceModal.create(
                           <Input
                             {...field}
                             className={
-                              errors.username ? "border-destructive" : ""
+                              errors.username ? 'border-destructive' : ''
                             }
                           />
                         </FormControl>
@@ -137,7 +137,7 @@ export const ChangeUsernameModal = NiceModal.create(
                       Unexpected bad things will happen if you don’t read this!
                     </AlertDescription>
                   </Alert>
-                  <ul className="pt-3 px-3 list-disc">
+                  <ul className="list-disc px-3 pt-3">
                     <li>
                       We <strong>will not</strong> set up redirects for your
                       workspaces.
@@ -167,5 +167,5 @@ export const ChangeUsernameModal = NiceModal.create(
         </DialogContent>
       </Dialog>
     );
-  },
+  }
 );

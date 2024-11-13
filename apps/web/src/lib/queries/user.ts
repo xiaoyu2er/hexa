@@ -1,13 +1,13 @@
-import { getQueryClient } from "@/components/providers/get-query-client";
+import { getQueryClient } from '@/components/providers/get-query-client';
 import {
   $getUserEmails,
   $getUserInfo,
-  $getUserOAuthAccounts,
-} from "@/server/client";
-import { queryOptions } from "@tanstack/react-query";
+  $getUserOauthAccounts,
+} from '@/server/client';
+import { queryOptions } from '@tanstack/react-query';
 
 export const queryUserOptions = queryOptions({
-  queryKey: ["user/info"],
+  queryKey: ['user/info'],
   queryFn: $getUserInfo,
 });
 
@@ -19,7 +19,7 @@ export const invalidateUser = () => {
 };
 
 export const queryUserEmailsOptions = queryOptions({
-  queryKey: ["user/emails"],
+  queryKey: ['user/emails'],
   queryFn: $getUserEmails,
 });
 
@@ -30,7 +30,7 @@ export const invalidateUserEmails = () => {
   });
 };
 
-export const queryUserOAuthAccountsOptions = queryOptions({
-  queryKey: ["user/oauth-accounts"],
-  queryFn: $getUserOAuthAccounts,
+export const queryUserOauthAccountsOptions = queryOptions({
+  queryKey: ['user/oauth-accounts'],
+  queryFn: $getUserOauthAccounts,
 });

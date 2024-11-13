@@ -1,43 +1,43 @@
-"use client";
+'use client';
 
-import { queryUserOAuthAccountsOptions } from "@/lib/queries/user";
+import { queryUserOauthAccountsOptions } from '@/lib/queries/user';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@hexa/ui/card";
-import { useSuspenseQuery } from "@tanstack/react-query";
+} from '@hexa/ui/card';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
-import { useModal } from "@ebay/nice-modal-react";
-import { Button } from "@hexa/ui/button";
+import { useModal } from '@ebay/nice-modal-react';
+import { Button } from '@hexa/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@hexa/ui/dropdown-menu";
+} from '@hexa/ui/dropdown-menu';
 import {
   EllipsisIcon,
   GithubIcon,
   GoogleIcon,
   MoveRightIcon,
   UserPlusIcon,
-} from "@hexa/ui/icons";
-import { Popover, PopoverContent, PopoverTrigger } from "@hexa/ui/popover";
+} from '@hexa/ui/icons';
+import { Popover, PopoverContent, PopoverTrigger } from '@hexa/ui/popover';
 
-import Link from "next/link";
-import { DeleteOAuthAccountModal } from "./delete-account-modal";
+import Link from 'next/link';
+import { DeleteOauthAccountModal } from './delete-account-modal';
 
-export function EditOAuthAccount() {
+export function EditOauthAccount() {
   const { data: accounts, refetch } = useSuspenseQuery(
-    queryUserOAuthAccountsOptions,
+    queryUserOauthAccountsOptions
   );
-  const hasGoogleAccount = accounts.some((a) => a.provider === "GOOGLE");
-  const hasGithubAccount = accounts.some((a) => a.provider === "GITHUB");
+  const hasGoogleAccount = accounts.some((a) => a.provider === 'GOOGLE');
+  const hasGithubAccount = accounts.some((a) => a.provider === 'GITHUB');
 
-  const modal = useModal(DeleteOAuthAccountModal);
+  const modal = useModal(DeleteOauthAccountModal);
 
   return (
     <>
@@ -47,7 +47,7 @@ export function EditOAuthAccount() {
           <CardDescription>Manage your connected accounts.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="max-w-md flex flex-col">
+          <div className="flex max-w-md flex-col">
             {accounts
               // .sort((a, b) => (a.primary ? -1 : 1))
               .map((account) => {
@@ -57,17 +57,17 @@ export function EditOAuthAccount() {
                     className="justify-between"
                     variant="ghost"
                   >
-                    <p className="text-sm font-medium leading-none flex gap-2 items-center">
-                      {account.provider === "GITHUB" && (
-                        <GithubIcon className="w-4 h-4" />
+                    <p className="flex items-center gap-2 font-medium text-sm leading-none">
+                      {account.provider === 'GITHUB' && (
+                        <GithubIcon className="h-4 w-4" />
                       )}
-                      {account.provider === "GOOGLE" && (
-                        <GoogleIcon className="w-4 h-4" />
+                      {account.provider === 'GOOGLE' && (
+                        <GoogleIcon className="h-4 w-4" />
                       )}
                       {account.provider[0] +
-                        account.provider.slice(1).toLowerCase()}{" "}
+                        account.provider.slice(1).toLowerCase()}
                       {account.username && (
-                        <span className="text-sm text-gray-600">
+                        <span className="text-gray-600 text-sm">
                           {account.username}
                         </span>
                       )}
@@ -99,23 +99,23 @@ export function EditOAuthAccount() {
                 <Button
                   variant="ghost"
                   disabled={hasGithubAccount && hasGoogleAccount}
-                  className="gap-2 items-center justify-start group disabled:cursor-not-allowed"
+                  className="group items-center justify-start gap-2 disabled:cursor-not-allowed"
                 >
-                  <UserPlusIcon className="w-4 h-4" /> Add new account
+                  <UserPlusIcon className="h-4 w-4" /> Add new account
                   {(!hasGithubAccount || !hasGoogleAccount) && (
-                    <MoveRightIcon className="hidden w-4 h-4 group-hover:block animate-in" />
+                    <MoveRightIcon className="hidden h-4 w-4 animate-in group-hover:block" />
                   )}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="flex flex-col p-0 w-md">
+              <PopoverContent className="flex w-md flex-col p-0">
                 {!hasGithubAccount && (
                   <Button
                     variant="ghost"
-                    className="w-full h-11 justify-start "
+                    className="h-11 w-full justify-start "
                     asChild
                   >
                     <Link href="/api/oauth/github" prefetch={false}>
-                      <GithubIcon className="w-4 h-4 mr-2" />
+                      <GithubIcon className="mr-2 h-4 w-4" />
                       Github
                     </Link>
                   </Button>
@@ -123,11 +123,11 @@ export function EditOAuthAccount() {
                 {!hasGoogleAccount && (
                   <Button
                     variant="ghost"
-                    className="w-full h-11 justify-start"
+                    className="h-11 w-full justify-start"
                     asChild
                   >
                     <Link href="/api/oauth/google" prefetch={false}>
-                      <GoogleIcon className="w-4 h-4 mr-2" />
+                      <GoogleIcon className="mr-2 h-4 w-4" />
                       Google
                     </Link>
                   </Button>

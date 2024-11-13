@@ -7,25 +7,25 @@ import {
   NEXT_PUBLIC_STORAGE_ENDPOINT,
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
   PUBLIC_URL,
-} from "@/lib/env";
-import type { Context } from "@/server/types";
-import { Hono } from "hono";
+} from '@/lib/env';
+import type { Context } from '@/server/types';
+import { Hono } from 'hono';
 
 const test = new Hono<Context>()
-  .get("/hello", async (c) => {
+  .get('/hello', async (c) => {
     return c.text(c.env.hello);
   })
   // Get environment variables
-  .get("/env", async (c) => {
+  .get('/env', async (c) => {
     const env = c.env;
     const json = [...Object.entries(env)]
-      .filter(([, value]) => typeof value === "string")
+      .filter(([, value]) => typeof value === 'string')
       .reduce(
         (acc, [key, value]) => {
           acc[key] = value;
           return acc;
         },
-        {} as Record<string, string>,
+        {} as Record<string, string>
       );
     return c.json({
       env: json,

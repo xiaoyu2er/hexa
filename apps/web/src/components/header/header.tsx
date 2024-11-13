@@ -1,10 +1,10 @@
-import { validateRequest } from "@/lib/auth/validate-request";
-import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
-import { Button } from "@hexa/ui/button";
-import { Loader2Icon } from "@hexa/ui/icons";
-import Link from "next/link";
-import { Suspense } from "react";
-import { ModeToggle } from "./mode-toggle";
+import { validateRequest } from '@/lib/auth/validate-request';
+import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
+import { Button } from '@hexa/ui/button';
+import { Loader2Icon } from '@hexa/ui/icons';
+import Link from 'next/link';
+import { Suspense } from 'react';
+import { ModeToggle } from './mode-toggle';
 
 async function HeaderActions() {
   const { user } = await validateRequest();
@@ -33,20 +33,20 @@ async function HeaderActions() {
   );
 }
 
-export async function Header() {
+export function Header() {
   return (
     <div className="border-b py-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <div className="flex gap-8 items-center">
-          <Link href="/" className="flex gap-2 items-center text-xl">
+      <div className="container mx-auto flex items-center justify-between">
+        <div className="flex items-center gap-8">
+          <Link href="/" className="flex items-center gap-2 text-xl">
             <div className="hidden md:block">{NEXT_PUBLIC_APP_NAME}</div>
           </Link>
         </div>
         <div className="flex items-center justify-between gap-5">
           <Suspense
             fallback={
-              <div className="flex items-center justify-center w-40">
-                <Loader2Icon className="animate-spin w-4 h-4" />
+              <div className="flex w-40 items-center justify-center">
+                <Loader2Icon className="h-4 w-4 animate-spin" />
               </div>
             }
           >

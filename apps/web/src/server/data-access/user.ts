@@ -1,16 +1,16 @@
-import { IS_DEVELOPMENT } from "@/lib/env";
-import { ApiError } from "@/lib/error/error";
-import { getHash } from "@/lib/utils";
+import { IS_DEVELOPMENT } from '@/lib/env';
+import { ApiError } from '@/lib/error/error';
+import { getHash } from '@/lib/utils';
 import {
   type EmailModal,
   type UserModel,
   emailTable,
   userTable,
-} from "@/server/db/schema";
-import type { DBType } from "@/server/types";
-import { and, eq, ne } from "drizzle-orm";
+} from '@/server/db/schema';
+import type { DbType } from '@/server/types';
+import { and, eq, ne } from 'drizzle-orm';
 
-export async function getUser(db: DBType, uid: string) {
+export async function getUser(db: DbType, uid: string) {
   const user = await db.query.userTable.findFirst({
     where: eq(userTable.id, uid),
   });
@@ -18,7 +18,7 @@ export async function getUser(db: DBType, uid: string) {
   return user;
 }
 
-export async function getUserByUsername(db: DBType, username: string) {
+export async function getUserByUsername(db: DbType, username: string) {
   const user = await db.query.userTable.findFirst({
     where: eq(userTable.username, username),
   });
@@ -26,7 +26,7 @@ export async function getUserByUsername(db: DBType, username: string) {
   return user;
 }
 
-export async function getEmail(db: DBType, email: string) {
+export async function getEmail(db: DbType, email: string) {
   const emailItem = await db.query.emailTable.findFirst({
     where: (table, { eq }) => eq(table.email, email),
     with: {
@@ -37,20 +37,20 @@ export async function getEmail(db: DBType, email: string) {
   return emailItem;
 }
 
-export async function getUserPrimaryEmail(db: DBType, uid: string) {
+export async function getUserPrimaryEmail(db: DbType, uid: string) {
   return await db.query.emailTable.findFirst({
     where: (table, { eq }) =>
       and(eq(table.userId, uid), eq(table.primary, true)),
   });
 }
 
-export async function getUserEmails(db: DBType, uid: string) {
+export async function getUserEmails(db: DbType, uid: string) {
   return await db.query.emailTable.findMany({
     where: (table, { eq }) => eq(table.userId, uid),
   });
 }
 
-export async function getUserEmail(db: DBType, email: string) {
+export async function getUserEmail(db: DbType, email: string) {
   const emailItem = await db.query.emailTable.findFirst({
     where: (table, { eq }) => eq(table.email, email),
     with: {
@@ -60,30 +60,30 @@ export async function getUserEmail(db: DBType, email: string) {
   return emailItem;
 }
 
-export const getUserEmailOrThrowError = async (db: DBType, email: string) => {
+export const getUserEmailOrThrowError = async (db: DbType, email: string) => {
   const emailItem = await getUserEmail(db, email);
 
   if (!emailItem || !emailItem.user) {
     throw new ApiError(
-      "NOT_FOUND",
+      'NOT_FOUND',
       IS_DEVELOPMENT
         ? `[dev] User not found by email: ${email}`
-        : "Email not found",
+        : 'Email not found'
     );
   }
   return emailItem;
 };
 
 export async function createUserEmail(
-  db: DBType,
+  db: DbType,
   {
     email,
     verified,
     primary,
     userId,
-  }: Pick<EmailModal, "email" | "verified" | "primary"> & {
-    userId: UserModel["id"];
-  },
+  }: Pick<EmailModal, 'email' | 'verified' | 'primary'> & {
+    userId: UserModel['id'];
+  }
 ) {
   return (
     await db
@@ -98,14 +98,14 @@ export async function createUserEmail(
   )[0];
 }
 
-export async function removeUserEmail(db: DBType, uid: string, email: string) {
+export async function removeUserEmail(db: DbType, uid: string, email: string) {
   await db
     .delete(emailTable)
     .where(and(eq(emailTable.email, email), eq(emailTable.userId, uid)));
 }
 
 export async function createUser(
-  db: DBType,
+  db: DbType,
   {
     email,
     verified,
@@ -113,8 +113,8 @@ export async function createUser(
     username,
     avatarUrl,
     name,
-  }: Pick<UserModel, "password" | "username" | "avatarUrl" | "name"> &
-    Pick<EmailModal, "email" | "verified">,
+  }: Pick<UserModel, 'password' | 'username' | 'avatarUrl' | 'name'> &
+    Pick<EmailModal, 'email' | 'verified'>
 ) {
   const user = (
     await db
@@ -129,8 +129,9 @@ export async function createUser(
       .returning()
   )[0];
 
-  if (!user)
-    throw new ApiError("INTERNAL_SERVER_ERROR", "Failed to create user");
+  if (!user) {
+    throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create user');
+  }
 
   await createUserEmail(db, {
     email,
@@ -148,9 +149,9 @@ export async function createUser(
 }
 
 export async function updateUserPassword(
-  db: DBType,
+  db: DbType,
   uid: string,
-  password: string,
+  password: string
 ) {
   await db
     .update(userTable)
@@ -160,9 +161,9 @@ export async function updateUserPassword(
 }
 
 export async function updateUserPrimaryEmail(
-  db: DBType,
+  db: DbType,
   uid: string,
-  email: string,
+  email: string
 ) {
   await db
     .update(emailTable)
@@ -177,11 +178,10 @@ export async function updateUserPrimaryEmail(
 }
 
 export async function updateUserEmailVerified(
-  db: DBType,
+  db: DbType,
   uid: string,
-  email: string,
+  email: string
 ) {
-  console.log("updateUserEmailVerified", uid, email);
   await db
     .update(emailTable)
     .set({ verified: true })
@@ -189,9 +189,9 @@ export async function updateUserEmailVerified(
 }
 
 export async function updateUserProfile(
-  db: DBType,
+  db: DbType,
   uid: string,
-  imageUrl: string,
+  imageUrl: string
 ) {
   await db
     .update(userTable)
@@ -199,7 +199,7 @@ export async function updateUserProfile(
     .where(eq(userTable.id, uid));
 }
 
-export async function updateProfileName(db: DBType, uid: string, name: string) {
+export async function updateProfileName(db: DbType, uid: string, name: string) {
   await db
     .update(userTable)
     // we set name to null if it's an empty string
@@ -208,21 +208,21 @@ export async function updateProfileName(db: DBType, uid: string, name: string) {
 }
 
 export async function updateUsername(
-  db: DBType,
+  db: DbType,
   uid: string,
-  username: string,
+  username: string
 ) {
   await db.update(userTable).set({ username }).where(eq(userTable.id, uid));
 }
 
 export async function updateUserAvatar(
-  db: DBType,
+  db: DbType,
   uid: string,
-  avatarUrl: string,
+  avatarUrl: string
 ) {
   await db.update(userTable).set({ avatarUrl }).where(eq(userTable.id, uid));
 }
 
-export async function deleteUser(db: DBType, uid: string) {
+export async function deleteUser(db: DbType, uid: string) {
   await db.delete(userTable).where(eq(userTable.id, uid));
 }

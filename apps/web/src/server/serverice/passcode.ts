@@ -1,11 +1,11 @@
-"use server";
-import { sendVerifyCodeAndUrlEmail } from "@/lib/emails";
-import { addDBToken } from "@/server/data-access/token";
-import type { OTPType } from "@/server/db";
-import type { DBType } from "@/server/types";
+'use server';
+import { sendVerifyCodeAndUrlEmail } from '@/lib/emails';
+import { addDBToken } from '@/server/data-access/token';
+import type { OtpType } from '@/server/db';
+import type { DbType } from '@/server/types';
 
 export async function updatePasscodeAndSendEmail(
-  db: DBType,
+  db: DbType,
   {
     userId,
     email,
@@ -15,17 +15,16 @@ export async function updatePasscodeAndSendEmail(
     publicUrl: string;
     userId: string;
     email: string;
-    type: OTPType;
-  },
+    type: OtpType;
+  }
 ): Promise<{ email: string }> {
   const { code: verificationCode, token } = await addDBToken(
     db,
     userId,
     email,
-    type,
+    type
   );
   const url = `${publicUrl}/api/verify-token?token=${token}&type=${type}`;
   const data = await sendVerifyCodeAndUrlEmail(email, verificationCode, url);
-  console.log("sendVerifyCodeAndUrlEmail", data);
   return data;
 }

@@ -1,0 +1,3 @@
+{
+  "extends": "@hexa/typescript-config/base.json"
+}

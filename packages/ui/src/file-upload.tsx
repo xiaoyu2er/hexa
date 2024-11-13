@@ -1,33 +1,33 @@
-import { Loader2, UploadCloud } from "@hexa/ui/icons";
-import { cn } from "@hexa/utils";
-import { MAX_PROFILE_FILE_SIZE_MB } from "@hexa/utils/const";
-import { type VariantProps, cva } from "class-variance-authority";
-import type React from "react";
-import { type ReactNode, useState } from "react";
-import { toast } from "sonner";
-import { Avatar, AvatarImage } from "./ui/avatar";
+import { Loader2, UploadCloud } from '@hexa/ui/icons';
+import { cn } from '@hexa/utils';
+import { MAX_PROFILE_FILE_SIZE_MB } from '@hexa/utils/const';
+import { type VariantProps, cva } from 'class-variance-authority';
+import type React from 'react';
+import { type ReactNode, useState } from 'react';
+import { toast } from 'sonner';
+import { Avatar, AvatarImage } from './ui/avatar';
 
 const acceptFileTypes = {
-  any: { types: [], errorMessage: "" },
+  any: { types: [], errorMessage: '' },
   images: {
-    types: ["image/png", "image/jpeg"],
-    errorMessage: "File type not supported (.png or .jpg only)",
+    types: ['image/png', 'image/jpeg'],
+    errorMessage: 'File type not supported (.png or .jpg only)',
   },
 } as const;
 
 const imageUploadVariants = cva(
-  "group relative isolate flex aspect-[1200/630] w-full flex-col items-center justify-center overflow-hidden bg-white transition-all hover:bg-gray-50",
+  'group relative isolate flex aspect-[1200/630] w-full flex-col items-center justify-center overflow-hidden bg-white transition-all hover:bg-gray-50',
   {
     variants: {
       variant: {
-        default: "rounded-md border border-gray-300 shadow-sm",
-        plain: "",
+        default: 'rounded-md border border-gray-300 shadow-sm',
+        plain: '',
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: 'default',
     },
-  },
+  }
 );
 
 type FileUploadReadFileProps =
@@ -99,28 +99,30 @@ export function FileUpload({
   variant,
   className,
   iconClassName,
-  accept = "any",
+  accept = 'any',
   imageSrc,
   loading = false,
   clickToUpload = true,
   showHoverOverlay = true,
   content,
   maxFileSizeMB = 0,
-  accessibilityLabel = "File upload",
+  accessibilityLabel = 'File upload',
 }: FileUploadProps) {
   const [dragActive, setDragActive] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
 
   const onFileChange = async (
-    e: React.ChangeEvent<HTMLInputElement> | DragEvent,
+    e: React.ChangeEvent<HTMLInputElement> | DragEvent
   ) => {
     const file =
-      "dataTransfer" in e
+      'dataTransfer' in e
         ? // @ts-ignore - TODO - Fix this
           e.dataTransfer.files?.[0]
         : e.target.files?.[0];
 
-    if (!file) return;
+    if (!file) {
+      return;
+    }
 
     setFileName(file.name);
 
@@ -139,7 +141,7 @@ export function FileUpload({
       !acceptedTypes.includes(file.type as (typeof acceptedTypes)[number])
     ) {
       toast.error(
-        acceptFileTypes[accept].errorMessage ?? "File type not supported",
+        acceptFileTypes[accept].errorMessage ?? 'File type not supported'
       );
       return;
     }
@@ -160,8 +162,8 @@ export function FileUpload({
     <label
       className={cn(
         imageUploadVariants({ variant }),
-        clickToUpload && "cursor-pointer",
-        className,
+        clickToUpload && 'cursor-pointer',
+        className
       )}
     >
       {loading && (
@@ -196,27 +198,25 @@ export function FileUpload({
       />
       <div
         className={cn(
-          "absolute inset-0 z-[3] flex flex-col items-center justify-center rounded-[inherit] bg-white transition-all",
+          'absolute inset-0 z-[3] flex flex-col items-center justify-center rounded-[inherit] bg-white transition-all',
           dragActive &&
-            "cursor-copy border-2 border-black bg-gray-50 opacity-100",
+            'cursor-copy border-2 border-black bg-gray-50 opacity-100',
           imageSrc
-            ? cn("opacity-0", showHoverOverlay && "group-hover:opacity-100")
-            : "group-hover:bg-gray-50",
+            ? cn('opacity-0', showHoverOverlay && 'group-hover:opacity-100')
+            : 'group-hover:bg-gray-50'
         )}
       >
         <UploadCloud
           className={cn(
-            "h-7 w-7 text-gray-500 transition-all duration-75 group-hover:scale-110 group-active:scale-95",
-            dragActive ? "scale-110" : "scale-100",
-            iconClassName,
+            'h-7 w-7 text-gray-500 transition-all duration-75 group-hover:scale-110 group-active:scale-95',
+            dragActive ? 'scale-110' : 'scale-100',
+            iconClassName
           )}
         />
         {content !== null && (
-          <div className="mt-2 text-center text-sm text-gray-500">
+          <div className="mt-2 text-center text-gray-500 text-sm">
             {content ?? (
-              <>
-                <p>Drag and drop {clickToUpload && "or click"} to upload.</p>
-              </>
+              <p>Drag and drop {clickToUpload && 'or click'} to upload.</p>
             )}
           </div>
         )}
@@ -224,7 +224,7 @@ export function FileUpload({
       </div>
       {imageSrc && (
         <Avatar className="h-full w-full rounded-[inherit] object-cover">
-          <AvatarImage src={imageSrc} alt={"Preview"} />
+          <AvatarImage src={imageSrc} alt="Preview" />
         </Avatar>
       )}
       {clickToUpload && (
@@ -232,7 +232,7 @@ export function FileUpload({
           <input
             key={fileName} // Gets us a fresh input every time a file is uploaded
             type="file"
-            accept={acceptFileTypes[accept].types.join(",")}
+            accept={acceptFileTypes[accept].types.join(',')}
             onChange={onFileChange}
           />
         </div>

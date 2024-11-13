@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { getAvatarFallbackUrl } from "@/lib/user";
-import { FileUpload } from "@hexa/ui/file-upload";
-import { toast } from "@hexa/ui/sonner";
-import { useEffect, useState } from "react";
+import { getAvatarFallbackUrl } from '@/lib/user';
+import { FileUpload } from '@hexa/ui/file-upload';
+import { toast } from '@hexa/ui/sonner';
+import { useEffect, useState } from 'react';
 
-import { useSession } from "@/components/providers/session-provider";
-import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
+import { useSession } from '@/components/providers/session-provider';
+import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import {
   type UpdateAvatarInput,
   UpdateAvatarSchema,
-} from "@/lib/zod/schemas/user";
-import { $updateUserAvatar } from "@/server/client";
-import { Button } from "@hexa/ui/button";
+} from '@/lib/zod/schemas/user';
+import { $updateUserAvatar } from '@/server/client';
+import { Button } from '@hexa/ui/button';
 import {
   Card,
   CardContent,
@@ -20,17 +20,17 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@hexa/ui/card";
+} from '@hexa/ui/card';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@hexa/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+} from '@hexa/ui/form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
 
 export default function UploadAvatar() {
   const { user, refetch } = useSession();
@@ -48,16 +48,16 @@ export default function UploadAvatar() {
   const { mutateAsync: updateUserAvatar } = useMutation({
     mutationFn: $updateUserAvatar,
     onError: (err) => {
-      setError("image", { message: err.message });
+      setError('image', { message: err.message });
     },
     onSuccess: () => {
-      toast.success("Successfully updated your profile picture!");
+      toast.success('Successfully updated your profile picture!');
       refetch();
     },
   });
 
   const [avatarUrl, setAvatarUrl] = useState<string | null | undefined>(
-    user?.avatarUrl,
+    user?.avatarUrl
   );
 
   useEffect(() => {
@@ -93,7 +93,6 @@ export default function UploadAvatar() {
                       imageSrc={avatarUrl}
                       readFile
                       onChange={({ src, file }) => {
-                        console.log(file, src);
                         onChange(file);
                         setAvatarUrl(src);
                       }}
@@ -106,16 +105,16 @@ export default function UploadAvatar() {
               )}
             />
           </CardContent>
-          <CardFooter className="border-t px-6 py-4 items-center flex-row-reverse justify-between">
+          <CardFooter className="flex-row-reverse items-center justify-between border-t px-6 py-4">
             <Button
-              className="shrink-0 mr-2"
+              className="mr-2 shrink-0"
               loading={isSubmitting}
               disabled={avatarUrl === user?.avatarUrl}
             >
               Update
             </Button>
 
-            <p className="text-sm text-gray-500">
+            <p className="text-gray-500 text-sm">
               Accepted file types: .png, .jpg. Max file size: 2MB.
             </p>
           </CardFooter>

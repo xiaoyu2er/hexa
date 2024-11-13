@@ -1,5 +1,5 @@
-import { cn } from "@hexa/utils";
-import type { ReactNode } from "react";
+import { cn } from '@hexa/utils';
+import type { ReactNode } from 'react';
 
 export function MaxWidth({
   className,
@@ -11,8 +11,8 @@ export function MaxWidth({
   return (
     <div
       className={cn(
-        "mx-auto w-full max-w-screen-xl px-2.5 lg:px-20",
-        className,
+        'mx-auto w-full max-w-screen-xl px-2.5 lg:px-20',
+        className
       )}
     >
       {children}

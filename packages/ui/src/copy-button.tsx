@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { Check, Copy } from "@hexa/ui/icons";
-import { toast } from "@hexa/ui/sonner";
-import { cn } from "@hexa/utils";
-import { useState } from "react";
-import { Button } from "./ui/button";
+import { Check, Copy } from '@hexa/ui/icons';
+import { toast } from '@hexa/ui/sonner';
+import { cn } from '@hexa/utils';
+import { useState } from 'react';
+import { Button } from './ui/button';
 
 export function CopyButton({
   value,
@@ -23,14 +23,14 @@ export function CopyButton({
         e.stopPropagation();
         setCopied(true);
         navigator.clipboard.writeText(value).then(() => {
-          toast.success("Copied to clipboard!");
+          toast.success('Copied to clipboard!');
         });
         setTimeout(() => setCopied(false), 3000);
       }}
-      className={cn("w-7 h-7", className)}
+      className={cn('h-7 w-7', className)}
     >
       <span className="sr-only">Copy</span>
-      <Comp className="text-gray-700 transition-all group-hover:text-blue-800 w-4 h-4" />
+      <Comp className="h-4 w-4 text-gray-700 transition-all group-hover:text-blue-800" />
     </Button>
   );
 }

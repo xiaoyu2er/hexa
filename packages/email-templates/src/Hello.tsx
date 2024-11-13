@@ -1,4 +1,4 @@
-import { Button, Html } from "@react-email/components";
+import { Button, Html } from '@react-email/components';
 
 interface HelloProps {
   name: string;
@@ -8,7 +8,7 @@ export function Hello({ name }: HelloProps) {
     <Html>
       <Button
         href="https://example.com"
-        style={{ background: "#000", color: "#fff", padding: "12px 20px" }}
+        style={{ background: '#000', color: '#fff', padding: '12px 20px' }}
       >
         Hello {name}!
       </Button>
@@ -17,5 +17,5 @@ export function Hello({ name }: HelloProps) {
 }
 
 Hello.PreviewProps = {
-  name: "Hexa",
+  name: 'Hexa',
 } as HelloProps;

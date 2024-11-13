@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { Dialog, DialogContent, DialogTrigger } from "@hexa/ui/dialog";
-import type { ReactNode } from "react";
-import { useBoolean } from "usehooks-ts";
-import { CreateWorkspaceForm } from "./create-workspace-form";
+import { Dialog, DialogContent, DialogTrigger } from '@hexa/ui/dialog';
+import type { ReactNode } from 'react';
+import { useBoolean } from 'usehooks-ts';
+import { CreateWorkspaceForm } from './create-workspace-form';
 
 export function CreateWorkspaceModal({ children }: { children: ReactNode }) {
   const { value: isOpen, setFalse: close, setValue: setOpen } = useBoolean();

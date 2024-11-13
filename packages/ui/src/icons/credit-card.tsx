@@ -1,5 +1,5 @@
-import { cn } from "@hexa/utils";
-import { type SVGProps, forwardRef } from "react";
+import { cn } from '@hexa/utils';
+import { type SVGProps, forwardRef } from 'react';
 
 const CreditCard = forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>(
   ({ className, ...props }, ref) => (
@@ -19,6 +19,6 @@ const CreditCard = forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>(
       <rect x="2" y="5" width="20" height="14" rx="2" />
       <line x1="2" y1="10" x2="22" y2="10" />
     </svg>
-  ),
+  )
 );
-CreditCard.displayName = "CreditCard";
+CreditCard.displayName = 'CreditCard';

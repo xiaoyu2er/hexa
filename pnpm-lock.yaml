@@ -17,12 +17,18 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^19.2.2
         version: 19.2.2
+      '@hexa/typescript-config':
+        specifier: workspace:*
+        version: link:packages/typescript-config
       turbo:
         specifier: ^2.0.4
         version: 2.0.4
       typescript:
         specifier: 5.4.5
         version: 5.4.5
+      ultracite:
+        specifier: 4.1.6
+        version: 4.1.6
 
   apps/web:
     dependencies:
@@ -6076,6 +6082,9 @@ packages:
     engines: {node: '>=0.8.0'}
     hasBin: true
 
+  ultracite@4.1.6:
+    resolution: {integrity: sha512-xvCbWkZ8wYPCgXkP89t9oqI1Nj7ARnuEm4Wd/VJqMj4AD8GnFgvZh/GZJFuGULJ32d/MvKleYZPjsaT2me0gBA==}
+
   undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
 
@@ -12120,6 +12129,8 @@ snapshots:
 
   uglify-js@3.17.4:
     optional: true
+
+  ultracite@4.1.6: {}
 
   undici-types@5.26.5: {}
 

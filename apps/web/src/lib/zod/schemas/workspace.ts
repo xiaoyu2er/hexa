@@ -1,7 +1,7 @@
-import { z } from "zod";
-import { UpdateAvatarSchema } from "./user";
+import { z } from 'zod';
+import { UpdateAvatarSchema } from './user';
 
-const workspaceId = z.string().min(1, "Please select a workspace");
+const workspaceId = z.string().min(1, 'Please select a workspace');
 export const SetUserDefaultWorkspaceSchema = z.object({
   workspaceId,
 });
@@ -12,14 +12,14 @@ export type SetUserDefaultWorkspaceInput = z.infer<
 
 const name = z
   .string()
-  .min(1, "Please enter a name")
-  .max(32, "Name must be less than 32 characters");
+  .min(1, 'Please enter a name')
+  .max(32, 'Name must be less than 32 characters');
 
 const slug = z
   .string()
-  .min(1, "Please enter a slug")
-  .max(32, "Slug must be less than 32 characters")
-  .regex(/^[a-zA-Z0-9-]+$/, "Slug must be alphanumeric and dashes only");
+  .min(1, 'Please enter a slug')
+  .max(32, 'Slug must be less than 32 characters')
+  .regex(/^[a-zA-Z0-9-]+$/, 'Slug must be alphanumeric and dashes only');
 
 export const GetWorkspaceBySlugSchema = z.object({
   slug,
@@ -51,13 +51,13 @@ export const CreateWorkspaceSchema = z.object({
 
 export type CreateWorkspaceInput = z.infer<typeof CreateWorkspaceSchema>;
 
-export const DELETE_WORKSPACE_CONFIRMATION = "confirm delete workspace";
+export const DELETE_WORKSPACE_CONFIRMATION = 'confirm delete workspace';
 export const DeleteWorkspaceSchema = z.object({
   confirm: z
     .string()
     .refine(
       (v) => v === DELETE_WORKSPACE_CONFIRMATION,
-      `Please type '${DELETE_WORKSPACE_CONFIRMATION}' to delete your workspace.`,
+      `Please type '${DELETE_WORKSPACE_CONFIRMATION}' to delete your workspace.`
     ),
   workspaceId,
 });

@@ -4,14 +4,14 @@ import {
   userTable,
   workspaceMemberTable,
   workspaceTable,
-} from "@/server/db/schema";
-import type { DBType } from "@/server/types";
-import { eq } from "drizzle-orm";
+} from '@/server/db/schema';
+import type { DbType } from '@/server/types';
+import { eq } from 'drizzle-orm';
 
 export const setUserDefaultWorkspace = async (
-  db: DBType,
+  db: DbType,
   userId: string,
-  workspaceId: string,
+  workspaceId: string
 ) => {
   return (
     await db
@@ -22,7 +22,7 @@ export const setUserDefaultWorkspace = async (
   )[0];
 };
 
-export const getWorkspacesByUserId = async (db: DBType, userId: string) => {
+export const getWorkspacesByUserId = async (db: DbType, userId: string) => {
   return (
     await db.query.workspaceMemberTable.findMany({
       where: (table, { eq }) => eq(table.userId, userId),
@@ -33,15 +33,15 @@ export const getWorkspacesByUserId = async (db: DBType, userId: string) => {
   ).map((wm) => wm.workspace);
 };
 
-export const getWorkspaceBySlug = async (db: DBType, slug: string) => {
+export const getWorkspaceBySlug = async (db: DbType, slug: string) => {
   return db.query.workspaceTable.findFirst({
     where: (table, { eq }) => eq(table.slug, slug),
   });
 };
 
 export const getWorkspaceBySlugWithMembers = async (
-  db: DBType,
-  slug: string,
+  db: DbType,
+  slug: string
 ) => {
   return db.query.workspaceTable.findFirst({
     where: (table, { eq }) => eq(table.slug, slug),
@@ -51,15 +51,15 @@ export const getWorkspaceBySlugWithMembers = async (
   });
 };
 
-export const getWorkspaceByWsId = async (db: DBType, wsId: string) => {
+export const getWorkspaceByWsId = async (db: DbType, wsId: string) => {
   return db.query.workspaceTable.findFirst({
     where: (table, { eq }) => eq(table.id, wsId),
   });
 };
 
 export const getWorkspaceByWsIdWithMembers = async (
-  db: DBType,
-  wsId: string,
+  db: DbType,
+  wsId: string
 ) => {
   return db.query.workspaceTable.findFirst({
     where: (table, { eq }) => eq(table.id, wsId),
@@ -70,8 +70,8 @@ export const getWorkspaceByWsIdWithMembers = async (
 };
 
 export const createWorkspace = async (
-  db: DBType,
-  { name, slug }: Pick<WorkspaceModel, "name" | "slug">,
+  db: DbType,
+  { name, slug }: Pick<WorkspaceModel, 'name' | 'slug'>
 ) => {
   return (
     await db
@@ -86,12 +86,12 @@ export const createWorkspace = async (
 };
 
 export const addWorkspaceMember = async (
-  db: DBType,
+  db: DbType,
   {
     userId,
     workspaceId,
     role,
-  }: Pick<WorkspaceMemberModel, "userId" | "workspaceId" | "role">,
+  }: Pick<WorkspaceMemberModel, 'userId' | 'workspaceId' | 'role'>
 ) => {
   return (
     await db
@@ -105,7 +105,7 @@ export const addWorkspaceMember = async (
   )[0];
 };
 
-export const deleteWorkspace = async (db: DBType, workspaceId: string) => {
+export const deleteWorkspace = async (db: DbType, workspaceId: string) => {
   await db
     .delete(workspaceTable)
     .where(eq(workspaceTable.id, workspaceId))
@@ -113,8 +113,8 @@ export const deleteWorkspace = async (db: DBType, workspaceId: string) => {
 };
 
 export const clearWorkspaceAsDefault = async (
-  db: DBType,
-  workspaceId: string,
+  db: DbType,
+  workspaceId: string
 ) => {
   await db
     .update(userTable)
@@ -125,9 +125,9 @@ export const clearWorkspaceAsDefault = async (
 
 // update name
 export async function updateWorkspaceName(
-  db: DBType,
+  db: DbType,
   id: string,
-  name: string,
+  name: string
 ) {
   return (
     await db
@@ -139,9 +139,9 @@ export async function updateWorkspaceName(
 }
 // update slug
 export async function updateWorkspaceSlug(
-  db: DBType,
+  db: DbType,
   id: string,
-  slug: string,
+  slug: string
 ) {
   return (
     await db
@@ -154,9 +154,9 @@ export async function updateWorkspaceSlug(
 
 // update avatar
 export async function updateWorkspaceAvatar(
-  db: DBType,
+  db: DbType,
   id: string,
-  avatarUrl: string,
+  avatarUrl: string
 ) {
   return (
     await db
@@ -168,9 +168,9 @@ export async function updateWorkspaceAvatar(
 }
 
 export async function getWorkspaceMember(
-  db: DBType,
+  db: DbType,
   workspaceId: string,
-  userId: string,
+  userId: string
 ) {
   return db.query.workspaceMemberTable.findFirst({
     where: (table, { and, eq }) =>

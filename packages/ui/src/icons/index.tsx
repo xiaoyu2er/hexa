@@ -1,6 +1,6 @@
-export { AnimatedSpinner } from "./animated-spinner";
-export { GoogleIcon } from "./google-icon";
-export { GithubIcon } from "./github-icon";
+export { AnimatedSpinner } from './animated-spinner';
+export { GoogleIcon } from './google-icon';
+export { GithubIcon } from './github-icon';
 
 // https://lucide.dev/icons/
 export {
@@ -33,7 +33,7 @@ export {
   UserPlusIcon,
   SettingsIcon,
   UserIcon,
-} from "lucide-react";
+} from 'lucide-react';
 
 // https://www.radix-ui.com/icons
 export {
@@ -68,4 +68,4 @@ export {
   GitHubLogoIcon,
   SlashIcon,
   CaretSortIcon,
-} from "@radix-ui/react-icons";
+} from '@radix-ui/react-icons';

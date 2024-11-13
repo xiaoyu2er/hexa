@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
 import {
   type VerifyPasscodeForm,
   VerifyPasscodeSchema,
-} from "@/lib/zod/schemas/auth";
-import { Button } from "@hexa/ui/button";
+} from '@/lib/zod/schemas/auth';
+import { Button } from '@hexa/ui/button';
 import {
   Card,
   CardContent,
@@ -12,26 +12,26 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@hexa/ui/card";
-import { Form, FormControl, FormField, FormItem } from "@hexa/ui/form";
-import { PencilLine } from "@hexa/ui/icons";
-import { cn } from "@hexa/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { type FC, useEffect, useRef } from "react";
-import { useForm } from "react-hook-form";
-import { useCountdown } from "usehooks-ts";
+} from '@hexa/ui/card';
+import { Form, FormControl, FormField, FormItem } from '@hexa/ui/form';
+import { PencilLine } from '@hexa/ui/icons';
+import { cn } from '@hexa/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { type FC, useEffect, useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import { useCountdown } from 'usehooks-ts';
 
-import { RESEND_VERIFY_CODE_TIME_SPAN, VERIFY_CODE_LENGTH } from "@/lib/const";
-import { setFormError } from "@/lib/form";
+import { RESEND_VERIFY_CODE_TIME_SPAN, VERIFY_CODE_LENGTH } from '@/lib/const';
+import { setFormError } from '@/lib/form';
 import {
   $rensedPasscode,
   $verifyPasscode,
   type InferApiResponseType,
-} from "@/server/client";
-import type { OTPType } from "@/server/db";
-import { FormErrorMessage } from "@hexa/ui/form-error-message";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "@hexa/ui/input-otp";
-import { useMutation } from "@tanstack/react-query";
+} from '@/server/client';
+import type { OtpType } from '@/server/db';
+import { FormErrorMessage } from '@hexa/ui/form-error-message';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@hexa/ui/input-otp';
+import { useMutation } from '@tanstack/react-query';
 
 export interface VerifyPasscodeProps {
   email: string;
@@ -39,7 +39,7 @@ export interface VerifyPasscodeProps {
   onSuccess?: (data: InferApiResponseType<typeof $verifyPasscode>) => void;
   onCancel?: () => void;
   className?: string;
-  type: OTPType;
+  type: OtpType;
 }
 
 export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
@@ -53,7 +53,7 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
   const form = useForm<VerifyPasscodeForm>({
     resolver: zodResolver(VerifyPasscodeSchema),
     defaultValues: {
-      code: "",
+      code: '',
       email: email,
       type,
     },
@@ -95,14 +95,18 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
   });
 
   const resed = async () => {
-    if (count > 0) return;
-    if (isRensedPending) return;
+    if (count > 0) {
+      return;
+    }
+    if (isRensedPending) {
+      return;
+    }
     execResend({ json: { email, type } });
   };
 
   return (
     <Card className={cn(className)}>
-      <CardHeader className="text-center pb-2">
+      <CardHeader className="pb-2 text-center">
         <CardTitle>Verify Code</CardTitle>
         <CardDescription>
           Enter the verification code sent to your email
@@ -137,21 +141,23 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
                       {...field}
                       containerClassName="justify-center"
                       onComplete={handleSubmit((json) =>
-                        execVerifyCode({ json }),
+                        execVerifyCode({ json })
                       )}
                     >
-                      {[...Array(VERIFY_CODE_LENGTH).keys()].map((index) => (
-                        <InputOTPGroup key={index}>
-                          <InputOTPSlot
-                            index={index}
-                            className={
-                              errors.code || errors.root
-                                ? "border-destructive"
-                                : ""
-                            }
-                          />
-                        </InputOTPGroup>
-                      ))}
+                      {[...new Array(VERIFY_CODE_LENGTH).keys()].map(
+                        (index) => (
+                          <InputOTPGroup key={index}>
+                            <InputOTPSlot
+                              index={index}
+                              className={
+                                errors.code || errors.root
+                                  ? 'border-destructive'
+                                  : ''
+                              }
+                            />
+                          </InputOTPGroup>
+                        )
+                      )}
                     </InputOTP>
                   </FormControl>
                 </FormItem>
@@ -162,24 +168,24 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
             {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
             <p
               className={cn(
-                "mt-2 font-medium text-sm text-primary hover:underline hover:underline-offset-4 hover:cursor-pointer text-center",
+                'mt-2 text-center font-medium text-primary text-sm hover:cursor-pointer hover:underline hover:underline-offset-4',
                 {
-                  "opacity-70": count > 0,
-                },
+                  'opacity-70': count > 0,
+                }
               )}
               onClick={resed}
             >
-              Didn't receive a code? Resend{" "}
-              {count > 0 ? `(${count}s)` : isRensedPending ? "..." : ""}
+              Didn't receive a code? Resend
+              {count > 0 ? `(${count}s)` : isRensedPending ? '...' : ''}
             </p>
           </form>
         </Form>
       </CardContent>
-      <CardFooter className={cn("flex gap-2", "flex-col")}>
-        <Button className={"w-full"} loading={isSubmitting} type="submit">
+      <CardFooter className={cn('flex gap-2', 'flex-col')}>
+        <Button className="w-full" loading={isSubmitting} type="submit">
           Verify
         </Button>
-        <Button variant="outline" className={"w-full"} onClick={onCancel}>
+        <Button variant="outline" className="w-full" onClick={onCancel}>
           Cancel
         </Button>
       </CardFooter>

@@ -1,22 +1,23 @@
-import { getOAuthAccount } from "@/server/data-access/account";
-import { getDB } from "@/server/db";
-import { cookies } from "next/headers";
-import { OAuthSignupPage } from "./oauth-signup-page";
-import { SignupPage } from "./signup-page";
+import { cookies } from 'next/headers';
+
+import { getOauthAccount } from '@/server/data-access/account';
+import { getDb } from '@/server/db';
+import { OauthSignupPage } from './oauth-signup-page';
+import { SignupPage } from './signup-page';
 
 export const metadata = {
-  title: "Sign Up",
-  description: "Signup Page",
+  title: 'Sign Up',
+  description: 'Signup Page',
 };
 
 export default async function () {
-  // If we have an OAuth account ID in the cookies, we are in the OAuth flow
-  const oauthAccountId = (await cookies()).get("oauth_account_id")?.value;
+  // If we have an Oauth account ID in the cookies, we are in the Oauth flow
+  const oauthAccountId = (await cookies()).get('oauth_account_id')?.value;
   if (oauthAccountId) {
-    const db = await getDB();
-    const account = await getOAuthAccount(db, oauthAccountId);
+    const db = await getDb();
+    const account = await getOauthAccount(db, oauthAccountId);
     if (account) {
-      return <OAuthSignupPage oauthAccount={account} />;
+      return <OauthSignupPage oauthAccount={account} />;
     }
   }
 

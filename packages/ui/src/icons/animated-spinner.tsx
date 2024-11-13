@@ -1,5 +1,5 @@
-import { cn } from "@hexa/utils";
-import { type SVGProps, forwardRef } from "react";
+import { cn } from '@hexa/utils';
+import { type SVGProps, forwardRef } from 'react';
 
 const AnimatedSpinner = forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>(
   ({ className, ...props }, ref) => (
@@ -57,9 +57,9 @@ const AnimatedSpinner = forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>(
         <rect x="11" y="1" width="2" height="5" transform="rotate(180 12 12)" />
       </g>
     </svg>
-  ),
+  )
 );
 
-AnimatedSpinner.displayName = "AnimatedSpinner";
+AnimatedSpinner.displayName = 'AnimatedSpinner';
 
 export { AnimatedSpinner };

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Card,
@@ -7,33 +7,33 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@hexa/ui/card";
+} from '@hexa/ui/card';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@hexa/ui/form";
-import { Input } from "@hexa/ui/input";
+} from '@hexa/ui/form';
+import { Input } from '@hexa/ui/input';
 
-import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
+import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import {
   invalidateWorkspaceBySlugQuery,
   invalidateWorkspacesQuery,
   queryWorkspaceBySlugOptions,
-} from "@/lib/queries/workspace";
+} from '@/lib/queries/workspace';
 import {
   type UpdateWorkspaceNameInput,
   UpdateWorkspacerNameSchema,
-} from "@/lib/zod/schemas/workspace";
-import { $updateWorkspaceName } from "@/server/client";
-import { Button } from "@hexa/ui/button";
-import { toast } from "@hexa/ui/sonner";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
+} from '@/lib/zod/schemas/workspace';
+import { $updateWorkspaceName } from '@/server/client';
+import { Button } from '@hexa/ui/button';
+import { toast } from '@hexa/ui/sonner';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
+import { useEffect, useMemo } from 'react';
+import { useForm } from 'react-hook-form';
 
 export function EditWorkspaceName({ slug }: { slug: string }) {
   const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
@@ -41,7 +41,7 @@ export function EditWorkspaceName({ slug }: { slug: string }) {
     resolver: zodResolver(UpdateWorkspacerNameSchema),
     defaultValues: useMemo(() => {
       return {
-        name: ws?.name ?? "",
+        name: ws?.name ?? '',
       };
     }, [ws]),
   });
@@ -55,17 +55,17 @@ export function EditWorkspaceName({ slug }: { slug: string }) {
 
   useEffect(() => {
     reset({
-      name: ws?.name ?? "",
+      name: ws?.name ?? '',
     });
   }, [reset, ws]);
 
   const { mutateAsync: updateWorkspaceName } = useMutation({
     mutationFn: $updateWorkspaceName,
     onError: (err) => {
-      setError("name", { message: err.message });
+      setError('name', { message: err.message });
     },
     onSuccess: () => {
-      toast.success("The workspace name has been updated");
+      toast.success('The workspace name has been updated');
       reset();
       invalidateWorkspaceBySlugQuery(slug);
       invalidateWorkspacesQuery();
@@ -78,7 +78,7 @@ export function EditWorkspaceName({ slug }: { slug: string }) {
           updateWorkspaceName({
             json,
             param: { workspaceId: ws.id },
-          }),
+          })
         )}
         method="POST"
         className="grid gap-4"
@@ -87,7 +87,7 @@ export function EditWorkspaceName({ slug }: { slug: string }) {
           <CardHeader>
             <CardTitle>Workspace Name</CardTitle>
             <CardDescription>
-              This will be the workspace's display name on{" "}
+              This will be the workspace's display name on
               {NEXT_PUBLIC_APP_NAME}.
             </CardDescription>
           </CardHeader>
@@ -105,7 +105,7 @@ export function EditWorkspaceName({ slug }: { slug: string }) {
               )}
             />
           </CardContent>
-          <CardFooter className="border-t px-6 py-4 items-center flex-row-reverse justify-between">
+          <CardFooter className="flex-row-reverse items-center justify-between border-t px-6 py-4">
             <Button
               type="submit"
               className="shrink-0"

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Card,
@@ -7,32 +7,32 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@hexa/ui/card";
+} from '@hexa/ui/card';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@hexa/ui/form";
-import { Input } from "@hexa/ui/input";
+} from '@hexa/ui/form';
+import { Input } from '@hexa/ui/input';
 
-import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
+import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import {
   invalidateWorkspacesQuery,
   queryWorkspaceBySlugOptions,
-} from "@/lib/queries/workspace";
+} from '@/lib/queries/workspace';
 import {
   type UpdateWorkspaceSlugInput,
   UpdateWorkspaceSlugSchema,
-} from "@/lib/zod/schemas/workspace";
-import { $updateWorkspaceSlug } from "@/server/client";
-import { Button } from "@hexa/ui/button";
-import { toast } from "@hexa/ui/sonner";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+} from '@/lib/zod/schemas/workspace';
+import { $updateWorkspaceSlug } from '@/server/client';
+import { Button } from '@hexa/ui/button';
+import { toast } from '@hexa/ui/sonner';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 
 export function EditWorkspaceSlug({ slug }: { slug: string }) {
   const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
@@ -53,11 +53,11 @@ export function EditWorkspaceSlug({ slug }: { slug: string }) {
   const { mutateAsync: updateWorkspaceSlug } = useMutation({
     mutationFn: $updateWorkspaceSlug,
     onError: (err) => {
-      setError("slug", { message: err.message });
+      setError('slug', { message: err.message });
     },
     onSuccess: (workspace) => {
       const slug = workspace.slug;
-      toast.success("The workspace slug has been updated");
+      toast.success('The workspace slug has been updated');
       invalidateWorkspacesQuery();
       router.replace(`/${slug}/settings`);
     },
@@ -71,7 +71,7 @@ export function EditWorkspaceSlug({ slug }: { slug: string }) {
               slug: form.slug,
             },
             param: { workspaceId: ws.id },
-          }),
+          })
         )}
         method="POST"
         className="grid gap-4"
@@ -97,7 +97,7 @@ export function EditWorkspaceSlug({ slug }: { slug: string }) {
               )}
             />
           </CardContent>
-          <CardFooter className="border-t px-6 py-4 items-center flex-row-reverse justify-between">
+          <CardFooter className="flex-row-reverse items-center justify-between border-t px-6 py-4">
             <Button
               type="submit"
               className="shrink-0"

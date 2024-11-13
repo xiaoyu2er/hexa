@@ -1,6 +1,6 @@
 // import { randomUUID } from "crypto";
-import { Scrypt, generateIdFromEntropySize } from "lucia";
-import { alphabet, generateRandomString } from "oslo/crypto";
+import { Scrypt, generateIdFromEntropySize } from 'lucia';
+import { alphabet, generateRandomString } from 'oslo/crypto';
 
 export async function getHash(value: string) {
   return new Scrypt().hash(value);
@@ -11,10 +11,10 @@ export async function isHashValid(hash: string, value: string) {
 }
 
 export function generateCode() {
-  return generateRandomString(6, alphabet("0-9"));
+  return generateRandomString(6, alphabet('0-9'));
 }
 
-export function generateId(prefix = "") {
+export function generateId(prefix = '') {
   /**
    * Generates a random [RFC 4122](https://www.rfc-editor.org/rfc/rfc4122.txt) version 4 UUID. The UUID is generated using a
    * cryptographic pseudorandom number generator.

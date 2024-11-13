@@ -3,7 +3,7 @@ import {
   QueryClient,
   defaultShouldDehydrateQuery,
   isServer,
-} from "@tanstack/react-query";
+} from '@tanstack/react-query';
 
 function makeQueryClient() {
   return new QueryClient({
@@ -18,13 +18,13 @@ function makeQueryClient() {
         // this includes pending Queries as well
         shouldDehydrateQuery: (query) =>
           defaultShouldDehydrateQuery(query) ||
-          query.state.status === "pending",
+          query.state.status === 'pending',
       },
     },
   });
 }
 
-let browserQueryClient: QueryClient | undefined = undefined;
+let browserQueryClient: QueryClient | undefined;
 
 export function getQueryClient() {
   if (isServer) {
@@ -35,6 +35,8 @@ export function getQueryClient() {
   // This is very important, so we don't re-make a new client if React
   // suspends during the initial render. This may not be needed if we
   // have a suspense boundary BELOW the creation of the query client
-  if (!browserQueryClient) browserQueryClient = makeQueryClient();
+  if (!browserQueryClient) {
+    browserQueryClient = makeQueryClient();
+  }
   return browserQueryClient;
 }
