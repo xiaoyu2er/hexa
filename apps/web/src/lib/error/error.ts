@@ -1,21 +1,21 @@
 /** An enum of error codes */
 const ERROR_CODES = {
-  BAD_REQUEST: "BAD_REQUEST",
-  OUTPUT_PARSE_ERROR: "OUTPUT_PARSE_ERROR",
-  ERROR: "ERROR",
-  NOT_AUTHORIZED: "NOT_AUTHORIZED",
-  TIMEOUT: "TIMEOUT",
-  INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
-  FORBIDDEN: "FORBIDDEN",
-  NOT_FOUND: "NOT_FOUND",
-  CONFLICT: "CONFLICT",
-  PRECONDITION_FAILED: "PRECONDITION_FAILED",
-  PAYLOAD_TOO_LARGE: "PAYLOAD_TOO_LARGE",
-  METHOD_NOT_SUPPORTED: "METHOD_NOT_SUPPORTED",
-  UNPROCESSABLE_CONTENT: "UNPROCESSABLE_CONTENT",
-  TOO_MANY_REQUESTS: "TOO_MANY_REQUESTS",
-  INSUFFICIENT_CREDITS: "INSUFFICIENT_CREDITS",
-  PAYMENT_REQUIRED: "PAYMENT_REQUIRED",
+  BAD_REQUEST: 'BAD_REQUEST',
+  OUTPUT_PARSE_ERROR: 'OUTPUT_PARSE_ERROR',
+  ERROR: 'ERROR',
+  NOT_AUTHORIZED: 'NOT_AUTHORIZED',
+  TIMEOUT: 'TIMEOUT',
+  INTERNAL_SERVER_ERROR: 'INTERNAL_SERVER_ERROR',
+  FORBIDDEN: 'FORBIDDEN',
+  NOT_FOUND: 'NOT_FOUND',
+  CONFLICT: 'CONFLICT',
+  PRECONDITION_FAILED: 'PRECONDITION_FAILED',
+  PAYLOAD_TOO_LARGE: 'PAYLOAD_TOO_LARGE',
+  METHOD_NOT_SUPPORTED: 'METHOD_NOT_SUPPORTED',
+  UNPROCESSABLE_CONTENT: 'UNPROCESSABLE_CONTENT',
+  TOO_MANY_REQUESTS: 'TOO_MANY_REQUESTS',
+  INSUFFICIENT_CREDITS: 'INSUFFICIENT_CREDITS',
+  PAYMENT_REQUIRED: 'PAYMENT_REQUIRED',
 } as const;
 
 export type ErrorCode = keyof typeof ERROR_CODES;
@@ -47,7 +47,7 @@ export class ApiError extends Error {
 
   constructor(
     code: keyof typeof ERROR_CODES = ERROR_CODES.ERROR,
-    data?: unknown,
+    data?: unknown
   ) {
     super();
     this.data = data;
@@ -59,11 +59,11 @@ export class ApiError extends Error {
       this.name = data.name;
       this.cause = data.cause;
     }
-    if (!this.message && typeof this.data === "string") {
+    if (!this.message && typeof this.data === 'string') {
       this.message = this.data;
     }
     if (!this.name) {
-      this.name = "ApiError";
+      this.name = 'ApiError';
     }
   }
 }

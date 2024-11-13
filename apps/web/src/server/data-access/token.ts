@@ -1,22 +1,22 @@
-import { RESET_PASSWORD_EXPIRE_TIME_SPAN } from "@/lib/const";
-import { IS_DEVELOPMENT } from "@/lib/env";
-import { ApiError } from "@/lib/error/error";
-import { generateCode, generateId } from "@/lib/utils";
-import { type OTPType, tokenTable } from "@/server/db/schema";
-import type { DBType } from "@/server/types";
-import { and, eq } from "drizzle-orm";
-import { createDate, isWithinExpirationDate } from "oslo";
+import { RESET_PASSWORD_EXPIRE_TIME_SPAN } from '@/lib/const';
+import { IS_DEVELOPMENT } from '@/lib/env';
+import { ApiError } from '@/lib/error/error';
+import { generateCode, generateId } from '@/lib/utils';
+import { type OtpType, tokenTable } from '@/server/db/schema';
+import type { DbType } from '@/server/types';
+import { and, eq } from 'drizzle-orm';
+import { createDate, isWithinExpirationDate } from 'oslo';
 
-export async function deleteDBToken(db: DBType, userId: string, type: OTPType) {
+export async function deleteDBToken(db: DbType, userId: string, type: OtpType) {
   return db
     .delete(tokenTable)
     .where(and(eq(tokenTable.userId, userId), eq(tokenTable.type, type)));
 }
 
 export async function findDBTokenByUserId(
-  db: DBType,
+  db: DbType,
   userId: string,
-  type: OTPType,
+  type: OtpType
 ) {
   return db.query.tokenTable.findFirst({
     where: (table, { eq, and }) =>
@@ -25,10 +25,10 @@ export async function findDBTokenByUserId(
 }
 
 export async function addDBToken(
-  db: DBType,
+  db: DbType,
   userId: string,
   email: string,
-  type: OTPType,
+  type: OtpType
 ) {
   await db
     .delete(tokenTable)
@@ -50,15 +50,15 @@ export async function addDBToken(
   )[0];
 
   if (!row) {
-    throw new ApiError("INTERNAL_SERVER_ERROR", "Failed to create token");
+    throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create token');
   }
   return row;
 }
 
 export async function getTokenByToken(
-  db: DBType,
+  db: DbType,
   token: string,
-  type: OTPType,
+  type: OtpType
 ) {
   return db.query.tokenTable.findFirst({
     where: (table, { eq, and }) =>
@@ -67,7 +67,7 @@ export async function getTokenByToken(
 }
 
 export async function verifyDBTokenByCode(
-  db: DBType,
+  db: DbType,
   {
     userId,
     code,
@@ -78,22 +78,20 @@ export async function verifyDBTokenByCode(
     userId: string;
     code?: string;
     token?: string;
-    type: OTPType;
+    type: OtpType;
     deleteRow?: boolean;
-  },
+  }
 ) {
   if (!code && !token) {
-    throw new ApiError("CONFLICT", "Code or token is required");
+    throw new ApiError('CONFLICT', 'Code or token is required');
   }
-
-  console.log("findDBTokenByUserId", userId, type);
   const tokenRow = await findDBTokenByUserId(db, userId, type);
 
   // No record
   if (!tokenRow) {
     throw new ApiError(
-      "CONFLICT",
-      IS_DEVELOPMENT ? "[dev]Code was not sent" : "Code is invalid or expired",
+      'CONFLICT',
+      IS_DEVELOPMENT ? '[dev]Code was not sent' : 'Code is invalid or expired'
     );
   }
 
@@ -105,8 +103,8 @@ export async function verifyDBTokenByCode(
     }
 
     throw new ApiError(
-      "CONFLICT",
-      IS_DEVELOPMENT ? "[dev]Code is expired" : "Code is invalid or expired",
+      'CONFLICT',
+      IS_DEVELOPMENT ? '[dev]Code is expired' : 'Code is invalid or expired'
     );
   }
 
@@ -114,20 +112,20 @@ export async function verifyDBTokenByCode(
     // Not matching code
     if (tokenRow.code !== code) {
       throw new ApiError(
-        "CONFLICT",
+        'CONFLICT',
         IS_DEVELOPMENT
-          ? "[dev]Code does not match"
-          : "Code is invalid or expired",
+          ? '[dev]Code does not match'
+          : 'Code is invalid or expired'
       );
     }
   } else if (token) {
     // Not matching token
     if (tokenRow.token !== token) {
       throw new ApiError(
-        "CONFLICT",
+        'CONFLICT',
         IS_DEVELOPMENT
-          ? "[dev]Token does not match"
-          : "Token is invalid or expired",
+          ? '[dev]Token does not match'
+          : 'Token is invalid or expired'
       );
     }
   }

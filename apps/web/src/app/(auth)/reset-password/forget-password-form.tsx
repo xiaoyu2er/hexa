@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useTurnstile } from "@/components/hooks/use-turnstile";
-import { Button } from "@hexa/ui/button";
+import { useTurnstile } from '@/components/hooks/use-turnstile';
+import { Button } from '@hexa/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@hexa/ui/card";
+} from '@hexa/ui/card';
 import {
   Form,
   FormControl,
@@ -16,20 +16,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@hexa/ui/form";
-import { Input } from "@hexa/ui/input";
+} from '@hexa/ui/form';
+import { Input } from '@hexa/ui/input';
 
-import { setFormError } from "@/lib/form";
+import { setFormError } from '@/lib/form';
 import {
   type SendPasscodeForm,
   SendPasscodeSchema,
-} from "@/lib/zod/schemas/auth";
-import { $sendPasscode, type InferApiResponseType } from "@/server/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import Link from "next/link";
-import { type FC, useEffect } from "react";
-import { useForm } from "react-hook-form";
+} from '@/lib/zod/schemas/auth';
+import { $sendPasscode, type InferApiResponseType } from '@/server/client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import Link from 'next/link';
+import { type FC, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
 export interface ForgetPasswordCardProps {
   email: string;
@@ -46,7 +46,7 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
     resolver: zodResolver(SendPasscodeSchema),
     defaultValues: {
       email,
-      type: "RESET_PASSWORD",
+      type: 'RESET_PASSWORD',
     },
   });
 
@@ -59,7 +59,7 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
 
   const { resetTurnstile, turnstile, disableNext } = useTurnstile({
     form,
-    errorField: "email",
+    errorField: 'email',
   });
 
   const { mutateAsync: sendPasscode } = useMutation({
@@ -72,7 +72,7 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
   });
 
   useEffect(() => {
-    setFocus("email");
+    setFocus('email');
   }, [setFocus]);
 
   return (
@@ -102,7 +102,7 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
                       placeholder="email@example.com"
                       autoComplete="email"
                       type="email"
-                      className={errors.email ? "border-destructive" : ""}
+                      className={errors.email ? 'border-destructive' : ''}
                     />
                   </FormControl>
                   <FormMessage />
@@ -110,8 +110,8 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
               )}
             />
             {turnstile}
-            <Button variant={"link"} size={"sm"} className="p-0" asChild>
-              <Link href={"/sign-up"}>Not signed up? Sign up now.</Link>
+            <Button variant="link" size="sm" className="p-0" asChild>
+              <Link href="/sign-up">Not signed up? Sign up now.</Link>
             </Button>
             <Button
               className="w-full"

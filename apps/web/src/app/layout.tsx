@@ -1,19 +1,19 @@
-import { inter, satoshi } from "@/styles/fonts";
-import type { Metadata } from "next";
+import { inter, satoshi } from '@/styles/fonts';
+import type { Metadata } from 'next';
 
-import { Toaster } from "@hexa/ui/sonner";
-import { cn } from "@hexa/utils";
-import "./globals.css";
-import { Provider as NiceModalProvider } from "@/components/modal";
-import { QueryClientProvider } from "@/components/providers/query-client-provider";
-import { SessionProvider } from "@/components/providers/session-provider";
-import { TailwindIndicator } from "@/components/tailwind-indicator";
-import { validateRequest } from "@/lib/auth";
-import { ThemeProvider } from "next-themes";
+import { Toaster } from '@hexa/ui/sonner';
+import { cn } from '@hexa/utils';
+import './globals.css';
+import { Provider as NiceModalProvider } from '@/components/modal';
+import { QueryClientProvider } from '@/components/providers/query-client-provider';
+import { SessionProvider } from '@/components/providers/session-provider';
+import { TailwindIndicator } from '@/components/tailwind-indicator';
+import { validateRequest } from '@/lib/auth';
+import { ThemeProvider } from 'next-themes';
 
 export const metadata: Metadata = {
-  title: "Hexa",
-  description: "Infinite Possibilities with a Single Link",
+  title: 'Hexa',
+  description: 'Infinite Possibilities with a Single Link',
 };
 
 export default async function RootLayout({

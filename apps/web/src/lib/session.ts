@@ -1,8 +1,8 @@
-import { validateRequest } from "@/lib/auth";
-import { $lucia } from "@/lib/auth/lucia";
-import { ApiError } from "@/lib/error/error";
-import type { UserModel } from "@/server/db";
-import { cookies } from "next/headers";
+import { validateRequest } from '@/lib/auth';
+import { $lucia } from '@/lib/auth/lucia';
+import { ApiError } from '@/lib/error/error';
+import type { UserModel } from '@/server/db';
+import { cookies } from 'next/headers';
 
 export async function getSessionId() {
   const lucia = await $lucia;
@@ -19,12 +19,11 @@ export async function validateSession(sessionId: string) {
 export async function setSessionCookie(sessionId: string) {
   const lucia = await $lucia;
   const sessionCookie = lucia.createSessionCookie(sessionId);
-  console.log("setSessionCookie", sessionCookie);
   const cookie = await cookies();
   cookie.set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 }
 
-export async function setSession(userId: UserModel["id"]) {
+export async function setSession(userId: UserModel['id']) {
   const lucia = await $lucia;
   const session = await lucia.createSession(userId, {});
   await setSessionCookie(session.id);
@@ -34,7 +33,7 @@ export async function invalidateSession(sessionId: string) {
   const lucia = await $lucia;
   await lucia.invalidateSession(sessionId);
 }
-export async function invalidateUserSessions(userId: UserModel["id"]) {
+export async function invalidateUserSessions(userId: UserModel['id']) {
   const lucia = await $lucia;
   await lucia.invalidateUserSessions(userId);
 }
@@ -50,8 +49,8 @@ export async function assertAuthenticated() {
   const { user, session } = await validateRequest();
   if (!user) {
     throw new ApiError(
-      "FORBIDDEN",
-      "You must be logged in to access this resource",
+      'FORBIDDEN',
+      'You must be logged in to access this resource'
     );
   }
   return {

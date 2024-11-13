@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@hexa/ui/dropdown-menu";
-import { BookIcon, MenuIcon, SearchIcon, UsersIcon } from "@hexa/ui/icons";
-import Link from "next/link";
+} from '@hexa/ui/dropdown-menu';
+import { BookIcon, MenuIcon, SearchIcon, UsersIcon } from '@hexa/ui/icons';
+import Link from 'next/link';
 
 export function MenuButton() {
   return (
@@ -19,22 +19,22 @@ export function MenuButton() {
         <DropdownMenuItem asChild>
           <Link
             href="/dashboard"
-            className="flex gap-2 items-center cursor-pointer"
+            className="flex cursor-pointer items-center gap-2"
           >
-            <UsersIcon className="w-4 h-4" /> Your Groups
+            <UsersIcon className="h-4 w-4" /> Your Groups
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link
             href="/browse"
-            className="flex gap-2 items-center cursor-pointer"
+            className="flex cursor-pointer items-center gap-2"
           >
-            <SearchIcon className="w-4 h-4" /> Browse Groups
+            <SearchIcon className="h-4 w-4" /> Browse Groups
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/docs" className="flex gap-2 items-center cursor-pointer">
-            <BookIcon className="w-4 h-4" /> API Docs
+          <Link href="/docs" className="flex cursor-pointer items-center gap-2">
+            <BookIcon className="h-4 w-4" /> API Docs
           </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -1,29 +1,30 @@
-"use client";
+'use client';
 
-import { deleteCookie } from "@/lib/cookie";
-import type { OAuthAccountModel } from "@/server/db";
-import { useRouter } from "next/navigation";
-import { type FC, useEffect } from "react";
-import { OAuthSignup } from "./oauth-signup-form";
+import { deleteCookie } from '@/lib/cookie';
+
+import type { OauthAccountModel } from '@/server/db';
+import { useRouter } from 'next/navigation';
+import { type FC, useEffect } from 'react';
+import { OauthSignup } from './oauth-signup-form';
 
 export interface SignupPageProps {
-  oauthAccount: OAuthAccountModel;
+  oauthAccount: OauthAccountModel;
 }
 
-export const OAuthSignupPage: FC<SignupPageProps> = ({ oauthAccount }) => {
+export const OauthSignupPage: FC<SignupPageProps> = ({ oauthAccount }) => {
   const router = useRouter();
   useEffect(() => {
-    deleteCookie("oauth_account_id");
+    deleteCookie('oauth_account_id');
   }, []);
 
   return (
-    <OAuthSignup
+    <OauthSignup
       oauthAccount={oauthAccount}
       onSuccess={() => {
-        router.push("/settings");
+        router.push('/settings');
       }}
       onCancel={() => {
-        router.push("/");
+        router.push('/');
       }}
     />
   );

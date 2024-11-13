@@ -75,7 +75,7 @@ export interface GitHubEmail {
   email: string;
   primary: boolean;
   verified: boolean;
-  visibility: null | "public";
+  visibility: null | 'public';
 }
 
 // const emails: GitHubEmail[] = [

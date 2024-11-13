@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { VerifyPasscode } from "@/components/auth/verify-passcode-form";
-import { useRouter } from "next/navigation";
-import { type FC, useState } from "react";
-import { useStep } from "usehooks-ts";
-import { Signup } from "./signup-form";
+import { VerifyPasscode } from '@/components/auth/verify-passcode-form';
+import { useRouter } from 'next/navigation';
+import { type FC, useState } from 'react';
+import { useStep } from 'usehooks-ts';
+import { Signup } from './signup-form';
 
 export const SignupPage: FC = () => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const router = useRouter();
   const [currentStep, { goToNextStep, reset }] = useStep(2);
 
@@ -21,7 +21,7 @@ export const SignupPage: FC = () => {
             goToNextStep();
           }}
           onCancel={() => {
-            router.push("/");
+            router.push('/');
           }}
         />
       )}
@@ -30,7 +30,7 @@ export const SignupPage: FC = () => {
           email={email}
           type="VERIFY_EMAIL"
           onSuccess={() => {
-            router.push("/settings");
+            router.push('/settings');
           }}
           onCancel={reset}
         />

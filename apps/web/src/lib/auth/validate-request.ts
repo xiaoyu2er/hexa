@@ -1,11 +1,11 @@
-import type { Session, User } from "lucia";
-import { cache } from "react";
+import type { Session, User } from 'lucia';
+import { cache } from 'react';
 import {
   getSessionId,
   setBlankSessionCookie,
   setSessionCookie,
   validateSession,
-} from "../session";
+} from '../session';
 
 const uncachedValidateRequest = async (): Promise<
   { user: User; session: Session } | { user: null; session: null }
@@ -25,9 +25,7 @@ const uncachedValidateRequest = async (): Promise<
     if (!result.session) {
       setBlankSessionCookie();
     }
-  } catch {
-    console.error("Failed to set session cookie");
-  }
+  } catch {}
   return result;
 };
 

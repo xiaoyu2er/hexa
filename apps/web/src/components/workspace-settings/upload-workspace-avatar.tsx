@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import { getWorkspaceAvatarFallbackUrl } from "@/lib/workspace";
-import { FileUpload } from "@hexa/ui/file-upload";
-import { toast } from "@hexa/ui/sonner";
-import { useEffect, useState } from "react";
+import { getWorkspaceAvatarFallbackUrl } from '@/lib/workspace';
+import { FileUpload } from '@hexa/ui/file-upload';
+import { toast } from '@hexa/ui/sonner';
+import { useEffect, useState } from 'react';
 
-import { useSession } from "@/components/providers/session-provider";
-import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
+import { useSession } from '@/components/providers/session-provider';
+import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import {
   invalidateWorkspaceBySlugQuery,
   invalidateWorkspacesQuery,
   queryWorkspaceBySlugOptions,
-} from "@/lib/queries/workspace";
+} from '@/lib/queries/workspace';
 import {
   type UpdateWorkspaceAvatarInput,
   UpdateWorkspaceAvatarSchema,
-} from "@/lib/zod/schemas/workspace";
-import { $updateWorkspaceAvatar } from "@/server/client";
-import { Button } from "@hexa/ui/button";
+} from '@/lib/zod/schemas/workspace';
+import { $updateWorkspaceAvatar } from '@/server/client';
+import { Button } from '@hexa/ui/button';
 import {
   Card,
   CardContent,
@@ -25,17 +25,17 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@hexa/ui/card";
+} from '@hexa/ui/card';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@hexa/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+} from '@hexa/ui/form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
 
 export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
   const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
@@ -54,7 +54,7 @@ export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
   const { mutateAsync: updateWorkspaceAvatar } = useMutation({
     mutationFn: $updateWorkspaceAvatar,
     onError: (err) => {
-      setError("image", { message: err.message });
+      setError('image', { message: err.message });
     },
     onSuccess: () => {
       toast.success("Successfully updated the workspace's avatar image!");
@@ -64,11 +64,10 @@ export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
   });
 
   const [avatarUrl, setAvatarUrl] = useState<string | null | undefined>(
-    ws.avatarUrl,
+    ws.avatarUrl
   );
 
   useEffect(() => {
-    console.log("ws updated", ws);
     setAvatarUrl(ws.avatarUrl ?? getWorkspaceAvatarFallbackUrl(ws));
   }, [ws]);
 
@@ -108,7 +107,6 @@ export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
                       imageSrc={avatarUrl}
                       readFile
                       onChange={({ src, file }) => {
-                        console.log(file, src);
                         onChange(file);
                         setAvatarUrl(src);
                       }}
@@ -121,16 +119,16 @@ export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
               )}
             />
           </CardContent>
-          <CardFooter className="border-t px-6 py-4 items-center flex-row-reverse justify-between">
+          <CardFooter className="flex-row-reverse items-center justify-between border-t px-6 py-4">
             <Button
-              className="shrink-0 mr-2"
+              className="mr-2 shrink-0"
               loading={isSubmitting}
               disabled={avatarUrl === user.avatarUrl}
             >
               Update
             </Button>
 
-            <p className="text-sm text-gray-500">
+            <p className="text-gray-500 text-sm">
               Accepted file types: .png, .jpg. Max file size: 2MB.
             </p>
           </CardFooter>

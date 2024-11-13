@@ -1,8 +1,8 @@
-import { Button } from "@hexa/ui/button";
-import { GithubIcon, GoogleIcon } from "@hexa/ui/icons";
-import Link from "next/link";
+import { Button } from '@hexa/ui/button';
+import { GithubIcon, GoogleIcon } from '@hexa/ui/icons';
+import Link from 'next/link';
 
-export function OAuthButtons() {
+export function OauthButtons() {
   return (
     <div className="flex space-x-2">
       <Button variant="outline" className="w-full" asChild>

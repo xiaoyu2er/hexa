@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import type { validateRequest } from "@/lib/auth";
-import { $getUserInfo } from "@/server/client";
-import { useQuery } from "@tanstack/react-query";
-import type { User } from "lucia";
-import { type ReactNode, createContext, useContext } from "react";
+import type { validateRequest } from '@/lib/auth';
+import { $getUserInfo } from '@/server/client';
+import { useQuery } from '@tanstack/react-query';
+import type { User } from 'lucia';
+import { type ReactNode, createContext, useContext } from 'react';
 
 type SessionContextType = Awaited<ReturnType<typeof validateRequest>>;
 export const SessionContext = createContext<SessionContextType>({
@@ -23,7 +23,7 @@ export const SessionProvider: React.FC<
 export const useSession = () => {
   const { user, session } = useContext(SessionContext);
   const { data, refetch, isFetching } = useQuery({
-    queryKey: ["user/info"],
+    queryKey: ['user/info'],
     queryFn: $getUserInfo,
     initialData: user,
   });

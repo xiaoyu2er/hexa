@@ -1,34 +1,34 @@
-"use client";
+'use client';
 
-import { queryUserEmailsOptions } from "@/lib/queries/user";
+import { queryUserEmailsOptions } from '@/lib/queries/user';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@hexa/ui/card";
-import { toast } from "@hexa/ui/sonner";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { useState } from "react";
+} from '@hexa/ui/card';
+import { toast } from '@hexa/ui/sonner';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 
-import { VerifyPasscode } from "@/components/auth/verify-passcode-form";
-import { MAX_EMAILS } from "@/lib/const";
-import { $updateUserPrimaryEmail } from "@/server/client";
-import { useModal } from "@ebay/nice-modal-react";
-import { Badge } from "@hexa/ui/badge";
-import { Button } from "@hexa/ui/button";
+import { VerifyPasscode } from '@/components/auth/verify-passcode-form';
+import { MAX_EMAILS } from '@/lib/const';
+import { $updateUserPrimaryEmail } from '@/server/client';
+import { useModal } from '@ebay/nice-modal-react';
+import { Badge } from '@hexa/ui/badge';
+import { Button } from '@hexa/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@hexa/ui/dropdown-menu";
-import { EllipsisIcon, MailPlusIcon, MoveRightIcon } from "@hexa/ui/icons";
-import { useMutation } from "@tanstack/react-query";
-import { useBoolean } from "usehooks-ts";
-import { AddUserEmailForm } from "./add-user-email-form";
-import { DeleteUserEmailModal } from "./delete-user-email-modal";
+} from '@hexa/ui/dropdown-menu';
+import { EllipsisIcon, MailPlusIcon, MoveRightIcon } from '@hexa/ui/icons';
+import { useMutation } from '@tanstack/react-query';
+import { useBoolean } from 'usehooks-ts';
+import { AddUserEmailForm } from './add-user-email-form';
+import { DeleteUserEmailModal } from './delete-user-email-modal';
 
 export function EditUserEmails() {
   const { data: emails, refetch } = useSuspenseQuery(queryUserEmailsOptions);
@@ -44,7 +44,7 @@ export function EditUserEmails() {
       refetch();
     },
     onSuccess: () => {
-      toast.success("Primary email set");
+      toast.success('Primary email set');
       refetch();
     },
   });
@@ -59,7 +59,7 @@ export function EditUserEmails() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="max-w-md flex flex-col">
+          <div className="flex max-w-md flex-col">
             {emails
               // .sort((a, b) => (a.primary ? -1 : 1))
               .map((email) => {
@@ -70,8 +70,8 @@ export function EditUserEmails() {
                       variant="ghost"
                       key={email.email}
                     >
-                      <p className="text-sm font-medium leading-none flex gap-2 items-center overflow-auto">
-                        <span className="shrink text-nowrap text-ellipsis overflow-hidden">
+                      <p className="flex items-center gap-2 overflow-auto font-medium text-sm leading-none">
+                        <span className="shrink overflow-hidden text-ellipsis text-nowrap">
                           {email.email}
                         </span>
                         {email.primary && (
@@ -86,7 +86,7 @@ export function EditUserEmails() {
 
                       <DropdownMenu>
                         <DropdownMenuTrigger>
-                          <EllipsisIcon className="h4 w-4 ml-2" />
+                          <EllipsisIcon className="h4 ml-2 w-4" />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                           <DropdownMenuItem
@@ -135,7 +135,7 @@ export function EditUserEmails() {
                         onSuccess={() => {
                           refetch();
                           setVerifingEmail(undefined);
-                          toast.success("Email verified!");
+                          toast.success('Email verified!');
                         }}
                         onCancel={() => setVerifingEmail(undefined)}
                       />
@@ -148,12 +148,12 @@ export function EditUserEmails() {
               <Button
                 variant="ghost"
                 disabled={emails.length >= MAX_EMAILS}
-                className="gap-2 items-center justify-start group disabled:cursor-not-allowed"
+                className="group items-center justify-start gap-2 disabled:cursor-not-allowed"
                 onClick={emailCardBool.setTrue}
               >
-                <MailPlusIcon className="w-4 h-4" /> Add new email
+                <MailPlusIcon className="h-4 w-4" /> Add new email
                 {emails.length < MAX_EMAILS && (
-                  <MoveRightIcon className="hidden w-4 h-4 group-hover:block animate-in" />
+                  <MoveRightIcon className="hidden h-4 w-4 animate-in group-hover:block" />
                 )}
               </Button>
             )}

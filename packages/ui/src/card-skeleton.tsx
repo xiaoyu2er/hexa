@@ -1,4 +1,4 @@
-import { Skeleton } from "@hexa/ui/skeleton";
+import { Skeleton } from '@hexa/ui/skeleton';
 
 export function CardSkeleton() {
   return (

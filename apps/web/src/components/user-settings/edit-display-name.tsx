@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
 import {
   type UpdateDisplayNameInput,
   UpdateDisplayNameSchema,
-} from "@/lib/zod/schemas/user";
+} from '@/lib/zod/schemas/user';
 import {
   Card,
   CardContent,
@@ -11,27 +11,27 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@hexa/ui/card";
+} from '@hexa/ui/card';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@hexa/ui/form";
-import { Input } from "@hexa/ui/input";
+} from '@hexa/ui/form';
+import { Input } from '@hexa/ui/input';
 
-import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
-import { setFormError } from "@/lib/form";
-import { invalidateUser } from "@/lib/queries/user";
-import { $updateUserDisplayName } from "@/server/client";
-import { Button } from "@hexa/ui/button";
-import { toast } from "@hexa/ui/sonner";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
-import { useSession } from "../providers/session-provider";
+import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
+import { setFormError } from '@/lib/form';
+import { invalidateUser } from '@/lib/queries/user';
+import { $updateUserDisplayName } from '@/server/client';
+import { Button } from '@hexa/ui/button';
+import { toast } from '@hexa/ui/sonner';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useEffect, useMemo } from 'react';
+import { useForm } from 'react-hook-form';
+import { useSession } from '../providers/session-provider';
 
 export function EditUserDisplayName() {
   const { user } = useSession();
@@ -40,7 +40,7 @@ export function EditUserDisplayName() {
     resolver: zodResolver(UpdateDisplayNameSchema),
     defaultValues: useMemo(() => {
       return {
-        name: user?.name ?? "",
+        name: user?.name ?? '',
       };
     }, [user?.name]),
   });
@@ -54,17 +54,17 @@ export function EditUserDisplayName() {
 
   useEffect(() => {
     reset({
-      name: user?.name ?? "",
+      name: user?.name ?? '',
     });
   }, [reset, user?.name]);
 
   const { mutateAsync: updateDisplayName } = useMutation({
     mutationFn: $updateUserDisplayName,
     onError: (err) => {
-      setFormError(err, setError, "name");
+      setFormError(err, setError, 'name');
     },
     onSuccess: () => {
-      toast.success("Your name has been updated");
+      toast.success('Your name has been updated');
       invalidateUser();
     },
   });
@@ -97,7 +97,7 @@ export function EditUserDisplayName() {
               )}
             />
           </CardContent>
-          <CardFooter className="border-t px-6 py-4 items-center flex-row-reverse justify-between">
+          <CardFooter className="flex-row-reverse items-center justify-between border-t px-6 py-4">
             <Button
               type="submit"
               className="shrink-0"

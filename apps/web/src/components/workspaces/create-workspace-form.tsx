@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { Input } from "@hexa/ui/input";
+import { Input } from '@hexa/ui/input';
 
-import { setFormError } from "@/lib/form";
-import { invalidateWorkspacesQuery } from "@/lib/queries/workspace";
+import { setFormError } from '@/lib/form';
+import { invalidateWorkspacesQuery } from '@/lib/queries/workspace';
 import {
   type CreateWorkspaceInput,
   CreateWorkspaceSchema,
-} from "@/lib/zod/schemas/workspace";
-import { $createWorkspace } from "@/server/client";
-import { Button } from "@hexa/ui/button";
+} from '@/lib/zod/schemas/workspace';
+import { $createWorkspace } from '@/server/client';
+import { Button } from '@hexa/ui/button';
 import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@hexa/ui/dialog";
+} from '@hexa/ui/dialog';
 import {
   Form,
   FormControl,
@@ -23,12 +23,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@hexa/ui/form";
-import { FormErrorMessage } from "@hexa/ui/form-error-message";
-import { toast } from "@hexa/ui/sonner";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+} from '@hexa/ui/form';
+import { FormErrorMessage } from '@hexa/ui/form-error-message';
+import { toast } from '@hexa/ui/sonner';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
 
 export interface CreateWorkspaceFormProps {
   onSuccess?: () => void;
@@ -38,8 +38,8 @@ export function CreateWorkspaceForm({ onSuccess }: CreateWorkspaceFormProps) {
   const form = useForm<CreateWorkspaceInput>({
     resolver: zodResolver(CreateWorkspaceSchema),
     defaultValues: {
-      name: "",
-      slug: "",
+      name: '',
+      slug: '',
     },
   });
 
@@ -55,7 +55,7 @@ export function CreateWorkspaceForm({ onSuccess }: CreateWorkspaceFormProps) {
       setFormError(err, setError);
     },
     onSuccess: () => {
-      toast.success("Workspace created successfully");
+      toast.success('Workspace created successfully');
       onSuccess?.();
       invalidateWorkspacesQuery();
     },
@@ -82,7 +82,7 @@ export function CreateWorkspaceForm({ onSuccess }: CreateWorkspaceFormProps) {
               <FormControl>
                 <Input
                   {...field}
-                  className={errors.name ? "border-destructive" : ""}
+                  className={errors.name ? 'border-destructive' : ''}
                 />
               </FormControl>
               <FormMessage />
@@ -99,7 +99,7 @@ export function CreateWorkspaceForm({ onSuccess }: CreateWorkspaceFormProps) {
               <FormControl>
                 <Input
                   {...field}
-                  className={errors.slug ? "border-destructive" : ""}
+                  className={errors.slug ? 'border-destructive' : ''}
                 />
               </FormControl>
               <FormMessage />

@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useMediaQuery } from "@hexa/ui/hooks";
-import { cn } from "@hexa/utils";
+import { useMediaQuery } from '@hexa/ui/hooks';
+import { cn } from '@hexa/utils';
 import {
   type Dispatch,
   type ReactNode,
   type SetStateAction,
   useState,
-} from "react";
-import { Button } from "./ui/button";
+} from 'react';
+import { Button } from './ui/button';
 import {
   Dialog,
   DialogContent,
@@ -17,7 +17,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
+} from './ui/dialog';
 import {
   Drawer,
   DrawerClose,
@@ -27,7 +27,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "./ui/drawer";
+} from './ui/drawer';
 
 type StatefulContent = (_props: {
   open: boolean;
@@ -43,12 +43,12 @@ export const ResponsiveDialog = (props: {
   contentClassName?: string;
 }) => {
   const [open, setOpen] = useState(false);
-  const isDesktop = useMediaQuery("(min-width: 640px)");
+  const isDesktop = useMediaQuery('(min-width: 640px)');
 
   return isDesktop ? (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{props.trigger}</DialogTrigger>
-      <DialogContent className={cn("max-w-md", props.contentClassName)}>
+      <DialogContent className={cn('max-w-md', props.contentClassName)}>
         <DialogHeader>
           <DialogTitle>{props.title}</DialogTitle>
           <DialogDescription>{props.description}</DialogDescription>
@@ -67,7 +67,7 @@ export const ResponsiveDialog = (props: {
           <DrawerTitle>{props.title}</DrawerTitle>
           <DrawerDescription>{props.description}</DrawerDescription>
         </DrawerHeader>
-        <div className={cn("px-4", props.contentClassName)}>
+        <div className={cn('px-4', props.contentClassName)}>
           {isFunctionType(props.children)
             ? props.children({ open, setOpen })
             : props.children}
@@ -87,10 +87,10 @@ export const ResponsiveDialog = (props: {
 };
 
 const isFunctionType = (
-  prop: ReactNode | ReactNode[] | StatefulContent,
+  prop: ReactNode | ReactNode[] | StatefulContent
 ): prop is (_props: {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) => ReactNode | ReactNode[] => {
-  return typeof prop === "function";
+  return typeof prop === 'function';
 };

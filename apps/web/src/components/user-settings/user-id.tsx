@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useSession } from "@/components/providers/session-provider";
-import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
+import { useSession } from '@/components/providers/session-provider';
+import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@hexa/ui/card";
-import { CopyButton } from "@hexa/ui/copy-button";
-import { Input } from "@hexa/ui/input";
+} from '@hexa/ui/card';
+import { CopyButton } from '@hexa/ui/copy-button';
+import { Input } from '@hexa/ui/input';
 
 export function UserId() {
   const { user, refetch } = useSession();

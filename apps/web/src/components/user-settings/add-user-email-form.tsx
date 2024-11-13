@@ -1,6 +1,6 @@
-import { type OnlyEmailInput, OnlyEmailSchema } from "@/lib/zod/schemas/auth";
-import { $addUserEmail, type InferApiResponseType } from "@/server/client";
-import { Button } from "@hexa/ui/button";
+import { type OnlyEmailInput, OnlyEmailSchema } from '@/lib/zod/schemas/auth';
+import { $addUserEmail, type InferApiResponseType } from '@/server/client';
+import { Button } from '@hexa/ui/button';
 import {
   Card,
   CardContent,
@@ -8,22 +8,22 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@hexa/ui/card";
+} from '@hexa/ui/card';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@hexa/ui/form";
-import { Input } from "@hexa/ui/input";
-import { Label } from "@hexa/ui/label";
+} from '@hexa/ui/form';
+import { Input } from '@hexa/ui/input';
+import { Label } from '@hexa/ui/label';
 
-import { toast } from "@hexa/ui/sonner";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import type { FC } from "react";
-import { useForm } from "react-hook-form";
+import { toast } from '@hexa/ui/sonner';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import type { FC } from 'react';
+import { useForm } from 'react-hook-form';
 
 interface AddUserEmailFormProps {
   onSuccess?: (data: InferApiResponseType<typeof $addUserEmail>) => void;
@@ -36,7 +36,7 @@ export const AddUserEmailForm: FC<AddUserEmailFormProps> = ({
   const form = useForm<OnlyEmailInput>({
     resolver: zodResolver(OnlyEmailSchema),
     defaultValues: {
-      email: "",
+      email: '',
     },
   });
 
@@ -49,10 +49,10 @@ export const AddUserEmailForm: FC<AddUserEmailFormProps> = ({
   const { mutateAsync: addUserEmail } = useMutation({
     mutationFn: $addUserEmail,
     onError: (err) => {
-      setError("email", { message: err.message });
+      setError('email', { message: err.message });
     },
     onSuccess: (data) => {
-      toast.success("You just aded a new email!");
+      toast.success('You just aded a new email!');
       onSuccess?.(data);
     },
   });
@@ -87,7 +87,7 @@ export const AddUserEmailForm: FC<AddUserEmailFormProps> = ({
               )}
             />
           </CardContent>
-          <CardFooter className="border-t px-6 py-4 items-center flex-row-reverse gap-4">
+          <CardFooter className="flex-row-reverse items-center gap-4 border-t px-6 py-4">
             <Button
               type="submit"
               className="shrink-0"

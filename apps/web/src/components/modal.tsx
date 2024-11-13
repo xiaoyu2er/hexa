@@ -1,3 +1,3 @@
-"use client";
+'use client';
 
-export * from "@ebay/nice-modal-react";
+export * from '@ebay/nice-modal-react';

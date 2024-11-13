@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { Input } from "@hexa/ui/input";
+import { Input } from '@hexa/ui/input';
 
-import NiceModal, { useModal } from "@ebay/nice-modal-react";
-import { toast } from "@hexa/ui/sonner";
+import NiceModal, { useModal } from '@ebay/nice-modal-react';
+import { toast } from '@hexa/ui/sonner';
 
-import { setFormError } from "@/lib/form";
-import { type OnlyEmailInput, OnlyEmailSchema } from "@/lib/zod/schemas/auth";
-import { $deleteUserEmail } from "@/server/client";
-import { Button } from "@hexa/ui/button";
+import { setFormError } from '@/lib/form';
+import { type OnlyEmailInput, OnlyEmailSchema } from '@/lib/zod/schemas/auth';
+import { $deleteUserEmail } from '@/server/client';
+import { Button } from '@hexa/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -16,7 +16,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@hexa/ui/dialog";
+} from '@hexa/ui/dialog';
 import {
   Form,
   FormControl,
@@ -24,10 +24,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@hexa/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+} from '@hexa/ui/form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
 
 interface DeleteUserEmailProps {
   email: string;
@@ -39,7 +39,7 @@ export const DeleteUserEmailModal = NiceModal.create(
     const form = useForm<OnlyEmailInput>({
       resolver: zodResolver(OnlyEmailSchema),
       defaultValues: {
-        email: "",
+        email: '',
       },
     });
 
@@ -52,11 +52,11 @@ export const DeleteUserEmailModal = NiceModal.create(
     const { mutateAsync: deleteUserEmail } = useMutation({
       mutationFn: $deleteUserEmail,
       onError: (err) => {
-        setFormError(err, setError, "email");
+        setFormError(err, setError, 'email');
         modal.reject(err);
       },
       onSuccess: () => {
-        toast.success("Email deleted successfully");
+        toast.success('Email deleted successfully');
         modal.resolve();
         modal.remove();
       },
@@ -92,13 +92,13 @@ export const DeleteUserEmailModal = NiceModal.create(
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      To verify, type <span className="font-bold">{email}</span>{" "}
+                      To verify, type <span className="font-bold">{email}</span>
                       below
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        className={errors.email ? "border-destructive" : ""}
+                        className={errors.email ? 'border-destructive' : ''}
                       />
                     </FormControl>
                     <FormMessage />
@@ -121,5 +121,5 @@ export const DeleteUserEmailModal = NiceModal.create(
         </DialogContent>
       </Dialog>
     );
-  },
+  }
 );

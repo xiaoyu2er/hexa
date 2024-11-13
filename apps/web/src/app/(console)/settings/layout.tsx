@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { SettingsLayout } from "@/components/layouts/setting-layout";
-import type { NavTab } from "@/types";
-import { SettingsIcon, UserIcon } from "@hexa/ui/icons";
+import { SettingsLayout } from '@/components/layouts/setting-layout';
+import type { NavTab } from '@/types';
+import { SettingsIcon, UserIcon } from '@hexa/ui/icons';
 
 const SETTINGS_NAVBARS: NavTab[] = [
   {
-    name: "Profile",
-    href: "/settings/profile",
+    name: 'Profile',
+    href: '/settings/profile',
     icon: UserIcon,
   },
   {
-    name: "Account",
-    href: "/settings/account",
+    name: 'Account',
+    href: '/settings/account',
     icon: SettingsIcon,
   },
 ] as const;

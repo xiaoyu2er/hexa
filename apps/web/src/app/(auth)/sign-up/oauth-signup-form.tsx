@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
 import {
-  type OAuthSignupInput,
-  OAuthSignupSchema,
-} from "@/lib/zod/schemas/auth";
-import { Button } from "@hexa/ui/button";
+  type OauthSignupInput,
+  OauthSignupSchema,
+} from '@/lib/zod/schemas/auth';
+import { Button } from '@hexa/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@hexa/ui/card";
+} from '@hexa/ui/card';
 import {
   Form,
   FormControl,
@@ -19,37 +19,37 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@hexa/ui/form";
-import { FormErrorMessage } from "@hexa/ui/form-error-message";
-import { Input } from "@hexa/ui/input";
-import { type FC, useEffect } from "react";
-import { useForm } from "react-hook-form";
+} from '@hexa/ui/form';
+import { FormErrorMessage } from '@hexa/ui/form-error-message';
+import { Input } from '@hexa/ui/input';
+import { type FC, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
-import { useTurnstile } from "@/components/hooks/use-turnstile";
-import { setFormError } from "@/lib/form";
-import { $oauthSignup } from "@/server/client";
-import type { OAuthAccountModel } from "@/server/db";
-import { toast } from "@hexa/ui/sonner";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import Link from "next/link";
+import { useTurnstile } from '@/components/hooks/use-turnstile';
+import { setFormError } from '@/lib/form';
+import { $oauthSignup } from '@/server/client';
+import type { OauthAccountModel } from '@/server/db';
+import { toast } from '@hexa/ui/sonner';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import Link from 'next/link';
 
-interface OAuthSignupProps {
-  oauthAccount: OAuthAccountModel;
+interface OauthSignupProps {
+  oauthAccount: OauthAccountModel;
   onSuccess: () => void;
   onCancel?: () => void;
 }
 
-export const OAuthSignup: FC<OAuthSignupProps> = ({
+export const OauthSignup: FC<OauthSignupProps> = ({
   oauthAccount,
   onSuccess,
   onCancel,
 }) => {
-  const form = useForm<OAuthSignupInput>({
-    resolver: zodResolver(OAuthSignupSchema),
+  const form = useForm<OauthSignupInput>({
+    resolver: zodResolver(OauthSignupSchema),
     defaultValues: {
       oauthAccountId: oauthAccount.id,
-      username: "",
+      username: '',
     },
   });
 
@@ -65,7 +65,7 @@ export const OAuthSignup: FC<OAuthSignupProps> = ({
   const { mutateAsync: oauthSignup } = useMutation({
     mutationFn: $oauthSignup,
     onSuccess: () => {
-      toast.success("Sign up success");
+      toast.success('Sign up success');
       onSuccess?.();
     },
     onError: (error) => {
@@ -75,7 +75,7 @@ export const OAuthSignup: FC<OAuthSignupProps> = ({
   });
 
   useEffect(() => {
-    setFocus("username");
+    setFocus('username');
   }, [setFocus]);
 
   return (
@@ -93,7 +93,7 @@ export const OAuthSignup: FC<OAuthSignupProps> = ({
             method="POST"
             className="space-y-4"
           >
-            <input type="hidden" {...register("oauthAccountId")} />
+            <input type="hidden" {...register('oauthAccountId')} />
             <FormItem>
               <FormLabel>Email</FormLabel>
               <Input value={oauthAccount.email} type="email" disabled />
@@ -108,7 +108,7 @@ export const OAuthSignup: FC<OAuthSignupProps> = ({
                     <Input
                       {...field}
                       placeholder=""
-                      className={errors.username ? "border-destructive" : ""}
+                      className={errors.username ? 'border-destructive' : ''}
                     />
                   </FormControl>
                   <FormMessage />
@@ -119,8 +119,8 @@ export const OAuthSignup: FC<OAuthSignupProps> = ({
             <FormErrorMessage message={errors.root?.message} />
             {turnstile}
 
-            <Button variant={"link"} size={"sm"} className="p-0" asChild>
-              <Link href={"/login"}>Have an account? Login</Link>
+            <Button variant="link" size="sm" className="p-0" asChild>
+              <Link href="/login">Have an account? Login</Link>
             </Button>
 
             <Button

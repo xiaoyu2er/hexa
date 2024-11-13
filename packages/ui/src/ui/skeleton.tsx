@@ -1,5 +1,5 @@
-import { cn } from "@hexa/utils";
-import type React from "react";
+import { cn } from '@hexa/utils';
+import type React from 'react';
 
 function Skeleton({
   className,
@@ -7,7 +7,7 @@ function Skeleton({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("animate-pulse rounded-md bg-primary/10", className)}
+      className={cn('animate-pulse rounded-md bg-primary/10', className)}
       {...props}
     />
   );

@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { Input } from "@hexa/ui/input";
+import { Input } from '@hexa/ui/input';
 
-import NiceModal, { useModal } from "@ebay/nice-modal-react";
-import { toast } from "@hexa/ui/sonner";
+import NiceModal, { useModal } from '@ebay/nice-modal-react';
+import { toast } from '@hexa/ui/sonner';
 
-import { setFormError } from "@/lib/form";
+import { setFormError } from '@/lib/form';
 import {
-  type DeleteOAuthAccountInput,
-  DeleteOAuthAccountSchema,
-} from "@/lib/zod/schemas/user";
-import { $deleteUserOAuthAccount } from "@/server/client";
-import type { ProviderType } from "@/server/db";
-import { Button } from "@hexa/ui/button";
+  type DeleteOauthAccountInput,
+  DeleteOauthAccountSchema,
+} from '@/lib/zod/schemas/user';
+import { $deleteUserOauthAccount } from '@/server/client';
+import type { ProviderType } from '@/server/db';
+import { Button } from '@hexa/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -20,7 +20,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@hexa/ui/dialog";
+} from '@hexa/ui/dialog';
 import {
   Form,
   FormControl,
@@ -28,20 +28,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@hexa/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+} from '@hexa/ui/form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
 
-interface DeleteOAuthAccountProps {
+interface DeleteOauthAccountProps {
   provider: ProviderType;
 }
-export const DeleteOAuthAccountModal = NiceModal.create(
-  ({ provider }: DeleteOAuthAccountProps) => {
+export const DeleteOauthAccountModal = NiceModal.create(
+  ({ provider }: DeleteOauthAccountProps) => {
     const modal = useModal();
 
-    const form = useForm<DeleteOAuthAccountInput>({
-      resolver: zodResolver(DeleteOAuthAccountSchema),
+    const form = useForm<DeleteOauthAccountInput>({
+      resolver: zodResolver(DeleteOauthAccountSchema),
       defaultValues: {
         provider: undefined,
       },
@@ -53,10 +53,10 @@ export const DeleteOAuthAccountModal = NiceModal.create(
       formState: { isSubmitting, errors },
     } = form;
 
-    const { mutateAsync: deleteUserOAuthAccount } = useMutation({
-      mutationFn: $deleteUserOAuthAccount,
+    const { mutateAsync: deleteUserOauthAccount } = useMutation({
+      mutationFn: $deleteUserOauthAccount,
       onError: (err) => {
-        setFormError(err, setError, "provider");
+        setFormError(err, setError, 'provider');
         modal.reject(err);
       },
       onSuccess: () => {
@@ -87,7 +87,7 @@ export const DeleteOAuthAccountModal = NiceModal.create(
           <Form {...form}>
             <form
               onSubmit={handleSubmit((json) =>
-                deleteUserOAuthAccount({ json }),
+                deleteUserOauthAccount({ json })
               )}
               method="POST"
               className="space-y-4"
@@ -98,13 +98,13 @@ export const DeleteOAuthAccountModal = NiceModal.create(
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      To verify, type{" "}
+                      To verify, type
                       <span className="font-bold">{provider}</span> below
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        className={errors.provider ? "border-destructive" : ""}
+                        className={errors.provider ? 'border-destructive' : ''}
                       />
                     </FormControl>
                     <FormMessage />
@@ -127,5 +127,5 @@ export const DeleteOAuthAccountModal = NiceModal.create(
         </DialogContent>
       </Dialog>
     );
-  },
+  }
 );

@@ -1,6 +1,6 @@
-import { validateRequest } from "@/lib/auth/validate-request";
+import { validateRequest } from '@/lib/auth/validate-request';
 
-import { Header } from "@/components/header/header";
+import { Header } from '@/components/header/header';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,9 +11,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@hexa/ui/alert-dialog";
-import { Button } from "@hexa/ui/button";
-import { redirect } from "next/navigation";
+} from '@hexa/ui/alert-dialog';
+import { Button } from '@hexa/ui/button';
+import { redirect } from 'next/navigation';
 
 function AlertDialogDemo() {
   return (
@@ -40,15 +40,17 @@ function AlertDialogDemo() {
 
 export default async function Home() {
   const { session, user } = await validateRequest();
-  if (session) return redirect("/settings");
+  if (session) {
+    return redirect('/settings');
+  }
   return (
     <>
       <Header />
-      <div className="flex flex-col items-center justify-center h-screen px-2">
+      <div className="flex h-screen flex-col items-center justify-center px-2">
         {session ? (
           <>
-            <div>user: {JSON.stringify(user, null, "\t")}</div>
-            <div>session: {JSON.stringify(session, null, "\t")}</div>
+            <div>user: {JSON.stringify(user, null, '\t')}</div>
+            <div>session: {JSON.stringify(session, null, '\t')}</div>
           </>
         ) : (
           <div className="flex gap-12">

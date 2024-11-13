@@ -1,64 +1,64 @@
-import { generateId } from "@/lib/utils";
-import { relations, sql } from "drizzle-orm";
+import { generateId } from '@/lib/utils';
+import { relations, sql } from 'drizzle-orm';
 
 import {
   integer,
   primaryKey,
   sqliteTable,
   text,
-} from "drizzle-orm/sqlite-core";
+} from 'drizzle-orm/sqlite-core';
 
 const expiresAt = {
-  expiresAt: integer("expires_at", { mode: "timestamp" })
+  expiresAt: integer('expires_at', { mode: 'timestamp' })
     .notNull()
     .default(sql`(unixepoch())`),
 };
 
-export const userTable = sqliteTable("user", {
-  id: text("id")
+export const userTable = sqliteTable('user', {
+  id: text('id')
     .primaryKey()
-    .$defaultFn(() => generateId("u")),
-  name: text("name"),
-  username: text("username").unique().notNull(),
-  password: text("password"),
-  avatarUrl: text("avatar_url"),
+    .$defaultFn(() => generateId('u')),
+  name: text('name'),
+  username: text('username').unique().notNull(),
+  password: text('password'),
+  avatarUrl: text('avatar_url'),
 
-  defaultWorkspaceId: text("default_workspace_id").references(
-    () => workspaceTable.id,
+  defaultWorkspaceId: text('default_workspace_id').references(
+    () => workspaceTable.id
   ),
 });
 
 const userIdNotNull = {
-  userId: text("user_id")
+  userId: text('user_id')
     .notNull()
-    .references(() => userTable.id, { onDelete: "cascade" }),
+    .references(() => userTable.id, { onDelete: 'cascade' }),
 };
 
 const userIdNullable = {
-  userId: text("user_id").references(() => userTable.id, {
-    onDelete: "cascade",
+  userId: text('user_id').references(() => userTable.id, {
+    onDelete: 'cascade',
   }),
 };
 
-export const sessionTable = sqliteTable("session", {
-  id: text("id").primaryKey(),
+export const sessionTable = sqliteTable('session', {
+  id: text('id').primaryKey(),
   ...userIdNotNull,
   ...expiresAt,
 });
 
-export type OTPType = "RESET_PASSWORD" | "VERIFY_EMAIL" | "LOGIN_PASSCODE";
+export type OtpType = 'RESET_PASSWORD' | 'VERIFY_EMAIL' | 'LOGIN_PASSCODE';
 const otpType = {
-  type: text("type").$type<OTPType>().notNull(),
+  type: text('type').$type<OtpType>().notNull(),
 };
-export const tokenTable = sqliteTable("token", {
-  id: text("id")
+export const tokenTable = sqliteTable('token', {
+  id: text('id')
     .primaryKey()
-    .$defaultFn(() => generateId("token")),
+    .$defaultFn(() => generateId('token')),
   ...userIdNotNull,
-  email: text("email").notNull(),
+  email: text('email').notNull(),
   ...otpType,
-  code: text("code").notNull(),
-  token: text("token").notNull(),
+  code: text('code').notNull(),
+  token: text('token').notNull(),
   ...expiresAt,
 });
 
@@ -73,31 +73,31 @@ export const tokenUserRelation = relations(tokenTable, ({ one }) => ({
   }),
 }));
 
-export type ProviderType = "GOOGLE" | "GITHUB";
+export type ProviderType = 'GOOGLE' | 'GITHUB';
 const providerType = {
-  provider: text("provider").$type<ProviderType>().default("GOOGLE").notNull(),
+  provider: text('provider').$type<ProviderType>().default('GOOGLE').notNull(),
 };
 export const oauthAccountTable = sqliteTable(
-  "oauth_account",
+  'oauth_account',
   {
-    id: text("id")
+    id: text('id')
       .notNull()
-      .$defaultFn(() => generateId("oauth"))
+      .$defaultFn(() => generateId('oauth'))
       .primaryKey(),
     ...userIdNullable,
     ...providerType,
-    name: text("name"),
-    avatarUrl: text("avatar_url"),
-    email: text("email").notNull(),
-    providerAccountId: text("provider_account_id").notNull(),
-    username: text("username"),
+    name: text('name'),
+    avatarUrl: text('avatar_url'),
+    email: text('email').notNull(),
+    providerAccountId: text('provider_account_id').notNull(),
+    username: text('username'),
   },
   (t) => ({
     pk: primaryKey({ columns: [t.provider, t.providerAccountId] }),
-  }),
+  })
 );
 
-export const userOAuthAccountRelations = relations(userTable, ({ many }) => ({
+export const userOauthAccountRelations = relations(userTable, ({ many }) => ({
   oauthAccounts: many(oauthAccountTable),
 }));
 
@@ -108,19 +108,19 @@ export const oauthAccountUserRelation = relations(
       fields: [oauthAccountTable.userId],
       references: [userTable.id],
     }),
-  }),
+  })
 );
 
-export const emailTable = sqliteTable("email", {
-  id: text("id")
+export const emailTable = sqliteTable('email', {
+  id: text('id')
     .primaryKey()
-    .$defaultFn(() => generateId("em")),
-  userId: text("user_id")
+    .$defaultFn(() => generateId('em')),
+  userId: text('user_id')
     .notNull()
-    .references(() => userTable.id, { onDelete: "cascade" }),
-  email: text("email").notNull(),
-  primary: integer("primary", { mode: "boolean" }).notNull().default(false),
-  verified: integer("verified", { mode: "boolean" }).notNull().default(false),
+    .references(() => userTable.id, { onDelete: 'cascade' }),
+  email: text('email').notNull(),
+  primary: integer('primary', { mode: 'boolean' }).notNull().default(false),
+  verified: integer('verified', { mode: 'boolean' }).notNull().default(false),
 });
 
 export const userEmailRelations = relations(userTable, ({ many }) => ({
@@ -134,13 +134,13 @@ export const emailUserRelations = relations(emailTable, ({ one }) => ({
   }),
 }));
 
-export const workspaceTable = sqliteTable("workspace", {
-  id: text("id")
+export const workspaceTable = sqliteTable('workspace', {
+  id: text('id')
     .primaryKey()
-    .$defaultFn(() => generateId("ws")),
-  name: text("name").notNull(),
-  slug: text("slug").notNull().unique(),
-  avatarUrl: text("avatar_url"),
+    .$defaultFn(() => generateId('ws')),
+  name: text('name').notNull(),
+  slug: text('slug').notNull().unique(),
+  avatarUrl: text('avatar_url'),
 });
 
 export const userWorkspaceRelations = relations(userTable, ({ many, one }) => ({
@@ -155,34 +155,34 @@ export const workspaceMemberRelations = relations(
   workspaceTable,
   ({ many }) => ({
     members: many(workspaceMemberTable),
-  }),
+  })
 );
-export type WorkspaceUserRole = "OWNER" | "ADMIN" | "MEMBER";
+export type WorkspaceUserRole = 'OWNER' | 'ADMIN' | 'MEMBER';
 export const workspaceUserRoleType = {
-  role: text("workspaceUserRole")
+  role: text('workspaceUserRole')
     .$type<WorkspaceUserRole>()
-    .default("MEMBER")
+    .default('MEMBER')
     .notNull(),
 };
 
 const workspaceId = {
-  workspaceId: text("workspace_id")
+  workspaceId: text('workspace_id')
     .notNull()
-    .references(() => workspaceTable.id, { onDelete: "cascade" }),
+    .references(() => workspaceTable.id, { onDelete: 'cascade' }),
 };
 export const workspaceMemberTable = sqliteTable(
-  "workspace_member",
+  'workspace_member',
   {
-    id: text("id")
+    id: text('id')
       // .primaryKey()
-      .$defaultFn(() => generateId("wsm")),
+      .$defaultFn(() => generateId('wsm')),
     ...workspaceId,
     ...userIdNotNull,
     ...workspaceUserRoleType,
   },
   (t) => ({
     pk: primaryKey({ columns: [t.userId, t.workspaceId] }),
-  }),
+  })
 );
 
 export const usersToWorkspaceRelation = relations(
@@ -196,11 +196,11 @@ export const usersToWorkspaceRelation = relations(
       fields: [workspaceMemberTable.workspaceId],
       references: [workspaceTable.id],
     }),
-  }),
+  })
 );
 
 export type UserModel = typeof userTable.$inferSelect;
-export type OAuthAccountModel = typeof oauthAccountTable.$inferSelect;
+export type OauthAccountModel = typeof oauthAccountTable.$inferSelect;
 export type EmailModal = typeof emailTable.$inferSelect;
 export type SessionModel = typeof sessionTable.$inferSelect;
 export type TokenModel = typeof tokenTable.$inferSelect;

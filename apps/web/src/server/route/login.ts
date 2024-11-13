@@ -1,24 +1,23 @@
-import { IS_DEVELOPMENT } from "@/lib/env";
-import { ApiError } from "@/lib/error/error";
-import { setSession } from "@/lib/session";
-import { isHashValid } from "@/lib/utils";
-import { LoginPasswordSchema } from "@/lib/zod/schemas/auth";
-import { getUserByUsername, getUserEmail } from "@/server/data-access/user";
-import { turnstile } from "@/server/middleware/turnstile";
-import type { Context } from "@/server/types";
-import { zValidator } from "@hono/zod-validator";
-import { Hono } from "hono";
+import { IS_DEVELOPMENT } from '@/lib/env';
+import { ApiError } from '@/lib/error/error';
+import { setSession } from '@/lib/session';
+import { isHashValid } from '@/lib/utils';
+import { LoginPasswordSchema } from '@/lib/zod/schemas/auth';
+import { getUserByUsername, getUserEmail } from '@/server/data-access/user';
+import { turnstile } from '@/server/middleware/turnstile';
+import type { Context } from '@/server/types';
+import { zValidator } from '@hono/zod-validator';
+import { Hono } from 'hono';
 
 const login = new Hono<Context>()
   // Login by password
   .post(
-    "/login-password",
-    zValidator("json", LoginPasswordSchema),
+    '/login-password',
+    zValidator('json', LoginPasswordSchema),
     turnstile,
     async (c) => {
-      const { username, password } = c.req.valid("json");
-      const db = c.get("db");
-      console.log("username", username);
+      const { username, password } = c.req.valid('json');
+      const db = c.get('db');
       let existingUser = await getUserByUsername(db, username);
       if (!existingUser) {
         const emailItem = await getUserEmail(db, username);
@@ -26,20 +25,20 @@ const login = new Hono<Context>()
 
         if (!existingUser) {
           throw new ApiError(
-            "FORBIDDEN",
+            'FORBIDDEN',
             IS_DEVELOPMENT
-              ? "[dev] Incorrect email or password"
-              : "Incorrect email or password",
+              ? '[dev] Incorrect email or password'
+              : 'Incorrect email or password'
           );
         }
       }
 
       if (!existingUser.password) {
         throw new ApiError(
-          "FORBIDDEN",
+          'FORBIDDEN',
           IS_DEVELOPMENT
-            ? "[dev] Password is not set"
-            : "Incorrect email or password",
+            ? '[dev] Password is not set'
+            : 'Incorrect email or password'
         );
       }
 
@@ -47,17 +46,17 @@ const login = new Hono<Context>()
 
       if (!validPassword) {
         throw new ApiError(
-          "FORBIDDEN",
+          'FORBIDDEN',
           IS_DEVELOPMENT
-            ? "[dev] Incorrect password"
-            : "Incorrect email or password",
+            ? '[dev] Incorrect password'
+            : 'Incorrect email or password'
         );
       }
 
       await setSession(existingUser.id);
 
       return c.json({});
-    },
+    }
   );
 
 export default login;

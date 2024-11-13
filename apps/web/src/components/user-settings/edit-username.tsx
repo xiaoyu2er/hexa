@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useSession } from "@/components/providers/session-provider";
-import { NEXT_PUBLIC_APP_NAME } from "@/lib/env";
-import { useModal } from "@ebay/nice-modal-react";
-import { Button } from "@hexa/ui/button";
+import { useSession } from '@/components/providers/session-provider';
+import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
+import { useModal } from '@ebay/nice-modal-react';
+import { Button } from '@hexa/ui/button';
 import {
   Card,
   CardContent,
@@ -11,10 +11,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@hexa/ui/card";
-import { CopyButton } from "@hexa/ui/copy-button";
-import { Input } from "@hexa/ui/input";
-import { ChangeUsernameModal } from "./change-username-modal";
+} from '@hexa/ui/card';
+import { CopyButton } from '@hexa/ui/copy-button';
+import { Input } from '@hexa/ui/input';
+import { ChangeUsernameModal } from './change-username-modal';
 
 export function EditUsername() {
   const { user, refetch } = useSession();
@@ -34,11 +34,10 @@ export function EditUsername() {
           type="text"
           value={user.username}
           className="w-full md:max-w-md"
-          onClick={() => {}}
         />
         <CopyButton className="relative right-9" value={user.username} />
       </CardContent>
-      <CardFooter className="border-t px-6 py-4 items-center flex-row-reverse justify-between">
+      <CardFooter className="flex-row-reverse items-center justify-between border-t px-6 py-4">
         <Button
           variant="secondary"
           className="shrink-0"
