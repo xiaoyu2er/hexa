@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 
 import { Toaster } from '@hexa/ui/sonner';
 import { cn } from '@hexa/utils';
-import './globals.css';
+import '@hexa/ui/globals.css';
 import { Provider as NiceModalProvider } from '@/components/modal';
 import { QueryClientProvider } from '@/components/providers/query-client-provider';
 import { SessionProvider } from '@/components/providers/session-provider';

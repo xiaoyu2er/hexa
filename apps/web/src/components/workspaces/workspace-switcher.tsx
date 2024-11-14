@@ -12,7 +12,7 @@ import { queryWorkspacesOptions } from '@/lib/queries/workspace';
 import { $updateUserDefaultWorkspace } from '@/server/client';
 import type { WorkspaceModel } from '@/server/db';
 import { Badge } from '@hexa/ui/badge';
-import { Dialog, DialogContent } from '@hexa/ui/dialog';
+import { Dialog, DialogContent } from '@hexa/ui/responsive-dialog';
 import { toast } from '@hexa/ui/sonner';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';

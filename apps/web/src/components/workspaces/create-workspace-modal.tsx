@@ -1,6 +1,10 @@
 'use client';
 
-import { Dialog, DialogContent, DialogTrigger } from '@hexa/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from '@hexa/ui/responsive-dialog';
 import type { ReactNode } from 'react';
 import { useBoolean } from 'usehooks-ts';
 import { CreateWorkspaceForm } from './create-workspace-form';
