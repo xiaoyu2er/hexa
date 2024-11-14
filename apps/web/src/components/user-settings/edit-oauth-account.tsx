@@ -28,7 +28,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '@hexa/ui/popover';
 
 import Link from 'next/link';
-import { DeleteOauthAccountModal } from './delete-account-modal';
+import { DeleteOauthAccountModal } from './delete-oauth-account-modal';
 
 export function EditOauthAccount() {
   const { data: accounts, refetch } = useSuspenseQuery(
@@ -94,7 +94,7 @@ export function EditOauthAccount() {
                 );
               })}
 
-            <Popover>
+            <Popover modal={false}>
               <PopoverTrigger asChild>
                 <Button
                   variant="ghost"

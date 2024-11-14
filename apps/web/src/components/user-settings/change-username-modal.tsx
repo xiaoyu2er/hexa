@@ -17,12 +17,13 @@ import { Alert, AlertDescription, AlertTitle } from '@hexa/ui/alert';
 import { Button } from '@hexa/ui/button';
 import {
   Dialog,
+  DialogBody,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@hexa/ui/dialog';
+} from '@hexa/ui/responsive-dialog';
+
 import {
   Form,
   FormControl,
@@ -92,27 +93,27 @@ export const ChangeUsernameModal = NiceModal.create(
                 <form
                   onSubmit={handleSubmit((json) => changeUsername({ json }))}
                   method="POST"
-                  className="space-y-4"
                 >
-                  <FormField
-                    control={form.control}
-                    name="username"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>New Username</FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            className={
-                              errors.username ? 'border-destructive' : ''
-                            }
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
+                  <DialogBody className="space-y-2">
+                    <FormField
+                      control={form.control}
+                      name="username"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>New Username</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              className={
+                                errors.username ? 'border-destructive' : ''
+                              }
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </DialogBody>
                   <DialogFooter>
                     <Button
                       className="w-full"
@@ -129,29 +130,26 @@ export const ChangeUsernameModal = NiceModal.create(
             <>
               <DialogHeader>
                 <DialogTitle>Really change your username?</DialogTitle>
-                <DialogDescription>
-                  <Alert variant="destructive" className="mt-2">
-                    <ExclamationTriangleIcon className="h-4 w-4" />
-                    <AlertTitle>Notice</AlertTitle>
-                    <AlertDescription>
-                      Unexpected bad things will happen if you don’t read this!
-                    </AlertDescription>
-                  </Alert>
-                  <ul className="list-disc px-3 pt-3">
-                    <li>
-                      We <strong>will not</strong> set up redirects for your
-                      workspaces.
-                    </li>
-                    <li>
-                      Your old username will be available for anyone to claim.
-                    </li>
-                    <li>
-                      You will need to update any bookmarks or saved links.
-                    </li>
-                  </ul>
-                </DialogDescription>
               </DialogHeader>
-
+              <DialogBody>
+                <Alert variant="destructive" className="mt-2">
+                  <ExclamationTriangleIcon className="h-4 w-4" />
+                  <AlertTitle>Notice</AlertTitle>
+                  <AlertDescription>
+                    Unexpected bad things will happen if you don’t read this!
+                  </AlertDescription>
+                </Alert>
+                <ul className="list-disc px-3 pt-3">
+                  <li>
+                    We <strong>will not</strong> set up redirects for your
+                    workspaces.
+                  </li>
+                  <li>
+                    Your old username will be available for anyone to claim.
+                  </li>
+                  <li>You will need to update any bookmarks or saved links.</li>
+                </ul>
+              </DialogBody>
               <DialogFooter>
                 <Button
                   variant="destructive"

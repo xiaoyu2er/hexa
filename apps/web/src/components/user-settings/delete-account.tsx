@@ -19,15 +19,6 @@ import {
 import { $deleteUser } from '@/server/client';
 import { Button } from '@hexa/ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@hexa/ui/dialog';
-import {
   Form,
   FormControl,
   FormField,
@@ -35,6 +26,18 @@ import {
   FormLabel,
   FormMessage,
 } from '@hexa/ui/form';
+
+import {
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@hexa/ui/responsive-dialog';
+
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -82,11 +85,7 @@ export function DeleteAccount() {
 
           <DialogContent className="sm:max-w-[425px]">
             <Form {...form}>
-              <form
-                onSubmit={handleSubmit(() => deleteUser({}))}
-                method="POST"
-                className="space-y-4"
-              >
+              <form onSubmit={handleSubmit(() => deleteUser({}))} method="POST">
                 <DialogHeader>
                   <DialogTitle>Delete Account</DialogTitle>
                   <DialogDescription>
@@ -95,30 +94,32 @@ export function DeleteAccount() {
                     This action cannot be undone - please proceed with caution.
                   </DialogDescription>
                 </DialogHeader>
-
-                <FormField
-                  control={form.control}
-                  name="confirm"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        To verify, type
-                        <span className="font-bold">
-                          {DELETE_USER_CONFIRMATION}
-                        </span>
-                        below
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className={errors.confirm ? 'border-destructive' : ''}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
+                <DialogBody className="space-y-2">
+                  <FormField
+                    control={form.control}
+                    name="confirm"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          To verify, type&nbsp;
+                          <span className="font-bold">
+                            {DELETE_USER_CONFIRMATION}
+                          </span>
+                          &nbsp;below
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            className={
+                              errors.confirm ? 'border-destructive' : ''
+                            }
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </DialogBody>
                 <DialogFooter>
                   <Button
                     variant="destructive"

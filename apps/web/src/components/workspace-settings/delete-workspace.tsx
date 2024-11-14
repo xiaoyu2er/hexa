@@ -20,15 +20,6 @@ import {
 import { $deleteWorkspace } from '@/server/client';
 import { Button } from '@hexa/ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@hexa/ui/dialog';
-import {
   Form,
   FormControl,
   FormField,
@@ -36,6 +27,16 @@ import {
   FormLabel,
   FormMessage,
 } from '@hexa/ui/form';
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@hexa/ui/responsive-dialog';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';

@@ -10,14 +10,6 @@ import { type OnlyEmailInput, OnlyEmailSchema } from '@/lib/zod/schemas/auth';
 import { $deleteUserEmail } from '@/server/client';
 import { Button } from '@hexa/ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@hexa/ui/dialog';
-import {
   Form,
   FormControl,
   FormField,
@@ -25,6 +17,17 @@ import {
   FormLabel,
   FormMessage,
 } from '@hexa/ui/form';
+
+import {
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@hexa/ui/responsive-dialog';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
@@ -80,31 +83,33 @@ export const DeleteUserEmailModal = NiceModal.create(
               stats. This action cannot be undone - please proceed with caution.
             </DialogDescription>
           </DialogHeader>
+
           <Form {...form}>
             <form
               onSubmit={handleSubmit((json) => deleteUserEmail({ json }))}
               method="POST"
-              className="space-y-4"
             >
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      To verify, type <span className="font-bold">{email}</span>
-                      below
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        className={errors.email ? 'border-destructive' : ''}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <DialogBody className="space-y-2">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        To verify, type&nbsp;
+                        <span className="font-bold">{email}</span>&nbsp;below
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          className={errors.email ? 'border-destructive' : ''}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </DialogBody>
 
               <DialogFooter>
                 <Button

@@ -6,7 +6,7 @@
   "private": true,
   "exports": {
     ".": "./src/index.ts",
-    "./const": "./src/const.ts"
+    "./*": "./src/*.ts"
   },
   "scripts": {},
   "devDependencies": {

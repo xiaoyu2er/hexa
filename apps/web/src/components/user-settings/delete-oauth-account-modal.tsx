@@ -14,14 +14,6 @@ import { $deleteUserOauthAccount } from '@/server/client';
 import type { ProviderType } from '@/server/db';
 import { Button } from '@hexa/ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@hexa/ui/dialog';
-import {
   Form,
   FormControl,
   FormField,
@@ -29,6 +21,17 @@ import {
   FormLabel,
   FormMessage,
 } from '@hexa/ui/form';
+
+import {
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@hexa/ui/responsive-dialog';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
@@ -90,28 +93,30 @@ export const DeleteOauthAccountModal = NiceModal.create(
                 deleteUserOauthAccount({ json })
               )}
               method="POST"
-              className="space-y-4"
             >
-              <FormField
-                control={form.control}
-                name="provider"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      To verify, type
-                      <span className="font-bold">{provider}</span> below
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        className={errors.provider ? 'border-destructive' : ''}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
+              <DialogBody className="space-y-2">
+                <FormField
+                  control={form.control}
+                  name="provider"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        To verify, type&nbsp;
+                        <span className="font-bold">{provider}</span>&nbsp;below
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          className={
+                            errors.provider ? 'border-destructive' : ''
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </DialogBody>
               <DialogFooter>
                 <Button
                   variant="destructive"
