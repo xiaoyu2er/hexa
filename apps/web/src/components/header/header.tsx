@@ -18,7 +18,7 @@ async function HeaderActions() {
             <ModeToggle />
           </div>
           <Button asChild variant="secondary">
-            <Link href="/settings">Dashboard</Link>
+            <Link href="/settings/profile">Dashboard</Link>
           </Button>
         </>
       ) : (

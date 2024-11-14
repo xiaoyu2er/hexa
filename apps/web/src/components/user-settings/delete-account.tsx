@@ -82,17 +82,22 @@ export function DeleteAccount() {
               Delete Account
             </Button>
           </DialogTrigger>
-          <Form {...form}>
-            <form onSubmit={handleSubmit(() => deleteUser({}))} method="POST">
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Delete Account</DialogTitle>
-                  <DialogDescription>
-                    Warning: Permanently delete your
-                    {NEXT_PUBLIC_APP_NAME} account, and their respective stats.
-                    This action cannot be undone - please proceed with caution.
-                  </DialogDescription>
-                </DialogHeader>
+
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Delete Account</DialogTitle>
+              <DialogDescription>
+                Warning: Permanently delete your
+                {NEXT_PUBLIC_APP_NAME} account, and their respective stats. This
+                action cannot be undone - please proceed with caution.
+              </DialogDescription>
+            </DialogHeader>
+            <Form {...form}>
+              <form
+                onSubmit={handleSubmit(() => deleteUser({}))}
+                method="POST"
+                className="md:space-y-4"
+              >
                 <DialogBody className="space-y-2">
                   <FormField
                     control={form.control}
@@ -129,9 +134,9 @@ export function DeleteAccount() {
                     {DELETE_USER_CONFIRMATION}
                   </Button>
                 </DialogFooter>
-              </DialogContent>
-            </form>
-          </Form>
+              </form>
+            </Form>
+          </DialogContent>
         </Dialog>
       </CardFooter>
     </Card>

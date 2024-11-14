@@ -12,19 +12,22 @@ import { queryWorkspacesOptions } from '@/lib/queries/workspace';
 import { $updateUserDefaultWorkspace } from '@/server/client';
 import type { WorkspaceModel } from '@/server/db';
 import { Badge } from '@hexa/ui/badge';
-import { Dialog } from '@hexa/ui/responsive-dialog';
-import { toast } from '@hexa/ui/sonner';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useBoolean } from 'usehooks-ts';
-import { CreateWorkspaceForm } from './create-workspace-form';
+import { CreateWorkspaceModal } from './create-workspace-modal';
+
+import { useModal } from '@ebay/nice-modal-react';
+import { toast } from '@hexa/ui/sonner';
 import { WorkspaceAvatar } from './workspace-avatar';
 
 export function WorkspaceSwitcher() {
   const { slug } = useParams() as { slug?: string };
-  const { data: workspaces } = useSuspenseQuery(queryWorkspacesOptions);
+  const { data: workspaces, refetch } = useSuspenseQuery(
+    queryWorkspacesOptions
+  );
   const { user } = useSession();
   const {
     value: isPopoverOpen,
@@ -32,12 +35,7 @@ export function WorkspaceSwitcher() {
     setFalse: closePopover,
   } = useBoolean();
 
-  const {
-    value: isDialogOpen,
-    setValue: setDialogOpen,
-    setFalse: closeDialog,
-    setTrue: openDialog,
-  } = useBoolean();
+  const modal = useModal(CreateWorkspaceModal);
 
   const defaultWs = workspaces.find((ws) => ws.slug === slug);
   const router = useRouter();
@@ -126,7 +124,9 @@ export function WorkspaceSwitcher() {
             className="h-11 w-full"
             onClick={() => {
               closePopover();
-              openDialog();
+              modal.show().then(() => {
+                refetch();
+              });
             }}
           >
             <PlusCircledIcon className="mr-2 h-6 w-6" />
@@ -134,9 +134,6 @@ export function WorkspaceSwitcher() {
           </Button>
         </PopoverContent>
       </Popover>
-      <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
-        <CreateWorkspaceForm onSuccess={closeDialog} />
-      </Dialog>
     </>
   );
 }

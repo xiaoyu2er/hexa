@@ -52,7 +52,7 @@ importers:
         version: 0.4.1(hono@4.6.9)(zod@3.23.8)
       '@hookform/resolvers':
         specifier: ^3.6.0
-        version: 3.6.0(react-hook-form@7.52.0(react@19.0.0-rc-f994737d14-20240522))
+        version: 3.6.0(react-hook-form@7.53.2(react@19.0.0-rc-f994737d14-20240522))
       '@lucia-auth/adapter-drizzle':
         specifier: ^1.0.7
         version: 1.0.7(lucia@3.2.0)
@@ -117,8 +117,8 @@ importers:
         specifier: 19.0.0-rc-f994737d14-20240522
         version: 19.0.0-rc-f994737d14-20240522(react@19.0.0-rc-f994737d14-20240522)
       react-hook-form:
-        specifier: ^7.52.0
-        version: 7.52.0(react@19.0.0-rc-f994737d14-20240522)
+        specifier: ^7.53.2
+        version: 7.53.2(react@19.0.0-rc-f994737d14-20240522)
       resend:
         specifier: ^3.3.0
         version: 3.3.0
@@ -234,7 +234,7 @@ importers:
         version: link:../utils
       '@hookform/resolvers':
         specifier: ^3.6.0
-        version: 3.6.0(react-hook-form@7.52.0(react@18.2.0))
+        version: 3.6.0(react-hook-form@7.53.2(react@18.2.0))
       '@radix-ui/react-accordion':
         specifier: ^1.2.0
         version: 1.2.0(@types/react-dom@18.3.0)(@types/react@18.2.61)(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
@@ -374,8 +374,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.2.0)
       react-hook-form:
-        specifier: ^7.52.0
-        version: 7.52.0(react@18.2.0)
+        specifier: ^7.53.2
+        version: 7.53.2(react@18.2.0)
       react-resizable-panels:
         specifier: ^2.0.19
         version: 2.0.19(react-dom@18.3.1(react@18.2.0))(react@18.2.0)
@@ -7557,9 +7557,9 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
-  react-hook-form@7.52.0:
-    resolution: {integrity: sha512-mJX506Xc6mirzLsmXUJyqlAI3Kj9Ph2RhplYhUVffeOQSnubK2uVqBFOBJmvKikvbFV91pxVXmDiR+QMF19x6A==}
-    engines: {node: '>=12.22.0'}
+  react-hook-form@7.53.2:
+    resolution: {integrity: sha512-YVel6fW5sOeedd1524pltpHX+jgU2u3DSDtXEaBORNdqiNrsX/nUI/iGXONegttg0mJVnfrIkiV0cmTU6Oo2xw==}
+    engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
 
@@ -10280,13 +10280,13 @@ snapshots:
       hono: 4.6.9
       zod: 3.23.8
 
-  '@hookform/resolvers@3.6.0(react-hook-form@7.52.0(react@18.2.0))':
+  '@hookform/resolvers@3.6.0(react-hook-form@7.53.2(react@18.2.0))':
     dependencies:
-      react-hook-form: 7.52.0(react@18.2.0)
+      react-hook-form: 7.53.2(react@18.2.0)
 
-  '@hookform/resolvers@3.6.0(react-hook-form@7.52.0(react@19.0.0-rc-f994737d14-20240522))':
+  '@hookform/resolvers@3.6.0(react-hook-form@7.53.2(react@19.0.0-rc-f994737d14-20240522))':
     dependencies:
-      react-hook-form: 7.52.0(react@19.0.0-rc-f994737d14-20240522)
+      react-hook-form: 7.53.2(react@19.0.0-rc-f994737d14-20240522)
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
@@ -16547,11 +16547,11 @@ snapshots:
       - utf-8-validate
       - webpack-cli
 
-  react-hook-form@7.52.0(react@18.2.0):
+  react-hook-form@7.53.2(react@18.2.0):
     dependencies:
       react: 18.2.0
 
-  react-hook-form@7.52.0(react@19.0.0-rc-f994737d14-20240522):
+  react-hook-form@7.53.2(react@19.0.0-rc-f994737d14-20240522):
     dependencies:
       react: 19.0.0-rc-f994737d14-20240522
 

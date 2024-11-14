@@ -84,16 +84,17 @@ export const ChangeUsernameModal = NiceModal.create(
         }}
       >
         {understandBool.value ? (
-          <Form {...form}>
-            <form
-              onSubmit={handleSubmit((json) => changeUsername({ json }))}
-              method="POST"
-            >
-              <DialogContent className="md:max-w-[485px]">
-                <DialogHeader>
-                  <DialogTitle>Enter a new username</DialogTitle>
-                </DialogHeader>
+          <DialogContent className="md:max-w-[485px]">
+            <DialogHeader>
+              <DialogTitle>Enter a new username</DialogTitle>
+            </DialogHeader>
 
+            <Form {...form}>
+              <form
+                onSubmit={handleSubmit((json) => changeUsername({ json }))}
+                method="POST"
+                className="md:space-y-4"
+              >
                 <DialogBody className="space-y-2">
                   <FormField
                     control={form.control}
@@ -123,9 +124,9 @@ export const ChangeUsernameModal = NiceModal.create(
                     Change username
                   </Button>
                 </DialogFooter>
-              </DialogContent>
-            </form>
-          </Form>
+              </form>
+            </Form>
+          </DialogContent>
         ) : (
           <DialogContent className="md:max-w-[485px]">
             <DialogHeader>
