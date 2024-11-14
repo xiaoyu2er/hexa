@@ -1,7 +1,7 @@
 'use client';
-import React from 'react';
-import {InfiniteScroll} from '@hexa/ui/infinite-scroll';
+import { InfiniteScroll } from '@hexa/ui/infinite-scroll';
 import { Loader2 } from 'lucide-react';
+import React from 'react';
 
 interface DummyProductResponse {
   products: DummyProduct[];
@@ -24,7 +24,7 @@ const Product = ({ product }: { product: DummyProduct }) => {
           <div className="font-bold text-primary">
             {product.id} - {product.title}
           </div>
-          <div className="text-sm text-muted-foreground">{product.price}</div>
+          <div className="text-muted-foreground text-sm">{product.price}</div>
         </div>
       </div>
     </div>
@@ -46,7 +46,7 @@ export const InfiniteScrollDemo = () => {
      **/
     setTimeout(async () => {
       const res = await fetch(
-        `https://dummyjson.com/products?limit=3&skip=${3 * page}&select=title,price`,
+        `https://dummyjson.com/products?limit=3&skip=${3 * page}&select=title,price`
       );
       const data = (await res.json()) as DummyProductResponse;
       setProducts((prev) => [...prev, ...data.products]);
@@ -60,17 +60,20 @@ export const InfiniteScrollDemo = () => {
     }, 800);
   };
   return (
-    <div className="max-h-[500px] w-full  overflow-y-auto px-10">
-      <div className="flex w-full flex-col items-center  gap-3">
+    <div className="max-h-[500px] w-full overflow-y-auto px-10">
+      <div className="flex w-full flex-col items-center gap-3">
         {products.map((product) => (
           <Product key={product.id} product={product} />
         ))}
-        <InfiniteScroll hasMore={hasMore} isLoading={loading} next={next} threshold={1}>
+        <InfiniteScroll
+          hasMore={hasMore}
+          isLoading={loading}
+          next={next}
+          threshold={1}
+        >
           {hasMore && <Loader2 className="my-4 h-8 w-8 animate-spin" />}
         </InfiniteScroll>
       </div>
     </div>
   );
 };
-
-

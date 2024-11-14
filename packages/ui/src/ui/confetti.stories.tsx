@@ -5,20 +5,19 @@ import { ConfettiButton } from '@hexa/ui/confetti';
 const meta: Meta<typeof ConfettiButton> = {
   component: ConfettiButton,
   args: {
-    children: 'Confetti 🎉'
+    children: 'Confetti 🎉',
   },
   decorators: [
     (Story) => (
-      <div className='flex justify-center items-center h-screen'>
+      <div className="flex h-screen items-center justify-center">
         <Story />
       </div>
     ),
-  ]
+  ],
 };
 
 export default meta;
 
 type Story = StoryObj<typeof ConfettiButton>;
 
-export const Primary: Story = {
-};
+export const Primary: Story = {};

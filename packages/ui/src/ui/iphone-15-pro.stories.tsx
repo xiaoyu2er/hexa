@@ -11,13 +11,13 @@ type Story = StoryObj<typeof Iphone15Pro>;
 
 export const Primary: Story = {
   args: {
-      className: "size-full"
+    className: 'size-full',
   },
   decorators: [
     (Story) => (
-      <div className='md:w-1/3'>
+      <div className="md:w-1/3">
         <Story />
-       </div>
+      </div>
     ),
-  ]
+  ],
 };

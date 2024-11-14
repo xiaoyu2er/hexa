@@ -7,7 +7,6 @@
       "apps/web/.worker-next/**/*",
       "apps/web/.wrangler/**/*",
       "apps/web/drizzle/**/*",
-      "packages/ui/**/*",
       "packages/email-templates/.react-email/**/*",
       "apps/web/env.d.ts"
     ]

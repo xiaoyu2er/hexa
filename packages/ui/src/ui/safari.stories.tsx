@@ -11,16 +11,16 @@ type Story = StoryObj<typeof Safari>;
 
 export const Primary: Story = {
   args: {
-    url: "hexa.im",
-     width :1203,
-      height : 453,
-      className: "size-full"
+    url: 'hexa.im',
+    width: 1203,
+    height: 453,
+    className: 'size-full',
   },
   decorators: [
     (Story) => (
-      <div className='sm:w-1/2 w-full h-300px'>
+      <div className="h-300px w-full sm:w-1/2">
         <Story />
-       </div>
+      </div>
     ),
-  ]
+  ],
 };

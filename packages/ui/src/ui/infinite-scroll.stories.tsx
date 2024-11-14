@@ -11,5 +11,4 @@ export default meta;
 
 type Story = StoryObj<typeof InfiniteScrollDemo>;
 
-export const Primary: Story = {
-};
+export const Primary: Story = {};

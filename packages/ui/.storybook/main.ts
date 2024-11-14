@@ -1,28 +1,29 @@
-import type { StorybookConfig } from "@storybook/nextjs";
+import type { StorybookConfig } from '@storybook/nextjs';
 
-import { join, dirname } from "path";
+import { dirname, join } from 'node:path';
 
 /**
  * This function is used to resolve the absolute path of a package.
  * It is needed in projects that use Yarn PnP or are set up within a monorepo.
  */
-function getAbsolutePath(value: string): any {
-  return dirname(require.resolve(join(value, "package.json")));
+function getAbsolutePath(value: string) {
+  return dirname(require.resolve(join(value, 'package.json')));
 }
 const config: StorybookConfig = {
-  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: [
-  getAbsolutePath("@storybook/addon-essentials"), 
-  getAbsolutePath("@storybook/addon-interactions"),
-  {
-   name: "@storybook/addon-styling",
-   options: {
-     postCss: true,
-   },
-  }, 
-  getAbsolutePath("@storybook/addon-themes")],
+    getAbsolutePath('@storybook/addon-essentials'),
+    getAbsolutePath('@storybook/addon-interactions'),
+    {
+      name: '@storybook/addon-styling',
+      options: {
+        postCss: true,
+      },
+    },
+    getAbsolutePath('@storybook/addon-themes'),
+  ],
   framework: {
-    name: getAbsolutePath("@storybook/nextjs"),
+    name: getAbsolutePath('@storybook/nextjs'),
     options: {},
   },
 };

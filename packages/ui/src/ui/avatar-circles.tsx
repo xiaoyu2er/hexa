@@ -1,8 +1,7 @@
-"use client";
+'use client';
 // https://magicui.design/docs/components/avatar-circles
 
-
-import { cn } from "@hexa/utils";
+import { cn } from '@hexa/utils';
 
 interface AvatarCirclesProps {
   className?: string;
@@ -16,9 +15,10 @@ const AvatarCircles = ({
   avatarUrls,
 }: AvatarCirclesProps) => {
   return (
-    <div className={cn("z-10 flex -space-x-4 rtl:space-x-reverse", className)}>
+    <div className={cn('-space-x-4 z-10 flex rtl:space-x-reverse', className)}>
       {avatarUrls.map((url, index) => (
         <img
+          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
           key={index}
           className="h-10 w-10 rounded-full border-2 border-white dark:border-gray-800"
           src={url}
@@ -28,7 +28,8 @@ const AvatarCircles = ({
         />
       ))}
       <a
-        className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-black text-center text-xs font-medium text-white hover:bg-gray-600 dark:border-gray-800 dark:bg-white dark:text-black"
+        className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-black text-center font-medium text-white text-xs hover:bg-gray-600 dark:border-gray-800 dark:bg-white dark:text-black"
+        // biome-ignore lint/a11y/useValidAnchor: <explanation>
         href=""
       >
         +{numPeople}
@@ -37,4 +38,4 @@ const AvatarCircles = ({
   );
 };
 
-export  {AvatarCircles};
+export { AvatarCircles };

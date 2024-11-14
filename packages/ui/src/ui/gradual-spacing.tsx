@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { AnimatePresence, motion, Variants } from "framer-motion";
+import { AnimatePresence, type Variants, motion } from 'framer-motion';
 
-import { cn } from "@hexa/utils";
+import { cn } from '@hexa/utils';
 
 interface GradualSpacingProps {
   text: string;
@@ -25,17 +25,18 @@ export default function GradualSpacing({
   return (
     <div className="flex justify-center space-x-1">
       <AnimatePresence>
-        {text.split("").map((char, i) => (
+        {text.split('').map((char, i) => (
           <motion.h1
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
             key={i}
             initial="hidden"
             animate="visible"
             exit="hidden"
             variants={framerProps}
             transition={{ duration, delay: i * delayMultiple }}
-            className={cn("drop-shadow-sm ", className)}
+            className={cn('drop-shadow-sm ', className)}
           >
-            {char === " " ? <span>&nbsp;</span> : char}
+            {char === ' ' ? <span>&nbsp;</span> : char}
           </motion.h1>
         ))}
       </AnimatePresence>

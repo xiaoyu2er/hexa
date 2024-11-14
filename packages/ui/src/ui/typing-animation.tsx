@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { cn } from "@hexa/utils";
+import { cn } from '@hexa/utils';
 
 interface TypingAnimationProps {
   text: string;
@@ -15,9 +15,10 @@ export default function TypingAnimation({
   duration = 200,
   className,
 }: TypingAnimationProps) {
-  const [displayedText, setDisplayedText] = useState<string>("");
+  const [displayedText, setDisplayedText] = useState<string>('');
   const [i, setI] = useState<number>(0);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const typingEffect = setInterval(() => {
       if (i < text.length) {
@@ -36,8 +37,8 @@ export default function TypingAnimation({
   return (
     <h1
       className={cn(
-        "font-display text-center text-4xl font-bold leading-[5rem] tracking-[-0.02em] drop-shadow-sm",
-        className,
+        'text-center font-bold font-display text-4xl leading-[5rem] tracking-[-0.02em] drop-shadow-sm',
+        className
       )}
     >
       {displayedText ? displayedText : text}
