@@ -159,6 +159,7 @@ export function FileUpload({
   };
 
   return (
+    // biome-ignore lint/a11y/noLabelWithoutControl: <explanation>
     <label
       className={cn(
         imageUploadVariants({ variant }),
