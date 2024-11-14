@@ -1,10 +1,6 @@
 'use client';
 
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from '@hexa/ui/responsive-dialog';
+import { Dialog, DialogTrigger } from '@hexa/ui/responsive-dialog';
 import type { ReactNode } from 'react';
 import { useBoolean } from 'usehooks-ts';
 import { CreateWorkspaceForm } from './create-workspace-form';
@@ -14,9 +10,7 @@ export function CreateWorkspaceModal({ children }: { children: ReactNode }) {
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <CreateWorkspaceForm onSuccess={close} />
-      </DialogContent>
+      <CreateWorkspaceForm onSuccess={close} />
     </Dialog>
   );
 }

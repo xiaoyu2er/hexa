@@ -82,10 +82,9 @@ export function DeleteAccount() {
               Delete Account
             </Button>
           </DialogTrigger>
-
-          <DialogContent className="sm:max-w-[425px]">
-            <Form {...form}>
-              <form onSubmit={handleSubmit(() => deleteUser({}))} method="POST">
+          <Form {...form}>
+            <form onSubmit={handleSubmit(() => deleteUser({}))} method="POST">
+              <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                   <DialogTitle>Delete Account</DialogTitle>
                   <DialogDescription>
@@ -130,9 +129,9 @@ export function DeleteAccount() {
                     {DELETE_USER_CONFIRMATION}
                   </Button>
                 </DialogFooter>
-              </form>
-            </Form>
-          </DialogContent>
+              </DialogContent>
+            </form>
+          </Form>
         </Dialog>
       </CardFooter>
     </Card>

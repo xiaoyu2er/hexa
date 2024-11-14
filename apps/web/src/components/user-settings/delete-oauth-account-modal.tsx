@@ -79,21 +79,20 @@ export const DeleteOauthAccountModal = NiceModal.create(
           !v && !modal.keepMounted && modal.remove();
         }}
       >
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Delete Connected Account</DialogTitle>
-            <DialogDescription>
-              Warning: This will remove your {provider} account from your
-              profile.
-            </DialogDescription>
-          </DialogHeader>
-          <Form {...form}>
-            <form
-              onSubmit={handleSubmit((json) =>
-                deleteUserOauthAccount({ json })
-              )}
-              method="POST"
-            >
+        <Form {...form}>
+          <form
+            onSubmit={handleSubmit((json) => deleteUserOauthAccount({ json }))}
+            method="POST"
+          >
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Delete Connected Account</DialogTitle>
+                <DialogDescription>
+                  Warning: This will remove your {provider} account from your
+                  profile.
+                </DialogDescription>
+              </DialogHeader>
+
               <DialogBody className="space-y-2">
                 <FormField
                   control={form.control}
@@ -127,9 +126,9 @@ export const DeleteOauthAccountModal = NiceModal.create(
                   Delete Connected Account
                 </Button>
               </DialogFooter>
-            </form>
-          </Form>
-        </DialogContent>
+            </DialogContent>
+          </form>
+        </Form>
       </Dialog>
     );
   }

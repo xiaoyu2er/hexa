@@ -83,86 +83,85 @@ export const ChangeUsernameModal = NiceModal.create(
           !v && !modal.keepMounted && modal.remove();
         }}
       >
-        <DialogContent className="md:max-w-[485px]">
-          {understandBool.value ? (
-            <>
-              <DialogHeader>
-                <DialogTitle>Enter a new username</DialogTitle>
-              </DialogHeader>
-              <Form {...form}>
-                <form
-                  onSubmit={handleSubmit((json) => changeUsername({ json }))}
-                  method="POST"
-                >
-                  <DialogBody className="space-y-2">
-                    <FormField
-                      control={form.control}
-                      name="username"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>New Username</FormLabel>
-                          <FormControl>
-                            <Input
-                              {...field}
-                              className={
-                                errors.username ? 'border-destructive' : ''
-                              }
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </DialogBody>
-                  <DialogFooter>
-                    <Button
-                      className="w-full"
-                      type="submit"
-                      loading={isSubmitting}
-                    >
-                      Change username
-                    </Button>
-                  </DialogFooter>
-                </form>
-              </Form>
-            </>
-          ) : (
-            <>
-              <DialogHeader>
-                <DialogTitle>Really change your username?</DialogTitle>
-              </DialogHeader>
-              <DialogBody>
-                <Alert variant="destructive" className="mt-2">
-                  <ExclamationTriangleIcon className="h-4 w-4" />
-                  <AlertTitle>Notice</AlertTitle>
-                  <AlertDescription>
-                    Unexpected bad things will happen if you don’t read this!
-                  </AlertDescription>
-                </Alert>
-                <ul className="list-disc px-3 pt-3">
-                  <li>
-                    We <strong>will not</strong> set up redirects for your
-                    workspaces.
-                  </li>
-                  <li>
-                    Your old username will be available for anyone to claim.
-                  </li>
-                  <li>You will need to update any bookmarks or saved links.</li>
-                </ul>
-              </DialogBody>
-              <DialogFooter>
-                <Button
-                  variant="destructive"
-                  className="w-full"
-                  type="submit"
-                  onClick={understandBool.setTrue}
-                >
-                  I understand, let’s change my username
-                </Button>
-              </DialogFooter>
-            </>
-          )}
-        </DialogContent>
+        {understandBool.value ? (
+          <Form {...form}>
+            <form
+              onSubmit={handleSubmit((json) => changeUsername({ json }))}
+              method="POST"
+            >
+              <DialogContent className="md:max-w-[485px]">
+                <DialogHeader>
+                  <DialogTitle>Enter a new username</DialogTitle>
+                </DialogHeader>
+
+                <DialogBody className="space-y-2">
+                  <FormField
+                    control={form.control}
+                    name="username"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>New Username</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            className={
+                              errors.username ? 'border-destructive' : ''
+                            }
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </DialogBody>
+                <DialogFooter>
+                  <Button
+                    className="w-full"
+                    type="submit"
+                    loading={isSubmitting}
+                  >
+                    Change username
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </form>
+          </Form>
+        ) : (
+          <DialogContent className="md:max-w-[485px]">
+            <DialogHeader>
+              <DialogTitle>Really change your username?</DialogTitle>
+            </DialogHeader>
+            <DialogBody>
+              <Alert variant="destructive" className="mt-2">
+                <ExclamationTriangleIcon className="h-4 w-4" />
+                <AlertTitle>Notice</AlertTitle>
+                <AlertDescription>
+                  Unexpected bad things will happen if you don’t read this!
+                </AlertDescription>
+              </Alert>
+              <ul className="list-disc px-3 pt-3">
+                <li>
+                  We <strong>will not</strong> set up redirects for your
+                  workspaces.
+                </li>
+                <li>
+                  Your old username will be available for anyone to claim.
+                </li>
+                <li>You will need to update any bookmarks or saved links.</li>
+              </ul>
+            </DialogBody>
+            <DialogFooter>
+              <Button
+                variant="destructive"
+                className="w-full"
+                type="submit"
+                onClick={understandBool.setTrue}
+              >
+                I understand, let’s change my username
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        )}
       </Dialog>
     );
   }

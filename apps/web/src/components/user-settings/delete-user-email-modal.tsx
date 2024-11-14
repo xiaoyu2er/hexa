@@ -75,20 +75,21 @@ export const DeleteUserEmailModal = NiceModal.create(
           !v && !modal.keepMounted && modal.remove();
         }}
       >
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Delete Email</DialogTitle>
-            <DialogDescription>
-              Warning: Permanently delete your email, and their respective
-              stats. This action cannot be undone - please proceed with caution.
-            </DialogDescription>
-          </DialogHeader>
+        <Form {...form}>
+          <form
+            onSubmit={handleSubmit((json) => deleteUserEmail({ json }))}
+            method="POST"
+          >
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Delete Email</DialogTitle>
+                <DialogDescription>
+                  Warning: Permanently delete your email, and their respective
+                  stats. This action cannot be undone - please proceed with
+                  caution.
+                </DialogDescription>
+              </DialogHeader>
 
-          <Form {...form}>
-            <form
-              onSubmit={handleSubmit((json) => deleteUserEmail({ json }))}
-              method="POST"
-            >
               <DialogBody className="space-y-2">
                 <FormField
                   control={form.control}
@@ -121,9 +122,9 @@ export const DeleteUserEmailModal = NiceModal.create(
                   Delete Email
                 </Button>
               </DialogFooter>
-            </form>
-          </Form>
-        </DialogContent>
+            </DialogContent>
+          </form>
+        </Form>
       </Dialog>
     );
   }

@@ -12,6 +12,7 @@ import { $createWorkspace } from '@/server/client';
 import { Button } from '@hexa/ui/button';
 import {
   DialogBody,
+  DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
@@ -70,54 +71,56 @@ export function CreateWorkspaceForm({ onSuccess }: CreateWorkspaceFormProps) {
         method="POST"
         className="space-y-4"
       >
-        <DialogHeader>
-          <DialogTitle>Create Workspace</DialogTitle>
-          <DialogDescription>Create a new workspace</DialogDescription>
-        </DialogHeader>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Create Workspace</DialogTitle>
+            <DialogDescription>Create a new workspace</DialogDescription>
+          </DialogHeader>
 
-        <DialogBody className="space-y-2">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Workspace Name</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    className={errors.name ? 'border-destructive' : ''}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <DialogBody className="space-y-2">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Workspace Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className={errors.name ? 'border-destructive' : ''}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="slug"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Workspace Slug</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    className={errors.slug ? 'border-destructive' : ''}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="slug"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Workspace Slug</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className={errors.slug ? 'border-destructive' : ''}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormErrorMessage message={errors.root?.message} />
-        </DialogBody>
+            <FormErrorMessage message={errors.root?.message} />
+          </DialogBody>
 
-        <DialogFooter>
-          <Button className="w-full" type="submit" loading={isSubmitting}>
-            Create Workspace
-          </Button>
-        </DialogFooter>
+          <DialogFooter>
+            <Button className="w-full" type="submit" loading={isSubmitting}>
+              Create Workspace
+            </Button>
+          </DialogFooter>
+        </DialogContent>
       </form>
     </Form>
   );
