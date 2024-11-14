@@ -11,7 +11,13 @@ const uiExports = uiFiles.reduce((acc, file) => {
 
 const otherFiles = fs
   .readdirSync(path.resolve(__dirname, '../src'))
-  .filter((file) => file.endsWith('.tsx') && !file.endsWith('stories.tsx') && !file.endsWith('demo.tsx') && file !== 'index.tsx');
+  .filter(
+    (file) =>
+      file.endsWith('.tsx') &&
+      !file.endsWith('stories.tsx') &&
+      !file.endsWith('demo.tsx') &&
+      file !== 'index.tsx'
+  );
 
 const otherExports = otherFiles.reduce((acc, file) => {
   const name = file.replace(/\.tsx$/, '');
@@ -20,7 +26,7 @@ const otherExports = otherFiles.reduce((acc, file) => {
 }, {});
 
 pkg.exports = {
-  "./globals.css": "./src/globals.css",
+  './globals.css': './src/globals.css',
   './hooks/*': './src/hooks/*.tsx',
   './icons': './src/icons/index.tsx',
   ...uiExports,

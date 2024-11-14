@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { Button } from '@hexa/ui/button';
 import {
   Dialog,
   DialogBody,
@@ -9,17 +10,15 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@hexa/ui/responsive-dialog";
-import { Button } from "@hexa/ui/button";
+} from '@hexa/ui/responsive-dialog';
 import { useState } from 'react';
 
-
 function StateModal() {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   return (
     <>
@@ -41,7 +40,7 @@ function StateModal() {
         </DialogContent>
       </Dialog>
     </>
-  )
+  );
 }
 
 const meta: Meta<typeof Dialog> = {
@@ -52,5 +51,4 @@ export default meta;
 
 type Story = StoryObj<typeof Dialog>;
 
-export const Primary: Story = {
-};
+export const Primary: Story = {};

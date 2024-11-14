@@ -11,9 +11,8 @@ type Story = StoryObj<typeof AutosizeTextarea>;
 
 export const Primary: Story = {
   args: {
-    placeholder: "This textarea with min height 52 and max height 400",
+    placeholder: 'This textarea with min height 52 and max height 400',
     maxHeight: 400,
     minHeight: 52,
   },
-  
 };

@@ -1,6 +1,5 @@
-"use client";
+'use client';
 
-import React, { useEffect, useRef, useState } from "react";
 import {
   motion,
   useAnimationFrame,
@@ -9,9 +8,10 @@ import {
   useSpring,
   useTransform,
   useVelocity,
-} from "framer-motion";
+} from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
 
-import { cn } from "@hexa/utils";
+import { cn } from '@hexa/utils';
 
 interface VelocityScrollProps {
   text: string;
@@ -56,6 +56,7 @@ export function VelocityScroll({
     const containerRef = useRef<HTMLDivElement>(null);
     const textRef = useRef<HTMLSpanElement>(null);
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
       const calculateRepetitions = () => {
         if (containerRef.current && textRef.current) {
@@ -68,14 +69,14 @@ export function VelocityScroll({
 
       calculateRepetitions();
 
-      window.addEventListener("resize", calculateRepetitions);
-      return () => window.removeEventListener("resize", calculateRepetitions);
+      window.addEventListener('resize', calculateRepetitions);
+      return () => window.removeEventListener('resize', calculateRepetitions);
     }, [children]);
 
     const x = useTransform(baseX, (v) => `${wrap(-100 / repetitions, 0, v)}%`);
 
     const directionFactor = React.useRef<number>(1);
-    useAnimationFrame((t, delta) => {
+    useAnimationFrame((_t, delta) => {
       let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
 
       if (velocityFactor.get() < 0) {
@@ -94,10 +95,11 @@ export function VelocityScroll({
         className="w-full overflow-hidden whitespace-nowrap"
         ref={containerRef}
       >
-        <motion.div className={cn("inline-block", className)} style={{ x }}>
+        <motion.div className={cn('inline-block', className)} style={{ x }}>
           {Array.from({ length: repetitions }).map((_, i) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
             <span key={i} ref={i === 0 ? textRef : null}>
-              {children}{" "}
+              {children}
             </span>
           ))}
         </motion.div>

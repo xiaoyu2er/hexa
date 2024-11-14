@@ -1,5 +1,12 @@
-import type { ReactNode } from "react";
-import React, {
+import type {
+  GlobalOptions as ConfettiGlobalOptions,
+  CreateTypes as ConfettiInstance,
+  Options as ConfettiOptions,
+} from 'canvas-confetti';
+import confetti from 'canvas-confetti';
+import type { ReactNode } from 'react';
+import type React from 'react';
+import {
   createContext,
   forwardRef,
   useCallback,
@@ -7,21 +14,15 @@ import React, {
   useImperativeHandle,
   useMemo,
   useRef,
-} from "react";
-import type {
-  GlobalOptions as ConfettiGlobalOptions,
-  CreateTypes as ConfettiInstance,
-  Options as ConfettiOptions,
-} from "canvas-confetti";
-import confetti from "canvas-confetti";
+} from 'react';
 
-import { Button, ButtonProps } from "@hexa/ui/button";
+import { Button, type ButtonProps } from '@hexa/ui/button';
 
 type Api = {
   fire: (options?: ConfettiOptions) => void;
 };
 
-type Props = React.ComponentPropsWithRef<"canvas"> & {
+type Props = React.ComponentPropsWithRef<'canvas'> & {
   options?: ConfettiOptions;
   globalOptions?: ConfettiGlobalOptions;
   manualstart?: boolean;
@@ -48,7 +49,9 @@ const Confetti = forwardRef<ConfettiRef, Props>((props, ref) => {
     (node: HTMLCanvasElement) => {
       if (node !== null) {
         // <canvas> is mounted => create the confetti instance
-        if (instanceRef.current) return; // if not already created
+        if (instanceRef.current) {
+          return; // if not already created
+        }
         instanceRef.current = confetti.create(node, {
           ...globalOptions,
           resize: true,
@@ -61,20 +64,20 @@ const Confetti = forwardRef<ConfettiRef, Props>((props, ref) => {
         }
       }
     },
-    [globalOptions],
+    [globalOptions]
   );
 
   // `fire` is a function that calls the instance() with `opts` merged with `options`
   const fire = useCallback(
     (opts = {}) => instanceRef.current?.({ ...options, ...opts }),
-    [options],
+    [options]
   );
 
   const api = useMemo(
     () => ({
       fire,
     }),
-    [fire],
+    [fire]
   );
 
   useImperativeHandle(ref, () => api, [api]);
@@ -120,7 +123,7 @@ function ConfettiButton({ options, children, ...props }: ConfettiButtonProps) {
   );
 }
 
-Confetti.displayName = "Confetti";
+Confetti.displayName = 'Confetti';
 
 export { Confetti, ConfettiButton };
 

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { AnimatePresence, motion, Variants } from "framer-motion";
+import { AnimatePresence, type Variants, motion } from 'framer-motion';
 
-import { cn } from "@hexa/utils";
+import { cn } from '@hexa/utils';
 
 interface FlipTextProps {
   word: string;
@@ -25,15 +25,16 @@ export default function FlipText({
   return (
     <div className="flex justify-center space-x-2">
       <AnimatePresence mode="wait">
-        {word.split("").map((char, i) => (
+        {word.split('').map((char, i) => (
           <motion.span
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
             key={i}
             initial="hidden"
             animate="visible"
             exit="hidden"
             variants={framerProps}
             transition={{ duration, delay: i * delayMultiple }}
-            className={cn("origin-center drop-shadow-sm", className)}
+            className={cn('origin-center drop-shadow-sm', className)}
           >
             {char}
           </motion.span>
