@@ -24,7 +24,7 @@ import { useCountdown } from 'usehooks-ts';
 import { RESEND_VERIFY_CODE_TIME_SPAN, VERIFY_CODE_LENGTH } from '@/lib/const';
 import { setFormError } from '@/lib/form';
 import {
-  $rensedPasscode,
+  $resendPasscode,
   $verifyPasscode,
   type InferApiResponseType,
 } from '@/server/client';
@@ -85,9 +85,9 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
     },
   });
 
-  const { mutateAsync: rensedPasscode, isPending: isRensedPending } =
+  const { mutateAsync: resendPasscode, isPending: isRensedPending } =
     useMutation({
-      mutationFn: $rensedPasscode,
+      mutationFn: $resendPasscode,
       onSuccess: () => {
         resetCountdown();
         startCountdown();
@@ -105,7 +105,7 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
     if (isRensedPending) {
       return;
     }
-    rensedPasscode({ json: { email, type, tmpUserId } });
+    resendPasscode({ json: { email, type, tmpUserId } });
   };
 
   return (
