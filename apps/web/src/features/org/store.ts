@@ -7,8 +7,8 @@ import type {
   InsertOrgType,
   OrgRole,
   SelectUserOrgType,
-} from '../db/schema';
-import type { DbType } from '../types';
+} from '../../server/db/schema';
+import type { DbType } from '../../server/types';
 
 // 1. List all orgs that user belongs to with roles
 export const getUserOrgs = async (

@@ -1,12 +1,12 @@
-import { validateRequest } from '@/lib/auth';
-import { ApiError } from '@/lib/error/error';
-import { invalidateUserSessions, setSession } from '@/lib/session';
 import {
   createGoogleAccount,
   getAccountByGoogleId,
   getOauthAccount,
   updateOauthAccount,
-} from '@/server/data-access/account';
+} from '@/features/oauth-account/store';
+import { validateRequest } from '@/lib/auth';
+import { ApiError } from '@/lib/error/error';
+import { invalidateUserSessions, setSession } from '@/lib/session';
 import type { Context } from '@/server/types';
 import type { GoogleUser } from '@/types';
 import { GitHub, Google, generateState } from 'arctic';
@@ -15,12 +15,12 @@ import { OAuth2RequestError } from 'arctic';
 import { Hono } from 'hono';
 import { getCookie, setCookie } from 'hono/cookie';
 
-import { IS_PRODUCTION, PUBLIC_URL } from '@/lib/env';
 import {
   createGithubAccount,
   getAccountByGithubId,
-} from '@/server/data-access/account';
-import { createUser, getUserByName } from '@/server/data-access/user';
+} from '@/features/oauth-account/store';
+import { createUser, getUserByName } from '@/features/user/store';
+import { IS_PRODUCTION, PUBLIC_URL } from '@/lib/env';
 import { OauthSignupSchema } from '@/server/db/schema';
 import type { GitHubEmail, GitHubUser } from '@/types';
 import { zValidator } from '@hono/zod-validator';

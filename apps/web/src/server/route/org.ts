@@ -1,5 +1,3 @@
-import { ApiError } from '@/lib/error/error';
-import {} from '@/lib/storage';
 import {
   assertUserHasOrgRole,
   createOrg,
@@ -8,7 +6,9 @@ import {
   getUserOrgs,
   leaveOrg,
   updateOrg,
-} from '@/server/data-access/org';
+} from '@/features/org/store';
+import { ApiError } from '@/lib/error/error';
+import {} from '@/lib/storage';
 import { InsertOrgSchema } from '@/server/db/schema';
 import auth from '@/server/middleware/auth-user';
 import type { Context } from '@/server/types';

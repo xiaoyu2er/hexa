@@ -1,7 +1,4 @@
-import { ApiError } from '@/lib/error/error';
-import { isStored, storage } from '@/lib/storage';
-import { generateId } from '@/lib/utils';
-import { getOrgByName } from '@/server/data-access/org';
+import { getOrgByName } from '@/features/org/store';
 import {
   createWorkspace,
   deleteWorkspace,
@@ -11,7 +8,10 @@ import {
   setUserDefaultWorkspace,
   updateWorkspaceAvatar,
   updateWorkspaceName,
-} from '@/server/data-access/workspace';
+} from '@/features/workspace/store';
+import { ApiError } from '@/lib/error/error';
+import { isStored, storage } from '@/lib/storage';
+import { generateId } from '@/lib/utils';
 import {
   UpdateWorkspaceAvatarSchema,
   UpdateWorkspacerNameSchema,
