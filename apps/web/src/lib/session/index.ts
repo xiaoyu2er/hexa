@@ -1,7 +1,10 @@
-import { validateRequest } from '@/lib/auth';
-import { $lucia } from '@/lib/auth/lucia';
+'use server';
+
 import { ApiError } from '@/lib/error/error';
+import { $lucia } from '@/lib/session/lucia';
+import type { Session, User } from 'lucia';
 import { cookies } from 'next/headers';
+import { cache } from 'react';
 
 export async function getSessionId() {
   const lucia = await $lucia;
@@ -44,8 +47,34 @@ export async function setBlankSessionCookie() {
   cookie.set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 }
 
+const uncachedGetSession = async (): Promise<
+  { user: User; session: Session } | { user: null; session: null }
+> => {
+  const sessionId = await getSessionId();
+  if (!sessionId) {
+    return { user: null, session: null };
+  }
+  const result = await validateSession(sessionId);
+  // next.js throws when you attempt to set cookie when rendering page
+  try {
+    // If Session.fresh is true, it indicates the session expiration has been extended and you should set a new session cookie.
+    // see https://lucia-auth.com/basics/sessions
+    if (result.session?.fresh) {
+      await setSessionCookie(result.session.id);
+    }
+    if (!result.session) {
+      setBlankSessionCookie();
+    }
+  } catch {
+    //
+  }
+  return result;
+};
+
+export const getSession = cache(uncachedGetSession);
+
 export async function assertAuthenticated() {
-  const { user, session } = await validateRequest();
+  const { user, session } = await getSession();
   if (!user) {
     throw new ApiError(
       'FORBIDDEN',

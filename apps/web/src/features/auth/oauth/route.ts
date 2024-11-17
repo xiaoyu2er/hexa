@@ -4,8 +4,8 @@ import {
   getOauthAccount,
   updateOauthAccount,
 } from '@/features/auth/oauth/store';
-import { validateRequest } from '@/lib/auth';
 import { ApiError } from '@/lib/error/error';
+import { getSession } from '@/lib/session';
 import { invalidateUserSessions, setSession } from '@/lib/session';
 import type { Context } from '@/server/types';
 import type { GoogleUser } from '@/types';
@@ -97,7 +97,7 @@ const oauth = new Hono<Context>()
       throw new ApiError('FORBIDDEN', 'Unverified email');
     }
 
-    const { user } = await validateRequest();
+    const { user } = await getSession();
     // Find existing oauthAccount
     const existingAccount = await getAccountByGithubId(db, githubUser.id);
 
@@ -206,7 +206,7 @@ const oauth = new Hono<Context>()
         return c.json({ error: 'Unverified email' }, 400);
       }
 
-      const { user } = await validateRequest();
+      const { user } = await getSession();
       const existingAccount = await getAccountByGoogleId(db, googleUser.sub);
 
       if (existingAccount?.userId && existingAccount.user) {

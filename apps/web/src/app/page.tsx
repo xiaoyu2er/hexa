@@ -1,4 +1,4 @@
-import { validateRequest } from '@/lib/auth/validate-request';
+import { getSession } from '@/lib/session';
 
 import { Header } from '@/components/header/header';
 import {
@@ -39,7 +39,7 @@ function AlertDialogDemo() {
 }
 
 export default async function Home() {
-  const { session, user } = await validateRequest();
+  const { session, user } = await getSession();
   if (session) {
     return redirect(`/${user.name}/settings/profile`);
   }

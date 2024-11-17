@@ -1,12 +1,12 @@
 'use client';
 
-import type { validateRequest } from '@/lib/auth';
+import type { getSession } from '@/lib/session';
 import { $getUserInfo } from '@/server/client';
 import { useQuery } from '@tanstack/react-query';
 import type { User } from 'lucia';
 import { type FC, type ReactNode, createContext, useContext } from 'react';
 
-type SessionContextType = Awaited<ReturnType<typeof validateRequest>>;
+type SessionContextType = Awaited<ReturnType<typeof getSession>>;
 export const SessionContext = createContext<SessionContextType>({
   session: null,
   user: null,
