@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-import { type SignupForm, SignupSchema } from '@/lib/zod/schemas/auth';
+import { type SignupForm, SignupSchema } from '@/server/db/schema';
 import { Button } from '@hexa/ui/button';
 import {
   Card,

@@ -1,11 +1,11 @@
 'use client';
 
 import { setFormError } from '@/lib/form';
+import { $resetPassword } from '@/server/client';
 import {
   type ResetPasswordForm,
   ResetPasswordSchema,
-} from '@/lib/zod/schemas/auth';
-import { $resetPassword } from '@/server/client';
+} from '@/server/db/schema';
 import { Button } from '@hexa/ui/button';
 import {
   Card,

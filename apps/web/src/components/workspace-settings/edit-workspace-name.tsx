@@ -23,11 +23,10 @@ import {
   invalidateWorkspacesQuery,
   queryWorkspaceBySlugOptions,
 } from '@/lib/queries/workspace';
-import {
-  type UpdateWorkspaceNameInput,
-  UpdateWorkspacerNameSchema,
-} from '@/lib/zod/schemas/workspace';
+
 import { $updateWorkspaceName } from '@/server/client';
+import { UpdateWorkspacerNameSchema } from '@/server/db/schema';
+import type { UpdateWorkspaceNameInput } from '@/server/db/schema';
 import { Button } from '@hexa/ui/button';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';

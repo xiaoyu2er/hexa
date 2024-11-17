@@ -3,13 +3,6 @@ import { ApiError } from '@/lib/error/error';
 import { invalidateUserSessions } from '@/lib/session';
 import { isStored, storage } from '@/lib/storage';
 import { generateId } from '@/lib/utils';
-import { OnlyEmailSchema } from '@/lib/zod/schemas/auth';
-import {
-  ChangeUserNameSchema,
-  DeleteOauthAccountSchema,
-  UpdateAvatarSchema,
-  UpdateDisplayNameSchema,
-} from '@/lib/zod/schemas/user';
 import {
   getUserOauthAccounts,
   removeUserOauthAccount,
@@ -29,6 +22,13 @@ import {
   getWorkspaceByWsId,
   setUserDefaultWorkspace,
 } from '@/server/data-access/workspace';
+import {
+  ChangeUserNameSchema,
+  DeleteOauthAccountSchema,
+  UpdateAvatarSchema,
+  UpdateDisplayNameSchema,
+} from '@/server/db/schema';
+import { OnlyEmailSchema } from '@/server/db/schema';
 import auth from '@/server/middleware/auth-user';
 import authWorkspace from '@/server/middleware/auth-workspace';
 import { updatePasscodeAndSendEmail } from '@/server/serverice/passcode';

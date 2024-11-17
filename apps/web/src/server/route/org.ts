@@ -1,16 +1,13 @@
 import { ApiError } from '@/lib/error/error';
 import {} from '@/lib/storage';
 import {
-  addOrgMember,
   assertUserHasOrgRole,
   createOrg,
   deleteOrg,
   getOrgByName,
   getUserOrgs,
   leaveOrg,
-  transferOrgOwnership,
   updateOrg,
-  updateOrgMemberRole,
 } from '@/server/data-access/org';
 import { InsertOrgSchema } from '@/server/db/schema';
 import auth from '@/server/middleware/auth-user';
@@ -90,52 +87,52 @@ const org = new Hono<Context>()
     return c.json({});
   })
 
-  // Add member to organization
-  .post('/org/:orgId/members', async (c) => {
-    const { db, userId } = c.var;
-    const { orgId } = c.req.param();
-    const { targetUserId, role } = c.req.valid('json');
+  // // Add member to organization
+  // .post('/org/:orgId/members', async (c) => {
+  //   const { db, userId } = c.var;
+  //   const { orgId } = c.req.param();
+  //   const { targetUserId, role } = c.req.valid('json');
 
-    await addOrgMember(db, {
-      orgId,
-      targetUserId,
-      role,
-      currentUserId: userId,
-    });
+  //   await addOrgMember(db, {
+  //     orgId,
+  //     targetUserId,
+  //     role,
+  //     currentUserId: userId,
+  //   });
 
-    return c.json({});
-  })
+  //   return c.json({});
+  // })
 
-  // Update member role
-  .put('/org/:orgId/members/:memberId/role', async (c) => {
-    const { db, userId } = c.var;
-    const { orgId, memberId } = c.req.param();
-    const { role } = c.req.valid('json');
+  // // Update member role
+  // .put('/org/:orgId/members/:memberId/role', async (c) => {
+  //   const { db, userId } = c.var;
+  //   const { orgId, memberId } = c.req.param();
+  //   const { role } = c.req.valid('json');
 
-    await updateOrgMemberRole(db, {
-      orgId,
-      targetUserId: memberId,
-      newRole: role,
-      currentUserId: userId,
-    });
+  //   await updateOrgMemberRole(db, {
+  //     orgId,
+  //     targetUserId: memberId,
+  //     newRole: role,
+  //     currentUserId: userId,
+  //   });
 
-    return c.json({});
-  })
+  //   return c.json({});
+  // })
 
-  // Transfer ownership
-  .put('/org/:orgId/transfer-ownership', async (c) => {
-    const { db, userId } = c.var;
-    const { orgId } = c.req.param();
-    const { newOwnerId } = c.req.valid('json');
+  // // Transfer ownership
+  // .put('/org/:orgId/transfer-ownership', async (c) => {
+  //   const { db, userId } = c.var;
+  //   const { orgId } = c.req.param();
+  //   const { newOwnerId } = c.req.valid('json');
 
-    await transferOrgOwnership(db, {
-      orgId,
-      currentOwnerId: userId,
-      newOwnerId,
-    });
+  //   await transferOrgOwnership(db, {
+  //     orgId,
+  //     currentOwnerId: userId,
+  //     newOwnerId,
+  //   });
 
-    return c.json({});
-  })
+  //   return c.json({});
+  // })
 
   // Leave organization
   .post('/org/:orgId/leave', async (c) => {

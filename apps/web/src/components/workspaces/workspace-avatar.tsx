@@ -1,5 +1,5 @@
 import { getWorkspaceAvatarFallbackUrl } from '@/lib/workspace';
-import type { SelectWorkspaceType } from '@/server/db';
+import type { SelectWorkspaceType } from '@/server/db/schema';
 import { Avatar, AvatarImage } from '@hexa/ui/avatar';
 import { cn } from '@hexa/utils';
 

@@ -16,7 +16,7 @@ import { Button } from '@hexa/ui/button';
 import {
   type LoginPasswordInput,
   LoginPasswordSchema,
-} from '@/lib/zod/schemas/auth';
+} from '@/server/db/schema';
 
 import { OauthButtons } from '@/components/auth/oauth-buttons';
 import { useTurnstile } from '@/components/hooks/use-turnstile';

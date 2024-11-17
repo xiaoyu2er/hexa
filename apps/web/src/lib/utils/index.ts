@@ -2,11 +2,11 @@
 import { Scrypt, generateIdFromEntropySize } from 'lucia';
 import { alphabet, generateRandomString } from 'oslo/crypto';
 
-export async function getHash(value: string) {
+export function getHash(value: string) {
   return new Scrypt().hash(value);
 }
 
-export async function isHashValid(hash: string, value: string) {
+export function isHashValid(hash: string, value: string) {
   return new Scrypt().verify(hash, value);
 }
 

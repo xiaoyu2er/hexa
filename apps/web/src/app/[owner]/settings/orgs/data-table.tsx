@@ -11,7 +11,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { DataTablePagination } from '@/app/(console)/[owner]/settings/orgs/data-table-pagination';
+import { DataTablePagination } from '@/app/[owner]/settings/orgs/data-table-pagination';
 import {} from '@hexa/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableRow } from '@hexa/ui/table';
 import { useState } from 'react';

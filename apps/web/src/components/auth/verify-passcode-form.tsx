@@ -1,9 +1,9 @@
 'use client';
 
 import {
-  type VerifyPasscodeForm,
   VerifyPasscodeSchema,
-} from '@/lib/zod/schemas/auth';
+  type VerifyPasscodeType,
+} from '@/server/db/schema';
 import { Button } from '@hexa/ui/button';
 import {
   Card,
@@ -28,7 +28,7 @@ import {
   $verifyPasscode,
   type InferApiResponseType,
 } from '@/server/client';
-import type { PasscodeType } from '@/server/db';
+import type { PasscodeType } from '@/server/db/schema';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@hexa/ui/input-otp';
 import { useMutation } from '@tanstack/react-query';
@@ -52,7 +52,7 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
   className,
   type,
 }) => {
-  const form = useForm<VerifyPasscodeForm>({
+  const form = useForm<VerifyPasscodeType>({
     resolver: zodResolver(VerifyPasscodeSchema),
     defaultValues: {
       code: '',

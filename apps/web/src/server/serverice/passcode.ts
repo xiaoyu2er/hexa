@@ -1,7 +1,7 @@
 'use server';
 import { sendVerifyCodeAndUrlEmail } from '@/lib/emails';
 import { addDBToken } from '@/server/data-access/token';
-import type { FindTokenByEmailType } from '@/server/db';
+import type { FindTokenByEmailType } from '@/server/db/schema';
 import type { DbType } from '@/server/types';
 
 export async function updatePasscodeAndSendEmail(

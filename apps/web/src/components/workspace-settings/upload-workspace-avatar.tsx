@@ -12,11 +12,11 @@ import {
   invalidateWorkspacesQuery,
   queryWorkspaceBySlugOptions,
 } from '@/lib/queries/workspace';
+import { $updateWorkspaceAvatar } from '@/server/client';
 import {
   type UpdateWorkspaceAvatarInput,
   UpdateWorkspaceAvatarSchema,
-} from '@/lib/zod/schemas/workspace';
-import { $updateWorkspaceAvatar } from '@/server/client';
+} from '@/server/db/schema';
 import { Button } from '@hexa/ui/button';
 import {
   Card,

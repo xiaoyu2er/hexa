@@ -1,5 +1,5 @@
-import { type OnlyEmailInput, OnlyEmailSchema } from '@/lib/zod/schemas/auth';
 import { $addUserEmail, type InferApiResponseType } from '@/server/client';
+import { type OnlyEmailInput, OnlyEmailSchema } from '@/server/db/schema';
 import { Button } from '@hexa/ui/button';
 import {
   Card,

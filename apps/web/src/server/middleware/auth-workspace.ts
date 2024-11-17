@@ -5,7 +5,7 @@ import {
   getWorkspaceMember,
 } from '@/server/data-access/workspace';
 import { createMiddleware } from 'hono/factory';
-import type { SelectWorkspaceType } from '../db';
+import type { SelectWorkspaceType } from '../db/schema';
 
 const authWorkspace = createMiddleware(async (c, next) => {
   let { workspaceId } = c.req.param() as {

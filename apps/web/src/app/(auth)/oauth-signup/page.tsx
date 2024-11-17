@@ -1,5 +1,5 @@
 import { getOauthAccount } from '@/server/data-access/account';
-import { getDb } from '@/server/db';
+import { getDb } from '@/server/db/index';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { OauthSignupPage } from './oauth-signup-page';

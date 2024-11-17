@@ -32,7 +32,7 @@ export function EditPassword() {
         ) : (
           <CardDescription>
             Set a password to have an alternative way to log into your
-            {NEXT_PUBLIC_APP_NAME} account using your username ({user.username})
+            {NEXT_PUBLIC_APP_NAME} account using your username ({user.name})
             {primaryEmail ? `or email (${primaryEmail.email})` : ''}
           </CardDescription>
         )}

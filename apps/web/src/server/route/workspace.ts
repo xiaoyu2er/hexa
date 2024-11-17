@@ -1,10 +1,6 @@
 import { ApiError } from '@/lib/error/error';
 import { isStored, storage } from '@/lib/storage';
 import { generateId } from '@/lib/utils';
-import {
-  UpdateWorkspaceAvatarSchema,
-  UpdateWorkspacerNameSchema,
-} from '@/lib/zod/schemas/workspace';
 import { getOrgByName } from '@/server/data-access/org';
 import {
   createWorkspace,
@@ -16,6 +12,10 @@ import {
   updateWorkspaceAvatar,
   updateWorkspaceName,
 } from '@/server/data-access/workspace';
+import {
+  UpdateWorkspaceAvatarSchema,
+  UpdateWorkspacerNameSchema,
+} from '@/server/db/schema';
 import { InsertWorkspaceSchema } from '@/server/db/schema';
 import auth from '@/server/middleware/auth-user';
 import authWorkspace from '@/server/middleware/auth-workspace';
@@ -50,13 +50,11 @@ const workspace = new Hono<Context>()
       return c.json(workspaces);
     }
   )
-
   // Get workspace by slug
   .get('/workspace', authWorkspace, (c) => {
     const ws = c.get('ws');
     return c.json(ws);
   })
-
   // Create workspace
   .post(
     '/workspace/new',
