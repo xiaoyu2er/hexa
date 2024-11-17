@@ -1,20 +1,20 @@
 import { inspect } from 'node:util';
+import login from '@/features/auth/login/route';
+import logout from '@/features/auth/logout/route';
+import oauth from '@/features/auth/oauth/route';
+import resetPassword from '@/features/auth/reset-password/route';
+import signup from '@/features/auth/signup/route';
+import setEnv from '@/features/env/middleware';
+import test from '@/features/env/route';
+import org from '@/features/org/route';
+import owner from '@/features/owner/route';
+import passcode from '@/features/passcode/route';
+import user from '@/features/user/route';
+import workspace from '@/features/workspace/route';
 import { IS_DEVELOPMENT } from '@/lib/env';
 import { ERROR_CODE_TO_HTTP_STATUS } from '@/lib/error/error';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import setEnv from './middleware/set-env';
-import login from './route/login';
-import logout from './route/logout';
-import oauth from './route/oauth';
-import org from './route/org';
-import owner from './route/owner';
-import passcode from './route/passcode';
-import resetPassword from './route/reset-password';
-import signup from './route/signup';
-import test from './route/test';
-import user from './route/user';
-import workspace from './route/workspace';
 import type { Context } from './types';
 
 export const app = new Hono<Context>()

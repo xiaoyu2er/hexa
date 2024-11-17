@@ -3,7 +3,7 @@ import {
   getAccountByGoogleId,
   getOauthAccount,
   updateOauthAccount,
-} from '@/features/oauth-account/store';
+} from '@/features/auth/oauth/store';
 import { validateRequest } from '@/lib/auth';
 import { ApiError } from '@/lib/error/error';
 import { invalidateUserSessions, setSession } from '@/lib/session';
@@ -18,13 +18,13 @@ import { getCookie, setCookie } from 'hono/cookie';
 import {
   createGithubAccount,
   getAccountByGithubId,
-} from '@/features/oauth-account/store';
+} from '@/features/auth/oauth/store';
 import { createUser, getUserByName } from '@/features/user/store';
 import { IS_PRODUCTION, PUBLIC_URL } from '@/lib/env';
 import { OauthSignupSchema } from '@/server/db/schema';
 import type { GitHubEmail, GitHubUser } from '@/types';
 import { zValidator } from '@hono/zod-validator';
-import { turnstile } from '../middleware/turnstile';
+import { turnstile } from '../turnstile/middleware';
 
 const oauth = new Hono<Context>()
   // Github Oauth

@@ -1,10 +1,10 @@
 import { getOrgWithUserRole } from '@/features/org/store';
+import auth from '@/features/user/middleware';
 import { ApiError } from '@/lib/error/error';
 import { SelectOwnerSchema } from '@/server/db/schema';
-import auth from '@/server/middleware/auth-user';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
-import type { Context } from '../types';
+import type { Context } from '../../server/types';
 
 const owner = new Hono<Context>().get(
   '/owner/:name',

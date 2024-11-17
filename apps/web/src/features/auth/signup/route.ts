@@ -1,4 +1,5 @@
-import {} from '@/features/oauth-account/store';
+import {} from '@/features/auth/oauth/store';
+import { turnstile } from '@/features/auth/turnstile/middleware';
 import { updatePasscodeAndSendEmail } from '@/features/passcode/service';
 import { addTmpUser } from '@/features/tmp-user/store';
 import { getEmail, getUserByName } from '@/features/user/store';
@@ -6,7 +7,6 @@ import { IS_DEVELOPMENT, PUBLIC_URL } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
 import {} from '@/lib/session';
 import { SignupSchema } from '@/server/db/schema';
-import { turnstile } from '@/server/middleware/turnstile';
 import type { Context } from '@/server/types';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';

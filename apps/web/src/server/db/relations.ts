@@ -1,6 +1,5 @@
-// ================ Relations ================
+import { oauthAccountTable } from '@/features/auth/oauth/table';
 import { emailTable } from '@/features/email/table';
-import { oauthAccountTable } from '@/features/oauth-account/table';
 import { orgMemberTable } from '@/features/org-member/table';
 import { orgTable } from '@/features/org/table';
 import { tokenTable } from '@/features/passcode/table';
@@ -11,6 +10,7 @@ import { workspaceOwnerTable } from '@/features/workspace-owner/table';
 import { workspaceTable } from '@/features/workspace/table';
 import { relations } from 'drizzle-orm';
 
+// ================ Relations ================
 export const oauthAccountRelations = relations(
   oauthAccountTable,
   ({ one }) => ({

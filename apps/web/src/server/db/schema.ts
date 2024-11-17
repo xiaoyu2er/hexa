@@ -1,7 +1,7 @@
 // ========== Schemas & Types ==========
 export * from '@/features/common/schema';
 export * from '@/features/email/schema';
-export * from '@/features/oauth-account/schema';
+export * from '@/features/auth/oauth/schema';
 export * from '@/features/org-member/schema';
 export * from '@/features/org/schema';
 export * from '@/features/passcode/schema';
