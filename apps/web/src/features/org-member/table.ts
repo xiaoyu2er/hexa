@@ -1,7 +1,7 @@
 import type { OrgRole } from '@/features/org-member/schema';
 import { orgTable } from '@/features/org/table';
 import { userIdNotNull } from '@/features/user/table';
-import { generateId } from '@/lib/utils';
+import { generateId } from '@/lib/crypto';
 import { primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const orgMemberTable = sqliteTable(

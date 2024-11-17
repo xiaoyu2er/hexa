@@ -1,4 +1,3 @@
-import { getQueryClient } from '@/components/providers/get-query-client';
 import { useSession } from '@/components/providers/session-provider';
 import { queryOrgByNameOptions } from '@/lib/queries/orgs';
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -30,9 +29,4 @@ export const useContext = () => {
     isUserMode,
     slug,
   };
-};
-
-export const invalidateOrg = () => {
-  const { owner } = useParams() as { owner: string };
-  return getQueryClient().invalidateQueries({ queryKey: [`org/${owner}`] });
 };

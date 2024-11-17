@@ -2,7 +2,7 @@ import { expiresAt } from '@/features/common/table';
 import type { PasscodeType } from '@/features/passcode/schema';
 import { tmpUserTable } from '@/features/tmp-user/table';
 import { userIdNullable } from '@/features/user/table';
-import { generateId } from '@/lib/utils';
+import { generateId } from '@/lib/crypto';
 import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 const passcodeType = {

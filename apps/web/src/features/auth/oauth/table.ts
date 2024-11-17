@@ -4,7 +4,7 @@ import { sqliteTable } from 'drizzle-orm/sqlite-core';
 
 import type { ProviderType } from '@/features/auth/oauth/schema';
 import { userIdNullable } from '@/features/user/table';
-import { generateId } from '@/lib/utils';
+import { generateId } from '@/lib/crypto';
 import { text } from 'drizzle-orm/sqlite-core';
 
 export const providerType = {

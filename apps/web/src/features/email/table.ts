@@ -1,5 +1,5 @@
 import { userTable } from '@/features/user/table';
-import { generateId } from '@/lib/utils';
+import { generateId } from '@/lib/crypto';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const emailTable = sqliteTable('email', {
