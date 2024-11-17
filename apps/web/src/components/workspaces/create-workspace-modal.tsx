@@ -4,10 +4,7 @@ import { Input } from '@hexa/ui/input';
 
 import { setFormError } from '@/lib/form';
 import { invalidateWorkspacesQuery } from '@/lib/queries/workspace';
-import {
-  type CreateWorkspaceInput,
-  CreateWorkspaceSchema,
-} from '@/lib/zod/schemas/workspace';
+import {} from '@/lib/zod/schemas/workspace';
 import { $createWorkspace } from '@/server/client';
 import { Button } from '@hexa/ui/button';
 import {
@@ -31,15 +28,35 @@ import {
 } from '@hexa/ui/form';
 import { toast } from '@hexa/ui/sonner';
 
+import { useSession } from '@/components/providers/session-provider';
+import { queryOrgsOptions } from '@/lib/queries/orgs';
+import { getWorkspaceSlug } from '@/lib/workspace';
+import {
+  InsertWorkspaceSchema,
+  type InsertWorkspaceType,
+} from '@/server/db/schema';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@hexa/ui/select';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
 export const CreateWorkspaceModal = NiceModal.create(() => {
   const modal = useModal();
-  const form = useForm<CreateWorkspaceInput>({
-    resolver: zodResolver(CreateWorkspaceSchema),
+  const { user } = useSession();
+  const router = useRouter();
+  const {
+    data: { data: orgs } = { data: [], rowCount: 0 },
+  } = useQuery(queryOrgsOptions);
+  const form = useForm<InsertWorkspaceType>({
+    resolver: zodResolver(InsertWorkspaceSchema),
   });
 
   const {
@@ -54,11 +71,12 @@ export const CreateWorkspaceModal = NiceModal.create(() => {
       setFormError(err, setError);
       modal.reject(err);
     },
-    onSuccess: () => {
+    onSuccess: ({ ws }) => {
       toast.success('Workspace created successfully');
       modal.resolve();
       modal.remove();
       invalidateWorkspacesQuery();
+      router.push(`/${getWorkspaceSlug(ws)}`);
     },
   });
 
@@ -85,33 +103,71 @@ export const CreateWorkspaceModal = NiceModal.create(() => {
             className="md:space-y-4"
           >
             <DialogBody className="space-y-2">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Workspace Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        className={errors.name ? 'border-destructive' : ''}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="ownerId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Owner</FormLabel>
+                      <FormControl>
+                        <Select
+                          {...field}
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            if (value === user.id) {
+                              form.setValue('ownerType', 'USER');
+                            } else {
+                              form.setValue('ownerType', 'ORG');
+                            }
+                          }}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value={user.id}>{user.name}</SelectItem>
+                            {orgs?.map((org) => (
+                              <SelectItem key={org.id} value={org.id}>
+                                {org.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Workspace Name</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          className={errors.name ? 'border-destructive' : ''}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
               <FormField
                 control={form.control}
-                name="slug"
+                name="desc"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Workspace Slug</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        className={errors.slug ? 'border-destructive' : ''}
+                        className={errors.desc ? 'border-destructive' : ''}
                       />
                     </FormControl>
                     <FormMessage />

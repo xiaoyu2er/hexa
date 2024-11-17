@@ -1,17 +1,20 @@
 'use client';
 
-import type { WorkspaceModel } from '@/server/db';
+import { getWorkspaceSlug } from '@/lib/workspace';
+import type { SelectWorkspaceType } from '@/server/db';
 import { Badge } from '@hexa/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader } from '@hexa/ui/card';
 import { BarChart2Icon, GlobeIcon, Link2Icon } from '@hexa/ui/icons';
 import Link from 'next/link';
 import { WorkspaceAvatar } from './workspace-avatar';
 
-export function WorkspaceCard({ workspace }: { workspace: WorkspaceModel }) {
-  const { name, slug } = workspace;
+export function WorkspaceCard({
+  workspace,
+}: { workspace: SelectWorkspaceType }) {
+  const { name } = workspace;
   return (
     <Card className="grow md:max-w-1/3 md:grow-0">
-      <Link href={`/${slug}/`}>
+      <Link href={`/${getWorkspaceSlug(workspace)}/`}>
         <CardHeader className="flex flex-row items-start justify-between">
           <div className="items-top flex flex-shrink-0 flex-row gap-2">
             <WorkspaceAvatar workspace={workspace} className="h-6 w-6" />

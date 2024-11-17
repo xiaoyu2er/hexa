@@ -8,14 +8,7 @@ export type DbSchema = typeof schema;
 
 export type DbType = DrizzleD1Database<DbSchema>;
 declare module 'hono' {
-  interface ContextVariableMap {
-    db: DbType;
-    user: User;
-    userId: User['id'];
-    session: Session;
-    ws: schema.WorkspaceModel;
-    wsMember: schema.WorkspaceMemberModel;
-  }
+  interface ContextVariableMap {}
 
   interface HonoRequest {
     cf: Record<string, unknown>;
@@ -24,10 +17,18 @@ declare module 'hono' {
     ctx: ExecutionContext;
   }
 }
-// export type ContextVariables = {};
+export type ContextVariables = {
+  db: DbType;
+  user: User;
+  userId: User['id'];
+  session: Session;
+  ws: schema.SelectWorkspaceType;
+  wsId: string;
+  wsMember: schema.SelectOrgMemberType;
+};
 
 export type Context = {
-  // Variables: ContextVariables;
+  Variables: ContextVariables;
   // biome-ignore lint/style/useNamingConvention: <explanation>
   // biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
   Bindings: CloudflareEnv;

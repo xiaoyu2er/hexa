@@ -21,24 +21,35 @@ function h<
   return async (
     args: InferRequestType<T>,
     opt?: ClientRequestOptions
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   ): Promise<InferResponseType<T>> => {
     const res = await api(args, opt);
     const status = res.status;
     const isErrorCode = status >= 400;
+    // redirect
+    if (res.redirected && res.url) {
+      location.href = res.url;
+      return {} as InferResponseType<T>;
+    }
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    let data: any = {};
+    let data: InferResponseType<T>;
     try {
       data = await res.json();
     } catch (_e) {
       if (isErrorCode) {
         throw new Error(`[${res.status}] ${res.statusText}`);
       }
+
       return {} as InferResponseType<T>;
     }
+    // @ts-ignore
     if (data.error || isErrorCode) {
+      // @ts-ignore
       if (data.error.name === 'ZodError') {
+        // @ts-ignore
         throw new ZodError(data.error.issues);
       }
+      // @ts-ignore
       if (data.error.message) {
         // @ts-ignore
         throw new Error(data.error.message);
@@ -91,12 +102,21 @@ export const $updateUserDefaultWorkspace = h(
 );
 // ==================== Workspace ====================
 // workspace
-export const $getWorkspaces = h(api.workspace.all.$get);
-export const $getWorkspaceBySlug = h(api.workspace[':slug'].$get);
+export const $getOwnerWorkspaces = h(api.workspace[':owner'].$get);
+export const $getAccessibleWorkspaces = h(api.workspace.all.$get);
+export const $getWorkspaceBySlug = h(api.workspace.$get);
 export const $createWorkspace = h(api.workspace.new.$post);
 export const $deleteWorkspace = h(api.workspace[':workspaceId'].$delete);
 export const $updateWorkspaceName = h(api.workspace[':workspaceId'].name.$put);
-export const $updateWorkspaceSlug = h(api.workspace[':workspaceId'].slug.$put);
+export const $updateWorkspaceSlug = h(api.workspace[':workspaceId'].name.$put);
 export const $updateWorkspaceAvatar = h(
   api.workspace[':workspaceId'].avatar.$put
 );
+// ==================== Org ====================
+export const $getOrgs = h(api.org.all.$get);
+export const $createOrg = h(api.org.$post);
+export const $deleteOrg = h(api.org[':orgId'].$delete);
+export const $getOrgByName = h(api.org[':name'].$get);
+
+// ==================== Owner ====================
+export const $getOwner = h(api.owner[':name'].$get);

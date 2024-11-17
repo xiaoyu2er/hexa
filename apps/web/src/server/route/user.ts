@@ -5,7 +5,7 @@ import { isStored, storage } from '@/lib/storage';
 import { generateId } from '@/lib/utils';
 import { OnlyEmailSchema } from '@/lib/zod/schemas/auth';
 import {
-  ChangeUsernameSchema,
+  ChangeUserNameSchema,
   DeleteOauthAccountSchema,
   UpdateAvatarSchema,
   UpdateDisplayNameSchema,
@@ -17,7 +17,7 @@ import {
 import {
   createUserEmail,
   deleteUser,
-  getUserByUsername,
+  getUserByName,
   getUserEmails,
   removeUserEmail,
   updateProfileName,
@@ -25,7 +25,10 @@ import {
   updateUserPrimaryEmail,
   updateUsername,
 } from '@/server/data-access/user';
-import { setUserDefaultWorkspace } from '@/server/data-access/workspace';
+import {
+  getWorkspaceByWsId,
+  setUserDefaultWorkspace,
+} from '@/server/data-access/workspace';
 import auth from '@/server/middleware/auth-user';
 import authWorkspace from '@/server/middleware/auth-workspace';
 import { updatePasscodeAndSendEmail } from '@/server/serverice/passcode';
@@ -69,23 +72,23 @@ const user = new Hono<Context>()
     zValidator('json', UpdateDisplayNameSchema),
     async (c) => {
       const { db, userId } = c.var;
-      const { name } = c.req.valid('json');
-      await updateProfileName(db, userId, name);
+      const { displayName } = c.req.valid('json');
+      await updateProfileName(db, userId, displayName);
       return c.json({});
     }
   )
   // Change username
   .put(
     '/user/username',
-    zValidator('json', ChangeUsernameSchema),
+    zValidator('json', ChangeUserNameSchema),
     async (c) => {
       const { db, userId } = c.var;
-      const { username } = c.req.valid('json');
-      const existUser = await getUserByUsername(db, username);
+      const { name } = c.req.valid('json');
+      const existUser = await getUserByName(db, name);
       if (existUser) {
         throw new ApiError('CONFLICT', 'Username already exists');
       }
-      await updateUsername(db, userId, username);
+      await updateUsername(db, userId, name);
       return c.json({});
     }
   )
@@ -159,16 +162,19 @@ const user = new Hono<Context>()
   )
   // Set user default workspace
   .put('/user/default-workspace', authWorkspace, async (c) => {
-    const { db, userId, ws } = c.var;
-    const newUser = await setUserDefaultWorkspace(db, userId, ws.id);
+    const { db, userId, wsId } = c.var;
+    const newUser = await setUserDefaultWorkspace(db, { userId, wsId });
     if (!newUser) {
       throw new ApiError(
         'INTERNAL_SERVER_ERROR',
         'Failed to set default workspace'
       );
     }
-    // revalidatePath("/");
-    return c.json(ws);
+    const ws = await getWorkspaceByWsId(db, wsId);
+    if (!ws) {
+      throw new ApiError('NOT_FOUND', 'Workspace not found');
+    }
+    return c.json({ ws });
   });
 
 export default user;

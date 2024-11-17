@@ -2,33 +2,33 @@
 
 import { CaretSortIcon, CheckIcon, PlusCircledIcon } from '@hexa/ui/icons';
 
+import { OrgAvatar } from '@/components/orgs/org-avatar';
+import { UserAvatar } from '@/components/user-settings/user-avatar';
+import { useContext } from '@/lib/queries/context';
+import { queryWorkspacesOptions } from '@/lib/queries/workspace';
+import { getWorkspaceSlug } from '@/lib/workspace';
+import { $updateUserDefaultWorkspace } from '@/server/client';
+import type { SelectWorkspaceType } from '@/server/db';
+import { useModal } from '@ebay/nice-modal-react';
+import { Badge } from '@hexa/ui/badge';
 import { Button } from '@hexa/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@hexa/ui/popover';
+import { toast } from '@hexa/ui/sonner';
 import { cn } from '@hexa/utils';
-
-import { useSession } from '@/components/providers/session-provider';
-import { UserAvatar } from '@/components/user/user-avatar';
-import { queryWorkspacesOptions } from '@/lib/queries/workspace';
-import { $updateUserDefaultWorkspace } from '@/server/client';
-import type { WorkspaceModel } from '@/server/db';
-import { Badge } from '@hexa/ui/badge';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useBoolean } from 'usehooks-ts';
-import { CreateWorkspaceModal } from './create-workspace-modal';
+import { CreateWorkspaceModal } from '../workspaces/create-workspace-modal';
+import { WorkspaceAvatar } from '../workspaces/workspace-avatar';
 
-import { useModal } from '@ebay/nice-modal-react';
-import { toast } from '@hexa/ui/sonner';
-import { WorkspaceAvatar } from './workspace-avatar';
-
-export function WorkspaceSwitcher() {
-  const { slug } = useParams() as { slug?: string };
+export function ContextSwitcher() {
+  const { isOrgMode, isUserMode, user, org, slug } = useContext();
   const { data: workspaces, refetch } = useSuspenseQuery(
-    queryWorkspacesOptions
+    queryWorkspacesOptions() // if not owner, get all accessible workspaces
   );
-  const { user } = useSession();
+
   const {
     value: isPopoverOpen,
     setValue: setPopoverOpen,
@@ -36,15 +36,14 @@ export function WorkspaceSwitcher() {
   } = useBoolean();
 
   const modal = useModal(CreateWorkspaceModal);
-
-  const defaultWs = workspaces.find((ws) => ws.slug === slug);
+  const defaultWs = workspaces.find((ws) => getWorkspaceSlug(ws) === slug);
   const router = useRouter();
   const { mutateAsync: setUserDefaultWorkspace } = useMutation({
     mutationFn: $updateUserDefaultWorkspace,
-    onSuccess({ slug }) {
+    onSuccess({ ws }) {
       toast.success('Workspace switched');
       setPopoverOpen(false);
-      router.push(`/${slug}`);
+      router.push(`/${getWorkspaceSlug(ws as unknown as SelectWorkspaceType)}`);
     },
     onError(err) {
       toast.error(`Failed to switch workspace${err.message}`);
@@ -63,24 +62,30 @@ export function WorkspaceSwitcher() {
           >
             {defaultWs ? (
               <>
-                <WorkspaceAvatar
-                  workspace={defaultWs as WorkspaceModel}
-                  className="h-8 w-8"
-                />
+                <WorkspaceAvatar workspace={defaultWs} className="h-6 w-6" />
                 <span className="w-2/3 overflow-hidden text-ellipsis text-nowrap text-left">
-                  {defaultWs.name}
+                  {getWorkspaceSlug(defaultWs)}
                 </span>
-
                 <Badge className="!mt-0">Plan</Badge>
               </>
-            ) : (
+              // biome-ignore lint/nursery/noNestedTernary: <explanation>
+            ) : isOrgMode && org ? (
+              <>
+                <OrgAvatar org={org} className="h-8 w-8" />
+                <span className="w-2/3 overflow-hidden text-ellipsis text-nowrap text-left">
+                  {org.name}
+                </span>
+              </>
+              // biome-ignore lint/nursery/noNestedTernary: <explanation>
+            ) : user ? (
               <>
                 <UserAvatar className="h-8 w-8" user={user} />
                 <span className="w-2/3 overflow-hidden text-ellipsis text-nowrap text-left">
-                  {user.name}
+                  {user.displayName ?? `${user.name}`}
                 </span>
               </>
-            )}
+            ) : null}
+
             <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -104,18 +109,23 @@ export function WorkspaceSwitcher() {
               key={ws.id}
               variant="ghost"
               className="h-11 w-full justify-start"
-              onClick={() => {
-                setUserDefaultWorkspace({ json: { workspaceId: ws.id } });
-              }}
+              asChild
             >
-              <WorkspaceAvatar workspace={ws} className="mr-2 h-6 w-6 " />
-              <span className="w-full shrink overflow-hidden text-ellipsis text-nowrap text-left">
-                {ws.name}
-              </span>
-
-              {ws.slug === slug ? (
-                <CheckIcon className={cn('ml-2 h-6 w-6')} />
-              ) : null}
+              <Link
+                href={`/${getWorkspaceSlug(ws)}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setUserDefaultWorkspace({ json: { workspaceId: ws.id } });
+                }}
+              >
+                <WorkspaceAvatar workspace={ws} className="mr-2 h-5 w-5 " />
+                <span className="w-full shrink overflow-hidden text-ellipsis text-nowrap text-left">
+                  {getWorkspaceSlug(ws)}
+                </span>
+                {getWorkspaceSlug(ws) === slug ? (
+                  <CheckIcon className={cn('ml-2 h-6 w-6')} />
+                ) : null}
+              </Link>
             </Button>
           ))}
 

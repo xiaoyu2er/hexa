@@ -1,179 +1,370 @@
+import { ApiError } from '@/lib/error/error';
+import { and, eq, exists, or, sql } from 'drizzle-orm';
 import {
-  type WorkspaceMemberModel,
-  type WorkspaceModel,
+  type InsertWorkspaceType,
+  orgMemberTable,
+  orgTable,
   userTable,
-  workspaceMemberTable,
+  workspaceOwnerTable,
   workspaceTable,
-} from '@/server/db/schema';
-import type { DbType } from '@/server/types';
-import { eq } from 'drizzle-orm';
+} from '../db/schema';
+import type { DbType } from '../types';
 
-export const setUserDefaultWorkspace = async (
+// Helper function to get workspace with owner info
+async function getWorkspaceWithOwner(db: DbType, wsId: string) {
+  const workspace = await db.query.workspaceTable.findFirst({
+    where: eq(workspaceTable.id, wsId),
+    with: {
+      owner: {
+        with: {
+          user: true,
+          org: true,
+        },
+      },
+    },
+  });
+
+  if (!workspace) {
+    throw new ApiError('NOT_FOUND', 'Workspace not found');
+  }
+
+  const owner = workspace.owner.user ?? workspace.owner.org;
+  if (!owner) {
+    throw new ApiError('NOT_FOUND', 'Workspace owner not found');
+  }
+
+  return {
+    ...workspace,
+  };
+}
+
+// Helper function to get workspace select query builder
+function getWorkspaceSelectBuilder(db: DbType) {
+  return db
+    .select({
+      id: workspaceTable.id,
+      name: workspaceTable.name,
+      desc: workspaceTable.desc,
+      avatarUrl: workspaceTable.avatarUrl,
+      createdAt: workspaceTable.createdAt,
+      owner: {
+        ownerId: sql<string>`
+          CASE 
+            WHEN ${workspaceOwnerTable.ownerType} = 'USER' 
+            THEN ${workspaceOwnerTable.userId}
+            ELSE ${workspaceOwnerTable.orgId}
+          END
+        `.as('ownerId'),
+        ownerType: workspaceOwnerTable.ownerType,
+        ownerName: sql<string>`
+          CASE 
+            WHEN ${workspaceOwnerTable.ownerType} = 'USER' 
+            THEN (SELECT name FROM user WHERE id = ${workspaceOwnerTable.userId})
+            ELSE (SELECT name FROM org WHERE id = ${workspaceOwnerTable.orgId})
+          END
+        `.as('ownerName'),
+      },
+    })
+    .from(workspaceTable)
+    .leftJoin(
+      workspaceOwnerTable,
+      eq(workspaceTable.id, workspaceOwnerTable.wsId)
+    );
+}
+
+// Helper function to check workspace permissions
+async function assertWorkspacePermission(
   db: DbType,
+  wsId: string,
   userId: string,
-  workspaceId: string
-) => {
+  requiredRoles: ('OWNER' | 'ADMIN' | 'MEMBER')[] = ['OWNER']
+) {
+  const member = await getWorkspaceMember(db, wsId, userId);
+  if (!member) {
+    throw new ApiError('FORBIDDEN', 'You are not a member of this workspace');
+  }
+
+  if (!requiredRoles.includes(member.role)) {
+    throw new ApiError(
+      'FORBIDDEN',
+      'You do not have permission to perform this action'
+    );
+  }
+  return member;
+}
+
+// Set user's default workspace
+export async function setUserDefaultWorkspace(
+  db: DbType,
+  { userId, wsId }: { userId: string; wsId: string }
+) {
   return (
     await db
       .update(userTable)
-      .set({ defaultWorkspaceId: workspaceId })
+      .set({ defaultWsId: wsId })
       .where(eq(userTable.id, userId))
       .returning()
   )[0];
-};
+}
 
-export const getWorkspacesByUserId = async (db: DbType, userId: string) => {
-  return (
-    await db.query.workspaceMemberTable.findMany({
-      where: (table, { eq }) => eq(table.userId, userId),
-      with: {
-        workspace: true,
-      },
-    })
-  ).map((wm) => wm.workspace);
-};
+// Get all workspaces accessible by a user (owned directly or through org membership)
+export async function getUserAccessibleWorkspaces(db: DbType, userId: string) {
+  const workspaces = await getWorkspaceSelectBuilder(db)
+    .where(
+      or(
+        eq(workspaceOwnerTable.userId, userId),
+        exists(
+          db
+            .select()
+            .from(orgMemberTable)
+            .where(
+              and(
+                eq(orgMemberTable.userId, userId),
+                eq(orgMemberTable.orgId, workspaceOwnerTable.orgId)
+              )
+            )
+        )
+      )
+    )
+    .prepare();
 
-export const getWorkspaceBySlug = async (db: DbType, slug: string) => {
-  return db.query.workspaceTable.findFirst({
-    where: (table, { eq }) => eq(table.slug, slug),
-  });
-};
+  return workspaces.all();
+}
 
-export const getWorkspaceBySlugWithMembers = async (
+export async function getUserWorkspaces(db: DbType, userId: string) {
+  const workspaces = await getWorkspaceSelectBuilder(db)
+    .where(eq(workspaceOwnerTable.userId, userId))
+    .prepare();
+  return workspaces.all();
+}
+
+// Get all workspaces owned by an org
+export async function getOrgWorkspaces(db: DbType, orgId: string) {
+  const workspaces = await getWorkspaceSelectBuilder(db)
+    .where(eq(workspaceOwnerTable.orgId, orgId))
+    .prepare();
+  return workspaces.all();
+}
+
+export async function getWorkspaceByOwnerId(
   db: DbType,
-  slug: string
-) => {
-  return db.query.workspaceTable.findFirst({
-    where: (table, { eq }) => eq(table.slug, slug),
-    with: {
-      members: true,
-    },
-  });
-};
+  { ownerId, name }: { ownerId: string; name: string }
+) {
+  const workspace = await getWorkspaceSelectBuilder(db)
+    .where(
+      and(
+        eq(workspaceTable.name, name),
+        or(
+          eq(workspaceOwnerTable.userId, ownerId),
+          eq(workspaceOwnerTable.orgId, ownerId)
+        )
+      )
+    )
+    .limit(1)
+    .prepare();
 
-export const getWorkspaceByWsId = async (db: DbType, wsId: string) => {
-  return db.query.workspaceTable.findFirst({
-    where: (table, { eq }) => eq(table.id, wsId),
-  });
-};
+  const result = await workspace.all();
+  return result.length ? result[0] : null;
+}
 
-export const getWorkspaceByWsIdWithMembers = async (
+export async function getWorkspaceBySlug(db: DbType, slug: string) {
+  const [ownerName, workspaceName] = slug.split('/');
+  if (!ownerName || !workspaceName) {
+    throw new ApiError('BAD_REQUEST', 'Invalid workspace slug format');
+  }
+
+  const workspace = await getWorkspaceSelectBuilder(db)
+    .where(
+      and(
+        eq(workspaceTable.name, workspaceName),
+        or(
+          and(
+            eq(workspaceOwnerTable.ownerType, 'USER'),
+            exists(
+              db
+                .select()
+                .from(userTable)
+                .where(
+                  and(
+                    eq(userTable.id, workspaceOwnerTable.userId),
+                    eq(userTable.name, ownerName)
+                  )
+                )
+            )
+          ),
+          and(
+            eq(workspaceOwnerTable.ownerType, 'ORG'),
+            exists(
+              db
+                .select()
+                .from(orgTable)
+                .where(
+                  and(
+                    eq(orgTable.id, workspaceOwnerTable.orgId),
+                    eq(orgTable.name, ownerName)
+                  )
+                )
+            )
+          )
+        )
+      )
+    )
+    .limit(1)
+    .prepare();
+
+  const result = await workspace.all();
+  return result.length ? result[0] : null;
+}
+
+// Get workspace by ID
+export async function getWorkspaceByWsId(db: DbType, wsId: string) {
+  const workspace = await getWorkspaceSelectBuilder(db)
+    .where(eq(workspaceTable.id, wsId))
+    .limit(1)
+    .prepare();
+
+  const result = await workspace.all();
+  return result.length ? result[0] : null;
+}
+// Create workspace with owner
+export async function createWorkspace(
   db: DbType,
-  wsId: string
-) => {
-  return db.query.workspaceTable.findFirst({
-    where: (table, { eq }) => eq(table.id, wsId),
-    with: {
-      members: true,
-    },
-  });
-};
-
-export const createWorkspace = async (
-  db: DbType,
-  { name, slug }: Pick<WorkspaceModel, 'name' | 'slug'>
-) => {
-  return (
-    await db
-      .insert(workspaceTable)
-      .values({
-        // for better formatting
-        name,
-        slug,
-      })
-      .returning()
-  )[0];
-};
-
-export const addWorkspaceMember = async (
-  db: DbType,
-  {
-    userId,
-    workspaceId,
-    role,
-  }: Pick<WorkspaceMemberModel, 'userId' | 'workspaceId' | 'role'>
-) => {
-  return (
-    await db
-      .insert(workspaceMemberTable)
-      .values({
-        userId,
-        workspaceId,
-        role,
-      })
-      .returning()
-  )[0];
-};
-
-export const deleteWorkspace = async (db: DbType, workspaceId: string) => {
-  await db
-    .delete(workspaceTable)
-    .where(eq(workspaceTable.id, workspaceId))
+  { name, ownerId, ownerType, desc }: InsertWorkspaceType
+) {
+  // Create workspace
+  const [workspace] = await db
+    .insert(workspaceTable)
+    .values({ name, desc })
     .returning();
-};
 
-export const clearWorkspaceAsDefault = async (
+  if (!workspace) {
+    throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create workspace');
+  }
+
+  // Create workspace owner
+  await db.insert(workspaceOwnerTable).values({
+    wsId: workspace.id,
+    userId: ownerType === 'USER' ? ownerId : null,
+    orgId: ownerType === 'ORG' ? ownerId : null,
+    ownerType,
+  });
+
+  // Get workspace with owner info using select builder
+  const result = await getWorkspaceSelectBuilder(db)
+    .where(eq(workspaceTable.id, workspace.id))
+    .limit(1)
+    .prepare()
+    .all();
+
+  if (!result.length) {
+    throw new ApiError(
+      'INTERNAL_SERVER_ERROR',
+      'Failed to get created workspace'
+    );
+  }
+  const ws = result[0];
+
+  if (!ws?.owner) {
+    throw new ApiError(
+      'INTERNAL_SERVER_ERROR',
+      'Failed to get created workspace owner'
+    );
+  }
+
+  return ws;
+}
+
+// Delete workspace
+export async function deleteWorkspace(
   db: DbType,
-  workspaceId: string
-) => {
-  await db
-    .update(userTable)
-    .set({ defaultWorkspaceId: null })
-    .where(eq(userTable.defaultWorkspaceId, workspaceId))
-    .returning();
-};
+  { wsId, userId }: { wsId: string; userId: string }
+) {
+  await assertWorkspacePermission(db, wsId, userId, ['OWNER']);
+  await db.delete(workspaceTable).where(eq(workspaceTable.id, wsId));
+}
 
-// update name
+// Update workspace name
 export async function updateWorkspaceName(
   db: DbType,
-  id: string,
-  name: string
+  {
+    wsId,
+    name,
+    userId,
+  }: {
+    wsId: string;
+    name: string;
+    userId: string;
+  }
 ) {
+  await assertWorkspacePermission(db, wsId, userId, ['OWNER', 'ADMIN']);
   return (
     await db
       .update(workspaceTable)
       .set({ name })
-      .where(eq(workspaceTable.id, id))
-      .returning()
-  )[0];
-}
-// update slug
-export async function updateWorkspaceSlug(
-  db: DbType,
-  id: string,
-  slug: string
-) {
-  return (
-    await db
-      .update(workspaceTable)
-      .set({ slug })
-      .where(eq(workspaceTable.id, id))
+      .where(eq(workspaceTable.id, wsId))
       .returning()
   )[0];
 }
 
-// update avatar
+// Update workspace avatar (check permissions)
 export async function updateWorkspaceAvatar(
   db: DbType,
-  id: string,
-  avatarUrl: string
+  {
+    wsId,
+    avatarUrl,
+    userId,
+  }: {
+    wsId: string;
+    avatarUrl: string;
+    userId: string;
+  }
 ) {
+  await assertWorkspacePermission(db, wsId, userId, ['OWNER', 'ADMIN']);
   return (
     await db
       .update(workspaceTable)
       .set({ avatarUrl })
-      .where(eq(workspaceTable.id, id))
+      .where(eq(workspaceTable.id, wsId))
       .returning()
   )[0];
 }
-
+// Get workspace member
 export async function getWorkspaceMember(
   db: DbType,
-  workspaceId: string,
+  wsId: string,
   userId: string
 ) {
-  return db.query.workspaceMemberTable.findFirst({
-    where: (table, { and, eq }) =>
-      and(eq(table.userId, userId), eq(table.workspaceId, workspaceId)),
+  const workspace = await db.query.workspaceTable.findFirst({
+    where: eq(workspaceTable.id, wsId),
+    with: {
+      owner: {
+        with: {
+          user: true,
+          org: {
+            with: {
+              members: {
+                where: eq(orgMemberTable.userId, userId),
+              },
+            },
+          },
+        },
+      },
+    },
   });
+
+  if (!workspace) {
+    return null;
+  }
+
+  // User is direct owner
+  if (workspace.owner.userId === userId) {
+    return { role: 'OWNER' as const };
+  }
+
+  // Check org membership
+  if (workspace.owner.org?.members.length) {
+    return workspace.owner.org.members[0];
+  }
+
+  return null;
 }

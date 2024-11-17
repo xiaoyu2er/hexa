@@ -1,9 +1,11 @@
 import { validateRequest } from '@/lib/auth';
 import { ApiError } from '@/lib/error/error';
-import { setSession } from '@/lib/session';
+import { invalidateUserSessions, setSession } from '@/lib/session';
 import {
   createGoogleAccount,
   getAccountByGoogleId,
+  getOauthAccount,
+  updateOauthAccount,
 } from '@/server/data-access/account';
 import type { Context } from '@/server/types';
 import type { GoogleUser } from '@/types';
@@ -14,11 +16,15 @@ import { Hono } from 'hono';
 import { getCookie, setCookie } from 'hono/cookie';
 
 import { IS_PRODUCTION, PUBLIC_URL } from '@/lib/env';
+import { OauthSignupSchema } from '@/lib/zod/schemas/auth';
 import {
   createGithubAccount,
   getAccountByGithubId,
 } from '@/server/data-access/account';
+import { createUser, getUserByName } from '@/server/data-access/user';
 import type { GitHubEmail, GitHubUser } from '@/types';
+import { zValidator } from '@hono/zod-validator';
+import { turnstile } from '../middleware/turnstile';
 
 const oauth = new Hono<Context>()
   // Github Oauth
@@ -95,20 +101,16 @@ const oauth = new Hono<Context>()
     // Find existing oauthAccount
     const existingAccount = await getAccountByGithubId(db, githubUser.id);
 
-    if (existingAccount) {
-      // If account is already linked to a user, set session and redirect to settings
-      // biome-ignore lint/nursery/useCollapsedIf: <explanation>
-      if (existingAccount.userId) {
-        await setSession(existingAccount.userId);
-        return c.redirect('/settings/profile', 302);
-      }
+    if (existingAccount?.userId && existingAccount.user) {
+      await setSession(existingAccount.userId);
+      return c.redirect(`/${existingAccount.user.name}/settings/profile`);
     }
     // we don't need the old account, we can just override it
     if (user) {
       // If user is logged in, bind the account, even if it's already linked, update the account
       // it's possible that the user goes to /api/oauth/github
       await createGithubAccount(db, user.id, githubUser);
-      return c.redirect('/settings/profile', 302);
+      return c.redirect(`/${user.name}/settings/profile`);
     }
 
     // If user is not logged in, create a new account, but don't set session, we need to redirect to /sign-up
@@ -126,7 +128,7 @@ const oauth = new Hono<Context>()
       sameSite: 'lax',
     });
 
-    return c.redirect('/sign-up');
+    return c.redirect('/oauth-signup');
   })
   .get('/oauth/google', async (c) => {
     const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = c.env;
@@ -207,20 +209,16 @@ const oauth = new Hono<Context>()
       const { user } = await validateRequest();
       const existingAccount = await getAccountByGoogleId(db, googleUser.sub);
 
-      if (existingAccount) {
-        // If account is already linked to a user, set session and redirect to settings
-        // biome-ignore lint/nursery/useCollapsedIf: <explanation>
-        if (existingAccount.userId) {
-          await setSession(existingAccount.userId);
-          return c.redirect('/settings/profile');
-        }
+      if (existingAccount?.userId && existingAccount.user) {
+        await setSession(existingAccount.userId);
+        return c.redirect(`/${existingAccount.user.name}/settings/profile`);
       }
 
       if (user) {
         // If user is logged in, bind the account, even if it's already linked, update the account
         // it's possible that the user goes to /api/oauth/google
         await createGoogleAccount(db, user.id, googleUser);
-        return c.redirect('/settings/profile', 302);
+        return c.redirect(`/${user.name}/settings/profile`);
       }
 
       // If user is not logged in, create a new account, but don't set session, we need to redirect to /sign-up
@@ -241,7 +239,7 @@ const oauth = new Hono<Context>()
         sameSite: 'lax',
       });
 
-      return c.redirect('/sign-up');
+      return c.redirect('/oauth-signup');
     } catch (e) {
       // the specific error message depends on the provider
       if (e instanceof OAuth2RequestError) {
@@ -253,5 +251,45 @@ const oauth = new Hono<Context>()
 
       throw new ApiError('INTERNAL_SERVER_ERROR', 'Internal server error');
     }
-  });
+  })
+  .post(
+    '/oauth-signup',
+    zValidator('json', OauthSignupSchema),
+    turnstile,
+    async (c) => {
+      const { name, oauthAccountId } = c.req.valid('json');
+      const db = c.get('db');
+      const oauthAcccount = await getOauthAccount(db, oauthAccountId);
+      if (!oauthAcccount) {
+        throw new ApiError('NOT_FOUND', 'Oauth account not found');
+      }
+      if (oauthAcccount.userId) {
+        throw new ApiError(
+          'CONFLICT',
+          'Oauth account already linked to a user'
+        );
+      }
+
+      let user = await getUserByName(db, name);
+      if (user) {
+        throw new ApiError('CONFLICT', 'Username already exists');
+      }
+
+      user = await createUser(db, {
+        password: null, // we don't need password for oauth signup
+        avatarUrl: oauthAcccount.avatarUrl,
+        displayName: oauthAcccount.name,
+        name,
+      });
+
+      if (!user) {
+        throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create user');
+      }
+
+      await updateOauthAccount(db, oauthAcccount.id, { userId: user.id });
+      await invalidateUserSessions(user.id);
+      await setSession(user.id);
+      return c.redirect(`/${user.name}/settings/profile`);
+    }
+  );
 export default oauth;

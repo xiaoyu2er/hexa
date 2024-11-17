@@ -5,13 +5,14 @@ import {
   getWorkspaceMember,
 } from '@/server/data-access/workspace';
 import { createMiddleware } from 'hono/factory';
-import type { WorkspaceModel } from '../db';
+import type { SelectWorkspaceType } from '../db';
 
 const authWorkspace = createMiddleware(async (c, next) => {
-  let { workspaceId, slug } = c.req.param() as {
+  let { workspaceId } = c.req.param() as {
     workspaceId: string;
     slug: string;
   };
+  const slug = c.req.query('slug') as string;
   if (
     !workspaceId &&
     !slug &&
@@ -27,7 +28,7 @@ const authWorkspace = createMiddleware(async (c, next) => {
 
   const { db, session } = c.var;
 
-  let ws: WorkspaceModel | undefined;
+  let ws: SelectWorkspaceType | null;
   if (workspaceId) {
     ws = await getWorkspaceByWsId(db, workspaceId);
   } else {
@@ -43,6 +44,7 @@ const authWorkspace = createMiddleware(async (c, next) => {
   }
 
   c.set('ws', ws);
+  c.set('wsId', ws.id);
   c.set('wsMember', member);
   return next();
 });

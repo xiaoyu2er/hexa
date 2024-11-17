@@ -32,10 +32,10 @@ export function EditUsername() {
       <CardContent className="flex items-center">
         <Input
           type="text"
-          value={user.username}
+          value={user.name ?? ''}
           className="w-full md:max-w-md"
         />
-        <CopyButton className="relative right-9" value={user.username} />
+        <CopyButton className="relative right-9" value={user.name ?? ''} />
       </CardContent>
       <CardFooter className="flex-row-reverse items-center justify-between border-t px-6 py-4">
         <Button

@@ -7,6 +7,8 @@ import setEnv from './middleware/set-env';
 import login from './route/login';
 import logout from './route/logout';
 import oauth from './route/oauth';
+import org from './route/org';
+import owner from './route/owner';
 import passcode from './route/passcode';
 import resetPassword from './route/reset-password';
 import signup from './route/signup';
@@ -28,6 +30,8 @@ export const app = new Hono<Context>()
   .route('/', passcode)
   .route('/', oauth)
   .route('/', workspace)
+  .route('/', org)
+  .route('/', owner)
   .onError((error, c) => {
     // @ts-ignore
     const code = error.code;

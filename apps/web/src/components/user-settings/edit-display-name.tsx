@@ -23,7 +23,6 @@ import { Input } from '@hexa/ui/input';
 
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import { setFormError } from '@/lib/form';
-import { invalidateUser } from '@/lib/queries/user';
 import { $updateUserDisplayName } from '@/server/client';
 import { Button } from '@hexa/ui/button';
 import { toast } from '@hexa/ui/sonner';
@@ -34,15 +33,15 @@ import { useForm } from 'react-hook-form';
 import { useSession } from '../providers/session-provider';
 
 export function EditUserDisplayName() {
-  const { user } = useSession();
+  const { user, refetch } = useSession();
 
   const form = useForm<UpdateDisplayNameInput>({
     resolver: zodResolver(UpdateDisplayNameSchema),
     defaultValues: useMemo(() => {
       return {
-        name: user?.name ?? '',
+        displayName: user?.displayName ?? '',
       };
-    }, [user?.name]),
+    }, [user?.displayName]),
   });
 
   const {
@@ -54,18 +53,18 @@ export function EditUserDisplayName() {
 
   useEffect(() => {
     reset({
-      name: user?.name ?? '',
+      displayName: user?.displayName ?? '',
     });
-  }, [reset, user?.name]);
+  }, [reset, user?.displayName]);
 
   const { mutateAsync: updateDisplayName } = useMutation({
     mutationFn: $updateUserDisplayName,
     onError: (err) => {
-      setFormError(err, setError, 'name');
+      setFormError(err, setError, 'displayName');
     },
     onSuccess: () => {
       toast.success('Your name has been updated');
-      invalidateUser();
+      refetch();
     },
   });
   return (
@@ -86,7 +85,7 @@ export function EditUserDisplayName() {
           <CardContent>
             <FormField
               control={form.control}
-              name="name"
+              name="displayName"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>

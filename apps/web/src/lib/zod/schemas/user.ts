@@ -4,16 +4,16 @@ import {
   MAX_PROFILE_FILE_SIZE_MB,
 } from '@hexa/utils/const';
 import { z } from 'zod';
-import { username } from './auth';
+import { name } from './auth';
 
-const name = z
+const displayName = z
   .string()
   // .min(1, "Please enter a name")
   .max(32, 'Name must be less than 32 characters');
 // .nullable();
 
 export const UpdateDisplayNameSchema = z.object({
-  name,
+  displayName,
 });
 
 export type UpdateDisplayNameInput = z.infer<typeof UpdateDisplayNameSchema>;
@@ -57,8 +57,8 @@ export const DeleteOauthAccountSchema = z.object({
 
 export type DeleteOauthAccountInput = z.infer<typeof DeleteOauthAccountSchema>;
 
-export const ChangeUsernameSchema = z.object({
-  username,
+export const ChangeUserNameSchema = z.object({
+  name,
 });
 
-export type ChangeUsernameInput = z.infer<typeof ChangeUsernameSchema>;
+export type ChangeUserNameInput = z.infer<typeof ChangeUserNameSchema>;

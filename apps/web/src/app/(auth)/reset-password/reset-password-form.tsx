@@ -27,7 +27,6 @@ import { useMutation } from '@tanstack/react-query';
 import { PasswordInput } from '@hexa/ui/password-input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { type FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -42,8 +41,6 @@ export const ResetPassword: FC<ResetParsswordCardProps> = ({
   onCancel,
   token,
 }) => {
-  const router = useRouter();
-
   const form = useForm<ResetPasswordForm>({
     resolver: zodResolver(ResetPasswordSchema),
     defaultValues: {
@@ -61,10 +58,7 @@ export const ResetPassword: FC<ResetParsswordCardProps> = ({
 
   const { mutateAsync: resetPassword } = useMutation({
     mutationFn: $resetPassword,
-    onSuccess: () => {
-      router.push('/settings/profile');
-      onSuccess?.();
-    },
+    onSuccess,
     onError: (error) => {
       // resetTurnstile();
       setFormError(error, setError);

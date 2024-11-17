@@ -1,5 +1,7 @@
-import { getAvatarFallbackName, getAvatarFallbackUrl } from '@/lib/user';
-import { Avatar, AvatarFallback, AvatarImage } from '@hexa/ui/avatar';
+'use client';
+
+import { getAvatarFallbackUrl } from '@/lib/user';
+import { Avatar, AvatarImage } from '@hexa/ui/avatar';
 import { cn } from '@hexa/utils';
 import type { User } from 'lucia';
 
@@ -16,9 +18,6 @@ export function UserAvatar({
         src={user?.avatarUrl || getAvatarFallbackUrl(user)}
         alt={user?.name || 'User Profile Picture'}
       />
-      <AvatarFallback delayMs={200}>
-        {getAvatarFallbackName(user)}
-      </AvatarFallback>
     </Avatar>
   );
 }

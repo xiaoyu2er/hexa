@@ -7,10 +7,6 @@ import { toast } from '@hexa/ui/sonner';
 
 import { setFormError } from '@/lib/form';
 import { invalidateUser } from '@/lib/queries/user';
-import {
-  type ChangeUsernameInput,
-  ChangeUsernameSchema,
-} from '@/lib/zod/schemas/user';
 import { $updateUsername } from '@/server/client';
 import type { ProviderType } from '@/server/db';
 import { Alert, AlertDescription, AlertTitle } from '@hexa/ui/alert';
@@ -24,6 +20,10 @@ import {
   DialogTitle,
 } from '@hexa/ui/responsive-dialog';
 
+import {
+  type ChangeUserNameInput,
+  ChangeUserNameSchema,
+} from '@/lib/zod/schemas/user';
 import {
   Form,
   FormControl,
@@ -46,11 +46,9 @@ export const ChangeUsernameModal = NiceModal.create(
     const modal = useModal();
     const understandBool = useBoolean();
 
-    const form = useForm<ChangeUsernameInput>({
-      resolver: zodResolver(ChangeUsernameSchema),
-      defaultValues: {
-        username: '',
-      },
+    const form = useForm<ChangeUserNameInput>({
+      resolver: zodResolver(ChangeUserNameSchema),
+      defaultValues: {},
     });
 
     const {
@@ -62,7 +60,7 @@ export const ChangeUsernameModal = NiceModal.create(
     const { mutateAsync: changeUsername } = useMutation({
       mutationFn: $updateUsername,
       onError: (err) => {
-        setFormError(err, setError, 'username');
+        setFormError(err, setError, 'name');
         modal.reject(err);
       },
       onSuccess: () => {
@@ -98,16 +96,14 @@ export const ChangeUsernameModal = NiceModal.create(
                 <DialogBody className="space-y-2">
                   <FormField
                     control={form.control}
-                    name="username"
+                    name="name"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>New Username</FormLabel>
                         <FormControl>
                           <Input
                             {...field}
-                            className={
-                              errors.username ? 'border-destructive' : ''
-                            }
+                            className={errors.name ? 'border-destructive' : ''}
                           />
                         </FormControl>
                         <FormMessage />

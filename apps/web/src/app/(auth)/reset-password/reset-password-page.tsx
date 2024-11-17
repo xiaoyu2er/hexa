@@ -1,6 +1,7 @@
 'use client';
 
 import { VerifyPasscode } from '@/components/auth/verify-passcode-form';
+import { toast } from '@hexa/ui/sonner';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { type FC, useEffect, useState } from 'react';
 import { useStep } from 'usehooks-ts';
@@ -34,7 +35,15 @@ export const ResetPasswordPage: FC<ResetPasswordProps> = () => {
   }, []);
 
   if (initToken) {
-    return <ResetPassword token={initToken} onCancel={onCancel} />;
+    return (
+      <ResetPassword
+        token={initToken}
+        onCancel={onCancel}
+        onSuccess={() => {
+          toast.success('Password reset successful');
+        }}
+      />
+    );
   }
 
   return (
@@ -53,9 +62,9 @@ export const ResetPasswordPage: FC<ResetPasswordProps> = () => {
         <VerifyPasscode
           email={email}
           type="RESET_PASSWORD"
-          onSuccess={({ token }) => {
+          onSuccess={(data) => {
             goToNextStep();
-            setToken(token);
+            setToken(data?.token ?? '');
           }}
           onCancel={goToPrevStep}
         />

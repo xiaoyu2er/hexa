@@ -2,8 +2,8 @@ import { IS_DEVELOPMENT } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
 import { getHash } from '@/lib/utils';
 import {
-  type EmailModal,
-  type UserModel,
+  type InsertEmailType,
+  type InsertUserType,
   emailTable,
   userTable,
 } from '@/server/db/schema';
@@ -18,9 +18,9 @@ export async function getUser(db: DbType, uid: string) {
   return user;
 }
 
-export async function getUserByUsername(db: DbType, username: string) {
+export async function getUserByName(db: DbType, name: string) {
   const user = await db.query.userTable.findFirst({
-    where: eq(userTable.username, username),
+    where: eq(userTable.name, name),
   });
 
   return user;
@@ -76,14 +76,7 @@ export const getUserEmailOrThrowError = async (db: DbType, email: string) => {
 
 export async function createUserEmail(
   db: DbType,
-  {
-    email,
-    verified,
-    primary,
-    userId,
-  }: Pick<EmailModal, 'email' | 'verified' | 'primary'> & {
-    userId: UserModel['id'];
-  }
+  { email, verified, primary, userId }: InsertEmailType
 ) {
   return (
     await db
@@ -92,7 +85,7 @@ export async function createUserEmail(
         email,
         verified,
         primary,
-        userId: userId,
+        userId,
       })
       .returning()
   )[0];
@@ -106,46 +99,20 @@ export async function removeUserEmail(db: DbType, uid: string, email: string) {
 
 export async function createUser(
   db: DbType,
-  {
-    email,
-    verified,
-    password,
-    username,
-    avatarUrl,
-    name,
-  }: Pick<UserModel, 'password' | 'username' | 'avatarUrl' | 'name'> &
-    Pick<EmailModal, 'email' | 'verified'>
+  { password, avatarUrl, name, displayName }: InsertUserType
 ) {
-  const user = (
+  return (
     await db
       .insert(userTable)
       .values({
-        username,
         avatarUrl: avatarUrl ?? null,
-        name: name ?? null,
-        ...(password ? { password: await getHash(password) } : {}),
+        displayName,
+        name: name,
+        ...(password ? { password } : {}),
       })
       // .onConflictDoNothing()
       .returning()
   )[0];
-
-  if (!user) {
-    throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create user');
-  }
-
-  await createUserEmail(db, {
-    email,
-    verified,
-    primary: true,
-    userId: user.id,
-  });
-
-  return await db.query.userTable.findFirst({
-    where: (table, { eq }) => eq(table.id, user.id),
-    with: {
-      emails: true,
-    },
-  });
 }
 
 export async function updateUserPassword(
@@ -202,17 +169,12 @@ export async function updateUserProfile(
 export async function updateProfileName(db: DbType, uid: string, name: string) {
   await db
     .update(userTable)
-    // we set name to null if it's an empty string
-    .set({ name: name || null })
+    .set({ displayName: name })
     .where(eq(userTable.id, uid));
 }
 
-export async function updateUsername(
-  db: DbType,
-  uid: string,
-  username: string
-) {
-  await db.update(userTable).set({ username }).where(eq(userTable.id, uid));
+export async function updateUsername(db: DbType, uid: string, name: string) {
+  await db.update(userTable).set({ name }).where(eq(userTable.id, uid));
 }
 
 export async function updateUserAvatar(
