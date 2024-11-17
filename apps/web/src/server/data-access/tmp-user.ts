@@ -1,7 +1,8 @@
+import { tokenTable } from '@/features/passcode/table';
+import { tmpUserTable } from '@/features/tmp-user/table';
 import { ApiError } from '@/lib/error/error';
 import { getHash } from '@/lib/utils';
 import { eq } from 'drizzle-orm';
-import { tmpUserTable, tokenTable } from '../db/schema';
 import type { DbType } from '../types';
 
 export async function addTmpUser(

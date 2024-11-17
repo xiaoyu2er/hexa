@@ -1,12 +1,12 @@
+import { tokenTable } from '@/features/passcode/table';
 import { RESET_PASSWORD_EXPIRE_TIME_SPAN } from '@/lib/const';
 import { IS_DEVELOPMENT } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
 import { generateCode, generateId } from '@/lib/utils';
-import {
-  type FindTokenByEmailType,
-  type FindTokenByTokenType,
-  type VerifyTokenType,
-  tokenTable,
+import type {
+  FindTokenByEmailType,
+  FindTokenByTokenType,
+  VerifyTokenType,
 } from '@/server/db/schema';
 import type { DbType } from '@/server/types';
 import { and, eq } from 'drizzle-orm';
