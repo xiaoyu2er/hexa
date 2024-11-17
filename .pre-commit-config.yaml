@@ -7,6 +7,13 @@ repos:
         entry: npx biome check --files-ignore-unknown=true --no-errors-on-unmatched --fix --unsafe
         language: system
         types: [text]
+  - repo: local
+    hooks:
+      - id: local-biome-ci
+        name: biome ci
+        entry: npx biome ci --files-ignore-unknown=true --no-errors-on-unmatched
+        language: system
+        types: [text]
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
     rev: v9.16.0
     hooks:
