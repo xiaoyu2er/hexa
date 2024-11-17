@@ -1,5 +1,5 @@
 import { EmailSchema, type EmailType } from '@/features/common/schema';
-import { $addUserEmail, type InferApiResponseType } from '@/server/client';
+import { $addUserEmail, type InferApiResponseType } from '@/lib/api';
 import { Button } from '@hexa/ui/button';
 import {
   Card,

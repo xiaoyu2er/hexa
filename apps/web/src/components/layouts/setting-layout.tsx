@@ -1,6 +1,6 @@
 'use client';
 
-import type { NavTab } from '@/types';
+import type { NavTab } from '@/components/menu-bar/types';
 import { Button } from '@hexa/ui/button';
 import { MaxWidth } from '@hexa/ui/max-width';
 import { cn } from '@hexa/utils';

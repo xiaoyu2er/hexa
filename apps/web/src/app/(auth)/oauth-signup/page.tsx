@@ -1,5 +1,5 @@
 import { getOauthAccount } from '@/features/auth/oauth/store';
-import { getDb } from '@/server/db/index';
+import { getDb } from '@/lib/db';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { OauthSignupPage } from './oauth-signup-page';

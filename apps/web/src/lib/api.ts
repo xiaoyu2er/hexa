@@ -1,4 +1,4 @@
-import type { AppType } from '@/server/route';
+import type { AppType } from '@/lib/route';
 import {
   type ClientRequestOptions,
   type InferRequestType,

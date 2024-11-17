@@ -2,9 +2,9 @@
 
 import { Input } from '@hexa/ui/input';
 
+import { $updateUsername } from '@/lib/api';
 import { setFormError } from '@/lib/form';
 import { invalidateUser } from '@/lib/queries/user';
-import { $updateUsername } from '@/server/client';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { Alert, AlertDescription, AlertTitle } from '@hexa/ui/alert';
 import { Button } from '@hexa/ui/button';

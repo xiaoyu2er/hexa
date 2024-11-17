@@ -17,8 +17,8 @@ import {
 } from '@/features/passcode/schema';
 
 import { useTurnstile } from '@/components/hooks/use-turnstile';
+import { $sendPasscode, type InferApiResponseType } from '@/lib/api';
 import { setFormError } from '@/lib/form';
-import { $sendPasscode, type InferApiResponseType } from '@/server/client';
 import {
   Card,
   CardContent,

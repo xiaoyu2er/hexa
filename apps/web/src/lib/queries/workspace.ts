@@ -3,7 +3,7 @@ import {
   $getAccessibleWorkspaces,
   $getOwnerWorkspaces,
   $getWorkspaceBySlug,
-} from '@/server/client';
+} from '@/lib/api';
 import { queryOptions } from '@tanstack/react-query';
 
 export const queryWorkspacesOptions = (ownerName?: string) =>

@@ -3,7 +3,7 @@ import type { FindPasscodeByEmailType } from '@/features/passcode/schema';
 import { addDBToken } from '@/features/passcode/store';
 
 import { sendVerifyCodeAndUrlEmail } from '@/lib/emails';
-import type { DbType } from '@/server/types';
+import type { DbType } from '@/lib/types';
 
 export async function updatePasscodeAndSendEmail(
   db: DbType,

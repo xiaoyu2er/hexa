@@ -20,8 +20,8 @@ import {
 
 import { OauthButtons } from '@/components/auth/oauth-buttons';
 import { useTurnstile } from '@/components/hooks/use-turnstile';
+import { $loginPassword } from '@/lib/api';
 import { setFormError } from '@/lib/form';
-import { $loginPassword } from '@/server/client';
 import {
   Card,
   CardContent,

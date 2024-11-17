@@ -2,9 +2,9 @@
 
 import { Input } from '@hexa/ui/input';
 
+import { $createOrg } from '@/lib/api';
 import { setFormError } from '@/lib/form';
 import { invalidateWorkspacesQuery } from '@/lib/queries/workspace';
-import { $createOrg } from '@/server/client';
 import { Button } from '@hexa/ui/button';
 import {
   Dialog,

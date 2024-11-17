@@ -6,7 +6,7 @@ import { orgMemberTable } from '@/features/org-member/table';
 import type { InsertOrgType, SelectUserOrgType } from '@/features/org/schema';
 import { orgTable } from '@/features/org/table';
 import { ApiError } from '@/lib/error/error';
-import type { DbType } from '@/server/types';
+import type { DbType } from '@/lib/types';
 import { and, eq } from 'drizzle-orm';
 
 // 1. List all orgs that user belongs to with roles

@@ -1,4 +1,4 @@
-import { $getOrgByName, $getOrgs } from '@/server/client';
+import { $getOrgByName, $getOrgs } from '@/lib/api';
 import { queryOptions } from '@tanstack/react-query';
 
 export const queryOrgsOptions = queryOptions({

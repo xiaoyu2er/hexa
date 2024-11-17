@@ -1,7 +1,7 @@
 'use client';
 
+import { $getUserInfo } from '@/lib/api';
 import type { getSession } from '@/lib/session';
-import { $getUserInfo } from '@/server/client';
 import { useQuery } from '@tanstack/react-query';
 import type { User } from 'lucia';
 import { type FC, type ReactNode, createContext, useContext } from 'react';

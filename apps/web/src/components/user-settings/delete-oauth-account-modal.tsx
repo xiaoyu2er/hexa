@@ -10,8 +10,8 @@ import {
   DeleteOauthAccountSchema,
 } from '@/features/auth/oauth/schema';
 import type { ProviderType } from '@/features/auth/oauth/schema';
+import { $deleteUserOauthAccount } from '@/lib/api';
 import { setFormError } from '@/lib/form';
-import { $deleteUserOauthAccount } from '@/server/client';
 import { Button } from '@hexa/ui/button';
 import {
   Form,

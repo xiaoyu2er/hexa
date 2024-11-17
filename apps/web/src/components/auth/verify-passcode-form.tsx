@@ -22,13 +22,13 @@ import { useForm } from 'react-hook-form';
 import { useCountdown } from 'usehooks-ts';
 
 import type { PasscodeType } from '@/features/passcode/schema';
-import { RESEND_VERIFY_CODE_TIME_SPAN, VERIFY_CODE_LENGTH } from '@/lib/const';
-import { setFormError } from '@/lib/form';
 import {
   $resendPasscode,
   $verifyPasscode,
   type InferApiResponseType,
-} from '@/server/client';
+} from '@/lib/api';
+import { RESEND_VERIFY_CODE_TIME_SPAN, VERIFY_CODE_LENGTH } from '@/lib/const';
+import { setFormError } from '@/lib/form';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@hexa/ui/input-otp';
 import { useMutation } from '@tanstack/react-query';

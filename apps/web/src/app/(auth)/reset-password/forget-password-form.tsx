@@ -23,8 +23,8 @@ import {
   SendPasscodeSchema,
   type SendPasscodeType,
 } from '@/features/passcode/schema';
+import { $sendPasscode, type InferApiResponseType } from '@/lib/api';
 import { setFormError } from '@/lib/form';
-import { $sendPasscode, type InferApiResponseType } from '@/server/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
