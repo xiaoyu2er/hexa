@@ -4,8 +4,8 @@ import type { InsertUserType } from '@/features/user/schema';
 import { userTable } from '@/features/user/table';
 import { IS_DEVELOPMENT } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
+import type { DbType } from '@/lib/types';
 import { getHash } from '@/lib/utils';
-import type { DbType } from '@/server/types';
 import { and, eq, ne } from 'drizzle-orm';
 
 export async function getUser(db: DbType, uid: string) {

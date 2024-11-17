@@ -7,7 +7,7 @@ import { orgTable } from '@/features/org/table';
 import { workspaceOwnerTable } from '@/features/workspace-owner/table';
 import type { InsertWorkspaceType } from '@/features/workspace/schema';
 import { workspaceTable } from '@/features/workspace/table';
-import type { DbType } from '../../server/types';
+import type { DbType } from '../../lib/types';
 
 // Helper function to get workspace select query builder
 function getWorkspaceSelectBuilder(db: DbType) {

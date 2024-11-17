@@ -10,8 +10,8 @@ import {
   UpdateAvatarSchema,
   type UpdateAvatarType,
 } from '@/features/common/schema';
+import { $updateUserAvatar } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
-import { $updateUserAvatar } from '@/server/client';
 import { Button } from '@hexa/ui/button';
 import {
   Card,

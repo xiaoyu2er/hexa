@@ -1,11 +1,12 @@
 import type {
+  GitHubUser,
+  GoogleUser,
   InsertOauthAccountType,
   ProviderType,
 } from '@/features/auth/oauth/schema';
 import { oauthAccountTable } from '@/features/auth/oauth/table';
 import type { SelectUserType } from '@/features/user/schema';
-import type { DbType } from '@/server/types';
-import type { GitHubUser, GoogleUser } from '@/types';
+import type { DbType } from '@/lib/types';
 import { and, eq } from 'drizzle-orm';
 
 export async function getAccountByGoogleId(db: DbType, googleId: string) {

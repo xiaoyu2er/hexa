@@ -4,7 +4,7 @@ import { SelectOwnerSchema } from '@/features/workspace-owner/schema';
 import { ApiError } from '@/lib/error/error';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
-import type { Context } from '../../server/types';
+import type { Context } from '../../lib/types';
 
 const owner = new Hono<Context>().get(
   '/owner/:name',

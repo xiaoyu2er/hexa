@@ -6,8 +6,8 @@ import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { toast } from '@hexa/ui/sonner';
 
 import { EmailSchema, type EmailType } from '@/features/common/schema';
+import { $deleteUserEmail } from '@/lib/api';
 import { setFormError } from '@/lib/form';
-import { $deleteUserEmail } from '@/server/client';
 import { Button } from '@hexa/ui/button';
 import {
   Form,

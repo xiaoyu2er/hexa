@@ -1,4 +1,4 @@
-import { getDb } from '@/server/db/index';
+import { getDb } from '@/lib/db';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { createMiddleware } from 'hono/factory';
 

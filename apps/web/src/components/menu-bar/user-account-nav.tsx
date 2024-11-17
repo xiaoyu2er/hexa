@@ -2,7 +2,7 @@
 
 import { useSession } from '@/components/providers/session-provider';
 import { UserAvatar } from '@/components/user-settings/user-avatar';
-import { $logout } from '@/server/client';
+import { $logout } from '@/lib/api';
 import { Button } from '@hexa/ui/button';
 import {
   DropdownMenu,

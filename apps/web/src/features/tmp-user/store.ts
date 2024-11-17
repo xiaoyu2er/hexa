@@ -3,7 +3,7 @@ import { tmpUserTable } from '@/features/tmp-user/table';
 import { ApiError } from '@/lib/error/error';
 import { getHash } from '@/lib/utils';
 import { eq } from 'drizzle-orm';
-import type { DbType } from '../../server/types';
+import type { DbType } from '../../lib/types';
 
 export async function addTmpUser(
   db: DbType,

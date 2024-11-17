@@ -6,8 +6,8 @@ config({
 });
 
 export default defineConfig({
-  schema: './src/server/db/relations.ts',
-  out: './drizzle/migrations',
+  schema: './src/db/schema.ts',
+  out: './src/migrations',
   dialect: 'sqlite',
   // driver: 'd1-http',
   dbCredentials: {

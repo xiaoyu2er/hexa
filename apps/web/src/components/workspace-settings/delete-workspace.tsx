@@ -14,10 +14,10 @@ import {
   DeleteWorkspaceSchema,
   type DeleteWorkspaceType,
 } from '@/features/workspace/schema';
+import { $deleteWorkspace } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import { setFormError } from '@/lib/form';
 import { invalidateWorkspacesQuery } from '@/lib/queries/workspace';
-import { $deleteWorkspace } from '@/server/client';
 import { Button } from '@hexa/ui/button';
 import {
   Form,

@@ -28,7 +28,7 @@ import {
   type UpdateWorkspaceNameType,
   UpdateWorkspacerNameSchema,
 } from '@/features/workspace/schema';
-import { $updateWorkspaceName } from '@/server/client';
+import { $updateWorkspaceName } from '@/lib/api';
 import { Button } from '@hexa/ui/button';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';

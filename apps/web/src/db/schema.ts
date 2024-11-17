@@ -9,6 +9,7 @@ import { shortUrlTable } from '@/features/url/table';
 import { userTable } from '@/features/user/table';
 import { workspaceOwnerTable } from '@/features/workspace-owner/table';
 import { workspaceTable } from '@/features/workspace/table';
+import { relations } from 'drizzle-orm';
 
 export {
   sessionTable,
@@ -23,7 +24,6 @@ export {
   workspaceOwnerTable,
   workspaceTable,
 };
-import { relations } from 'drizzle-orm';
 
 // ================ Relations ================
 export const oauthAccountRelations = relations(

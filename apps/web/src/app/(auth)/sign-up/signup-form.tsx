@@ -27,8 +27,8 @@ import { useForm } from 'react-hook-form';
 
 import { OauthButtons } from '@/components/auth/oauth-buttons';
 import { useTurnstile } from '@/components/hooks/use-turnstile';
+import { $signup, type InferApiResponseType } from '@/lib/api';
 import { setFormError } from '@/lib/form';
-import { $signup, type InferApiResponseType } from '@/server/client';
 import { PasswordInput } from '@hexa/ui/password-input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';

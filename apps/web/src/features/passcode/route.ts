@@ -19,7 +19,7 @@ import {
 import { IS_DEVELOPMENT, PUBLIC_URL } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
 import { invalidateUserSessions, setSession } from '@/lib/session';
-import type { Context } from '@/server/types';
+import type { Context } from '@/lib/types';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
 

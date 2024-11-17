@@ -1,6 +1,6 @@
 import { getOrgWithUserRole } from '@/features/org/store';
 import { ApiError } from '@/lib/error/error';
-import type { ContextVariables } from '@/server/types';
+import type { ContextVariables } from '@/lib/types';
 
 export const getOwner = async ({
   user,

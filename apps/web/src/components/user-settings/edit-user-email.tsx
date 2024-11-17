@@ -13,8 +13,8 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { VerifyPasscode } from '@/components/auth/verify-passcode-form';
+import { $updateUserPrimaryEmail } from '@/lib/api';
 import { MAX_EMAILS } from '@/lib/const';
-import { $updateUserPrimaryEmail } from '@/server/client';
 import { useModal } from '@ebay/nice-modal-react';
 import { Badge } from '@hexa/ui/badge';
 import { Button } from '@hexa/ui/button';

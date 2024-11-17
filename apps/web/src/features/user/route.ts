@@ -31,8 +31,8 @@ import { PUBLIC_URL } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
 import { invalidateUserSessions } from '@/lib/session';
 import { isStored, storage } from '@/lib/storage';
+import type { Context } from '@/lib/types';
 import { generateId } from '@/lib/utils';
-import type { Context } from '@/server/types';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
 

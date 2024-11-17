@@ -7,8 +7,8 @@ import { passcodeTable } from '@/features/passcode/table';
 import { RESET_PASSWORD_EXPIRE_TIME_SPAN } from '@/lib/const';
 import { IS_DEVELOPMENT } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
+import type { DbType } from '@/lib/types';
 import { generateCode, generateId } from '@/lib/utils';
-import type { DbType } from '@/server/types';
 import { and, eq } from 'drizzle-orm';
 import { createDate, isWithinExpirationDate } from 'oslo';
 

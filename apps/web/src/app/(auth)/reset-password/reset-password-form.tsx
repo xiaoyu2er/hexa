@@ -4,8 +4,8 @@ import {
   ResetPasswordSchema,
   type ResetPasswordType,
 } from '@/features/auth/reset-password/schema';
+import { $resetPassword } from '@/lib/api';
 import { setFormError } from '@/lib/form';
-import { $resetPassword } from '@/server/client';
 import { Button } from '@hexa/ui/button';
 import {
   Card,

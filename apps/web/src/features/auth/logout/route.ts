@@ -1,5 +1,5 @@
 import { invalidateSession, setBlankSessionCookie } from '@/lib/session';
-import type { Context } from '@/server/types';
+import type { Context } from '@/lib/types';
 
 import auth from '@/features/user/middleware';
 import { Hono } from 'hono';

@@ -1,7 +1,7 @@
 'use client';
 
 import { SettingsLayout } from '@/components/layouts/setting-layout';
-import type { NavTab } from '@/types';
+import type { NavTab } from '@/components/menu-bar/types';
 import { SettingsIcon } from '@hexa/ui/icons';
 import type { ReactNode } from 'react';
 

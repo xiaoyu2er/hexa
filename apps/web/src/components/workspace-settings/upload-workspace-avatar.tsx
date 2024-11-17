@@ -10,13 +10,13 @@ import {
   UpdateWorkspaceAvatarSchema,
   type UpdateWorkspaceAvatarType,
 } from '@/features/workspace/schema';
+import { $updateWorkspaceAvatar } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import {
   invalidateWorkspaceBySlugQuery,
   invalidateWorkspacesQuery,
   queryWorkspaceBySlugOptions,
 } from '@/lib/queries/workspace';
-import { $updateWorkspaceAvatar } from '@/server/client';
 import { Button } from '@hexa/ui/button';
 import {
   Card,

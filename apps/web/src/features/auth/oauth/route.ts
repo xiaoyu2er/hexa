@@ -7,22 +7,25 @@ import {
 import { ApiError } from '@/lib/error/error';
 import { getSession } from '@/lib/session';
 import { invalidateUserSessions, setSession } from '@/lib/session';
-import type { Context } from '@/server/types';
-import type { GoogleUser } from '@/types';
+import type { Context } from '@/lib/types';
 import { GitHub, Google, generateState } from 'arctic';
 import { generateCodeVerifier } from 'arctic';
 import { OAuth2RequestError } from 'arctic';
 import { Hono } from 'hono';
 import { getCookie, setCookie } from 'hono/cookie';
 
-import { OauthSignupSchema } from '@/features/auth/oauth/schema';
+import {
+  type GitHubEmail,
+  type GitHubUser,
+  type GoogleUser,
+  OauthSignupSchema,
+} from '@/features/auth/oauth/schema';
 import {
   createGithubAccount,
   getAccountByGithubId,
 } from '@/features/auth/oauth/store';
 import { createUser, getUserByName } from '@/features/user/store';
 import { IS_PRODUCTION, PUBLIC_URL } from '@/lib/env';
-import type { GitHubEmail, GitHubUser } from '@/types';
 import { zValidator } from '@hono/zod-validator';
 import { turnstile } from '../turnstile/middleware';
 
