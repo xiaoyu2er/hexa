@@ -8,6 +8,19 @@ import { shortUrlTable } from '@/features/url/table';
 import { userTable } from '@/features/user/table';
 import { workspaceOwnerTable } from '@/features/workspace-owner/table';
 import { workspaceTable } from '@/features/workspace/table';
+
+export {
+  oauthAccountTable,
+  emailTable,
+  orgMemberTable,
+  orgTable,
+  tokenTable,
+  tmpUserTable,
+  shortUrlTable,
+  userTable,
+  workspaceOwnerTable,
+  workspaceTable,
+};
 import { relations } from 'drizzle-orm';
 
 // ================ Relations ================
