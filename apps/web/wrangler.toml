@@ -27,7 +27,6 @@ hello = 'Hello World from Hexa!'
 binding = "DB"
 database_name = "hexa"
 database_id = "d6805d74-fa8d-4abf-a6ac-18fd5489ea0b"
-preview_database_id = "377c4340-6f41-4b65-82e6-a6b1e3e38b1d"
 migrations_dir = "./drizzle/migrations"
 
 [env.staging]
@@ -37,3 +36,9 @@ routes = [
 ]
 [env.staging.vars]
 hello = 'Hello World from Hexa-XYZ!'
+
+[[env.staging.d1_databases]]
+binding = "DB"
+database_name = "hexa"
+database_id = "377c4340-6f41-4b65-82e6-a6b1e3e38b1d"
+migrations_dir = "./drizzle/migrations"
