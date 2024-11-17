@@ -7,20 +7,23 @@ repos:
         entry: npx biome check --files-ignore-unknown=true --no-errors-on-unmatched --fix --unsafe
         language: system
         types: [text]
+        pass_filenames: false
   - repo: local
     hooks:
       - id: local-biome-ci
         name: biome ci
         entry: npx biome ci --files-ignore-unknown=true --no-errors-on-unmatched
         language: system
-        types: [text]
+        files: \.(ts|tsx)$
+        pass_filenames: false
   - repo: local
     hooks:
-      - id: local-tsc
-        name: tsc 
-        entry: npx tsc --noEmit
+      - id: local-check-types
+        name: check-types 
+        entry: pnpm run check-types
         language: system
-        types: [ts, tsx]
+        files: \.(ts|tsx)$
+        pass_filenames: false
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
     rev: v9.16.0
     hooks:

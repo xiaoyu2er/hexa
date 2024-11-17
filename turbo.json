@@ -22,6 +22,7 @@
     "DISABLE_CLOUDFLARE_TURNSTILE",
     "DB_URL"
   ],
+
   "tasks": {
     "//#format-and-lint": {},
     "//#format-and-lint:fix": {
@@ -36,6 +37,10 @@
       "cache": false,
       "persistent": true
     },
-    "check-types": {}
+
+    "check-types": {
+      "outputs": [],
+      "cache": false
+    }
   }
 }
