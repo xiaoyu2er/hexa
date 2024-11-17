@@ -7,8 +7,8 @@ import { useEffect, useState } from 'react';
 
 import { useSession } from '@/components/providers/session-provider';
 import {
-  type UpdateAvatarInput,
   UpdateAvatarSchema,
+  type UpdateAvatarType,
 } from '@/features/common/schema';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import { $updateUserAvatar } from '@/server/client';
@@ -35,7 +35,7 @@ import { useForm } from 'react-hook-form';
 export default function UploadAvatar() {
   const { user, refetch } = useSession();
 
-  const form = useForm<UpdateAvatarInput>({
+  const form = useForm<UpdateAvatarType>({
     resolver: zodResolver(UpdateAvatarSchema),
   });
 

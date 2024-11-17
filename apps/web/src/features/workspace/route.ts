@@ -2,6 +2,11 @@ import { getOrgByName } from '@/features/org/store';
 import auth from '@/features/user/middleware';
 import authWorkspace from '@/features/workspace/middleware';
 import {
+  InsertWorkspaceSchema,
+  UpdateWorkspaceAvatarSchema,
+  UpdateWorkspacerNameSchema,
+} from '@/features/workspace/schema';
+import {
   createWorkspace,
   deleteWorkspace,
   getOrgWorkspaces,
@@ -14,11 +19,6 @@ import {
 import { ApiError } from '@/lib/error/error';
 import { isStored, storage } from '@/lib/storage';
 import { generateId } from '@/lib/utils';
-import {
-  UpdateWorkspaceAvatarSchema,
-  UpdateWorkspacerNameSchema,
-} from '@/server/db/schema';
-import { InsertWorkspaceSchema } from '@/server/db/schema';
 import type { Context } from '@/server/types';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';

@@ -24,9 +24,11 @@ import {
   queryWorkspaceBySlugOptions,
 } from '@/lib/queries/workspace';
 
+import {
+  type UpdateWorkspaceNameType,
+  UpdateWorkspacerNameSchema,
+} from '@/features/workspace/schema';
 import { $updateWorkspaceName } from '@/server/client';
-import { UpdateWorkspacerNameSchema } from '@/server/db/schema';
-import type { UpdateWorkspaceNameInput } from '@/server/db/schema';
 import { Button } from '@hexa/ui/button';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -36,7 +38,7 @@ import { useForm } from 'react-hook-form';
 
 export function EditWorkspaceName({ slug }: { slug: string }) {
   const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
-  const form = useForm<UpdateWorkspaceNameInput>({
+  const form = useForm<UpdateWorkspaceNameType>({
     resolver: zodResolver(UpdateWorkspacerNameSchema),
     defaultValues: useMemo(() => {
       return {

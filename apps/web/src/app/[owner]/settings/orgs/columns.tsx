@@ -1,7 +1,7 @@
 'use client';
 
 import { OrgAvatar } from '@/components/orgs/org-avatar';
-import type { SelectUserOrgType } from '@/server/db/schema';
+import type { SelectUserOrgType } from '@/features/org/schema';
 import { Badge } from '@hexa/ui/badge';
 import { Button } from '@hexa/ui/button';
 import {} from '@hexa/ui/dropdown-menu';

@@ -1,4 +1,10 @@
 import { turnstile } from '@/features/auth/turnstile/middleware';
+import {
+  ResendPasscodeSchema,
+  SendPasscodeSchema,
+  VerifyPassTokenSchema,
+  VerifyPasscodeSchema,
+} from '@/features/passcode/schema';
 import { updatePasscodeAndSendEmail } from '@/features/passcode/service';
 import {
   getTokenByToken,
@@ -13,12 +19,6 @@ import {
 import { IS_DEVELOPMENT, PUBLIC_URL } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
 import { invalidateUserSessions, setSession } from '@/lib/session';
-import {
-  ResendPasscodeSchema,
-  SendPasscodeSchema,
-  VerifyPassTokenSchema,
-} from '@/server/db/schema';
-import { VerifyPasscodeSchema } from '@/server/db/schema';
 import type { Context } from '@/server/types';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';

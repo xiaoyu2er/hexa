@@ -1,31 +1,31 @@
-import { tokenTable } from '@/features/passcode/table';
+import type {
+  FindPasscodeByEmailType,
+  FindPasscodeByTokenType,
+  VerifyTokenType,
+} from '@/features/passcode/schema';
+import { passcodeTable } from '@/features/passcode/table';
 import { RESET_PASSWORD_EXPIRE_TIME_SPAN } from '@/lib/const';
 import { IS_DEVELOPMENT } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
 import { generateCode, generateId } from '@/lib/utils';
-import type {
-  FindTokenByEmailType,
-  FindTokenByTokenType,
-  VerifyTokenType,
-} from '@/server/db/schema';
 import type { DbType } from '@/server/types';
 import { and, eq } from 'drizzle-orm';
 import { createDate, isWithinExpirationDate } from 'oslo';
 
 export function deleteDBToken(
   db: DbType,
-  { email, type }: FindTokenByEmailType
+  { email, type }: FindPasscodeByEmailType
 ) {
   return db
-    .delete(tokenTable)
-    .where(and(eq(tokenTable.email, email), eq(tokenTable.type, type)));
+    .delete(passcodeTable)
+    .where(and(eq(passcodeTable.email, email), eq(passcodeTable.type, type)));
 }
 
 export async function findDBToken(
   db: DbType,
-  { email, type }: FindTokenByEmailType
+  { email, type }: FindPasscodeByEmailType
 ) {
-  return db.query.tokenTable.findFirst({
+  return db.query.passcodeTable.findFirst({
     where: (table, { eq, and }) =>
       and(eq(table.email, email), eq(table.type, type)),
     with: {
@@ -37,18 +37,18 @@ export async function findDBToken(
 
 export async function addDBToken(
   db: DbType,
-  { userId, tmpUserId, email, type }: FindTokenByEmailType
+  { userId, tmpUserId, email, type }: FindPasscodeByEmailType
 ) {
   await db
-    .delete(tokenTable)
-    .where(and(eq(tokenTable.email, email), eq(tokenTable.type, type)))
+    .delete(passcodeTable)
+    .where(and(eq(passcodeTable.email, email), eq(passcodeTable.type, type)))
     .returning();
 
   const code = generateCode();
   const token = generateId();
   const row = (
     await db
-      .insert(tokenTable)
+      .insert(passcodeTable)
       .values({
         code,
         token,
@@ -69,9 +69,9 @@ export async function addDBToken(
 
 export async function getTokenByToken(
   db: DbType,
-  { token, type }: FindTokenByTokenType
+  { token, type }: FindPasscodeByTokenType
 ) {
-  return db.query.tokenTable.findFirst({
+  return db.query.passcodeTable.findFirst({
     where: (table, { eq, and }) =>
       and(eq(table.token, token), eq(table.type, type)),
     with: {

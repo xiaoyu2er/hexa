@@ -27,7 +27,7 @@ import {
 } from '@hexa/ui/form';
 import { toast } from '@hexa/ui/sonner';
 
-import { InsertOrgSchema, type InsertOrgType } from '@/server/db/schema';
+import { InsertOrgSchema, type InsertOrgType } from '@/features/org/schema';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';

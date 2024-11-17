@@ -5,13 +5,13 @@ import { Input } from '@hexa/ui/input';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { toast } from '@hexa/ui/sonner';
 
-import { setFormError } from '@/lib/form';
-import { $deleteUserOauthAccount } from '@/server/client';
 import {
   type DeleteOauthAccountInput,
   DeleteOauthAccountSchema,
-} from '@/server/db/schema';
-import type { ProviderType } from '@/server/db/schema';
+} from '@/features/auth/oauth/schema';
+import type { ProviderType } from '@/features/auth/oauth/schema';
+import { setFormError } from '@/lib/form';
+import { $deleteUserOauthAccount } from '@/server/client';
 import { Button } from '@hexa/ui/button';
 import {
   Form,

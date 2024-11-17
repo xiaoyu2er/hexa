@@ -2,7 +2,8 @@ import { oauthAccountTable } from '@/features/auth/oauth/table';
 import { emailTable } from '@/features/email/table';
 import { orgMemberTable } from '@/features/org-member/table';
 import { orgTable } from '@/features/org/table';
-import { tokenTable } from '@/features/passcode/table';
+import { passcodeTable } from '@/features/passcode/table';
+import { sessionTable } from '@/features/session/table';
 import { tmpUserTable } from '@/features/tmp-user/table';
 import { shortUrlTable } from '@/features/url/table';
 import { userTable } from '@/features/user/table';
@@ -10,11 +11,12 @@ import { workspaceOwnerTable } from '@/features/workspace-owner/table';
 import { workspaceTable } from '@/features/workspace/table';
 
 export {
+  sessionTable,
   oauthAccountTable,
   emailTable,
   orgMemberTable,
   orgTable,
-  tokenTable,
+  passcodeTable,
   tmpUserTable,
   shortUrlTable,
   userTable,
@@ -37,7 +39,7 @@ export const oauthAccountRelations = relations(
 // User relations
 export const userRelations = relations(userTable, ({ many, one }) => ({
   emails: many(emailTable),
-  tokens: many(tokenTable),
+  tokens: many(passcodeTable),
   oauthAccounts: many(oauthAccountTable),
   defaultWs: one(workspaceTable, {
     fields: [userTable.defaultWsId],
@@ -47,7 +49,7 @@ export const userRelations = relations(userTable, ({ many, one }) => ({
 
 // Temp user relations
 export const tmpUserRelations = relations(tmpUserTable, ({ many }) => ({
-  tokens: many(tokenTable),
+  tokens: many(passcodeTable),
 }));
 
 // Email relations
@@ -59,13 +61,13 @@ export const emailRelations = relations(emailTable, ({ one }) => ({
 }));
 
 // Token relations
-export const tokenRelations = relations(tokenTable, ({ one }) => ({
+export const passcodeRelations = relations(passcodeTable, ({ one }) => ({
   user: one(userTable, {
-    fields: [tokenTable.userId],
+    fields: [passcodeTable.userId],
     references: [userTable.id],
   }),
   tmpUser: one(tmpUserTable, {
-    fields: [tokenTable.tmpUserId],
+    fields: [passcodeTable.tmpUserId],
     references: [tmpUserTable.id],
   }),
 }));
@@ -130,16 +132,3 @@ export const shortUrlRelations = relations(shortUrlTable, ({ one }) => ({
     references: [userTable.id],
   }),
 }));
-
-export default {
-  oauthAccountRelations,
-  userRelations,
-  tmpUserRelations,
-  emailRelations,
-  tokenRelations,
-  orgRelations,
-  orgMemberRelations,
-  workspaceRelations,
-  workspaceOwnerRelations,
-  shortUrlRelations,
-};

@@ -1,7 +1,8 @@
 'use server';
+import type { FindPasscodeByEmailType } from '@/features/passcode/schema';
 import { addDBToken } from '@/features/passcode/store';
+
 import { sendVerifyCodeAndUrlEmail } from '@/lib/emails';
-import type { FindTokenByEmailType } from '@/server/db/schema';
 import type { DbType } from '@/server/types';
 
 export async function updatePasscodeAndSendEmail(
@@ -14,7 +15,7 @@ export async function updatePasscodeAndSendEmail(
     publicUrl,
   }: {
     publicUrl: string;
-  } & FindTokenByEmailType
+  } & FindPasscodeByEmailType
 ): Promise<{ email: string; tmpUserId: string | null | undefined }> {
   const { code: verificationCode, token } = await addDBToken(db, {
     userId,

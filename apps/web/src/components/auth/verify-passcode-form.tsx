@@ -3,7 +3,7 @@
 import {
   VerifyPasscodeSchema,
   type VerifyPasscodeType,
-} from '@/server/db/schema';
+} from '@/features/passcode/schema';
 import { Button } from '@hexa/ui/button';
 import {
   Card,
@@ -21,6 +21,7 @@ import { type FC, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useCountdown } from 'usehooks-ts';
 
+import type { PasscodeType } from '@/features/passcode/schema';
 import { RESEND_VERIFY_CODE_TIME_SPAN, VERIFY_CODE_LENGTH } from '@/lib/const';
 import { setFormError } from '@/lib/form';
 import {
@@ -28,7 +29,6 @@ import {
   $verifyPasscode,
   type InferApiResponseType,
 } from '@/server/client';
-import type { PasscodeType } from '@/server/db/schema';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@hexa/ui/input-otp';
 import { useMutation } from '@tanstack/react-query';

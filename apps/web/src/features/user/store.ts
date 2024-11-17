@@ -1,9 +1,10 @@
+import type { InsertEmailType } from '@/features/email/schema';
 import { emailTable } from '@/features/email/table';
+import type { InsertUserType } from '@/features/user/schema';
 import { userTable } from '@/features/user/table';
 import { IS_DEVELOPMENT } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
 import { getHash } from '@/lib/utils';
-import type { InsertEmailType, InsertUserType } from '@/server/db/schema';
 import type { DbType } from '@/server/types';
 import { and, eq, ne } from 'drizzle-orm';
 

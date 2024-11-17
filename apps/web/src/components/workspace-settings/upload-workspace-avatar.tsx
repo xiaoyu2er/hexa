@@ -6,6 +6,10 @@ import { toast } from '@hexa/ui/sonner';
 import { useEffect, useState } from 'react';
 
 import { useSession } from '@/components/providers/session-provider';
+import {
+  UpdateWorkspaceAvatarSchema,
+  type UpdateWorkspaceAvatarType,
+} from '@/features/workspace/schema';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import {
   invalidateWorkspaceBySlugQuery,
@@ -13,10 +17,6 @@ import {
   queryWorkspaceBySlugOptions,
 } from '@/lib/queries/workspace';
 import { $updateWorkspaceAvatar } from '@/server/client';
-import {
-  type UpdateWorkspaceAvatarInput,
-  UpdateWorkspaceAvatarSchema,
-} from '@/server/db/schema';
 import { Button } from '@hexa/ui/button';
 import {
   Card,
@@ -41,7 +41,7 @@ export function UploadWorkspaceAvatar({ slug }: { slug: string }) {
   const { data: ws } = useSuspenseQuery(queryWorkspaceBySlugOptions(slug));
   const { user } = useSession();
 
-  const form = useForm<UpdateWorkspaceAvatarInput>({
+  const form = useForm<UpdateWorkspaceAvatarType>({
     resolver: zodResolver(UpdateWorkspaceAvatarSchema),
   });
 

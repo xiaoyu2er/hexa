@@ -1,7 +1,7 @@
 'use client';
 
+import type { SelectWorkspaceType } from '@/features/workspace/schema';
 import { getWorkspaceSlug } from '@/lib/workspace';
-import type { SelectWorkspaceType } from '@/server/db/schema';
 import { Badge } from '@hexa/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader } from '@hexa/ui/card';
 import { BarChart2Icon, GlobeIcon, Link2Icon } from '@hexa/ui/icons';

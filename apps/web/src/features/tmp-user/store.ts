@@ -1,4 +1,4 @@
-import { tokenTable } from '@/features/passcode/table';
+import { passcodeTable } from '@/features/passcode/table';
 import { tmpUserTable } from '@/features/tmp-user/table';
 import { ApiError } from '@/lib/error/error';
 import { getHash } from '@/lib/utils';
@@ -18,7 +18,7 @@ export async function addTmpUser(
   }
 ) {
   // First delete any existing tmp user and tokens
-  await db.delete(tokenTable).where(eq(tokenTable.email, email));
+  await db.delete(passcodeTable).where(eq(passcodeTable.email, email));
   await db.delete(tmpUserTable).where(eq(tmpUserTable.email, email));
 
   // Create new pending registration

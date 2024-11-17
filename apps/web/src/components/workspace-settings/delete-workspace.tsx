@@ -9,15 +9,15 @@ import {
 } from '@hexa/ui/card';
 import { Input } from '@hexa/ui/input';
 
+import {
+  DELETE_WORKSPACE_CONFIRMATION,
+  DeleteWorkspaceSchema,
+  type DeleteWorkspaceType,
+} from '@/features/workspace/schema';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import { setFormError } from '@/lib/form';
 import { invalidateWorkspacesQuery } from '@/lib/queries/workspace';
 import { $deleteWorkspace } from '@/server/client';
-import {
-  DELETE_WORKSPACE_CONFIRMATION,
-  type DeleteWorkspaceInput,
-  DeleteWorkspaceSchema,
-} from '@/server/db/schema';
 import { Button } from '@hexa/ui/button';
 import {
   Form,
@@ -45,7 +45,7 @@ import { useForm } from 'react-hook-form';
 
 export function DeleteWorkspace() {
   const router = useRouter();
-  const form = useForm<DeleteWorkspaceInput>({
+  const form = useForm<DeleteWorkspaceType>({
     resolver: zodResolver(DeleteWorkspaceSchema),
     defaultValues: {},
   });

@@ -5,9 +5,9 @@ import { Input } from '@hexa/ui/input';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { toast } from '@hexa/ui/sonner';
 
+import { EmailSchema, type EmailType } from '@/features/common/schema';
 import { setFormError } from '@/lib/form';
 import { $deleteUserEmail } from '@/server/client';
-import { type OnlyEmailInput, OnlyEmailSchema } from '@/server/db/schema';
 import { Button } from '@hexa/ui/button';
 import {
   Form,
@@ -39,8 +39,8 @@ export const DeleteUserEmailModal = NiceModal.create(
   ({ email }: DeleteUserEmailProps) => {
     const modal = useModal();
 
-    const form = useForm<OnlyEmailInput>({
-      resolver: zodResolver(OnlyEmailSchema),
+    const form = useForm<EmailType>({
+      resolver: zodResolver(EmailSchema),
       defaultValues: {
         email: '',
       },

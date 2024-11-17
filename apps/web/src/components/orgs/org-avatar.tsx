@@ -1,7 +1,7 @@
 'use client';
 
+import type { SelectOrgType } from '@/features/org/schema';
 import { getAvatarFallbackUrl } from '@/lib/org';
-import type { SelectOrgType } from '@/server/db/schema';
 import { Avatar, AvatarImage } from '@hexa/ui/avatar';
 import { cn } from '@hexa/utils';
 

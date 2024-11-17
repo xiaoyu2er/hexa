@@ -28,12 +28,12 @@ import {
 import { toast } from '@hexa/ui/sonner';
 
 import { useSession } from '@/components/providers/session-provider';
-import { queryOrgsOptions } from '@/lib/queries/orgs';
-import { getWorkspaceSlug } from '@/lib/workspace';
 import {
   InsertWorkspaceSchema,
   type InsertWorkspaceType,
-} from '@/server/db/schema';
+} from '@/features/workspace/schema';
+import { queryOrgsOptions } from '@/lib/queries/orgs';
+import { getWorkspaceSlug } from '@/lib/workspace';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import {
   Select,

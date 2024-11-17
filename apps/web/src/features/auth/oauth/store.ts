@@ -1,9 +1,9 @@
-import { oauthAccountTable } from '@/features/auth/oauth/table';
 import type {
   InsertOauthAccountType,
   ProviderType,
-  SelectUserType,
-} from '@/server/db/schema';
+} from '@/features/auth/oauth/schema';
+import { oauthAccountTable } from '@/features/auth/oauth/table';
+import type { SelectUserType } from '@/features/user/schema';
 import type { DbType } from '@/server/types';
 import type { GitHubUser, GoogleUser } from '@/types';
 import { and, eq } from 'drizzle-orm';
