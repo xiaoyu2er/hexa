@@ -1,8 +1,8 @@
-import {
-  type InsertOauthAccountType,
-  type ProviderType,
-  type SelectUserType,
-  oauthAccountTable,
+import { oauthAccountTable } from '@/features/oauth-account/table';
+import type {
+  InsertOauthAccountType,
+  ProviderType,
+  SelectUserType,
 } from '@/server/db/schema';
 import type { DbType } from '@/server/types';
 import type { GitHubUser, GoogleUser } from '@/types';

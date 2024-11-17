@@ -1,12 +1,12 @@
+import { orgMemberTable } from '@/features/org-member/table';
+import { orgTable } from '@/features/org/table';
 import { ApiError } from '@/lib/error/error';
 import { and, eq } from 'drizzle-orm';
-import {
-  type InsertOrgMemberType,
-  type InsertOrgType,
-  type OrgRole,
-  type SelectUserOrgType,
-  orgMemberTable,
-  orgTable,
+import type {
+  InsertOrgMemberType,
+  InsertOrgType,
+  OrgRole,
+  SelectUserOrgType,
 } from '../db/schema';
 import type { DbType } from '../types';
 

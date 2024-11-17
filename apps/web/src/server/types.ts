@@ -1,7 +1,11 @@
 import type { DrizzleD1Database } from 'drizzle-orm/d1';
 import type { Session, User } from 'lucia';
 
-import type * as schema from '@/server/db/schema';
+import type { schema } from '@/server/db/index';
+import type {
+  SelectOrgMemberType,
+  SelectWorkspaceType,
+} from '@/server/db/schema';
 import type { ExecutionContext } from 'hono';
 
 export type DbSchema = typeof schema;
@@ -22,9 +26,9 @@ export type ContextVariables = {
   user: User;
   userId: User['id'];
   session: Session;
-  ws: schema.SelectWorkspaceType;
+  ws: SelectWorkspaceType;
   wsId: string;
-  wsMember: schema.SelectOrgMemberType;
+  wsMember: SelectOrgMemberType;
 };
 
 export type Context = {

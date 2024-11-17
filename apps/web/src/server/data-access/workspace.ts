@@ -1,42 +1,13 @@
+import { userTable } from '@/features/user/table';
 import { ApiError } from '@/lib/error/error';
 import { and, eq, exists, or, sql } from 'drizzle-orm';
-import {
-  type InsertWorkspaceType,
-  orgMemberTable,
-  orgTable,
-  userTable,
-  workspaceOwnerTable,
-  workspaceTable,
-} from '../db/schema';
+
+import { orgMemberTable } from '@/features/org-member/table';
+import { orgTable } from '@/features/org/table';
+import { workspaceOwnerTable } from '@/features/workspace-owner/table';
+import { workspaceTable } from '@/features/workspace/table';
+import type { InsertWorkspaceType } from '@/server/db/schema';
 import type { DbType } from '../types';
-
-// Helper function to get workspace with owner info
-async function getWorkspaceWithOwner(db: DbType, wsId: string) {
-  const workspace = await db.query.workspaceTable.findFirst({
-    where: eq(workspaceTable.id, wsId),
-    with: {
-      owner: {
-        with: {
-          user: true,
-          org: true,
-        },
-      },
-    },
-  });
-
-  if (!workspace) {
-    throw new ApiError('NOT_FOUND', 'Workspace not found');
-  }
-
-  const owner = workspace.owner.user ?? workspace.owner.org;
-  if (!owner) {
-    throw new ApiError('NOT_FOUND', 'Workspace owner not found');
-  }
-
-  return {
-    ...workspace,
-  };
-}
 
 // Helper function to get workspace select query builder
 function getWorkspaceSelectBuilder(db: DbType) {
