@@ -2,12 +2,6 @@ import { IS_DEVELOPMENT, PUBLIC_URL } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
 import { invalidateUserSessions, setSession } from '@/lib/session';
 import {
-  ResendPasscodeSchema,
-  SendPasscodeSchema,
-  VerifyPassTokenSchema,
-  VerifyPasscodeSchema,
-} from '@/lib/zod/schemas/auth';
-import {
   getTokenByToken,
   verifyDBTokenByCode,
 } from '@/server/data-access/token';
@@ -17,6 +11,12 @@ import {
   getUserEmail,
   updateUserEmailVerified,
 } from '@/server/data-access/user';
+import {
+  ResendPasscodeSchema,
+  SendPasscodeSchema,
+  VerifyPassTokenSchema,
+} from '@/server/db/schema';
+import { VerifyPasscodeSchema } from '@/server/db/schema';
 import { turnstile } from '@/server/middleware/turnstile';
 import { updatePasscodeAndSendEmail } from '@/server/serverice/passcode';
 import type { Context } from '@/server/types';

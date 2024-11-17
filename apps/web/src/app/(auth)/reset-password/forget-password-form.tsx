@@ -20,11 +20,8 @@ import {
 import { Input } from '@hexa/ui/input';
 
 import { setFormError } from '@/lib/form';
-import {
-  type SendPasscodeForm,
-  SendPasscodeSchema,
-} from '@/lib/zod/schemas/auth';
 import { $sendPasscode, type InferApiResponseType } from '@/server/client';
+import { SendPasscodeSchema, type SendPasscodeType } from '@/server/db/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
@@ -42,7 +39,7 @@ export const ForgetPasswordCard: FC<ForgetPasswordCardProps> = ({
   onSuccess,
   onCancel,
 }) => {
-  const form = useForm<SendPasscodeForm>({
+  const form = useForm<SendPasscodeType>({
     resolver: zodResolver(SendPasscodeSchema),
     defaultValues: {
       email,

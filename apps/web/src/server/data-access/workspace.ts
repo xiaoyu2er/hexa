@@ -46,7 +46,7 @@ function getWorkspaceSelectBuilder(db: DbType) {
       name: workspaceTable.name,
       desc: workspaceTable.desc,
       avatarUrl: workspaceTable.avatarUrl,
-      createdAt: workspaceTable.createdAt,
+      // createdAt: workspaceTable.createdAt,
       owner: {
         ownerId: sql<string>`
           CASE 
@@ -164,7 +164,7 @@ export async function getWorkspaceByOwnerId(
     .prepare();
 
   const result = await workspace.all();
-  return result.length ? result[0] : null;
+  return result[0] ?? null;
 }
 
 export async function getWorkspaceBySlug(db: DbType, slug: string) {
@@ -213,7 +213,7 @@ export async function getWorkspaceBySlug(db: DbType, slug: string) {
     .prepare();
 
   const result = await workspace.all();
-  return result.length ? result[0] : null;
+  return result[0] ?? null;
 }
 
 // Get workspace by ID
@@ -224,7 +224,7 @@ export async function getWorkspaceByWsId(db: DbType, wsId: string) {
     .prepare();
 
   const result = await workspace.all();
-  return result.length ? result[0] : null;
+  return result[0] ?? null;
 }
 // Create workspace with owner
 export async function createWorkspace(

@@ -11,12 +11,12 @@ import { Input } from '@hexa/ui/input';
 
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import { setFormError } from '@/lib/form';
+import { $deleteUser } from '@/server/client';
 import {
   DELETE_USER_CONFIRMATION,
   type DeleteUserInput,
   DeleteUserSchema,
-} from '@/lib/zod/schemas/user';
-import { $deleteUser } from '@/server/client';
+} from '@/server/db/schema';
 import { Button } from '@hexa/ui/button';
 import {
   Form,

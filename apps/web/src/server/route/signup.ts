@@ -1,10 +1,10 @@
 import { IS_DEVELOPMENT, PUBLIC_URL } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
 import {} from '@/lib/session';
-import { SignupSchema } from '@/lib/zod/schemas/auth';
 import {} from '@/server/data-access/account';
 import { addTmpUser } from '@/server/data-access/tmp-user';
 import { getEmail, getUserByName } from '@/server/data-access/user';
+import { SignupSchema } from '@/server/db/schema';
 import { turnstile } from '@/server/middleware/turnstile';
 import { updatePasscodeAndSendEmail } from '@/server/serverice/passcode';
 import type { Context } from '@/server/types';

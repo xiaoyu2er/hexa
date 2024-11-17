@@ -1,7 +1,6 @@
 import { validateRequest } from '@/lib/auth';
 import { $lucia } from '@/lib/auth/lucia';
 import { ApiError } from '@/lib/error/error';
-import type { SelectUserType } from '@/server/db';
 import { cookies } from 'next/headers';
 
 export async function getSessionId() {
@@ -23,7 +22,7 @@ export async function setSessionCookie(sessionId: string) {
   cookie.set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 }
 
-export async function setSession(userId: SelectUserType['id']) {
+export async function setSession(userId: string) {
   const lucia = await $lucia;
   const session = await lucia.createSession(userId, {});
   await setSessionCookie(session.id);
@@ -33,7 +32,7 @@ export async function invalidateSession(sessionId: string) {
   const lucia = await $lucia;
   await lucia.invalidateSession(sessionId);
 }
-export async function invalidateUserSessions(userId: SelectUserType['id']) {
+export async function invalidateUserSessions(userId: string) {
   const lucia = await $lucia;
   await lucia.invalidateUserSessions(userId);
 }

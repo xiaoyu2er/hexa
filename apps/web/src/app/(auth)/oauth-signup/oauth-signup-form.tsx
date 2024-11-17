@@ -1,9 +1,6 @@
 'use client';
 
-import {
-  type OauthSignupInput,
-  OauthSignupSchema,
-} from '@/lib/zod/schemas/auth';
+import { type OauthSignupInput, OauthSignupSchema } from '@/server/db/schema';
 import { Button } from '@hexa/ui/button';
 import {
   Card,
@@ -28,7 +25,7 @@ import { useForm } from 'react-hook-form';
 import { useTurnstile } from '@/components/hooks/use-turnstile';
 import { setFormError } from '@/lib/form';
 import { $oauthSignup } from '@/server/client';
-import type { SelectOauthAccountType } from '@/server/db';
+import type { SelectOauthAccountType } from '@/server/db/schema';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';

@@ -4,7 +4,6 @@ import { Input } from '@hexa/ui/input';
 
 import { setFormError } from '@/lib/form';
 import { invalidateWorkspacesQuery } from '@/lib/queries/workspace';
-import {} from '@/lib/zod/schemas/workspace';
 import { $createOrg } from '@/server/client';
 import { Button } from '@hexa/ui/button';
 import {
@@ -109,6 +108,7 @@ export const CreateOrgModal = NiceModal.create(() => {
                     <FormControl>
                       <Input
                         {...field}
+                        value={field.value ?? ''}
                         className={errors.desc ? 'border-destructive' : ''}
                       />
                     </FormControl>

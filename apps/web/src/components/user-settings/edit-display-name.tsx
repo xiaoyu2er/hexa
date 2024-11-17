@@ -3,7 +3,7 @@
 import {
   type UpdateDisplayNameInput,
   UpdateDisplayNameSchema,
-} from '@/lib/zod/schemas/user';
+} from '@/server/db/schema';
 import {
   Card,
   CardContent,

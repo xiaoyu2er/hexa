@@ -8,7 +8,7 @@ import { toast } from '@hexa/ui/sonner';
 import { setFormError } from '@/lib/form';
 import { invalidateUser } from '@/lib/queries/user';
 import { $updateUsername } from '@/server/client';
-import type { ProviderType } from '@/server/db';
+import type { ProviderType } from '@/server/db/schema';
 import { Alert, AlertDescription, AlertTitle } from '@hexa/ui/alert';
 import { Button } from '@hexa/ui/button';
 import {
@@ -23,7 +23,7 @@ import {
 import {
   type ChangeUserNameInput,
   ChangeUserNameSchema,
-} from '@/lib/zod/schemas/user';
+} from '@/server/db/schema';
 import {
   Form,
   FormControl,

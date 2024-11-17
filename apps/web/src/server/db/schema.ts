@@ -1,4 +1,8 @@
+import { MIN_PASSWORD_LENGTH } from '@/lib/const';
+import { DISABLE_CLOUDFLARE_TURNSTILE } from '@/lib/env';
 import { generateId } from '@/lib/utils';
+import { ACCEPTED_IMAGE_TYPES, MAX_PROFILE_FILE_SIZE } from '@hexa/utils/const';
+import { MAX_PROFILE_FILE_SIZE_MB } from '@hexa/utils/const';
 import { type Simplify, relations, sql } from 'drizzle-orm';
 import {
   check,
@@ -10,16 +14,81 @@ import {
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
+const cfTurnstileResponse = DISABLE_CLOUDFLARE_TURNSTILE
+  ? z.nullable(z.string().optional())
+  : z.string().min(1, 'Please complete the challenge.');
+
+// https://github.com/colinhacks/zod/issues/387#issuecomment-1191390673
+const avatarImage = z
+  .any()
+  .refine((file) => !!file, 'Image is required.')
+  .refine(
+    (file) => file.size <= MAX_PROFILE_FILE_SIZE,
+    `Max file size is ${MAX_PROFILE_FILE_SIZE_MB}MB.`
+  )
+  .refine(
+    (file) => ACCEPTED_IMAGE_TYPES.includes(file.type),
+    `${ACCEPTED_IMAGE_TYPES.map((t) => t.replace('image/', '')).join(
+      ', '
+    )} files are accepted.`
+  );
+
+export const UpdateAvatarSchema = z.object({
+  image: avatarImage,
+});
+
+const _code = z
+  .string()
+  .min(6, {
+    message: 'Your verification code must be 6 characters.',
+  })
+  .max(6);
+
+// Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen.
+export const name = z
+  .string()
+  .min(3, 'Please enter a valid username')
+  .max(40, 'Username must be 3 to 40 characters')
+  .refine((username) => isValidUsername(username), {
+    message:
+      'Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen.',
+  });
+
+function isValidUsername(username: string) {
+  const usernameRegex = /^(?!-)[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*(?<!-)$/;
+  return usernameRegex.test(username);
+}
+
+// Example usage
+// console.log(isValidUsername("valid-username")); // true
+// console.log(isValidUsername("-invalid")); // false
+// console.log(isValidUsername("invalid-")); // false
+// console.log(isValidUsername("in-valid")); // true
+// console.log(isValidUsername("validusername")); // true
+// console.log(isValidUsername("in--valid")); // false
+// console.log(isValidUsername("in-valid-name")); // true
+
+const email = z.string().email('Please enter a valid email');
+
+const password = z
+  .string()
+  .min(
+    MIN_PASSWORD_LENGTH,
+    `Please enter a valid password with at least ${MIN_PASSWORD_LENGTH} characters.`
+  )
+  .max(255);
 const expiresAt = {
   expiresAt: integer('expires_at', { mode: 'timestamp' })
     .notNull()
     .default(sql`(unixepoch())`),
 };
-const createdAt = {
+const _createdAt = {
   createdAt: integer('created_at', { mode: 'timestamp' })
     .notNull()
     .default(sql`(unixepoch())`),
 };
+const token = z.string().min(1, 'Invalid token');
+
 export const tmpUserTable = sqliteTable('tmp_user', {
   id: text('id')
     .primaryKey()
@@ -155,7 +224,6 @@ export const workspaceTable = sqliteTable('workspace', {
   name: text('name').notNull(),
   desc: text('desc'),
   avatarUrl: text('avatar_url'),
-  ...createdAt,
 });
 
 // Then, create a separate workspace owner table with proper constraints
@@ -220,14 +288,12 @@ export const shortUrlTable = sqliteTable('short_url', {
   shortCode: text('short_code').unique().notNull(),
   title: text('title'),
   description: text('description'),
-  createdAt: integer('created_at', { mode: 'timestamp' })
-    .notNull()
-    .default(sql`(unixepoch())`),
-  expiresAt: integer('expires_at', { mode: 'timestamp' }),
   clicks: integer('clicks').notNull().default(0),
 });
 
-// Relations
+// ================ Relations ================
+
+// User relations
 export const userRelations = relations(userTable, ({ many, one }) => ({
   emails: many(emailTable),
   tokens: many(tokenTable),
@@ -238,10 +304,12 @@ export const userRelations = relations(userTable, ({ many, one }) => ({
   }),
 }));
 
+// Temp user relations
 export const tmpUserRelations = relations(tmpUserTable, ({ many }) => ({
   tokens: many(tokenTable),
 }));
 
+// Email relations
 export const emailRelations = relations(emailTable, ({ one }) => ({
   user: one(userTable, {
     fields: [emailTable.userId],
@@ -249,6 +317,7 @@ export const emailRelations = relations(emailTable, ({ one }) => ({
   }),
 }));
 
+// Token relations
 export const tokenRelations = relations(tokenTable, ({ one }) => ({
   user: one(userTable, {
     fields: [tokenTable.userId],
@@ -260,6 +329,7 @@ export const tokenRelations = relations(tokenTable, ({ one }) => ({
   }),
 }));
 
+// Org relations
 export const orgRelations = relations(orgTable, ({ many, one }) => ({
   members: many(orgMemberTable),
   workspaces: many(workspaceTable),
@@ -289,6 +359,7 @@ export const workspaceRelations = relations(
   })
 );
 
+// Workspace owner relations
 export const workspaceOwnerRelations = relations(
   workspaceOwnerTable,
   ({ one }) => ({
@@ -307,6 +378,7 @@ export const workspaceOwnerRelations = relations(
   })
 );
 
+// Short url relations
 export const shortUrlRelations = relations(shortUrlTable, ({ one }) => ({
   workspace: one(workspaceTable, {
     fields: [shortUrlTable.repositoryId],
@@ -338,6 +410,7 @@ export const InsertWorkspaceOwnerSchema = createInsertSchema(
     ownerType: OwnerTypeSchema,
   }
 );
+
 export type InsertWorkspaceOwnerType = z.infer<
   typeof InsertWorkspaceOwnerSchema
 >;
@@ -360,9 +433,7 @@ export const InsertWorkspaceSchema = createInsertSchema(workspaceTable).extend({
 export type InsertWorkspaceType = Simplify<
   z.infer<typeof InsertWorkspaceSchema>
 >;
-export const SelectWorkspaceSchema = createSelectSchema(workspaceTable, {
-  createdAt: z.string(),
-}).extend({
+export const SelectWorkspaceSchema = createSelectSchema(workspaceTable).extend({
   owner: SelectWorkspaceOwnerSchema.omit({
     userId: true,
     orgId: true,
@@ -376,6 +447,31 @@ export const SelectWorkspaceSchema = createSelectSchema(workspaceTable, {
 });
 export type SelectWorkspaceType = z.infer<typeof SelectWorkspaceSchema>;
 
+export const UpdateWorkspacerNameSchema = z.object({
+  name,
+});
+
+export type UpdateWorkspaceNameInput = z.infer<
+  typeof UpdateWorkspacerNameSchema
+>;
+
+const workspaceId = z.string().min(1, 'Please select a workspace');
+export const DELETE_WORKSPACE_CONFIRMATION = 'confirm delete workspace';
+export const DeleteWorkspaceSchema = z.object({
+  confirm: z
+    .string()
+    .refine(
+      (v) => v === DELETE_WORKSPACE_CONFIRMATION,
+      `Please type '${DELETE_WORKSPACE_CONFIRMATION}' to delete your workspace.`
+    ),
+  workspaceId,
+});
+export type DeleteWorkspaceInput = z.infer<typeof DeleteWorkspaceSchema>;
+export const UpdateWorkspaceAvatarSchema = UpdateAvatarSchema;
+export type UpdateWorkspaceAvatarInput = Simplify<
+  z.infer<typeof UpdateWorkspaceAvatarSchema>
+>;
+
 // Org
 export const InsertOrgSchema = createInsertSchema(orgTable);
 export type InsertOrgType = z.infer<typeof InsertOrgSchema>;
@@ -386,17 +482,19 @@ export type SelectUserOrgType = SelectOrgType & {
 };
 
 // Oauth Account
-export const InsertOauthAccountSchema = createInsertSchema(oauthAccountTable);
+export const InsertOauthAccountSchema = createInsertSchema(oauthAccountTable, {
+  provider: ProviderTypeSchema,
+});
 export type InsertOauthAccountType = z.infer<typeof InsertOauthAccountSchema>;
-export const SelectOauthAccountSchema = createSelectSchema(oauthAccountTable);
+export const SelectOauthAccountSchema = createSelectSchema(oauthAccountTable, {
+  provider: ProviderTypeSchema,
+});
 export type SelectOauthAccountType = z.infer<typeof SelectOauthAccountSchema>;
 
 // Session
 export const InsertSessionSchema = createInsertSchema(sessionTable);
 export type InsertSessionType = z.infer<typeof InsertSessionSchema>;
-export const SelectSessionSchema = createSelectSchema(sessionTable, {
-  expiresAt: z.string(),
-});
+export const SelectSessionSchema = createSelectSchema(sessionTable, {});
 export type SelectSessionType = z.infer<typeof SelectSessionSchema>;
 
 // Org Member
@@ -408,10 +506,7 @@ export type SelectOrgMemberType = z.infer<typeof SelectOrgMemberSchema>;
 // Short Url
 export const InsertShortUrlSchema = createInsertSchema(shortUrlTable);
 export type InsertShortUrlType = z.infer<typeof InsertShortUrlSchema>;
-export const SelectShortUrlSchema = createSelectSchema(shortUrlTable, {
-  createdAt: z.string(),
-  expiresAt: z.string().nullable(),
-});
+export const SelectShortUrlSchema = createSelectSchema(shortUrlTable, {});
 export type SelectShortUrlType = z.infer<typeof SelectShortUrlSchema>;
 
 // Token
@@ -420,7 +515,7 @@ export const InsertTokenSchema = createInsertSchema(tokenTable, {
 });
 export type InsertTokenType = z.infer<typeof InsertTokenSchema>;
 export const SelectTokenSchema = createSelectSchema(tokenTable, {
-  expiresAt: z.string(),
+  type: PasscodeTypeSchema,
 });
 export type SelectTokenType = z.infer<typeof SelectTokenSchema>;
 export const FindTokenByEmailSchema = InsertTokenSchema.pick({
@@ -436,6 +531,30 @@ export const FindTokenByTokenSchema = InsertTokenSchema.pick({
 export type FindTokenByEmailType = z.infer<typeof FindTokenByEmailSchema>;
 export type FindTokenByTokenType = z.infer<typeof FindTokenByTokenSchema>;
 
+export const SendPasscodeSchema = InsertTokenSchema.pick({
+  email: true,
+  type: true,
+  tmpUserId: true,
+}).extend({
+  'cf-turnstile-response': cfTurnstileResponse,
+});
+export type SendPasscodeType = z.infer<typeof SendPasscodeSchema>;
+
+export const ResendPasscodeSchema = SendPasscodeSchema.omit({
+  'cf-turnstile-response': true,
+});
+
+export const ResetPasswordSchema = z.object({
+  token,
+  password: z.string(),
+});
+export type ResetPasswordForm = z.infer<typeof ResetPasswordSchema>;
+
+export const VerifyPassTokenSchema = z.object({
+  token,
+  type: PasscodeTypeSchema,
+});
+
 export const VerifyTokenSchema = SelectTokenSchema.pick({
   code: true,
   token: true,
@@ -448,6 +567,14 @@ export const VerifyTokenSchema = SelectTokenSchema.pick({
   tmpUserId: true,
 });
 
+export const VerifyPasscodeSchema = InsertTokenSchema.pick({
+  code: true,
+  email: true,
+  type: true,
+  tmpUserId: true,
+});
+export type VerifyPasscodeType = z.infer<typeof VerifyPasscodeSchema>;
+
 export type VerifyTokenType = z.infer<typeof VerifyTokenSchema>;
 
 export const SelectOwnerSchema = z.object({
@@ -459,3 +586,77 @@ export const SelectOwnerSchema = z.object({
   role: z.string().nullable(),
 });
 export type SelectOwnerType = z.infer<typeof SelectOwnerSchema>;
+
+export const EmptySchema = z.object({});
+
+export const SignupSchema = z.object({
+  email,
+  password,
+  name,
+  'cf-turnstile-response': cfTurnstileResponse,
+});
+
+export const OauthSignupSchema = z.object({
+  oauthAccountId: z.string(),
+  // password,
+  name,
+  'cf-turnstile-response': cfTurnstileResponse,
+});
+
+export const TurnstileSchema = z.object({
+  'cf-turnstile-response': cfTurnstileResponse,
+});
+
+export const LoginPasswordSchema = z.object({
+  name: z.string().min(3, 'Please enter a valid username or email'),
+  password,
+  'cf-turnstile-response': cfTurnstileResponse,
+});
+
+export const OnlyEmailSchema = z.object({
+  email,
+});
+
+export type SignupForm = z.infer<typeof SignupSchema>;
+export type OauthSignupInput = z.infer<typeof OauthSignupSchema>;
+export type LoginPasswordInput = z.infer<typeof LoginPasswordSchema>;
+
+export type OnlyEmailInput = z.infer<typeof OnlyEmailSchema>;
+
+const displayName = z
+  .string()
+  // .min(1, "Please enter a name")
+  .max(32, 'Name must be less than 32 characters');
+// .nullable();
+
+export const UpdateDisplayNameSchema = z.object({
+  displayName,
+});
+
+export type UpdateDisplayNameInput = z.infer<typeof UpdateDisplayNameSchema>;
+
+export type UpdateAvatarInput = z.infer<typeof UpdateAvatarSchema>;
+
+export const DELETE_USER_CONFIRMATION = 'confirm delete account';
+export const DeleteUserSchema = z.object({
+  confirm: z
+    .string()
+    .refine(
+      (v) => v === DELETE_USER_CONFIRMATION,
+      "Please type 'confirm delete account' to delete your account."
+    ),
+});
+
+export type DeleteUserInput = z.infer<typeof DeleteUserSchema>;
+
+export const DeleteOauthAccountSchema = z.object({
+  provider: z.enum(['GOOGLE', 'GITHUB']),
+});
+
+export type DeleteOauthAccountInput = z.infer<typeof DeleteOauthAccountSchema>;
+
+export const ChangeUserNameSchema = z.object({
+  name,
+});
+
+export type ChangeUserNameInput = z.infer<typeof ChangeUserNameSchema>;

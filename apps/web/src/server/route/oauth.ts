@@ -16,12 +16,12 @@ import { Hono } from 'hono';
 import { getCookie, setCookie } from 'hono/cookie';
 
 import { IS_PRODUCTION, PUBLIC_URL } from '@/lib/env';
-import { OauthSignupSchema } from '@/lib/zod/schemas/auth';
 import {
   createGithubAccount,
   getAccountByGithubId,
 } from '@/server/data-access/account';
 import { createUser, getUserByName } from '@/server/data-access/user';
+import { OauthSignupSchema } from '@/server/db/schema';
 import type { GitHubEmail, GitHubUser } from '@/types';
 import { zValidator } from '@hono/zod-validator';
 import { turnstile } from '../middleware/turnstile';

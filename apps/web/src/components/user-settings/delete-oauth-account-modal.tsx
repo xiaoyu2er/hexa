@@ -6,12 +6,12 @@ import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { toast } from '@hexa/ui/sonner';
 
 import { setFormError } from '@/lib/form';
+import { $deleteUserOauthAccount } from '@/server/client';
 import {
   type DeleteOauthAccountInput,
   DeleteOauthAccountSchema,
-} from '@/lib/zod/schemas/user';
-import { $deleteUserOauthAccount } from '@/server/client';
-import type { ProviderType } from '@/server/db';
+} from '@/server/db/schema';
+import type { ProviderType } from '@/server/db/schema';
 import { Button } from '@hexa/ui/button';
 import {
   Form,

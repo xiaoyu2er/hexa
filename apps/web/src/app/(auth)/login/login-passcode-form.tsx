@@ -11,10 +11,7 @@ import {
 
 import { Button } from '@hexa/ui/button';
 
-import {
-  type SendPasscodeForm,
-  SendPasscodeSchema,
-} from '@/lib/zod/schemas/auth';
+import { SendPasscodeSchema, type SendPasscodeType } from '@/server/db/schema';
 
 import { useTurnstile } from '@/components/hooks/use-turnstile';
 import { setFormError } from '@/lib/form';
@@ -39,7 +36,7 @@ interface LoginPasscodeProps {
 }
 
 export function LoginPasscode({ onPassword, onSuccess }: LoginPasscodeProps) {
-  const form = useForm<SendPasscodeForm>({
+  const form = useForm<SendPasscodeType>({
     resolver: zodResolver(SendPasscodeSchema),
     defaultValues: {
       type: 'LOGIN_PASSCODE',

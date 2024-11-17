@@ -8,7 +8,7 @@ import { useContext } from '@/lib/queries/context';
 import { queryWorkspacesOptions } from '@/lib/queries/workspace';
 import { getWorkspaceSlug } from '@/lib/workspace';
 import { $updateUserDefaultWorkspace } from '@/server/client';
-import type { SelectWorkspaceType } from '@/server/db';
+import type { SelectWorkspaceType } from '@/server/db/schema';
 import { useModal } from '@ebay/nice-modal-react';
 import { Badge } from '@hexa/ui/badge';
 import { Button } from '@hexa/ui/button';

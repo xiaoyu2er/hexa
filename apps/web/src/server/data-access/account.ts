@@ -1,6 +1,6 @@
 import {
+  type InsertOauthAccountType,
   type ProviderType,
-  type SelectOauthAccountType,
   type SelectUserType,
   oauthAccountTable,
 } from '@/server/db/schema';
@@ -116,7 +116,7 @@ export async function getOauthAccount(db: DbType, id: string) {
 export async function updateOauthAccount(
   db: DbType,
   oauthAccountId: string,
-  data: Partial<SelectOauthAccountType>
+  data: Partial<InsertOauthAccountType>
 ) {
   return (
     await db

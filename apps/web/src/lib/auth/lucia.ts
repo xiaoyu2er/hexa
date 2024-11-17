@@ -1,5 +1,5 @@
 import { IS_PRODUCTION } from '@/lib/env';
-import { getD1 } from '@/server/db';
+import { getD1 } from '@/server/db/index';
 import { D1Adapter } from '@lucia-auth/adapter-sqlite';
 import { Lucia, TimeSpan } from 'lucia';
 
