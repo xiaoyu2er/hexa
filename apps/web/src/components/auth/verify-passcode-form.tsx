@@ -28,7 +28,7 @@ import {
   $verifyPasscode,
   type InferApiResponseType,
 } from '@/server/client';
-import type { OtpType } from '@/server/db';
+import type { PasscodeType } from '@/server/db';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@hexa/ui/input-otp';
 import { useMutation } from '@tanstack/react-query';
@@ -39,11 +39,13 @@ export interface VerifyPasscodeProps {
   onSuccess?: (data: InferApiResponseType<typeof $verifyPasscode>) => void;
   onCancel?: () => void;
   className?: string;
-  type: OtpType;
+  type: PasscodeType;
+  tmpUserId?: string | null;
 }
 
 export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
   email,
+  tmpUserId,
   showEmail = true,
   onSuccess,
   onCancel,
@@ -56,6 +58,7 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
       code: '',
       email: email,
       type,
+      tmpUserId,
     },
   });
   const formRef = useRef<HTMLFormElement>(null);
@@ -82,17 +85,18 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
     },
   });
 
-  const { mutateAsync: execResend, isPending: isRensedPending } = useMutation({
-    mutationFn: $rensedPasscode,
-    onSuccess: () => {
-      resetCountdown();
-      startCountdown();
-      reset();
-    },
-    onError: (error: Error) => {
-      setFormError(error, setError);
-    },
-  });
+  const { mutateAsync: rensedPasscode, isPending: isRensedPending } =
+    useMutation({
+      mutationFn: $rensedPasscode,
+      onSuccess: () => {
+        resetCountdown();
+        startCountdown();
+        reset();
+      },
+      onError: (error: Error) => {
+        setFormError(error, setError);
+      },
+    });
 
   const resed = () => {
     if (count > 0) {
@@ -101,7 +105,7 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
     if (isRensedPending) {
       return;
     }
-    execResend({ json: { email, type } });
+    rensedPasscode({ json: { email, type, tmpUserId } });
   };
 
   return (

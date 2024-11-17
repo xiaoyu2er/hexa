@@ -11,7 +11,12 @@ import {
   getTokenByToken,
   verifyDBTokenByCode,
 } from '@/server/data-access/token';
-import { getUserEmailOrThrowError } from '@/server/data-access/user';
+import {
+  createUser,
+  createUserEmail,
+  getUserEmail,
+  updateUserEmailVerified,
+} from '@/server/data-access/user';
 import { turnstile } from '@/server/middleware/turnstile';
 import { updatePasscodeAndSendEmail } from '@/server/serverice/passcode';
 import type { Context } from '@/server/types';
@@ -27,11 +32,24 @@ const passcode = new Hono<Context>()
     async (c) => {
       const db = c.get('db');
       const { email, type } = c.req.valid('json');
-      const {
-        user: { id: userId },
-      } = await getUserEmailOrThrowError(db, email);
+      switch (type) {
+        case 'SIGN_UP':
+          break;
+        case 'RESET_PASSWORD':
+          break;
+        case 'VERIFY_EMAIL':
+          break;
+        case 'LOGIN_PASSCODE': {
+          const emailItem = await getUserEmail(db, email);
+          if (!emailItem) {
+            throw new ApiError('BAD_REQUEST', 'user not found');
+          }
+          break;
+        }
+        default:
+          throw new ApiError('BAD_REQUEST', 'Unexpected type');
+      }
       const data = await updatePasscodeAndSendEmail(db, {
-        userId,
         email,
         type,
         publicUrl: PUBLIC_URL,
@@ -45,42 +63,81 @@ const passcode = new Hono<Context>()
     zValidator('json', ResendPasscodeSchema),
     async (c) => {
       const db = c.get('db');
-      const { email, type } = c.req.valid('json');
-      const {
-        user: { id: userId },
-      } = await getUserEmailOrThrowError(db, email);
+      const { email, type, tmpUserId } = c.req.valid('json');
       const data = await updatePasscodeAndSendEmail(db, {
-        userId,
         email,
         type,
+        tmpUserId,
         publicUrl: PUBLIC_URL,
       });
       return c.json(data);
     }
   )
-  // Login by verify passcode sent to email
+  // Verify passcode
   .post(
     '/verify-passcode',
     zValidator('json', VerifyPasscodeSchema),
     async (c) => {
       const db = c.get('db');
-      const { email, code, type } = c.req.valid('json');
-      const {
-        user: { id: userId },
-      } = await getUserEmailOrThrowError(db, email);
+      const { email, code, type, tmpUserId } = c.req.valid('json');
       const isResetPassword = type === 'RESET_PASSWORD';
       const tokenItem = await verifyDBTokenByCode(db, {
-        userId,
         code,
+        email,
         type,
+        tmpUserId,
         deleteRow: !isResetPassword,
       });
-      // we don't need to invalidate session if it's reset password
-      if (!isResetPassword) {
-        await invalidateUserSessions(tokenItem.userId);
-        await setSession(tokenItem.userId);
+
+      switch (type) {
+        case 'SIGN_UP': {
+          const tmpUser = tokenItem?.tmpUser;
+          if (!tmpUser) {
+            throw new ApiError('BAD_REQUEST', 'tmp user not found');
+          }
+
+          const user = await createUser(db, {
+            name: tmpUser.name,
+            password: tmpUser.password,
+          });
+          if (!user) {
+            throw new ApiError('BAD_REQUEST', 'Failed to create user');
+          }
+          // add email
+          await createUserEmail(db, {
+            email: tmpUser.email,
+            userId: user.id,
+            verified: true,
+            primary: true,
+          });
+          await invalidateUserSessions(user.id);
+          await setSession(user.id);
+          return c.redirect(`/${user.name}/settings/profile`);
+        }
+        case 'RESET_PASSWORD': {
+          return c.json({ token: tokenItem.token });
+        }
+        case 'VERIFY_EMAIL': {
+          // verify email
+          const tmpUser = tokenItem?.tmpUser;
+          if (!tmpUser) {
+            throw new ApiError('BAD_REQUEST', 'tmp user not found');
+          }
+          await updateUserEmailVerified(db, tmpUser.id, email);
+          return c.redirect(`/${tmpUser.name}/settings/profile`);
+        }
+        case 'LOGIN_PASSCODE': {
+          const emailItem = await getUserEmail(db, email);
+          if (!emailItem) {
+            throw new ApiError('BAD_REQUEST', 'user not found');
+          }
+          await invalidateUserSessions(emailItem.user.id);
+          await setSession(emailItem.user.id);
+          return c.redirect(`/${emailItem.user.name}/settings/profile`);
+        }
+        default:
+          throw new ApiError('BAD_REQUEST', 'Unexpected type');
       }
-      return c.json({ token: tokenItem.token });
     }
   )
   // Login by verify token sent to email
@@ -91,7 +148,7 @@ const passcode = new Hono<Context>()
       const db = c.get('db');
       const { token, type } = c.req.valid('query');
 
-      const tokenItem = await getTokenByToken(db, token, type);
+      const tokenItem = await getTokenByToken(db, { token, type });
       if (!tokenItem) {
         throw new ApiError(
           'FORBIDDEN',
@@ -103,19 +160,23 @@ const passcode = new Hono<Context>()
       const isResetPassword = type === 'RESET_PASSWORD';
 
       await verifyDBTokenByCode(db, {
-        userId: tokenItem.userId,
+        email: tokenItem.email,
         token,
         type: tokenItem.type,
         deleteRow: !isResetPassword,
       });
 
-      if (!isResetPassword) {
-        await invalidateUserSessions(tokenItem.userId);
-        await setSession(tokenItem.userId);
-        return c.redirect('/settings/profile');
+      if (type === 'RESET_PASSWORD') {
+        return c.redirect(`/reset-password?token=${tokenItem.token}`);
       }
 
-      return c.redirect(`/reset-password?token=${tokenItem.token}`);
+      if (tokenItem.userId && tokenItem.user) {
+        await invalidateUserSessions(tokenItem.userId);
+        await setSession(tokenItem.userId);
+        return c.redirect(`/${tokenItem.user.name}/settings/profile`);
+      }
+
+      throw new ApiError('BAD_REQUEST', 'Unexpected token');
     }
   );
 export default passcode;

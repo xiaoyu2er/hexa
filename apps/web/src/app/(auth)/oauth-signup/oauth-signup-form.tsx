@@ -28,14 +28,15 @@ import { useForm } from 'react-hook-form';
 import { useTurnstile } from '@/components/hooks/use-turnstile';
 import { setFormError } from '@/lib/form';
 import { $oauthSignup } from '@/server/client';
-import type { OauthAccountModel } from '@/server/db';
+import type { SelectOauthAccountType } from '@/server/db';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { capitalize } from 'lodash';
 import Link from 'next/link';
 
 interface OauthSignupProps {
-  oauthAccount: OauthAccountModel;
+  oauthAccount: SelectOauthAccountType;
   onSuccess: () => void;
   onCancel?: () => void;
 }
@@ -49,7 +50,6 @@ export const OauthSignup: FC<OauthSignupProps> = ({
     resolver: zodResolver(OauthSignupSchema),
     defaultValues: {
       oauthAccountId: oauthAccount.id,
-      username: '',
     },
   });
 
@@ -75,7 +75,7 @@ export const OauthSignup: FC<OauthSignupProps> = ({
   });
 
   useEffect(() => {
-    setFocus('username');
+    setFocus('name');
   }, [setFocus]);
 
   return (
@@ -93,14 +93,13 @@ export const OauthSignup: FC<OauthSignupProps> = ({
             method="POST"
             className="space-y-4"
           >
-            <input type="hidden" {...register('oauthAccountId')} />
             <FormItem>
-              <FormLabel>Email</FormLabel>
-              <Input value={oauthAccount.email} type="email" disabled />
+              <FormLabel>{capitalize(oauthAccount.provider)} Account</FormLabel>
+              <Input value={`${oauthAccount.username}`} disabled />
             </FormItem>
             <FormField
               control={form.control}
-              name="username"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>
@@ -108,7 +107,7 @@ export const OauthSignup: FC<OauthSignupProps> = ({
                     <Input
                       {...field}
                       placeholder=""
-                      className={errors.username ? 'border-destructive' : ''}
+                      className={errors.name ? 'border-destructive' : ''}
                     />
                   </FormControl>
                   <FormMessage />

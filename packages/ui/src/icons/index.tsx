@@ -1,9 +1,19 @@
+'use client';
+
 export { AnimatedSpinner } from './animated-spinner';
 export { GoogleIcon } from './google-icon';
 export { GithubIcon } from './github-icon';
+// export { PlusIcon } from './plus-icon';
 
 // https://lucide.dev/icons/
 export {
+  Settings2,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+  MoreHorizontal,
+  BuildingIcon,
   PencilLine,
   BookIcon,
   MenuIcon,
@@ -16,6 +26,7 @@ export {
   Loader2Icon,
   LogOut,
   CircleUser,
+  CirclePlus,
   Menu,
   Package2,
   Search,
@@ -33,6 +44,7 @@ export {
   UserPlusIcon,
   SettingsIcon,
   UserIcon,
+  BookMarkedIcon,
 } from 'lucide-react';
 
 // https://www.radix-ui.com/icons

@@ -3,7 +3,7 @@ import { ApiError } from '@/lib/error/error';
 import { setSession } from '@/lib/session';
 import { isHashValid } from '@/lib/utils';
 import { LoginPasswordSchema } from '@/lib/zod/schemas/auth';
-import { getUserByUsername, getUserEmail } from '@/server/data-access/user';
+import { getUserByName, getUserEmail } from '@/server/data-access/user';
 import { turnstile } from '@/server/middleware/turnstile';
 import type { Context } from '@/server/types';
 import { zValidator } from '@hono/zod-validator';
@@ -16,11 +16,11 @@ const login = new Hono<Context>()
     zValidator('json', LoginPasswordSchema),
     turnstile,
     async (c) => {
-      const { username, password } = c.req.valid('json');
+      const { name, password } = c.req.valid('json');
       const db = c.get('db');
-      let existingUser = await getUserByUsername(db, username);
+      let existingUser = await getUserByName(db, name);
       if (!existingUser) {
-        const emailItem = await getUserEmail(db, username);
+        const emailItem = await getUserEmail(db, name);
         existingUser = emailItem?.user;
 
         if (!existingUser) {
@@ -54,8 +54,7 @@ const login = new Hono<Context>()
       }
 
       await setSession(existingUser.id);
-
-      return c.json({});
+      return c.redirect(`/${existingUser.name}/settings/profile`);
     }
   );
 

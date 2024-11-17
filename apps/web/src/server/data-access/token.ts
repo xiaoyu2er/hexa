@@ -2,37 +2,48 @@ import { RESET_PASSWORD_EXPIRE_TIME_SPAN } from '@/lib/const';
 import { IS_DEVELOPMENT } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
 import { generateCode, generateId } from '@/lib/utils';
-import { type OtpType, tokenTable } from '@/server/db/schema';
+import {
+  type FindTokenByEmailType,
+  type FindTokenByTokenType,
+  type VerifyTokenType,
+  tokenTable,
+} from '@/server/db/schema';
 import type { DbType } from '@/server/types';
 import { and, eq } from 'drizzle-orm';
 import { createDate, isWithinExpirationDate } from 'oslo';
 
-export async function deleteDBToken(db: DbType, userId: string, type: OtpType) {
+export function deleteDBToken(
+  db: DbType,
+  { email, type }: FindTokenByEmailType
+) {
   return db
     .delete(tokenTable)
-    .where(and(eq(tokenTable.userId, userId), eq(tokenTable.type, type)));
+    .where(and(eq(tokenTable.email, email), eq(tokenTable.type, type)));
 }
 
-export async function findDBTokenByUserId(
+export async function findDBToken(
   db: DbType,
-  userId: string,
-  type: OtpType
+  { email, type }: FindTokenByEmailType
 ) {
   return db.query.tokenTable.findFirst({
     where: (table, { eq, and }) =>
-      and(eq(table.userId, userId), eq(table.type, type)),
+      and(eq(table.email, email), eq(table.type, type)),
+    with: {
+      user: true,
+      tmpUser: true,
+    },
   });
 }
 
 export async function addDBToken(
   db: DbType,
-  userId: string,
-  email: string,
-  type: OtpType
+  { userId, tmpUserId, email, type }: FindTokenByEmailType
 ) {
   await db
     .delete(tokenTable)
-    .where(and(eq(tokenTable.userId, userId), eq(tokenTable.type, type)));
+    .where(and(eq(tokenTable.email, email), eq(tokenTable.type, type)))
+    .returning();
+
   const code = generateCode();
   const token = generateId();
   const row = (
@@ -42,6 +53,7 @@ export async function addDBToken(
         code,
         token,
         userId,
+        tmpUserId,
         email,
         expiresAt: createDate(RESET_PASSWORD_EXPIRE_TIME_SPAN),
         type,
@@ -57,35 +69,36 @@ export async function addDBToken(
 
 export async function getTokenByToken(
   db: DbType,
-  token: string,
-  type: OtpType
+  { token, type }: FindTokenByTokenType
 ) {
   return db.query.tokenTable.findFirst({
     where: (table, { eq, and }) =>
       and(eq(table.token, token), eq(table.type, type)),
+    with: {
+      user: true,
+      tmpUser: true,
+    },
   });
 }
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
 export async function verifyDBTokenByCode(
   db: DbType,
   {
-    userId,
     code,
+    email,
     token,
     type,
+    tmpUserId,
     deleteRow = true,
   }: {
-    userId: string;
-    code?: string;
-    token?: string;
-    type: OtpType;
     deleteRow?: boolean;
-  }
+  } & VerifyTokenType
 ) {
   if (!code && !token) {
     throw new ApiError('CONFLICT', 'Code or token is required');
   }
-  const tokenRow = await findDBTokenByUserId(db, userId, type);
+  const tokenRow = await findDBToken(db, { email, type });
 
   // No record
   if (!tokenRow) {
@@ -99,7 +112,7 @@ export async function verifyDBTokenByCode(
   if (!isWithinExpirationDate(tokenRow.expiresAt)) {
     // Delete the verification row
     if (deleteRow) {
-      await deleteDBToken(db, userId, type);
+      await deleteDBToken(db, { email, type });
     }
 
     throw new ApiError(
@@ -131,7 +144,7 @@ export async function verifyDBTokenByCode(
   }
 
   if (deleteRow) {
-    await deleteDBToken(db, userId, type);
+    await deleteDBToken(db, { email, type });
   }
 
   return tokenRow;

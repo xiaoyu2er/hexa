@@ -1,7 +1,7 @@
 import {
-  type OauthAccountModel,
   type ProviderType,
-  type UserModel,
+  type SelectOauthAccountType,
+  type SelectUserType,
   oauthAccountTable,
 } from '@/server/db/schema';
 import type { DbType } from '@/server/types';
@@ -14,6 +14,9 @@ export async function getAccountByGoogleId(db: DbType, googleId: string) {
       eq(oauthAccountTable.provider, 'GOOGLE'),
       eq(oauthAccountTable.providerAccountId, googleId)
     ),
+    with: {
+      user: true,
+    },
   });
 }
 
@@ -31,7 +34,7 @@ export async function getAccountByGithubId(db: DbType, githubId: number) {
 
 export async function createGithubAccount(
   db: DbType,
-  userId: UserModel['id'] | null,
+  userId: SelectUserType['id'] | null,
   githubUser: GitHubUser
 ) {
   return (
@@ -64,7 +67,7 @@ export async function createGithubAccount(
 
 export async function createGoogleAccount(
   db: DbType,
-  userId: UserModel['id'] | null,
+  userId: SelectUserType['id'] | null,
   googleUser: GoogleUser
 ) {
   return (
@@ -97,7 +100,7 @@ export async function createGoogleAccount(
 
 export async function getUserOauthAccounts(
   db: DbType,
-  userId: UserModel['id']
+  userId: SelectUserType['id']
 ) {
   return await db.query.oauthAccountTable.findMany({
     where: eq(oauthAccountTable.userId, userId),
@@ -112,21 +115,21 @@ export async function getOauthAccount(db: DbType, id: string) {
 
 export async function updateOauthAccount(
   db: DbType,
-  id: string,
-  data: Partial<OauthAccountModel>
+  oauthAccountId: string,
+  data: Partial<SelectOauthAccountType>
 ) {
   return (
     await db
       .update(oauthAccountTable)
       .set(data)
-      .where(eq(oauthAccountTable.id, id))
+      .where(eq(oauthAccountTable.id, oauthAccountId))
       .returning()
   )[0];
 }
 
 export async function removeUserOauthAccount(
   db: DbType,
-  uid: UserModel['id'],
+  uid: SelectUserType['id'],
   provider: ProviderType
 ) {
   return await db

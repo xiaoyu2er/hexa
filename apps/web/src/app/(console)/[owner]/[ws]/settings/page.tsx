@@ -8,9 +8,10 @@ export default async function ({
   params,
 }: {
   // https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes#good-to-know
-  params: Promise<{ slug: string }>;
+  params: Promise<{ owner: string; ws: string }>;
 }) {
-  const { slug } = await params;
+  const { owner, ws } = await params;
+  const slug = `${owner}/${ws}`;
   return (
     <>
       <EditWorkspaceName slug={slug} />

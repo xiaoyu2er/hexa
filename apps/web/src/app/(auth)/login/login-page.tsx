@@ -1,6 +1,7 @@
 'use client';
 
 import { VerifyPasscode } from '@/components/auth/verify-passcode-form';
+import { toast } from '@hexa/ui/sonner';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useStep } from 'usehooks-ts';
@@ -13,7 +14,7 @@ export function LoginPage() {
   );
   const [email, setEmail] = useState('');
   const [currentStep, { goToNextStep, reset }] = useStep(2);
-  const router = useRouter();
+  const _router = useRouter();
 
   if (loginType === 'password') {
     return <LoginPassword onPasscode={() => setLoginType('passcode')} />;
@@ -38,7 +39,7 @@ export function LoginPage() {
             email={email}
             type="LOGIN_PASSCODE"
             onSuccess={() => {
-              router.push('/settings/profile');
+              toast.success('Login successful');
             }}
             onCancel={reset}
           />

@@ -2,11 +2,14 @@
 
 import { queryWorkspacesOptions } from '@/lib/queries/workspace';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { useParams } from 'next/navigation';
 import NoWorkspaces from './no-workspaces';
 import { WorkspaceCard } from './workspace-card';
 
 export const WorkspaceList = () => {
-  const { data: workspaces } = useSuspenseQuery(queryWorkspacesOptions);
+  const { owner } = useParams() as { owner: string };
+  const { data: workspaces } = useSuspenseQuery(queryWorkspacesOptions(owner));
+
   return (
     <>
       {workspaces.length > 0 ? (

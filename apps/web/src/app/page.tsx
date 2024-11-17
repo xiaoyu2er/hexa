@@ -41,22 +41,15 @@ function AlertDialogDemo() {
 export default async function Home() {
   const { session, user } = await validateRequest();
   if (session) {
-    return redirect('/settings/profile');
+    return redirect(`/${user.name}/settings/profile`);
   }
   return (
     <>
       <Header />
       <div className="flex h-screen flex-col items-center justify-center px-2">
-        {session ? (
-          <>
-            <div>user: {JSON.stringify(user, null, '\t')}</div>
-            <div>session: {JSON.stringify(session, null, '\t')}</div>
-          </>
-        ) : (
-          <div className="flex gap-12">
-            <AlertDialogDemo />
-          </div>
-        )}
+        <div className="flex gap-12">
+          <AlertDialogDemo />
+        </div>
       </div>
     </>
   );

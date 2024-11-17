@@ -1,5 +1,6 @@
 import { MIN_PASSWORD_LENGTH } from '@/lib/const';
 import { DISABLE_CLOUDFLARE_TURNSTILE } from '@/lib/env';
+import { InsertTokenSchema, PasscodeTypeSchema } from '@/server/db/schema';
 import { z } from 'zod';
 
 const email = z.string().email('Please enter a valid email');
@@ -13,7 +14,7 @@ const password = z
   .max(255);
 
 const token = z.string().min(1, 'Invalid token');
-const code = z
+const _code = z
   .string()
   .min(6, {
     message: 'Your verification code must be 6 characters.',
@@ -21,7 +22,7 @@ const code = z
   .max(6);
 
 // Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen.
-export const username = z
+export const name = z
   .string()
   .min(3, 'Please enter a valid username')
   .max(40, 'Username must be 3 to 40 characters')
@@ -53,14 +54,14 @@ export const EmptySchema = z.object({});
 export const SignupSchema = z.object({
   email,
   password,
-  username,
+  name,
   'cf-turnstile-response': cfTurnstileResponse,
 });
 
 export const OauthSignupSchema = z.object({
   oauthAccountId: z.string(),
   // password,
-  username,
+  name,
   'cf-turnstile-response': cfTurnstileResponse,
 });
 
@@ -69,36 +70,33 @@ export const TurnstileSchema = z.object({
 });
 
 export const LoginPasswordSchema = z.object({
-  username: z.string().min(3, 'Please enter a valid username or email'),
+  name: z.string().min(3, 'Please enter a valid username or email'),
   password,
   'cf-turnstile-response': cfTurnstileResponse,
 });
-const PasscodeType = z.enum([
-  'RESET_PASSWORD',
-  'VERIFY_EMAIL',
-  'LOGIN_PASSCODE',
-]);
 
-export const SendPasscodeSchema = z.object({
-  email,
-  type: PasscodeType,
+export const SendPasscodeSchema = InsertTokenSchema.pick({
+  email: true,
+  type: true,
+  tmpUserId: true,
+}).extend({
   'cf-turnstile-response': cfTurnstileResponse,
 });
 
-export const ResendPasscodeSchema = SendPasscodeSchema.pick({
-  email: true,
-  type: true,
+export const ResendPasscodeSchema = SendPasscodeSchema.omit({
+  'cf-turnstile-response': true,
 });
 
-export const VerifyPasscodeSchema = z.object({
-  code,
-  email,
-  type: PasscodeType,
+export const VerifyPasscodeSchema = InsertTokenSchema.pick({
+  code: true,
+  email: true,
+  type: true,
+  tmpUserId: true,
 });
 
 export const VerifyPassTokenSchema = z.object({
   token,
-  type: PasscodeType,
+  type: PasscodeTypeSchema,
 });
 
 export const ResetPasswordSchema = z.object({

@@ -46,7 +46,6 @@ export type UpdateWorkspaceSlugInput = z.infer<
 export const CreateWorkspaceSchema = z.object({
   name,
   // only allow alphanumeric characters, dashes, and max length of 32
-  slug,
 });
 
 export type CreateWorkspaceInput = z.infer<typeof CreateWorkspaceSchema>;

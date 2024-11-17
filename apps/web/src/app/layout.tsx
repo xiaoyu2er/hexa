@@ -23,6 +23,7 @@ export default async function RootLayout({
   children: ReactNode;
 }>) {
   const session = await validateRequest();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn(satoshi.variable, inter.variable)}>

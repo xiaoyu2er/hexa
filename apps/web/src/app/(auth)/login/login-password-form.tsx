@@ -33,6 +33,7 @@ import { Divider } from '@hexa/ui/divider';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { Input } from '@hexa/ui/input';
 import { PasswordInput } from '@hexa/ui/password-input';
+import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -44,7 +45,7 @@ interface LoginPasswordProps {
 }
 
 export function LoginPassword({ onPasscode }: LoginPasswordProps) {
-  const router = useRouter();
+  const _router = useRouter();
 
   const form = useForm<LoginPasswordInput>({
     resolver: zodResolver(LoginPasswordSchema),
@@ -68,7 +69,7 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
   const { mutateAsync: loginPassword } = useMutation({
     mutationFn: $loginPassword,
     onSuccess: () => {
-      router.push('/settings/profile');
+      toast.success('Login successful');
     },
     onError: (error) => {
       resetTurnstile();
@@ -77,7 +78,7 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
   });
 
   useEffect(() => {
-    setFocus('username');
+    setFocus('name');
   }, [setFocus]);
 
   return (
@@ -100,7 +101,7 @@ export function LoginPassword({ onPasscode }: LoginPasswordProps) {
             >
               <FormField
                 control={form.control}
-                name="username"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Username or Email</FormLabel>

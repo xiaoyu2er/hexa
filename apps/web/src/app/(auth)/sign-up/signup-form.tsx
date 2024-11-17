@@ -45,7 +45,7 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
     defaultValues: {
       email: email ?? '',
       password: '',
-      username: '',
+      name: '',
     },
   });
 
@@ -109,7 +109,7 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
 
             <FormField
               control={form.control}
-              name="username"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>
@@ -117,7 +117,7 @@ export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
                     <Input
                       {...field}
                       placeholder="username"
-                      className={errors.username ? 'border-destructive' : ''}
+                      className={errors.name ? 'border-destructive' : ''}
                     />
                   </FormControl>
                   <FormMessage />

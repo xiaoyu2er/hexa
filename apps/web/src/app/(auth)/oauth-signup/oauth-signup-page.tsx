@@ -1,14 +1,14 @@
 'use client';
 
 import { deleteCookie } from '@/lib/cookie';
-
-import type { OauthAccountModel } from '@/server/db';
+import type { SelectOauthAccountType } from '@/server/db';
+import { toast } from '@hexa/ui/sonner';
 import { useRouter } from 'next/navigation';
 import { type FC, useEffect } from 'react';
 import { OauthSignup } from './oauth-signup-form';
 
 export interface SignupPageProps {
-  oauthAccount: OauthAccountModel;
+  oauthAccount: SelectOauthAccountType;
 }
 
 export const OauthSignupPage: FC<SignupPageProps> = ({ oauthAccount }) => {
@@ -21,7 +21,7 @@ export const OauthSignupPage: FC<SignupPageProps> = ({ oauthAccount }) => {
     <OauthSignup
       oauthAccount={oauthAccount}
       onSuccess={() => {
-        router.push('/settings/profile');
+        toast.success('Sign up successful');
       }}
       onCancel={() => {
         router.push('/');

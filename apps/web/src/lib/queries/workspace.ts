@@ -1,11 +1,19 @@
 import { getQueryClient } from '@/components/providers/get-query-client';
-import { $getWorkspaceBySlug, $getWorkspaces } from '@/server/client';
+import {
+  $getAccessibleWorkspaces,
+  $getOwnerWorkspaces,
+  $getWorkspaceBySlug,
+} from '@/server/client';
 import { queryOptions } from '@tanstack/react-query';
 
-export const queryWorkspacesOptions = queryOptions({
-  queryKey: ['workspaces'],
-  queryFn: $getWorkspaces,
-});
+export const queryWorkspacesOptions = (ownerName?: string) =>
+  queryOptions({
+    queryKey: ['workspaces/', ownerName],
+    queryFn: () =>
+      ownerName
+        ? $getOwnerWorkspaces({ param: { owner: ownerName } })
+        : $getAccessibleWorkspaces({}),
+  });
 
 export const invalidateWorkspacesQuery = () => {
   const client = getQueryClient();
@@ -16,8 +24,8 @@ export const invalidateWorkspacesQuery = () => {
 
 export const queryWorkspaceBySlugOptions = (slug: string) =>
   queryOptions({
-    queryKey: ['workspace/slug/', slug],
-    queryFn: () => $getWorkspaceBySlug({ param: { slug } }),
+    queryKey: ['workspace/', slug],
+    queryFn: () => $getWorkspaceBySlug({ query: { slug } }),
   });
 
 export const invalidateWorkspaceBySlugQuery = (slug: string) => {

@@ -1,11 +1,10 @@
 import { IS_PRODUCTION } from '@/lib/env';
 import { getD1 } from '@/server/db';
-import type { UserModel as DbUser } from '@/server/db/schema';
 import { D1Adapter } from '@lucia-auth/adapter-sqlite';
-import pick from 'lodash/pick';
 import { Lucia, TimeSpan } from 'lucia';
 
 export const getLucia = async () => {
+  // here we use D1 directly so the user session/attributes are not camelCase but snake_case
   const d1 = await getD1();
   const adapter = new D1Adapter(d1, { user: 'user', session: 'session' });
   const lucia = new Lucia(adapter, {
@@ -16,14 +15,11 @@ export const getLucia = async () => {
       // @ts-ignore - We return the user attributes with the password removed
       const hasPassword = !!attributes.password;
       return {
-        ...pick(attributes, [
-          'id',
-          'name',
-          'avatarUrl',
-          // biome-ignore lint/nursery/noSecrets: <explanation>
-          'defaultWorkspaceId',
-          'username',
-        ]),
+        id: attributes.id,
+        name: attributes.name,
+        avatarUrl: attributes.avatar_url,
+        defaultWsId: attributes.default_ws_id,
+        displayName: attributes.display_name,
         hasPassword,
       };
     },
@@ -58,7 +54,12 @@ declare module 'lucia' {
   }
 
   interface DatabaseSessionAttributes {}
-  interface DatabaseUserAttributes extends Omit<DbUser, 'password'> {
-    hasPassword: boolean;
+  interface DatabaseUserAttributes {
+    id: string;
+    name: string;
+    avatar_url: string;
+    default_ws_id: string;
+    display_name: string;
+    password: string;
   }
 }
