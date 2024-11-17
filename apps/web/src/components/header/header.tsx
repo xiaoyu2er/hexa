@@ -1,5 +1,5 @@
-import { validateRequest } from '@/lib/auth/validate-request';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
+import { getSession } from '@/lib/session';
 import { Button } from '@hexa/ui/button';
 import { Loader2Icon } from '@hexa/ui/icons';
 import Link from 'next/link';
@@ -7,7 +7,7 @@ import { Suspense } from 'react';
 import { ModeToggle } from './mode-toggle';
 
 async function HeaderActions() {
-  const { user } = await validateRequest();
+  const { user } = await getSession();
   const isSignedIn = !!user;
 
   return (

@@ -8,7 +8,7 @@ import { Provider as NiceModalProvider } from '@/components/modal';
 import { QueryClientProvider } from '@/components/providers/query-client-provider';
 import { SessionProvider } from '@/components/providers/session-provider';
 import { TailwindIndicator } from '@/components/tailwind-indicator';
-import { validateRequest } from '@/lib/auth';
+import { getSession } from '@/lib/session';
 import { ThemeProvider } from 'next-themes';
 import type { ReactNode } from 'react';
 
@@ -22,7 +22,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
-  const session = await validateRequest();
+  const session = await getSession();
 
   return (
     <html lang="en" suppressHydrationWarning>
