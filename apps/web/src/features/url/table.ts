@@ -1,6 +1,6 @@
 import { userTable } from '@/features/user/table';
 import { workspaceTable } from '@/features/workspace/table';
-import { generateId } from '@/lib/utils';
+import { generateId } from '@/lib/crypto';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 // URL table

@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext } from '@/lib/queries/context';
+import { useContext } from '@/components/hooks/use-context';
 
 export default function WorkspacePage() {
   const { slug } = useContext();

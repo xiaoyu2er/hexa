@@ -1,7 +1,7 @@
 import { passcodeTable } from '@/features/passcode/table';
 import { tmpUserTable } from '@/features/tmp-user/table';
+import { getHash } from '@/lib/crypto';
 import { ApiError } from '@/lib/error/error';
-import { getHash } from '@/lib/utils';
 import { eq } from 'drizzle-orm';
 import type { DbType } from '../../lib/types';
 

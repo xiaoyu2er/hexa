@@ -5,10 +5,10 @@ import type {
 } from '@/features/passcode/schema';
 import { passcodeTable } from '@/features/passcode/table';
 import { RESET_PASSWORD_EXPIRE_TIME_SPAN } from '@/lib/const';
+import { generateCode, generateId } from '@/lib/crypto';
 import { IS_DEVELOPMENT } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
 import type { DbType } from '@/lib/types';
-import { generateCode, generateId } from '@/lib/utils';
 import { and, eq } from 'drizzle-orm';
 import { createDate, isWithinExpirationDate } from 'oslo';
 

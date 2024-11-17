@@ -2,11 +2,11 @@
 
 import { CaretSortIcon, CheckIcon, PlusCircledIcon } from '@hexa/ui/icons';
 
+import { useContext } from '@/components/hooks/use-context';
 import { OrgAvatar } from '@/components/orgs/org-avatar';
 import { UserAvatar } from '@/components/user-settings/user-avatar';
 import type { SelectWorkspaceType } from '@/features/workspace/schema';
 import { $updateUserDefaultWorkspace } from '@/lib/api';
-import { useContext } from '@/lib/queries/context';
 import { queryWorkspacesOptions } from '@/lib/queries/workspace';
 import { getWorkspaceSlug } from '@/lib/workspace';
 import { useModal } from '@ebay/nice-modal-react';

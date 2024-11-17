@@ -1,4 +1,4 @@
-import { generateId } from '@/lib/utils';
+import { generateId } from '@/lib/crypto';
 import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 // Repository table (similar to GitHub repos)
