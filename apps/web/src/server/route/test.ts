@@ -1,6 +1,7 @@
 import {
   IS_DEVELOPMENT,
   IS_PRODUCTION,
+  IS_XYZ,
   NEXT_PUBLIC_APP_NAME,
   NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY,
   NEXT_PUBLIC_STORAGE_BASE_URL,
@@ -30,6 +31,7 @@ const test = new Hono<Context>()
     return c.json({
       env: json,
       process: process.env,
+      IS_XYZ,
       IS_DEVELOPMENT,
       IS_PRODUCTION,
       NEXT_PUBLIC_APP_NAME,
