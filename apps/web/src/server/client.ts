@@ -71,7 +71,7 @@ export type InferApiResponseType<
 // ==================== Auth ====================
 // passcode
 export const $sendPasscode = h(api['send-passcode'].$post);
-export const $rensedPasscode = h(api['resend-passcode'].$post);
+export const $resendPasscode = h(api['resend-passcode'].$post);
 export const $verifyPasscode = h(api['verify-passcode'].$post);
 // login
 export const $loginPassword = h(api['login-password'].$post);
