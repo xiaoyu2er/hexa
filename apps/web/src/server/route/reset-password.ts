@@ -1,10 +1,10 @@
-import { ApiError } from '@/lib/error/error';
-import { invalidateUserSessions, setSession } from '@/lib/session';
 import {
   getTokenByToken,
   verifyDBTokenByCode,
-} from '@/server/data-access/token';
-import { updateUserPassword } from '@/server/data-access/user';
+} from '@/features/passcode/store';
+import { updateUserPassword } from '@/features/user/store';
+import { ApiError } from '@/lib/error/error';
+import { invalidateUserSessions, setSession } from '@/lib/session';
 import { ResetPasswordSchema } from '@/server/db/schema';
 import type { Context } from '@/server/types';
 import { zValidator } from '@hono/zod-validator';

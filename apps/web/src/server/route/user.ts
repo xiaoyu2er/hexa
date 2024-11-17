@@ -1,12 +1,8 @@
-import { PUBLIC_URL } from '@/lib/env';
-import { ApiError } from '@/lib/error/error';
-import { invalidateUserSessions } from '@/lib/session';
-import { isStored, storage } from '@/lib/storage';
-import { generateId } from '@/lib/utils';
 import {
   getUserOauthAccounts,
   removeUserOauthAccount,
-} from '@/server/data-access/account';
+} from '@/features/oauth-account/store';
+import { updatePasscodeAndSendEmail } from '@/features/passcode/service';
 import {
   createUserEmail,
   deleteUser,
@@ -17,11 +13,16 @@ import {
   updateUserAvatar,
   updateUserPrimaryEmail,
   updateUsername,
-} from '@/server/data-access/user';
+} from '@/features/user/store';
 import {
   getWorkspaceByWsId,
   setUserDefaultWorkspace,
-} from '@/server/data-access/workspace';
+} from '@/features/workspace/store';
+import { PUBLIC_URL } from '@/lib/env';
+import { ApiError } from '@/lib/error/error';
+import { invalidateUserSessions } from '@/lib/session';
+import { isStored, storage } from '@/lib/storage';
+import { generateId } from '@/lib/utils';
 import {
   ChangeUserNameSchema,
   DeleteOauthAccountSchema,
@@ -31,7 +32,6 @@ import {
 import { OnlyEmailSchema } from '@/server/db/schema';
 import auth from '@/server/middleware/auth-user';
 import authWorkspace from '@/server/middleware/auth-workspace';
-import { updatePasscodeAndSendEmail } from '@/server/serverice/passcode';
 import type { Context } from '@/server/types';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';

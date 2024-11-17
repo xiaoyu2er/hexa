@@ -1,8 +1,8 @@
+import { getUserByName, getUserEmail } from '@/features/user/store';
 import { IS_DEVELOPMENT } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
 import { setSession } from '@/lib/session';
 import { isHashValid } from '@/lib/utils';
-import { getUserByName, getUserEmail } from '@/server/data-access/user';
 import { LoginPasswordSchema } from '@/server/db/schema';
 import { turnstile } from '@/server/middleware/turnstile';
 import type { Context } from '@/server/types';

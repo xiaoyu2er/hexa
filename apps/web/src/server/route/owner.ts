@@ -1,5 +1,5 @@
+import { getOrgWithUserRole } from '@/features/org/store';
 import { ApiError } from '@/lib/error/error';
-import { getOrgWithUserRole } from '@/server/data-access/org';
 import { SelectOwnerSchema } from '@/server/db/schema';
 import auth from '@/server/middleware/auth-user';
 import { zValidator } from '@hono/zod-validator';

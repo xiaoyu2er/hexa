@@ -1,16 +1,17 @@
-import { IS_DEVELOPMENT, PUBLIC_URL } from '@/lib/env';
-import { ApiError } from '@/lib/error/error';
-import { invalidateUserSessions, setSession } from '@/lib/session';
+import { updatePasscodeAndSendEmail } from '@/features/passcode/service';
 import {
   getTokenByToken,
   verifyDBTokenByCode,
-} from '@/server/data-access/token';
+} from '@/features/passcode/store';
 import {
   createUser,
   createUserEmail,
   getUserEmail,
   updateUserEmailVerified,
-} from '@/server/data-access/user';
+} from '@/features/user/store';
+import { IS_DEVELOPMENT, PUBLIC_URL } from '@/lib/env';
+import { ApiError } from '@/lib/error/error';
+import { invalidateUserSessions, setSession } from '@/lib/session';
 import {
   ResendPasscodeSchema,
   SendPasscodeSchema,
@@ -18,7 +19,6 @@ import {
 } from '@/server/db/schema';
 import { VerifyPasscodeSchema } from '@/server/db/schema';
 import { turnstile } from '@/server/middleware/turnstile';
-import { updatePasscodeAndSendEmail } from '@/server/serverice/passcode';
 import type { Context } from '@/server/types';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';

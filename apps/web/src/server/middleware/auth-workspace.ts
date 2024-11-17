@@ -1,9 +1,9 @@
-import { ApiError } from '@/lib/error/error';
 import {
   getWorkspaceBySlug,
   getWorkspaceByWsId,
   getWorkspaceMember,
-} from '@/server/data-access/workspace';
+} from '@/features/workspace/store';
+import { ApiError } from '@/lib/error/error';
 import { createMiddleware } from 'hono/factory';
 import type { SelectWorkspaceType } from '../db/schema';
 
