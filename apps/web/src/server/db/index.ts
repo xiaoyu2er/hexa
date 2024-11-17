@@ -1,9 +1,9 @@
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { drizzle } from 'drizzle-orm/d1';
 
+import oauthAccountTable from '@/features/auth/oauth/table';
 import commonTable from '@/features/common/table';
 import emailTable from '@/features/email/table';
-import oauthAccountTable from '@/features/oauth-account/table';
 import orgMemberTable from '@/features/org-member/table';
 import orgTable from '@/features/org/table';
 import passcodeTable from '@/features/passcode/table';

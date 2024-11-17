@@ -1,7 +1,7 @@
 import { invalidateSession, setBlankSessionCookie } from '@/lib/session';
 import type { Context } from '@/server/types';
 
-import auth from '@/server/middleware/auth-user';
+import auth from '@/features/user/middleware';
 import { Hono } from 'hono';
 
 const logout = new Hono<Context>()

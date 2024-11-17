@@ -1,4 +1,4 @@
-import { getOauthAccount } from '@/features/oauth-account/store';
+import { getOauthAccount } from '@/features/auth/oauth/store';
 import { getDb } from '@/server/db/index';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';

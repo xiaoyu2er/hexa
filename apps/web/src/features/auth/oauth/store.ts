@@ -1,4 +1,4 @@
-import { oauthAccountTable } from '@/features/oauth-account/table';
+import { oauthAccountTable } from '@/features/auth/oauth/table';
 import type {
   InsertOauthAccountType,
   ProviderType,

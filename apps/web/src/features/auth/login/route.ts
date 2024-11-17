@@ -1,10 +1,10 @@
+import { turnstile } from '@/features/auth/turnstile/middleware';
 import { getUserByName, getUserEmail } from '@/features/user/store';
 import { IS_DEVELOPMENT } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
 import { setSession } from '@/lib/session';
 import { isHashValid } from '@/lib/utils';
 import { LoginPasswordSchema } from '@/server/db/schema';
-import { turnstile } from '@/server/middleware/turnstile';
 import type { Context } from '@/server/types';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';

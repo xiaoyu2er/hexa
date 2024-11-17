@@ -1,4 +1,4 @@
-import { oauthAccountTable } from '@/features/oauth-account/table';
+import { oauthAccountTable } from '@/features/auth/oauth/table';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 

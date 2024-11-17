@@ -5,7 +5,7 @@ import {
 } from '@/features/workspace/store';
 import { ApiError } from '@/lib/error/error';
 import { createMiddleware } from 'hono/factory';
-import type { SelectWorkspaceType } from '../db/schema';
+import type { SelectWorkspaceType } from '../../server/db/schema';
 
 const authWorkspace = createMiddleware(async (c, next) => {
   let { workspaceId } = c.req.param() as {
