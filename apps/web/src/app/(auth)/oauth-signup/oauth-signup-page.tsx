@@ -1,7 +1,7 @@
 'use client';
 
+import type { SelectOauthAccountType } from '@/features/auth/oauth/schema';
 import { deleteCookie } from '@/lib/cookie';
-import type { SelectOauthAccountType } from '@/server/db/schema';
 import { toast } from '@hexa/ui/sonner';
 import { useRouter } from 'next/navigation';
 import { type FC, useEffect } from 'react';

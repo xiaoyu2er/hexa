@@ -1,4 +1,8 @@
-import { UpdateAvatarSchema, name } from '@/features/common/schema';
+import {
+  NameSchema,
+  UpdateAvatarSchema,
+  type UpdateAvatarType,
+} from '@/features/common/schema';
 import {
   OwnerTypeSchema,
   SelectWorkspaceOwnerSchema,
@@ -31,11 +35,9 @@ export const SelectWorkspaceSchema = createSelectSchema(workspaceTable).extend({
 });
 export type SelectWorkspaceType = z.infer<typeof SelectWorkspaceSchema>;
 
-export const UpdateWorkspacerNameSchema = z.object({
-  name: name,
-});
+export const UpdateWorkspacerNameSchema = z.object({}).merge(NameSchema);
 
-export type UpdateWorkspaceNameInput = z.infer<
+export type UpdateWorkspaceNameType = z.infer<
   typeof UpdateWorkspacerNameSchema
 >;
 
@@ -50,8 +52,7 @@ export const DeleteWorkspaceSchema = z.object({
     ),
   workspaceId,
 });
-export type DeleteWorkspaceInput = z.infer<typeof DeleteWorkspaceSchema>;
+export type DeleteWorkspaceType = z.infer<typeof DeleteWorkspaceSchema>;
+
 export const UpdateWorkspaceAvatarSchema = UpdateAvatarSchema;
-export type UpdateWorkspaceAvatarInput = Simplify<
-  z.infer<typeof UpdateWorkspaceAvatarSchema>
->;
+export type UpdateWorkspaceAvatarType = UpdateAvatarType;

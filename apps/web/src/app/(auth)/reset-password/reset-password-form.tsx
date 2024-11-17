@@ -1,11 +1,11 @@
 'use client';
 
+import {
+  ResetPasswordSchema,
+  type ResetPasswordType,
+} from '@/features/auth/reset-password/schema';
 import { setFormError } from '@/lib/form';
 import { $resetPassword } from '@/server/client';
-import {
-  type ResetPasswordForm,
-  ResetPasswordSchema,
-} from '@/server/db/schema';
 import { Button } from '@hexa/ui/button';
 import {
   Card,
@@ -41,7 +41,7 @@ export const ResetPassword: FC<ResetParsswordCardProps> = ({
   onCancel,
   token,
 }) => {
-  const form = useForm<ResetPasswordForm>({
+  const form = useForm<ResetPasswordType>({
     resolver: zodResolver(ResetPasswordSchema),
     defaultValues: {
       password: '',

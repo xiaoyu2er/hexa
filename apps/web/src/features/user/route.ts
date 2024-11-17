@@ -1,9 +1,16 @@
+import { DeleteOauthAccountSchema } from '@/features/auth/oauth/schema';
 import {
   getUserOauthAccounts,
   removeUserOauthAccount,
 } from '@/features/auth/oauth/store';
+import { EmailSchema } from '@/features/common/schema';
 import { updatePasscodeAndSendEmail } from '@/features/passcode/service';
 import auth from '@/features/user/middleware';
+import {
+  ChangeUserNameSchema,
+  UpdateDisplayNameSchema,
+  UpdateUserAvatarSchema,
+} from '@/features/user/schema';
 import {
   createUserEmail,
   deleteUser,
@@ -25,13 +32,6 @@ import { ApiError } from '@/lib/error/error';
 import { invalidateUserSessions } from '@/lib/session';
 import { isStored, storage } from '@/lib/storage';
 import { generateId } from '@/lib/utils';
-import {
-  ChangeUserNameSchema,
-  DeleteOauthAccountSchema,
-  UpdateAvatarSchema,
-  UpdateDisplayNameSchema,
-} from '@/server/db/schema';
-import { OnlyEmailSchema } from '@/server/db/schema';
 import type { Context } from '@/server/types';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
@@ -56,16 +56,12 @@ const user = new Hono<Context>()
     return c.json(oauthAccounts);
   })
   // Set user primary email
-  .put(
-    '/user/emails/primary',
-    zValidator('json', OnlyEmailSchema),
-    async (c) => {
-      const { email } = c.req.valid('json');
-      const { db, userId } = c.var;
-      await updateUserPrimaryEmail(db, userId, email);
-      return c.json({});
-    }
-  )
+  .put('/user/emails/primary', zValidator('json', EmailSchema), async (c) => {
+    const { email } = c.req.valid('json');
+    const { db, userId } = c.var;
+    await updateUserPrimaryEmail(db, userId, email);
+    return c.json({});
+  })
   // Update display name
   .put(
     '/user/display-name',
@@ -93,7 +89,7 @@ const user = new Hono<Context>()
     }
   )
   // Add user email
-  .post('/user/emails', zValidator('json', OnlyEmailSchema), async (c) => {
+  .post('/user/emails', zValidator('json', EmailSchema), async (c) => {
     const { db, userId } = c.var;
     const { email } = c.req.valid('json');
 
@@ -114,33 +110,37 @@ const user = new Hono<Context>()
     return c.json(data);
   })
   // Remove user email
-  .delete('/user/emails', zValidator('json', OnlyEmailSchema), async (c) => {
+  .delete('/user/emails', zValidator('json', EmailSchema), async (c) => {
     const { db, userId } = c.var;
     const { email } = c.req.valid('json');
     await removeUserEmail(db, userId, email);
     return c.json({});
   })
   // Update user avatar
-  .put('/user/avatar', zValidator('form', UpdateAvatarSchema), async (c) => {
-    const {
-      db,
-      userId,
-      user: { avatarUrl },
-    } = c.var;
-    const { image } = c.req.valid('form');
-    const { url } = await storage.upload(`avatars/${generateId()}`, image);
-    await updateUserAvatar(db, userId, url);
-    // Delete old avatar
-    c.ctx.waitUntil(
-      (async () => {
-        if (avatarUrl && isStored(avatarUrl)) {
-          await storage.delete(avatarUrl);
-        }
-      })()
-    );
-    // revalidatePath("/");
-    return c.json({});
-  })
+  .put(
+    '/user/avatar',
+    zValidator('form', UpdateUserAvatarSchema),
+    async (c) => {
+      const {
+        db,
+        userId,
+        user: { avatarUrl },
+      } = c.var;
+      const { image } = c.req.valid('form');
+      const { url } = await storage.upload(`avatars/${generateId()}`, image);
+      await updateUserAvatar(db, userId, url);
+      // Delete old avatar
+      c.ctx.waitUntil(
+        (async () => {
+          if (avatarUrl && isStored(avatarUrl)) {
+            await storage.delete(avatarUrl);
+          }
+        })()
+      );
+      // revalidatePath("/");
+      return c.json({});
+    }
+  )
   // Delete user
   .delete('/user', async (c) => {
     const { db, userId } = c.var;

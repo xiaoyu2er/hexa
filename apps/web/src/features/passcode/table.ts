@@ -9,7 +9,7 @@ const passcodeType = {
   type: text('type').$type<PasscodeType>().notNull(),
 };
 
-export const tokenTable = sqliteTable('token', {
+export const passcodeTable = sqliteTable('passcode', {
   id: text('id')
     .primaryKey()
     .$defaultFn(() => generateId('token')),
@@ -26,5 +26,5 @@ export const tokenTable = sqliteTable('token', {
 });
 
 export default {
-  tokenTable,
+  passcodeTable,
 };

@@ -15,13 +15,13 @@ import { OAuth2RequestError } from 'arctic';
 import { Hono } from 'hono';
 import { getCookie, setCookie } from 'hono/cookie';
 
+import { OauthSignupSchema } from '@/features/auth/oauth/schema';
 import {
   createGithubAccount,
   getAccountByGithubId,
 } from '@/features/auth/oauth/store';
 import { createUser, getUserByName } from '@/features/user/store';
 import { IS_PRODUCTION, PUBLIC_URL } from '@/lib/env';
-import { OauthSignupSchema } from '@/server/db/schema';
 import type { GitHubEmail, GitHubUser } from '@/types';
 import { zValidator } from '@hono/zod-validator';
 import { turnstile } from '../turnstile/middleware';

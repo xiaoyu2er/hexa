@@ -1,3 +1,4 @@
+import { ResetPasswordSchema } from '@/features/auth/reset-password/schema';
 import {
   getTokenByToken,
   verifyDBTokenByCode,
@@ -5,7 +6,6 @@ import {
 import { updateUserPassword } from '@/features/user/store';
 import { ApiError } from '@/lib/error/error';
 import { invalidateUserSessions, setSession } from '@/lib/session';
-import { ResetPasswordSchema } from '@/server/db/schema';
 import type { Context } from '@/server/types';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';

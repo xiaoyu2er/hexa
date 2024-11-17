@@ -11,7 +11,10 @@ import {
 
 import { Button } from '@hexa/ui/button';
 
-import { SendPasscodeSchema, type SendPasscodeType } from '@/server/db/schema';
+import {
+  SendPasscodeSchema,
+  type SendPasscodeType,
+} from '@/features/passcode/schema';
 
 import { useTurnstile } from '@/components/hooks/use-turnstile';
 import { setFormError } from '@/lib/form';

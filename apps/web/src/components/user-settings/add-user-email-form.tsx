@@ -1,5 +1,5 @@
+import { EmailSchema, type EmailType } from '@/features/common/schema';
 import { $addUserEmail, type InferApiResponseType } from '@/server/client';
-import { type OnlyEmailInput, OnlyEmailSchema } from '@/server/db/schema';
 import { Button } from '@hexa/ui/button';
 import {
   Card,
@@ -33,8 +33,8 @@ export const AddUserEmailForm: FC<AddUserEmailFormProps> = ({
   onSuccess,
   onCancel,
 }) => {
-  const form = useForm<OnlyEmailInput>({
-    resolver: zodResolver(OnlyEmailSchema),
+  const form = useForm<EmailType>({
+    resolver: zodResolver(EmailSchema),
     defaultValues: {
       email: '',
     },

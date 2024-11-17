@@ -1,14 +1,11 @@
 import type { DrizzleD1Database } from 'drizzle-orm/d1';
 import type { Session, User } from 'lucia';
 
-import type { schema } from '@/server/db/index';
-import type {
-  SelectOrgMemberType,
-  SelectWorkspaceType,
-} from '@/server/db/schema';
-import type { ExecutionContext } from 'hono';
+import type { SelectOrgMemberType } from '@/features/org-member/schema';
+import type { SelectWorkspaceType } from '@/features/workspace/schema';
 
-export type DbSchema = typeof schema;
+import type { DbSchema } from '@/server/db';
+import type { ExecutionContext } from 'hono';
 
 export type DbType = DrizzleD1Database<DbSchema>;
 declare module 'hono' {

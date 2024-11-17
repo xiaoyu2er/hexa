@@ -1,14 +1,13 @@
-import { orgMemberTable } from '@/features/org-member/table';
-import { orgTable } from '@/features/org/table';
-import { ApiError } from '@/lib/error/error';
-import { and, eq } from 'drizzle-orm';
 import type {
   InsertOrgMemberType,
-  InsertOrgType,
   OrgRole,
-  SelectUserOrgType,
-} from '../../server/db/schema';
-import type { DbType } from '../../server/types';
+} from '@/features/org-member/schema';
+import { orgMemberTable } from '@/features/org-member/table';
+import type { InsertOrgType, SelectUserOrgType } from '@/features/org/schema';
+import { orgTable } from '@/features/org/table';
+import { ApiError } from '@/lib/error/error';
+import type { DbType } from '@/server/types';
+import { and, eq } from 'drizzle-orm';
 
 // 1. List all orgs that user belongs to with roles
 export const getUserOrgs = async (

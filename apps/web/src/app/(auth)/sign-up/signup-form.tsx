@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-import { type SignupForm, SignupSchema } from '@/server/db/schema';
+import { SignupSchema, type SignupType } from '@/features/auth/signup/schema';
 import { Button } from '@hexa/ui/button';
 import {
   Card,
@@ -40,7 +40,7 @@ interface SignupProps {
 }
 
 export const Signup: FC<SignupProps> = ({ email, onSuccess, onCancel }) => {
-  const form = useForm<SignupForm>({
+  const form = useForm<SignupType>({
     resolver: zodResolver(SignupSchema),
     defaultValues: {
       email: email ?? '',

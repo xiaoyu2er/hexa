@@ -19,9 +19,12 @@ import {
 } from '@hexa/ui/form';
 import { Input } from '@hexa/ui/input';
 
+import {
+  SendPasscodeSchema,
+  type SendPasscodeType,
+} from '@/features/passcode/schema';
 import { setFormError } from '@/lib/form';
 import { $sendPasscode, type InferApiResponseType } from '@/server/client';
-import { SendPasscodeSchema, type SendPasscodeType } from '@/server/db/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';

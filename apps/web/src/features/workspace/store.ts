@@ -5,8 +5,8 @@ import { and, eq, exists, or, sql } from 'drizzle-orm';
 import { orgMemberTable } from '@/features/org-member/table';
 import { orgTable } from '@/features/org/table';
 import { workspaceOwnerTable } from '@/features/workspace-owner/table';
+import type { InsertWorkspaceType } from '@/features/workspace/schema';
 import { workspaceTable } from '@/features/workspace/table';
-import type { InsertWorkspaceType } from '@/server/db/schema';
 import type { DbType } from '../../server/types';
 
 // Helper function to get workspace select query builder

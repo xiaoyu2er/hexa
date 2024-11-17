@@ -1,9 +1,9 @@
 'use client';
 
 import {
-  type UpdateDisplayNameInput,
   UpdateDisplayNameSchema,
-} from '@/server/db/schema';
+  type UpdateDisplayNameType,
+} from '@/features/user/schema';
 import {
   Card,
   CardContent,
@@ -35,7 +35,7 @@ import { useSession } from '../providers/session-provider';
 export function EditUserDisplayName() {
   const { user, refetch } = useSession();
 
-  const form = useForm<UpdateDisplayNameInput>({
+  const form = useForm<UpdateDisplayNameType>({
     resolver: zodResolver(UpdateDisplayNameSchema),
     defaultValues: useMemo(() => {
       return {
