@@ -330,9 +330,9 @@ export const tokenRelations = relations(tokenTable, ({ one }) => ({
 }));
 
 // Org relations
-export const orgRelations = relations(orgTable, ({ many, one }) => ({
+export const orgRelations = relations(orgTable, ({ many }) => ({
   members: many(orgMemberTable),
-  workspaces: many(workspaceTable),
+  workspaces: many(workspaceOwnerTable),
 }));
 
 // Organization member relations
