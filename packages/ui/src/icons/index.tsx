@@ -12,7 +12,7 @@ export { WhatsAppIcon } from './whatsapp-icon';
 export { GoogleDocsIcon } from './google-docs-icon';
 export { ZapierIcon } from './zapier-icon';
 export { MessengerIcon } from './messenger-icon';
-
+export { UserIcon } from './user-icon';
 // https://www.npmjs.com/package/@heroicons/react
 export { StarIcon } from '@heroicons/react/24/solid';
 
@@ -56,8 +56,8 @@ export {
   MailPlusIcon,
   UserPlusIcon,
   SettingsIcon,
-  UserIcon,
   BookMarkedIcon,
+  UserRoundIcon,
 } from 'lucide-react';
 
 // https://www.radix-ui.com/icons

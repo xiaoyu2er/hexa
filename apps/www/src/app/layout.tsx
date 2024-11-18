@@ -4,6 +4,7 @@ import { GeistSans } from '@hexa/ui/font';
 import { Toaster } from '@hexa/ui/sonner';
 import { TooltipProvider } from '@hexa/ui/tooltip';
 import { cn } from '@hexa/utils';
+import { ThemeProvider } from 'next-themes';
 import type { ReactNode } from 'react';
 
 export const metadata: Metadata = {
@@ -24,10 +25,12 @@ export default function RootLayout({
           GeistSans.className
         )}
       >
-        <TooltipProvider>
-          {children}
-          <Toaster />
-        </TooltipProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <TooltipProvider>
+            {children}
+            <Toaster />
+          </TooltipProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
