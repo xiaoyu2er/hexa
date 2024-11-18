@@ -5,6 +5,13 @@ export { GoogleIcon } from './google-icon';
 export { GithubIcon } from './github-icon';
 export { TwitterIcon } from './twitter-icon';
 export { LogoIcon } from './logo-icon';
+export { NotionIcon } from './notion-icon';
+export { OpenAIIcon } from './openai-icon';
+export { GoogleDriveIcon } from './google-drive-icon';
+export { WhatsAppIcon } from './whatsapp-icon';
+export { GoogleDocsIcon } from './google-docs-icon';
+export { ZapierIcon } from './zapier-icon';
+export { MessengerIcon } from './messenger-icon';
 
 // https://www.npmjs.com/package/@heroicons/react
 export { StarIcon } from '@heroicons/react/24/solid';
@@ -55,6 +62,7 @@ export {
 
 // https://www.radix-ui.com/icons
 export {
+  PersonIcon,
   EyeOpenIcon,
   EyeNoneIcon as EyeCloseIcon,
   SunIcon,

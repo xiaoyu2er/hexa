@@ -1,23 +1,13 @@
 export const siteConfig = {
-  name: 'Magic UI',
-  url: 'https://magicui.design',
-  ogImage: 'https://magicui.design/og',
+  name: 'Hexa',
+  url: 'https://www.hexa.im',
   description:
-    'Beautifully designed landing page components built with React & Tailwind CSS.',
+    'Transform your links into intelligent gateways. Dynamically route users based on location, time, device, or run A/B experiments - all through a single URL.',
   links: {
-    twitter: 'https://twitter.com/magicuidesign',
-    discord: 'https://discord.gg/87p2vpsat5',
-    github: 'https://github.com/magicuidesign/magicui',
-    instagram: 'https://instagram.com/magicuidesign/',
+    twitter: 'https://twitter.com/xiaoyu2er',
+    github: 'https://github.com/xiaoyu2er/hexa',
   },
-  keywords: [
-    'React',
-    'Tailwind CSS',
-    'Framer Motion',
-    'Landing Page',
-    'Components',
-    'Next.js',
-  ],
+  keywords: ['React', 'Tailwind CSS', 'Cloudflare Workers', 'Next.js'],
 };
 
 export type SiteConfig = typeof siteConfig;

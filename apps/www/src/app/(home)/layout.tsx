@@ -1,6 +1,7 @@
 import { SiteBanner } from '@/components/site-banner';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
+import { siteConfig } from '@/config/site';
 import type { ReactNode } from 'react';
 
 interface MarketingLayoutProps {
@@ -10,7 +11,7 @@ interface MarketingLayoutProps {
 export default function HomeLayout({ children }: MarketingLayoutProps) {
   return (
     <>
-      <SiteBanner href="https://local.drizzle.studio/" title="This is Studio" />
+      <SiteBanner href={siteConfig.links.github} title="Star on GitHub" />
       <SiteHeader />
       <main className="flex-1">{children}</main>
       <SiteFooter />

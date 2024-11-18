@@ -12,14 +12,14 @@ export function SiteFooter() {
       />
       <div className="container flex flex-col items-center justify-between gap-4 md:h-16 md:flex-row">
         <p className="text-center text-muted-foreground text-sm leading-loose md:text-left">
-          Brought to you by
+          Brought to you by &nbsp;
           <a
             href={siteConfig.links.twitter}
             target="_blank"
             rel="noreferrer"
             className="font-medium underline underline-offset-4"
           >
-            dillion
+            Xiaoyu2er
           </a>
           .
         </p>

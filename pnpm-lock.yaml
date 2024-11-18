@@ -94,10 +94,10 @@ importers:
         version: 3.6.0
       drizzle-orm:
         specifier: ^0.31.2
-        version: 0.31.2(@types/pg@8.11.6)(@types/react@18.3.3)(better-sqlite3@11.5.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)
+        version: 0.31.2(@types/pg@8.11.6)(@types/react@18.3.1)(better-sqlite3@11.5.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)
       drizzle-zod:
         specifier: ^0.5.1
-        version: 0.5.1(drizzle-orm@0.31.2(@types/pg@8.11.6)(@types/react@18.3.3)(better-sqlite3@11.5.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8)
+        version: 0.5.1(drizzle-orm@0.31.2(@types/pg@8.11.6)(@types/react@18.3.1)(better-sqlite3@11.5.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8)
       hono:
         specifier: ^4.6.9
         version: 4.6.9
@@ -151,11 +151,11 @@ importers:
         specifier: ^20
         version: 20.14.10
       '@types/react':
-        specifier: ^18
-        version: 18.3.3
+        specifier: 18.3.1
+        version: 18.3.1
       '@types/react-dom':
-        specifier: ^18
-        version: 18.3.0
+        specifier: 18.3.1
+        version: 18.3.1
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.19(postcss@8.4.38)
@@ -177,9 +177,15 @@ importers:
       typescript:
         specifier: 5.4.5
         version: 5.4.5
+      ui:
+        specifier: 0.2.4
+        version: 0.2.4
       wrangler:
         specifier: ^3.84.1
         version: 3.84.1
+      www:
+        specifier: 0.0.0
+        version: 0.0.0
 
   apps/studio:
     devDependencies:
@@ -4565,9 +4571,6 @@ packages:
   '@types/range-parser@1.2.7':
     resolution: {integrity: sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==}
 
-  '@types/react-dom@18.3.0':
-    resolution: {integrity: sha512-EhwApuTmMBmXuFOikhQLIBUn6uFg81SwLMOAUgodJF14SOBOCMdU04gDoYi0WOJJHD144TL32z4yDqCW3dnkQg==}
-
   '@types/react-dom@18.3.1':
     resolution: {integrity: sha512-qW1Mfv8taImTthu4KoXgDfLuk4bydU6Q/TkADnDWWHwi4NX4BR+LWfTp2sVmTqRrsHvyDDTelgelxJ+SsejKKQ==}
 
@@ -4905,6 +4908,10 @@ packages:
     hasBin: true
     peerDependencies:
       postcss: ^8.1.0
+
+  autoquit@0.1.6:
+    resolution: {integrity: sha512-c8hHVgGl62xGtpk6dO1q+peB1Ey7d71EkctkuW5QY16NMTdPB1iWtwruPGP4UNOrkO9OBiUx7R4nFaU8qBtF7g==}
+    engines: {node: '>=0.4.0'}
 
   available-typed-arrays@1.0.7:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
@@ -8043,6 +8050,9 @@ packages:
   stacktracey@2.1.8:
     resolution: {integrity: sha512-Kpij9riA+UNg7TnphqjH7/CzctQ/owJGNbFkfEeve4Z4uxT5+JapVLFXcsurIfN34gnTWZNJ/f7NMG0E8JDzTw==}
 
+  std@0.1.40:
+    resolution: {integrity: sha512-wUf57hkDGCoVShrhPA8Q7lAg2Qosk+FaMlECmAsr1A4/rL2NRXFHQGBcgMUFKVkPEemJFW9gzjCQisRty14ohg==}
+
   stoppable@1.1.0:
     resolution: {integrity: sha512-KXDYZ9dszj6bzvnEMRYvxgeTHU74QBFL54XKtP3nyMuJ81CFYtABZ3bAzL2EdFUaEwJOBOgENyFj3R7oTzDyyw==}
     engines: {node: '>=4', npm: '>=6'}
@@ -8474,6 +8484,9 @@ packages:
     engines: {node: '>=0.8.0'}
     hasBin: true
 
+  ui@0.2.4:
+    resolution: {integrity: sha512-se2D+frb/i6JwFc7j72IEa0JADF8lfgc6ivOigaYkXHOuZRBtWe8R7UZ2YiXcbJ1dYNsjq40dn39rlNRxmVdPw==}
+
   ultracite@4.1.6:
     resolution: {integrity: sha512-xvCbWkZ8wYPCgXkP89t9oqI1Nj7ARnuEm4Wd/VJqMj4AD8GnFgvZh/GZJFuGULJ32d/MvKleYZPjsaT2me0gBA==}
 
@@ -8721,6 +8734,9 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
+
+  www@0.0.0:
+    resolution: {integrity: sha512-aL8OGdux0pfOQZk9srXGlFFMeqFw9eCd8JYBO8IepUHKCel6GhEvk/BcyiGaNpqPDap93j0kAVkSQqViglg5Kw==}
 
   xmlhttprequest-ssl@2.0.0:
     resolution: {integrity: sha512-QKxVRxiRACQcVuQEYFsI1hhkrMlrXHPegbbd1yn9UHOmRxY+si12nQYzri3vbzt8VdTTRviqcKxcyllFas5z2A==}
@@ -13104,10 +13120,6 @@ snapshots:
 
   '@types/range-parser@1.2.7': {}
 
-  '@types/react-dom@18.3.0':
-    dependencies:
-      '@types/react': 18.3.3
-
   '@types/react-dom@18.3.1':
     dependencies:
       '@types/react': 18.3.3
@@ -13478,6 +13490,8 @@ snapshots:
       picocolors: 1.0.0
       postcss: 8.4.38
       postcss-value-parser: 4.2.0
+
+  autoquit@0.1.6: {}
 
   available-typed-arrays@1.0.7:
     dependencies:
@@ -14226,18 +14240,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.31.2(@types/pg@8.11.6)(@types/react@18.3.3)(better-sqlite3@11.5.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1):
+  drizzle-orm@0.31.2(@types/pg@8.11.6)(@types/react@18.3.1)(better-sqlite3@11.5.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1):
     optionalDependencies:
       '@types/pg': 8.11.6
-      '@types/react': 18.3.3
+      '@types/react': 18.3.1
       better-sqlite3: 11.5.0
       pg: 8.12.0
       postgres: 3.4.4
       react: 18.3.1
 
-  drizzle-zod@0.5.1(drizzle-orm@0.31.2(@types/pg@8.11.6)(@types/react@18.3.3)(better-sqlite3@11.5.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8):
+  drizzle-zod@0.5.1(drizzle-orm@0.31.2(@types/pg@8.11.6)(@types/react@18.3.1)(better-sqlite3@11.5.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8):
     dependencies:
-      drizzle-orm: 0.31.2(@types/pg@8.11.6)(@types/react@18.3.3)(better-sqlite3@11.5.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)
+      drizzle-orm: 0.31.2(@types/pg@8.11.6)(@types/react@18.3.1)(better-sqlite3@11.5.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)
       zod: 3.23.8
 
   eastasianwidth@0.2.0: {}
@@ -17029,6 +17043,8 @@ snapshots:
       as-table: 1.0.55
       get-source: 2.0.12
 
+  std@0.1.40: {}
+
   stoppable@1.1.0: {}
 
   store2@2.14.3: {}
@@ -17328,7 +17344,7 @@ snapshots:
     dependencies:
       memoizerific: 1.11.3
 
-  terser-webpack-plugin@5.3.10(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.19.11)(webpack@5.92.1(@swc/core@1.3.101(@swc/helpers@0.5.13))):
+  terser-webpack-plugin@5.3.10(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.19.11)(webpack@5.92.1(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.19.11)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
@@ -17656,6 +17672,10 @@ snapshots:
   uglify-js@3.17.4:
     optional: true
 
+  ui@0.2.4:
+    dependencies:
+      std: 0.1.40
+
   ultracite@4.1.6: {}
 
   undici-types@5.26.5: {}
@@ -17859,7 +17879,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.10(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.19.11)(webpack@5.92.1(@swc/core@1.3.101(@swc/helpers@0.5.13)))
+      terser-webpack-plugin: 5.3.10(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.19.11)(webpack@5.92.1(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.19.11))
       watchpack: 2.4.1
       webpack-sources: 3.2.3
     transitivePeerDependencies:
@@ -17980,6 +18000,10 @@ snapshots:
   wrappy@1.0.2: {}
 
   ws@8.17.1: {}
+
+  www@0.0.0:
+    dependencies:
+      autoquit: 0.1.6
 
   xmlhttprequest-ssl@2.0.0: {}
 
