@@ -8,18 +8,17 @@ interface DocsConfig {
 export const docsConfig: DocsConfig = {
   mainNav: [
     {
-      title: 'Components',
-      href: '/components',
+      title: 'Products',
+      href: '/',
     },
     {
-      title: 'Templates',
-      href: 'https://pro.magicui.design',
-      event: 'header_cta_clicked',
+      title: 'Docs',
+      href: '/',
       label: 'New',
     },
     {
       title: 'Showcase',
-      href: '/showcase',
+      href: '/',
     },
   ],
   sidebarNav: [
