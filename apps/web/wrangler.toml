@@ -1,5 +1,5 @@
 #:schema node_modules/wrangler/config-schema.json
-name = "hexa-www"
+name = "hexa-web"
 main = ".worker-next/index.mjs"
 workers_dev = false
 routes = [
@@ -24,7 +24,7 @@ head_sampling_rate = 1
 hello = 'Hello World from Hexa!'
 
 [env.staging]
-name="hexa-www-xyz"
+name="hexa-web-xyz"
 routes = [
   { pattern = "www.xyz.hexa.im", custom_domain = true }
 ]

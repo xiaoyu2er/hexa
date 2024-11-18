@@ -1,5 +1,5 @@
 #:schema node_modules/wrangler/config-schema.json
-name = "hexa"
+name = "hexa-app"
 main = ".worker-next/index.mjs"
 workers_dev = false
 routes = [
@@ -30,7 +30,7 @@ database_id = "d6805d74-fa8d-4abf-a6ac-18fd5489ea0b"
 migrations_dir = "./drizzle/migrations"
 
 [env.staging]
-name="hexa-xyz"
+name="hexa-app-xyz"
 routes = [
   { pattern = "app.xyz.hexa.im", custom_domain = true }
 ]
