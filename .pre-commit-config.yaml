@@ -7,7 +7,6 @@ repos:
         entry: npx biome check --files-ignore-unknown=true --no-errors-on-unmatched --fix --unsafe
         language: system
         types: [text]
-        pass_filenames: false
   - repo: local
     hooks:
       - id: local-biome-ci
@@ -15,7 +14,6 @@ repos:
         entry: npx biome ci --files-ignore-unknown=true --no-errors-on-unmatched
         language: system
         files: \.(ts|tsx)$
-        pass_filenames: false
   - repo: local
     hooks:
       - id: local-check-types

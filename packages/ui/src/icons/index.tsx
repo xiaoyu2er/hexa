@@ -3,8 +3,8 @@
 export { AnimatedSpinner } from './animated-spinner';
 export { GoogleIcon } from './google-icon';
 export { GithubIcon } from './github-icon';
-// export { PlusIcon } from './plus-icon';
 
+export type { LucideIcon } from 'lucide-react';
 // https://lucide.dev/icons/
 export {
   Settings2,

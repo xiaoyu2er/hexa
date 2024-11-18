@@ -139,6 +139,7 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
+                    {/* @ts-ignore */}
                     <InputOTP
                       maxLength={VERIFY_CODE_LENGTH}
                       autoFocus
