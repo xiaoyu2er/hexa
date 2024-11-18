@@ -1,4 +1,4 @@
-import { inter, satoshi } from '@/styles/fonts';
+import { GeistSans } from '@hexa/ui/font';
 import type { Metadata } from 'next';
 
 import { Toaster } from '@hexa/ui/sonner';
@@ -26,7 +26,12 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(satoshi.variable, inter.variable)}>
+      <body
+        className={cn(
+          'relative min-h-screen w-full scroll-smooth bg-background antialiased',
+          GeistSans.className
+        )}
+      >
         <QueryClientProvider>
           <NiceModalProvider>
             <ThemeProvider

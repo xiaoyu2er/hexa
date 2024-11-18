@@ -8,7 +8,7 @@ import radix from 'tailwindcss-radix';
 
 const config: Config = {
   content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
-  darkMode: ['class', '[data-mode="dark"]'],
+  darkMode: ['class'],
   future: {
     hoverOnlyWhenSupported: true,
   },

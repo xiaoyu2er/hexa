@@ -29,6 +29,7 @@ pkg.exports = {
   './globals.css': './src/globals.css',
   './hooks/*': './src/hooks/*.tsx',
   './icons': './src/icons/index.tsx',
+  './font': './src/font/font.tsx',
   ...uiExports,
   ...otherExports,
   '.': './src/index.tsx',
