@@ -6,7 +6,8 @@ export const GoogleDocsIcon = forwardRef<
   SVGProps<SVGSVGElement>
 >(({ className, ...props }, ref) => (
   <svg
-    // viewBox="0 0 47 65"
+    width="24"
+    height="24"
     viewBox="-8 -8 60 80"
     xmlns="http://www.w3.org/2000/svg"
     ref={ref}

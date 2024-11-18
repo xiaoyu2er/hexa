@@ -4,6 +4,8 @@ import { type SVGProps, forwardRef } from 'react';
 export const WhatsAppIcon = forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>(
   ({ className, ...props }, ref) => (
     <svg
+      width="24"
+      height="24"
       viewBox="10 10 150 150"
       xmlns="http://www.w3.org/2000/svg"
       ref={ref}

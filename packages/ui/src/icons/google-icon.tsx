@@ -24,6 +24,8 @@ export const GoogleIcon = forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>(
       ref={ref}
       {...props}
       viewBox="64 64 896 896"
+      width="24"
+      height="24"
       className={cn(className)}
     >
       <title>GoogleIcon</title>
