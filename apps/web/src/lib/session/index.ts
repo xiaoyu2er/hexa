@@ -4,7 +4,7 @@ import { ApiError } from '@/lib/error/error';
 import { $lucia } from '@/lib/session/lucia';
 import type { Session, User } from 'lucia';
 import { cookies } from 'next/headers';
-import { cache } from 'react';
+// import { cache } from 'react';
 
 export async function getSessionId() {
   const lucia = await $lucia;
@@ -71,7 +71,8 @@ const uncachedGetSession = async (): Promise<
   return result;
 };
 
-export const getSession = cache(uncachedGetSession);
+// export const getSession = cache(uncachedGetSession);
+export const getSession = uncachedGetSession;
 
 export async function assertAuthenticated() {
   const { user, session } = await getSession();

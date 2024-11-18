@@ -1,0 +1,32 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "hexa-www"
+main = ".worker-next/index.mjs"
+workers_dev = false
+routes = [
+  { pattern = "www.hexa.im", custom_domain = true }
+]
+
+compatibility_date = "2024-09-26"
+compatibility_flags = ["nodejs_compat"]
+
+# Minification helps to keep the Worker bundle size down and improve start up time.
+minify = true
+
+# Use the new Workers + Assets to host the static frontend files
+assets = { directory = ".worker-next/assets", binding = "ASSETS" }
+
+# wrangler.toml (wrangler v3.79.0^)
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[vars]
+hello = 'Hello World from Hexa!'
+
+[env.staging]
+name="hexa-www-xyz"
+routes = [
+  { pattern = "www.xyz.hexa.im", custom_domain = true }
+]
+[env.staging.vars]
+hello = 'Hello World from Hexa-XYZ!'

@@ -14,7 +14,7 @@ import {
 import { DataTablePagination } from '@/app/[owner]/settings/orgs/data-table-pagination';
 import {} from '@hexa/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableRow } from '@hexa/ui/table';
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -57,10 +57,12 @@ export function DataTable<TData, TValue>({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                      {
+                        flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        ) as ReactNode
+                      }
                     </TableCell>
                   ))}
                 </TableRow>
