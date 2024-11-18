@@ -38,6 +38,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-src/db/migrations
+drizzle/migrations
 .worker-next
 .wrangler

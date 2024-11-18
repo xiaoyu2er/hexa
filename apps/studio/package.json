@@ -1,0 +1,10 @@
+{
+  "name": "@hexa/studio",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "cd ../app && pnpm run db:studio:local"
+  },
+  "devDependencies": {
+    "prisma": "5.22.0"
+  }
+}

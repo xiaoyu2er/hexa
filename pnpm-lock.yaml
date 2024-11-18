@@ -30,6 +30,163 @@ importers:
         specifier: 4.1.6
         version: 4.1.6
 
+  apps/app:
+    dependencies:
+      '@ebay/nice-modal-react':
+        specifier: ^1.2.13
+        version: 1.2.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@hexa/email-templates':
+        specifier: workspace:*
+        version: link:../../packages/email-templates
+      '@hexa/tailwind-config':
+        specifier: workspace:*
+        version: link:../../packages/tailwind-config
+      '@hexa/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      '@hexa/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
+      '@hono/zod-validator':
+        specifier: ^0.4.1
+        version: 0.4.1(hono@4.6.9)(zod@3.23.8)
+      '@hookform/resolvers':
+        specifier: ^3.6.0
+        version: 3.6.0(react-hook-form@7.53.2(react@18.3.1))
+      '@lucia-auth/adapter-drizzle':
+        specifier: ^1.0.7
+        version: 1.0.7(lucia@3.2.0)
+      '@lucia-auth/adapter-sqlite':
+        specifier: ^3.0.2
+        version: 3.0.2(better-sqlite3@11.5.0)(lucia@3.2.0)
+      '@marsidev/react-turnstile':
+        specifier: ^0.7.1
+        version: 0.7.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@tanstack/react-query':
+        specifier: ^5.50.1
+        version: 5.50.1(react@18.3.1)
+      '@tanstack/react-query-next-experimental':
+        specifier: ^5.50.1
+        version: 5.50.1(@tanstack/react-query@5.50.1(react@18.3.1))(next@14.1.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      '@tanstack/react-table':
+        specifier: ^8.20.5
+        version: 8.20.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@vercel/analytics':
+        specifier: ^1.3.1
+        version: 1.3.1(next@14.1.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      '@vercel/functions':
+        specifier: ^1.0.2
+        version: 1.0.2
+      '@vercel/speed-insights':
+        specifier: ^1.0.12
+        version: 1.0.12(next@14.1.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      arctic:
+        specifier: ^1.9.1
+        version: 1.9.1
+      aws4fetch:
+        specifier: ^1.0.18
+        version: 1.0.18
+      better-sqlite3:
+        specifier: ^11.5.0
+        version: 11.5.0
+      date-fns:
+        specifier: ^3.6.0
+        version: 3.6.0
+      drizzle-orm:
+        specifier: ^0.31.2
+        version: 0.31.2(@types/pg@8.11.6)(@types/react@18.3.3)(better-sqlite3@11.5.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)
+      drizzle-zod:
+        specifier: ^0.5.1
+        version: 0.5.1(drizzle-orm@0.31.2(@types/pg@8.11.6)(@types/react@18.3.3)(better-sqlite3@11.5.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8)
+      hono:
+        specifier: ^4.6.9
+        version: 4.6.9
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      lucia:
+        specifier: ^3.2.0
+        version: 3.2.0
+      next:
+        specifier: 14.1.4
+        version: 14.1.4(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next-themes:
+        specifier: ^0.3.0
+        version: 0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      oslo:
+        specifier: ^1.2.0
+        version: 1.2.0
+      react:
+        specifier: 18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: 18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-hook-form:
+        specifier: ^7.53.2
+        version: 7.53.2(react@18.3.1)
+      resend:
+        specifier: ^3.3.0
+        version: 3.3.0
+      usehooks-ts:
+        specifier: ^3.1.0
+        version: 3.1.0(react@18.3.1)
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
+    devDependencies:
+      '@hexa/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      '@opennextjs/cloudflare':
+        specifier: ^0.2.1
+        version: 0.2.1(wrangler@3.84.1)
+      '@tanstack/react-query-devtools':
+        specifier: ^5.50.1
+        version: 5.50.1(@tanstack/react-query@5.50.1(react@18.3.1))(react@18.3.1)
+      '@types/lodash':
+        specifier: ^4.17.5
+        version: 4.17.5
+      '@types/node':
+        specifier: ^20
+        version: 20.14.10
+      '@types/react':
+        specifier: ^18
+        version: 18.3.3
+      '@types/react-dom':
+        specifier: ^18
+        version: 18.3.0
+      autoprefixer:
+        specifier: ^10.4.19
+        version: 10.4.19(postcss@8.4.38)
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
+      drizzle-kit:
+        specifier: ^0.22.7
+        version: 0.22.7
+      postcss:
+        specifier: ^8.4.38
+        version: 8.4.38
+      postcss-import:
+        specifier: ^16.1.0
+        version: 16.1.0(postcss@8.4.38)
+      tailwindcss:
+        specifier: ^3.4.4
+        version: 3.4.4(ts-node@10.9.1(@swc/core@1.3.101(@swc/helpers@0.5.13))(@types/node@20.14.10)(typescript@5.4.5))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      wrangler:
+        specifier: ^3.84.1
+        version: 3.84.1
+
+  apps/studio:
+    devDependencies:
+      prisma:
+        specifier: 5.22.0
+        version: 5.22.0
+
   apps/web:
     dependencies:
       '@ebay/nice-modal-react':
@@ -193,8 +350,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/utils
       next:
-        specifier: 15.0.0-rc.0
-        version: 15.0.0-rc.0(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 14.1.4
+        version: 14.1.4(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: 18.3.1
         version: 18.3.1
@@ -423,8 +580,8 @@ importers:
         specifier: ^0.460.0
         version: 0.460.0(react@18.3.1)
       next:
-        specifier: 15.0.0-rc.0
-        version: 15.0.0-rc.0(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 14.1.4
+        version: 14.1.4(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-themes:
         specifier: ^0.3.0
         version: 0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -488,7 +645,7 @@ importers:
         version: 8.4.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.3(prettier@2.8.8))
       '@storybook/nextjs':
         specifier: ^8.4.3
-        version: 8.4.3(@swc/core@1.3.101(@swc/helpers@0.5.13))(@types/webpack@5.28.5(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.21.5))(esbuild@0.21.5)(next@15.0.0-rc.0(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.3(prettier@2.8.8))(type-fest@2.19.0)(typescript@5.4.5)(webpack-hot-middleware@2.26.1)(webpack@5.92.1(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.21.5))
+        version: 8.4.3(@swc/core@1.3.101(@swc/helpers@0.5.13))(@types/webpack@5.28.5(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.21.5))(esbuild@0.21.5)(next@14.1.4(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.3(prettier@2.8.8))(type-fest@2.19.0)(typescript@5.4.5)(webpack-hot-middleware@2.26.1)(webpack@5.92.1(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.21.5))
       '@storybook/react':
         specifier: ^8.4.3
         version: 8.4.3(@storybook/test@8.4.3(storybook@8.4.3(prettier@2.8.8)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.3(prettier@2.8.8))(typescript@5.4.5)
@@ -1426,9 +1583,11 @@ packages:
 
   '@esbuild-kit/core-utils@3.3.2':
     resolution: {integrity: sha512-sPRAnw9CdSsRmEtnsl2WXWdyquogVpB3yZ3dgwJfe8zrOzTsV7cJvmwrKVa+0ma5BoiGJ+BoqkMvawbayKUsqQ==}
+    deprecated: 'Merged into tsx: https://tsx.is'
 
   '@esbuild-kit/esm-loader@2.6.5':
     resolution: {integrity: sha512-FxEMIkJKnodyA1OaCUoEvbYRkoZlLZ4d/eXFu9Fh8CbBBgP5EmZxrfTRyN0qpXZ4vOvqnE5YdRdcrmUUXuU+dA==}
+    deprecated: 'Merged into tsx: https://tsx.is'
 
   '@esbuild-plugins/node-globals-polyfill@0.2.3':
     resolution: {integrity: sha512-r3MIryXDeXDOZh7ih1l/yE9ZLORCd5e8vWg02azWRGj5SPTuoh69A2AIyn0Z31V/kHBfZ4HgWJ+OK3GTTwLmnw==}
@@ -2747,6 +2906,21 @@ packages:
         optional: true
       webpack-plugin-serve:
         optional: true
+
+  '@prisma/debug@5.22.0':
+    resolution: {integrity: sha512-AUt44v3YJeggO2ZU5BkXI7M4hu9BF2zzH2iF2V5pyXT/lRTyWiElZ7It+bRH1EshoMRxHgpYg4VB6rCM+mG5jQ==}
+
+  '@prisma/engines-version@5.22.0-44.605197351a3c8bdd595af2d2a9bc3025bca48ea2':
+    resolution: {integrity: sha512-2PTmxFR2yHW/eB3uqWtcgRcgAbG1rwG9ZriSvQw+nnb7c4uCr3RAcGMb6/zfE88SKlC1Nj2ziUvc96Z379mHgQ==}
+
+  '@prisma/engines@5.22.0':
+    resolution: {integrity: sha512-UNjfslWhAt06kVL3CjkuYpHAWSO6L4kDCVPegV6itt7nD1kSJavd3vhgAEhjglLJJKEdJ7oIqDJ+yHk6qO8gPA==}
+
+  '@prisma/fetch-engine@5.22.0':
+    resolution: {integrity: sha512-bkrD/Mc2fSvkQBV5EpoFcZ87AvOgDxbG99488a5cexp5Ccny+UM6MAe/UFkUC0wLYD9+9befNOqGiIJhhq+HbA==}
+
+  '@prisma/get-platform@5.22.0':
+    resolution: {integrity: sha512-pHhpQdr1UPFpt+zFfnPazhulaZYCUqeIcPpJViYoq9R+D/yw4fjE+CtnsnKzPYm0ddUbeXUzjGVGIRVgPDCk4Q==}
 
   '@radix-ui/colors@1.0.1':
     resolution: {integrity: sha512-xySw8f0ZVsAEP+e7iLl3EvcBXX7gsIlC1Zso/sPBW9gIWerBTgz6axrjU+MZ39wD+WFi5h5zdWpsg3+hwt2Qsg==}
@@ -7537,6 +7711,11 @@ packages:
     peerDependencies:
       react: '>=16.0.0'
 
+  prisma@5.22.0:
+    resolution: {integrity: sha512-vtpjW3XuYCSnMsNVBjLMNkTj6OZbudcPPTPYHqX0CJfpcdWciI1dM8uHETwmDxxiqEwCIE6WvXucWUetJgfu/A==}
+    engines: {node: '>=16.13'}
+    hasBin: true
+
   prismjs@1.29.0:
     resolution: {integrity: sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==}
     engines: {node: '>=6'}
@@ -10758,6 +10937,27 @@ snapshots:
       type-fest: 2.19.0
       webpack-hot-middleware: 2.26.1
 
+  '@prisma/debug@5.22.0': {}
+
+  '@prisma/engines-version@5.22.0-44.605197351a3c8bdd595af2d2a9bc3025bca48ea2': {}
+
+  '@prisma/engines@5.22.0':
+    dependencies:
+      '@prisma/debug': 5.22.0
+      '@prisma/engines-version': 5.22.0-44.605197351a3c8bdd595af2d2a9bc3025bca48ea2
+      '@prisma/fetch-engine': 5.22.0
+      '@prisma/get-platform': 5.22.0
+
+  '@prisma/fetch-engine@5.22.0':
+    dependencies:
+      '@prisma/debug': 5.22.0
+      '@prisma/engines-version': 5.22.0-44.605197351a3c8bdd595af2d2a9bc3025bca48ea2
+      '@prisma/get-platform': 5.22.0
+
+  '@prisma/get-platform@5.22.0':
+    dependencies:
+      '@prisma/debug': 5.22.0
+
   '@radix-ui/colors@1.0.1': {}
 
   '@radix-ui/number@1.0.1':
@@ -12615,7 +12815,7 @@ snapshots:
     dependencies:
       storybook: 8.4.3(prettier@2.8.8)
 
-  '@storybook/nextjs@8.4.3(@swc/core@1.3.101(@swc/helpers@0.5.13))(@types/webpack@5.28.5(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.21.5))(esbuild@0.21.5)(next@15.0.0-rc.0(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.3(prettier@2.8.8))(type-fest@2.19.0)(typescript@5.4.5)(webpack-hot-middleware@2.26.1)(webpack@5.92.1(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.21.5))':
+  '@storybook/nextjs@8.4.3(@swc/core@1.3.101(@swc/helpers@0.5.13))(@types/webpack@5.28.5(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.21.5))(esbuild@0.21.5)(next@14.1.4(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.3(prettier@2.8.8))(type-fest@2.19.0)(typescript@5.4.5)(webpack-hot-middleware@2.26.1)(webpack@5.92.1(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.21.5))':
     dependencies:
       '@babel/core': 7.24.5
       '@babel/plugin-syntax-bigint': 7.8.3(@babel/core@7.24.5)
@@ -12642,7 +12842,7 @@ snapshots:
       find-up: 5.0.0
       image-size: 1.1.1
       loader-utils: 3.3.1
-      next: 15.0.0-rc.0(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 14.1.4(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       node-polyfill-webpack-plugin: 2.0.1(webpack@5.92.1(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.21.5))
       pnp-webpack-plugin: 1.7.0(typescript@5.4.5)
       postcss: 8.4.38
@@ -12914,6 +13114,12 @@ snapshots:
     dependencies:
       '@tanstack/query-devtools': 5.50.1
       '@tanstack/react-query': 5.50.1(react@18.3.1)
+      react: 18.3.1
+
+  '@tanstack/react-query-next-experimental@5.50.1(@tanstack/react-query@5.50.1(react@18.3.1))(next@14.1.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@tanstack/react-query': 5.50.1(react@18.3.1)
+      next: 14.1.4(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
 
   '@tanstack/react-query-next-experimental@5.50.1(@tanstack/react-query@5.50.1(react@18.3.1))(next@15.0.0-rc.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
@@ -13231,6 +13437,13 @@ snapshots:
 
   '@ungap/structured-clone@1.2.0': {}
 
+  '@vercel/analytics@1.3.1(next@14.1.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      server-only: 0.0.1
+    optionalDependencies:
+      next: 14.1.4(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+
   '@vercel/analytics@1.3.1(next@15.0.0-rc.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
     dependencies:
       server-only: 0.0.1
@@ -13239,6 +13452,11 @@ snapshots:
       react: 18.3.1
 
   '@vercel/functions@1.0.2': {}
+
+  '@vercel/speed-insights@1.0.12(next@14.1.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
+    optionalDependencies:
+      next: 14.1.4(@babel/core@7.24.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
 
   '@vercel/speed-insights@1.0.12(next@15.0.0-rc.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
     optionalDependencies:
@@ -14296,9 +14514,23 @@ snapshots:
       postgres: 3.4.4
       react: 18.3.1
 
+  drizzle-orm@0.31.2(@types/pg@8.11.6)(@types/react@18.3.3)(better-sqlite3@11.5.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1):
+    optionalDependencies:
+      '@types/pg': 8.11.6
+      '@types/react': 18.3.3
+      better-sqlite3: 11.5.0
+      pg: 8.12.0
+      postgres: 3.4.4
+      react: 18.3.1
+
   drizzle-zod@0.5.1(drizzle-orm@0.31.2(@types/pg@8.11.6)(@types/react@18.2.61)(better-sqlite3@11.5.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8):
     dependencies:
       drizzle-orm: 0.31.2(@types/pg@8.11.6)(@types/react@18.2.61)(better-sqlite3@11.5.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)
+      zod: 3.23.8
+
+  drizzle-zod@0.5.1(drizzle-orm@0.31.2(@types/pg@8.11.6)(@types/react@18.3.3)(better-sqlite3@11.5.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8):
+    dependencies:
+      drizzle-orm: 0.31.2(@types/pg@8.11.6)(@types/react@18.3.3)(better-sqlite3@11.5.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)
       zod: 3.23.8
 
   eastasianwidth@0.2.0: {}
@@ -16396,6 +16628,12 @@ snapshots:
       clsx: 1.2.1
       react: 18.3.1
 
+  prisma@5.22.0:
+    dependencies:
+      '@prisma/engines': 5.22.0
+    optionalDependencies:
+      fsevents: 2.3.3
+
   prismjs@1.29.0: {}
 
   process-nextick-args@2.0.1: {}
@@ -17412,7 +17650,7 @@ snapshots:
     dependencies:
       memoizerific: 1.11.3
 
-  terser-webpack-plugin@5.3.10(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.19.11)(webpack@5.92.1(@swc/core@1.3.101(@swc/helpers@0.5.13))):
+  terser-webpack-plugin@5.3.10(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.19.11)(webpack@5.92.1(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.19.11)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
@@ -17943,7 +18181,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.10(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.19.11)(webpack@5.92.1(@swc/core@1.3.101(@swc/helpers@0.5.13)))
+      terser-webpack-plugin: 5.3.10(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.19.11)(webpack@5.92.1(@swc/core@1.3.101(@swc/helpers@0.5.13))(esbuild@0.19.11))
       watchpack: 2.4.1
       webpack-sources: 3.2.3
     transitivePeerDependencies:
