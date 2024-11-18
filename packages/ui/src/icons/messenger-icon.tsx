@@ -5,6 +5,8 @@ export const MessengerIcon = forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>(
   ({ className, ...props }, ref) => (
     <svg
       viewBox="0 0 48 48"
+      width="24"
+      height="24"
       xmlns="http://www.w3.org/2000/svg"
       ref={ref}
       className={cn(className)}

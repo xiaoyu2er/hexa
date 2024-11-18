@@ -28,6 +28,8 @@ export const GithubIcon = forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>(
       ref={ref}
       {...props}
       viewBox="64 64 896 896"
+      width="24"
+      height="24"
       fill="currentColor"
       className={cn(className)}
     >

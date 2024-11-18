@@ -8,6 +8,8 @@ export const TwitterIcon = forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>(
       ref={ref}
       {...props}
       viewBox="0 0 1200 1227"
+      width="24"
+      height="24"
       className={cn(className)}
     >
       <title>TwitterIcon</title>
