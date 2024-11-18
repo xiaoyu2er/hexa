@@ -28,7 +28,8 @@ export default function Hero() {
           <ChevronRight className="ml-1 h-4 w-4 text-muted-foreground" />
         </Link>
       )}
-      <div className="relative flex flex-col gap-4 md:items-center lg:flex-row">
+
+      <div className="flex flex-col gap-6 text-balance md:items-center">
         <h1
           className={cn(
             'text-black dark:text-white',
@@ -39,50 +40,53 @@ export default function Hero() {
         >
           One Link, Infinite Possibilities
         </h1>
+
+        <h2 className="relative mx-0 text-balance text-left font-semibold text-2xl tracking-tighter md:text-center">
+          Transform links into intelligent gateways.
+        </h2>
+
+        <div className="space-y-2 text-left text-base text-muted-foreground tracking-tight md:text-center md:text-lg">
+          <p>
+            Route users by
+            <span className="mx-1 font-semibold">
+              location, time, device, or A/B tests
+            </span>
+            with a single URL.
+          </p>
+          <p>Track clicks in real-time with multi-workspace collaboration</p>
+          <p>
+            Built with Next.js & shadcn/ui, powered by Cloudflare's edge network
+          </p>
+        </div>
       </div>
 
-      <p className="text-balance text-left text-base text-black tracking-tight md:text-center md:text-lg dark:font-medium dark:text-white">
-        Transform your links into intelligent gateways. <br />
-        Dynamically route users based on <b>location</b>, <b>time</b>,
-        <b>device</b>, or run <b>A/B experiments</b> - all through a single URL.
-        <br />
-        Track clicks in real-time and collaborate seamlessly with
-        <b>multi-workspace support</b>.
-        <br />
-        Built with modern stack (<b>Next.js</b>, <b>shadcn/ui</b>) and powered
-        by <b>Cloudflare</b>'s global edge network for lightning-fast
-        performance.
-      </p>
-
-      <div className="mx-0 flex w-full max-w-full flex-col gap-4 py-1 sm:max-w-lg sm:flex-row md:mx-auto">
-        <div className="flex w-full flex-col gap-2 sm:flex-row sm:gap-4">
-          <Link
-            href="/components"
-            className={cn(
-              buttonVariants({
-                variant: 'default',
-                size: 'lg',
-              }),
-              'w-full gap-2'
-            )}
-          >
-            Get Started
-            <ChevronRight className="ml-1 size-4 shrink-0 transition-all duration-300 ease-out group-hover:translate-x-1" />
-          </Link>
-          <Link
-            href="https://pro.magicui.design"
-            className={cn(
-              buttonVariants({
-                size: 'lg',
-                variant: 'outline',
-              }),
-              'w-full gap-2'
-            )}
-          >
-            Learn More
-            <ChevronRight className="ml-1 size-4 shrink-0 transition-all duration-300 ease-out group-hover:translate-x-1" />
-          </Link>
-        </div>
+      <div className="mx-0 flex w-full max-w-full flex-col gap-2 py-1 sm:max-w-lg sm:flex-row sm:gap-4">
+        <Link
+          href="/components"
+          className={cn(
+            buttonVariants({
+              variant: 'default',
+              size: 'lg',
+            }),
+            'w-full gap-2'
+          )}
+        >
+          Get Started
+          <ChevronRight className="ml-1 size-4 shrink-0 transition-all duration-300 ease-out group-hover:translate-x-1" />
+        </Link>
+        <Link
+          href="https://pro.magicui.design"
+          className={cn(
+            buttonVariants({
+              size: 'lg',
+              variant: 'outline',
+            }),
+            'w-full gap-2'
+          )}
+        >
+          Learn More
+          <ChevronRight className="ml-1 size-4 shrink-0 transition-all duration-300 ease-out group-hover:translate-x-1" />
+        </Link>
       </div>
     </div>
   );
