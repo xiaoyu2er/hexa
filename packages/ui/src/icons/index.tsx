@@ -3,10 +3,16 @@
 export { AnimatedSpinner } from './animated-spinner';
 export { GoogleIcon } from './google-icon';
 export { GithubIcon } from './github-icon';
+export { TwitterIcon } from './twitter-icon';
+export { LogoIcon } from './logo-icon';
+
+// https://www.npmjs.com/package/@heroicons/react
+export { StarIcon } from '@heroicons/react/24/solid';
 
 export type { LucideIcon } from 'lucide-react';
 // https://lucide.dev/icons/
 export {
+  ExternalLinkIcon,
   Settings2,
   ChevronLeft,
   ChevronRight,

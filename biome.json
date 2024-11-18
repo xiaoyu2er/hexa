@@ -24,7 +24,8 @@
         "useNamingConvention": "off"
       },
       "suspicious": {
-        "noConsoleLog": "off"
+        "noConsoleLog": "off",
+        "noArrayIndexKey": "off"
       }
     }
   }
