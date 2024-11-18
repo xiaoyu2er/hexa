@@ -1,5 +1,5 @@
 {
-  "name": "@hexa/www",
+  "name": "@hexa/web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
