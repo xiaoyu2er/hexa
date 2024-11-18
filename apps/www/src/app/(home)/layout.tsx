@@ -4,11 +4,11 @@ import { SiteHeader } from '@/components/site-header';
 import { siteConfig } from '@/config/site';
 import type { ReactNode } from 'react';
 
-interface MarketingLayoutProps {
+export default function HomeLayout({
+  children,
+}: {
   children: ReactNode;
-}
-
-export default function HomeLayout({ children }: MarketingLayoutProps) {
+}) {
   return (
     <>
       <SiteBanner href={siteConfig.links.github} title="Star on GitHub" />
