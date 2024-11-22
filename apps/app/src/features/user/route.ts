@@ -3,41 +3,54 @@ import {
   getUserOauthAccounts,
   removeUserOauthAccount,
 } from '@/features/auth/oauth/store';
+import { EditPasswordSchema } from '@/features/auth/reset-password/schema';
+import { turnstile } from '@/features/auth/turnstile/middleware';
 import { EmailSchema } from '@/features/common/schema';
-import { updatePasscodeAndSendEmail } from '@/features/passcode/service';
-import auth from '@/features/user/middleware';
+
 import {
-  ChangeUserNameSchema,
-  UpdateDisplayNameSchema,
+  getPasscodeByTokenMiddleware,
+  getPasscodeMiddleware,
+  resendPasscodeMiddleware,
+} from '@/features/passcode/middleware';
+import {
+  ResendPasscodeSchema,
+  VerifyPassTokenSchema,
+  VerifyPasscodeSchema,
+} from '@/features/passcode/schema';
+import { addPasscodeAndSendEmail } from '@/features/passcode/service';
+import {} from '@/features/passcode/store';
+import authProject from '@/features/project/middleware';
+import { ProjectIdSchema } from '@/features/project/schema';
+import { getProject, setUserDefaultProject } from '@/features/project/store';
+import { assertAuthMiddleware } from '@/features/user/middleware';
+import {
   UpdateUserAvatarSchema,
+  UpdateUserNameSchema,
 } from '@/features/user/schema';
 import {
-  createUserEmail,
+  createEmail,
   deleteUser,
-  getUserByName,
+  getEmail,
+  getUser,
   getUserEmails,
   removeUserEmail,
-  updateProfileName,
   updateUserAvatar,
+  updateUserEmailVerified,
+  updateUserPassword,
   updateUserPrimaryEmail,
   updateUsername,
 } from '@/features/user/store';
-import authWorkspace from '@/features/workspace/middleware';
-import {
-  getWorkspaceByWsId,
-  setUserDefaultWorkspace,
-} from '@/features/workspace/store';
-import { generateId } from '@/lib/crypto';
+import { generateId, isHashValid } from '@/lib/crypto';
 import { PUBLIC_URL } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
+import type { Context } from '@/lib/route-types';
 import { invalidateUserSessions } from '@/lib/session';
 import { isStored, storage } from '@/lib/storage';
-import type { Context } from '@/lib/types';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
 
 const user = new Hono<Context>()
-  .use('/user/*', auth)
+  .use('/user/*', assertAuthMiddleware)
   // Get user info
   .get('/user/info', (c) => {
     const { user } = c.var;
@@ -55,62 +68,95 @@ const user = new Hono<Context>()
     const oauthAccounts = await getUserOauthAccounts(db, userId);
     return c.json(oauthAccounts);
   })
-  // Set user primary email
-  .put('/user/emails/primary', zValidator('json', EmailSchema), async (c) => {
-    const { email } = c.req.valid('json');
-    const { db, userId } = c.var;
-    await updateUserPrimaryEmail(db, userId, email);
-    return c.json({});
-  })
-  // Update display name
+  // Update user primary email
   .put(
-    '/user/display-name',
-    zValidator('json', UpdateDisplayNameSchema),
+    '/user/set-primary-email',
+    zValidator('json', EmailSchema),
     async (c) => {
+      const { email } = c.req.valid('json');
       const { db, userId } = c.var;
-      const { displayName } = c.req.valid('json');
-      await updateProfileName(db, userId, displayName);
+      await updateUserPrimaryEmail(db, userId, email);
       return c.json({});
     }
   )
-  // Change username
+
+  // Update username
   .put(
-    '/user/username',
-    zValidator('json', ChangeUserNameSchema),
+    '/user/update-name',
+    zValidator('json', UpdateUserNameSchema),
     async (c) => {
       const { db, userId } = c.var;
       const { name } = c.req.valid('json');
-      const existUser = await getUserByName(db, name);
-      if (existUser) {
-        throw new ApiError('CONFLICT', 'Username already exists');
-      }
       await updateUsername(db, userId, name);
       return c.json({});
     }
   )
   // Add user email
-  .post('/user/emails', zValidator('json', EmailSchema), async (c) => {
-    const { db, userId } = c.var;
-    const { email } = c.req.valid('json');
+  .post(
+    '/user/add-email/send-passcode',
+    zValidator('json', EmailSchema),
+    async (c) => {
+      const { db, userId } = c.var;
+      const { email } = c.req.valid('json');
+      const emailItem = await getEmail(db, email);
+      if (emailItem) {
+        throw new ApiError('BAD_REQUEST', 'Email already exists');
+      }
+      await createEmail(db, {
+        email,
+        verified: false,
+        primary: false,
+        userId,
+      });
+      const data = await addPasscodeAndSendEmail(db, {
+        userId,
+        email,
+        type: 'ADD_EMAIL',
+        verifyUrlPrefex: `${PUBLIC_URL}/user/add-email/verify-token`,
+      });
 
-    await createUserEmail(db, {
-      email,
-      verified: false,
-      primary: false,
-      userId,
-    });
-
-    const data = await updatePasscodeAndSendEmail(db, {
-      userId,
-      email,
-      type: 'VERIFY_EMAIL',
-      publicUrl: PUBLIC_URL,
-    });
-
-    return c.json(data);
-  })
+      return c.json(data);
+    }
+  )
+  // Resend passcode
+  .post(
+    '/user/add-email/resend-passcode',
+    zValidator('json', ResendPasscodeSchema),
+    turnstile(),
+    resendPasscodeMiddleware(`${PUBLIC_URL}/user/add-email/verify-token`)
+  )
+  // Verify passcode
+  .post(
+    '/user/add-email/verify-passcode',
+    zValidator('json', VerifyPasscodeSchema),
+    getPasscodeMiddleware('json', 'ADD_EMAIL'),
+    async (c) => {
+      const { db, userId } = c.var;
+      const passcode = c.get('passcode');
+      if (!passcode) {
+        throw new ApiError('BAD_REQUEST', 'Passcode not found');
+      }
+      await updateUserEmailVerified(db, userId, passcode.email);
+      return c.json({});
+    }
+  )
+  // Login by verify token sent to email
+  .get(
+    '/user/add-email/verify-token/:token',
+    zValidator('param', VerifyPassTokenSchema),
+    getPasscodeByTokenMiddleware('param', 'ADD_EMAIL'),
+    async (c) => {
+      const { db, userId } = c.var;
+      const passcode = c.get('passcode');
+      if (!passcode) {
+        throw new ApiError('BAD_REQUEST', 'Passcode not found');
+      }
+      await updateUserEmailVerified(db, userId, passcode.email);
+      return c.redirect('/');
+    }
+  )
   // Remove user email
-  .delete('/user/emails', zValidator('json', EmailSchema), async (c) => {
+  .delete('/user/delete-email', zValidator('json', EmailSchema), async (c) => {
     const { db, userId } = c.var;
     const { email } = c.req.valid('json');
     await removeUserEmail(db, userId, email);
@@ -118,7 +164,7 @@ const user = new Hono<Context>()
   })
   // Update user avatar
   .put(
-    '/user/avatar',
+    '/user/update-avatar',
     zValidator('form', UpdateUserAvatarSchema),
     async (c) => {
       const {
@@ -142,7 +188,7 @@ const user = new Hono<Context>()
     }
   )
   // Delete user
-  .delete('/user', async (c) => {
+  .delete('/user/delete-user', async (c) => {
     const { db, userId } = c.var;
     await deleteUser(db, userId);
     await invalidateUserSessions(userId);
@@ -151,7 +197,7 @@ const user = new Hono<Context>()
   })
   // Remove user oauth account
   .delete(
-    '/user/oauth-accounts',
+    '/user/delete-oauth-account',
     zValidator('json', DeleteOauthAccountSchema),
     async (c) => {
       const { db, userId } = c.var;
@@ -161,20 +207,51 @@ const user = new Hono<Context>()
     }
   )
   // Set user default workspace
-  .put('/user/default-workspace', authWorkspace, async (c) => {
-    const { db, userId, wsId } = c.var;
-    const newUser = await setUserDefaultWorkspace(db, { userId, wsId });
-    if (!newUser) {
-      throw new ApiError(
-        'INTERNAL_SERVER_ERROR',
-        'Failed to set default workspace'
-      );
+  .put(
+    '/user/update-default-project',
+    zValidator('json', ProjectIdSchema),
+    authProject('json'),
+    async (c) => {
+      const { db, userId, projectId } = c.var;
+      const newUser = await setUserDefaultProject(db, { userId, projectId });
+      if (!newUser) {
+        throw new ApiError(
+          'INTERNAL_SERVER_ERROR',
+          'Failed to set default workspace'
+        );
+      }
+      const project = await getProject(db, projectId);
+      if (!project) {
+        throw new ApiError('NOT_FOUND', 'Project not found');
+      }
+      return c.json({ project });
     }
-    const ws = await getWorkspaceByWsId(db, wsId);
-    if (!ws) {
-      throw new ApiError('NOT_FOUND', 'Workspace not found');
+  )
+  // Edit password
+  .put(
+    '/user/update-password',
+    zValidator('json', EditPasswordSchema),
+    async (c) => {
+      const { db, userId } = c.var;
+      const { oldPassword, password } = c.req.valid('json');
+      const user = await getUser(db, userId);
+      if (!user) {
+        throw new ApiError('NOT_FOUND', 'User not found');
+      }
+      if (user.password) {
+        if (!oldPassword) {
+          throw new ApiError('BAD_REQUEST', 'Old password is required');
+        }
+
+        const validPassword = await isHashValid(user.password, oldPassword);
+        if (!validPassword) {
+          throw new ApiError('BAD_REQUEST', 'Old password is incorrect');
+        }
+      }
+
+      await updateUserPassword(db, userId, password);
+      return c.json({});
     }
-    return c.json({ ws });
-  });
+  );
 
 export default user;

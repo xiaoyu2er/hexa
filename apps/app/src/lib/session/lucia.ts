@@ -18,8 +18,7 @@ export const getLucia = async () => {
         id: attributes.id,
         name: attributes.name,
         avatarUrl: attributes.avatar_url,
-        defaultWsId: attributes.default_ws_id,
-        displayName: attributes.display_name,
+        defaultProjectId: attributes.default_project_id,
         hasPassword,
       };
     },
@@ -58,8 +57,7 @@ declare module 'lucia' {
     id: string;
     name: string;
     avatar_url: string;
-    default_ws_id: string;
-    display_name: string;
+    default_project_id: string;
     password: string;
   }
 }

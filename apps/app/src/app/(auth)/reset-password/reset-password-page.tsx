@@ -1,38 +1,32 @@
 'use client';
 
-import { VerifyPasscode } from '@/components/auth/verify-passcode-form';
+import { VerifyPasscode } from '@/components/auth/verify-passcode';
+import {
+  $resetPasswordResendPasscode,
+  $resetPasswordVerifyPasscode,
+} from '@/lib/api';
 import { toast } from '@hexa/ui/sonner';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { type FC, useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { type FC, useState } from 'react';
 import { useStep } from 'usehooks-ts';
-import { ForgetPasswordCard } from './forget-password-form';
-import { ResetPassword } from './reset-password-form';
+import { ForgetPassword } from './forget-password';
+import { ResetPassword } from './reset-password';
 
 export interface ResetPasswordProps {
   token?: string;
 }
 
 export const ResetPasswordPage: FC<ResetPasswordProps> = () => {
-  const params = useSearchParams();
-  // we use initToken to check if the user is coming from email link
-  const [initToken] = useState(() => params.get('token'));
+  const initToken = useSearchParams().get('token');
   const router = useRouter();
-  const pathname = usePathname();
   const [email, setEmail] = useState('');
+  const [passcodeId, setPasscodeId] = useState('');
   const [token, setToken] = useState('');
   const [currentStep, { goToNextStep, goToPrevStep, reset }] = useStep(3);
 
   const onCancel = () => {
     router.push('/');
   };
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    if (initToken) {
-      // remove token in url
-      router.replace(pathname);
-    }
-  }, []);
 
   if (initToken) {
     return (
@@ -49,10 +43,11 @@ export const ResetPasswordPage: FC<ResetPasswordProps> = () => {
   return (
     <div>
       {currentStep === 1 && (
-        <ForgetPasswordCard
+        <ForgetPassword
           email={email}
-          onSuccess={({ email }) => {
-            setEmail(email);
+          onSuccess={(data) => {
+            setEmail(data.email);
+            setPasscodeId(data.id);
             goToNextStep();
           }}
           onCancel={onCancel}
@@ -60,16 +55,34 @@ export const ResetPasswordPage: FC<ResetPasswordProps> = () => {
       )}
       {currentStep === 2 && (
         <VerifyPasscode
+          passcodeId={passcodeId}
           email={email}
-          type="RESET_PASSWORD"
-          onSuccess={(data) => {
+          onVerify={(json) => {
+            return $resetPasswordVerifyPasscode({
+              json,
+            });
+          }}
+          onResend={(json) => {
+            return $resetPasswordResendPasscode({
+              json,
+            });
+          }}
+          onSuccess={(data: unknown) => {
             goToNextStep();
-            setToken(data?.token ?? '');
+            setToken((data as { token: string })?.token ?? '');
           }}
           onCancel={goToPrevStep}
         />
       )}
-      {currentStep === 3 && <ResetPassword token={token} onCancel={reset} />}
+      {currentStep === 3 && (
+        <ResetPassword
+          token={token}
+          onCancel={reset}
+          onSuccess={() => {
+            toast.success('Password reset successful');
+          }}
+        />
+      )}
     </div>
   );
 };

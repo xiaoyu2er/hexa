@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "check-types": "tsc --noEmit",
-    "dev": "next dev -p 3002",
+    "dev": "next dev -p 7002",
     "build": "next build",
     "start": "next start",
     "build:worker": "cloudflare",
@@ -18,7 +18,10 @@
     "db:migrate:prod": "wrangler d1 migrations apply hexa --remote",
     "db:migrate:staging": "wrangler d1 migrations apply hexa --remote --env staging",
     "db:studio:local": "DB_LOCAL_PATH=$(find .wrangler/state/v3/d1/miniflare-D1DatabaseObject -type f -name '*.sqlite' -print -quit) drizzle-kit studio",
-    "db:studio:prod": "NODE_ENV=production drizzle-kit studio --port 3456"
+    "db:studio:prod": "NODE_ENV=production drizzle-kit studio --port 3456",
+    "db:drop:local": "wrangler d1 drop hexa --local",
+    "db:drop:prod": "wrangler d1 drop hexa --remote",
+    "db:drop:staging": "wrangler d1 drop hexa --remote --env staging"
   },
   "dependencies": {
     "@ebay/nice-modal-react": "^1.2.13",
@@ -49,6 +52,7 @@
     "next": "14.1.4",
     "next-themes": "^0.3.0",
     "oslo": "^1.2.0",
+    "random-word-slugs": "^0.1.7",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-hook-form": "^7.53.2",
@@ -70,6 +74,7 @@
     "postcss": "^8.4.38",
     "postcss-import": "^16.1.0",
     "tailwindcss": "^3.4.4",
+    "type-fest": "^4.27.0",
     "typescript": "5.4.5",
     "ui": "0.2.4",
     "wrangler": "^3.84.1",

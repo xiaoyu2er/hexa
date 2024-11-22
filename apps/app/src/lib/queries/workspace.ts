@@ -1,36 +1,31 @@
+'use client';
+
 import { getQueryClient } from '@/components/providers/get-query-client';
-import {
-  $getAccessibleWorkspaces,
-  $getOwnerWorkspaces,
-  $getWorkspaceBySlug,
-} from '@/lib/api';
+import { $getAccessibleProjects, $getProject } from '@/lib/api';
 import { queryOptions } from '@tanstack/react-query';
 
-export const queryWorkspacesOptions = (ownerName?: string) =>
-  queryOptions({
-    queryKey: ['workspaces/', ownerName],
-    queryFn: () =>
-      ownerName
-        ? $getOwnerWorkspaces({ param: { owner: ownerName } })
-        : $getAccessibleWorkspaces({}),
-  });
+export const queryProjectsOptions = queryOptions({
+  queryKey: ['projects'],
+  queryFn: () => $getAccessibleProjects({}),
+});
 
-export const invalidateWorkspacesQuery = () => {
+export const invalidateProjectsQuery = () => {
   const client = getQueryClient();
   client.invalidateQueries({
-    queryKey: ['workspaces'],
+    queryKey: ['projects'],
   });
 };
 
-export const queryWorkspaceBySlugOptions = (slug: string) =>
+export const queryProjectOptions = (projectId: string | undefined) =>
   queryOptions({
-    queryKey: ['workspace/', slug],
-    queryFn: () => $getWorkspaceBySlug({ query: { slug } }),
+    queryKey: ['project/', projectId],
+    queryFn: () => $getProject({ param: { projectId: projectId ?? '' } }),
+    enabled: !!projectId,
   });
 
-export const invalidateWorkspaceBySlugQuery = (slug: string) => {
+export const invalidateProject = (projectId: string) => {
   const client = getQueryClient();
   client.invalidateQueries({
-    queryKey: ['workspace/slug/', slug],
+    queryKey: ['project/', projectId],
   });
 };

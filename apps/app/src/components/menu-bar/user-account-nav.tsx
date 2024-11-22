@@ -1,7 +1,7 @@
 'use client';
 
 import { useSession } from '@/components/providers/session-provider';
-import { UserAvatar } from '@/components/user-settings/user-avatar';
+import { UserAvatar } from '@/components/user/settings/user-avatar';
 import { $logout } from '@/lib/api';
 import { Button } from '@hexa/ui/button';
 import {
@@ -40,7 +40,7 @@ export function UserAccountNav() {
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <Link
-            href={`/${user.name}/settings/profile`}
+            href="/user/settings/profile"
             className="flex items-center gap-2"
           >
             <Settings className="h-4 w-4" /> Settings

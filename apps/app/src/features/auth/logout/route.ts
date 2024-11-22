@@ -1,12 +1,12 @@
+import type { Context } from '@/lib/route-types';
 import { invalidateSession, setBlankSessionCookie } from '@/lib/session';
-import type { Context } from '@/lib/types';
 
-import auth from '@/features/user/middleware';
+import { assertAuthMiddleware } from '@/features/user/middleware';
 import { Hono } from 'hono';
 
 const logout = new Hono<Context>()
   // Logout
-  .post('/logout', auth, async (c) => {
+  .post('/logout', assertAuthMiddleware, async (c) => {
     const session = c.get('session');
     await invalidateSession(session.id);
     await setBlankSessionCookie();

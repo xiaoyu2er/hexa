@@ -1,32 +1,39 @@
 'use client';
 
-import { CaretSortIcon, CheckIcon, PlusCircledIcon } from '@hexa/ui/icons';
-
-import { useContext } from '@/components/hooks/use-context';
-import { OrgAvatar } from '@/components/orgs/org-avatar';
-import { UserAvatar } from '@/components/user-settings/user-avatar';
-import type { SelectWorkspaceType } from '@/features/workspace/schema';
-import { $updateUserDefaultWorkspace } from '@/lib/api';
-import { queryWorkspacesOptions } from '@/lib/queries/workspace';
-import { getWorkspaceSlug } from '@/lib/workspace';
+import { useSession } from '@/components/providers/session-provider';
+import { UserAvatar } from '@/components/user/settings/user-avatar';
+import type { SelectProjectType } from '@/features/project/schema';
+import { $updateUserDefaultProject } from '@/lib/api';
+import { queryProjectsOptions } from '@/lib/queries/workspace';
 import { useModal } from '@ebay/nice-modal-react';
 import { Badge } from '@hexa/ui/badge';
 import { Button } from '@hexa/ui/button';
+import {} from '@hexa/ui/collapsible';
+import { CaretSortIcon, CheckIcon, PlusCircledIcon } from '@hexa/ui/icons';
+import { Input } from '@hexa/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@hexa/ui/popover';
+import { Skeleton } from '@hexa/ui/skeleton';
 import { toast } from '@hexa/ui/sonner';
 import { cn } from '@hexa/utils';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useBoolean } from 'usehooks-ts';
-import { CreateWorkspaceModal } from '../workspaces/create-workspace-modal';
-import { WorkspaceAvatar } from '../workspaces/workspace-avatar';
+import { CreateProjectModal } from '../project/create-project-modal';
+import { ProjectAvatar } from '../project/project-avatar';
 
 export function ContextSwitcher() {
-  const { isOrgMode, isUserMode, user, org, slug } = useContext();
-  const { data: workspaces, refetch } = useSuspenseQuery(
-    queryWorkspacesOptions() // if not owner, get all accessible workspaces
+  const { slug } = useParams() as { slug: string };
+  const { user } = useSession();
+  // const { project } = useProject();
+  const {
+    data: workspaces = [],
+    refetch,
+    isFetching,
+  } = useQuery(
+    queryProjectsOptions // if not owner, get all accessible workspaces
   );
 
   const {
@@ -35,20 +42,45 @@ export function ContextSwitcher() {
     setFalse: closePopover,
   } = useBoolean();
 
-  const modal = useModal(CreateWorkspaceModal);
-  const defaultWs = workspaces.find((ws) => getWorkspaceSlug(ws) === slug);
+  const modal = useModal(CreateProjectModal);
+  const selectedProject = workspaces?.find(
+    (project) => `${project.slug}` === slug
+  );
   const router = useRouter();
-  const { mutateAsync: setUserDefaultWorkspace } = useMutation({
-    mutationFn: $updateUserDefaultWorkspace,
-    onSuccess({ ws }) {
-      toast.success('Workspace switched');
+  const { mutateAsync: setUserDefaultProject } = useMutation({
+    mutationFn: $updateUserDefaultProject,
+    onSuccess({ project }) {
+      toast.success('Project switched');
       setPopoverOpen(false);
-      router.push(`/${getWorkspaceSlug(ws as unknown as SelectWorkspaceType)}`);
+      router.push(`/project/${project.slug}`);
     },
     onError(err) {
       toast.error(`Failed to switch workspace${err.message}`);
     },
   });
+
+  const workspacesByOrg: Record<
+    string,
+    { name: string; projects: SelectProjectType[] }
+  > = workspaces.reduce(
+    (acc, project) => {
+      const orgId = project.orgId;
+      if (!acc[orgId]) {
+        acc[orgId] = {
+          name: project.org.name,
+          projects: [],
+        };
+      }
+      acc[orgId]?.projects.push(project);
+      return acc;
+    },
+    {} as Record<string, { name: string; projects: SelectProjectType[] }>
+  );
+
+  const [searchQuery, setSearchQuery] = useState('');
+  if (isFetching) {
+    return <Skeleton className="h-4 w-[250px]" />;
+  }
   return (
     <>
       <Popover open={isPopoverOpen} onOpenChange={setPopoverOpen}>
@@ -60,28 +92,20 @@ export function ContextSwitcher() {
             aria-label="Select a team"
             className={cn('h-10 max-w-72 justify-between gap-3 border-0')}
           >
-            {defaultWs ? (
+            {selectedProject ? (
               <>
-                <WorkspaceAvatar workspace={defaultWs} className="h-6 w-6" />
+                <ProjectAvatar project={selectedProject} className="h-6 w-6" />
                 <span className="w-2/3 overflow-hidden text-ellipsis text-nowrap text-left">
-                  {getWorkspaceSlug(defaultWs)}
+                  {selectedProject.name}
                 </span>
                 <Badge className="!mt-0">Plan</Badge>
-              </>
-              // biome-ignore lint/nursery/noNestedTernary: <explanation>
-            ) : isOrgMode && org ? (
-              <>
-                <OrgAvatar org={org} className="h-8 w-8" />
-                <span className="w-2/3 overflow-hidden text-ellipsis text-nowrap text-left">
-                  {org.name}
-                </span>
               </>
               // biome-ignore lint/nursery/noNestedTernary: <explanation>
             ) : user ? (
               <>
                 <UserAvatar className="h-8 w-8" user={user} />
                 <span className="w-2/3 overflow-hidden text-ellipsis text-nowrap text-left">
-                  {user.displayName ?? `${user.name}`}
+                  {`${user.name}`}
                 </span>
               </>
             ) : null}
@@ -90,45 +114,55 @@ export function ContextSwitcher() {
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-72 p-0">
-          <div className="flex items-center justify-between space-y-2 p-4">
-            <p className="text-muted-foreground text-sm">My workspaces</p>
-
-            <Button
-              size="sm"
-              variant="outline"
-              asChild
-              onClick={closePopover}
-              className="!mt-0 !h-7"
-            >
-              <Link href="/workspaces">View All</Link>
-            </Button>
+          <div className="px-4 py-2">
+            <Input
+              type="search"
+              placeholder="Search workspaces..."
+              className="h-8"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </div>
 
-          {workspaces.map((ws) => (
-            <Button
-              key={ws.id}
-              variant="ghost"
-              className="h-11 w-full justify-start"
-              asChild
-            >
-              <Link
-                href={`/${getWorkspaceSlug(ws)}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setUserDefaultWorkspace({ json: { workspaceId: ws.id } });
-                }}
-              >
-                <WorkspaceAvatar workspace={ws} className="mr-2 h-5 w-5 " />
-                <span className="w-full shrink overflow-hidden text-ellipsis text-nowrap text-left">
-                  {getWorkspaceSlug(ws)}
-                </span>
-                {getWorkspaceSlug(ws) === slug ? (
-                  <CheckIcon className={cn('ml-2 h-6 w-6')} />
-                ) : null}
-              </Link>
-            </Button>
-          ))}
+          {Object.entries(workspacesByOrg).map(([orgId, org]) => (
+            <div key={orgId}>
+              <div className="px-4 py-2">
+                <p className="font-medium text-muted-foreground text-sm">
+                  {org.name}
+                </p>
+              </div>
 
+              {org.projects.map((project) => (
+                <Button
+                  key={project.id}
+                  variant="ghost"
+                  className="h-11 w-full justify-start"
+                  asChild
+                >
+                  <Link
+                    href={`/project/${project.slug}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setUserDefaultProject({
+                        json: { projectId: project.id },
+                      });
+                    }}
+                  >
+                    <ProjectAvatar
+                      project={project}
+                      className="mr-2 h-5 w-5 "
+                    />
+                    <span className="w-full shrink overflow-hidden text-ellipsis text-nowrap text-left">
+                      {project.name}
+                    </span>
+                    {project === selectedProject ? (
+                      <CheckIcon className={cn('ml-2 h-6 w-6')} />
+                    ) : null}
+                  </Link>
+                </Button>
+              ))}
+            </div>
+          ))}
           <Button
             variant="ghost"
             className="h-11 w-full"

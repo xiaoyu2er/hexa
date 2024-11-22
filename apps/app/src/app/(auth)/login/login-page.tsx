@@ -1,52 +1,6 @@
 'use client';
-
-import { VerifyPasscode } from '@/components/auth/verify-passcode-form';
-import { toast } from '@hexa/ui/sonner';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { useStep } from 'usehooks-ts';
-import { LoginPasscode } from './login-passcode-form';
-import { LoginPassword } from './login-password-form';
+import { LoginPassword } from './login-password';
 
 export function LoginPage() {
-  const [loginType, setLoginType] = useState<'password' | 'passcode'>(
-    'password'
-  );
-  const [email, setEmail] = useState('');
-  const [currentStep, { goToNextStep, reset }] = useStep(2);
-  const _router = useRouter();
-
-  if (loginType === 'password') {
-    return <LoginPassword onPasscode={() => setLoginType('passcode')} />;
-  }
-
-  if (loginType === 'passcode') {
-    return (
-      <div>
-        {currentStep === 1 && (
-          <LoginPasscode
-            onPassword={() => {
-              setLoginType('password');
-            }}
-            onSuccess={({ email }) => {
-              setEmail(email);
-              goToNextStep();
-            }}
-          />
-        )}
-        {currentStep === 2 && (
-          <VerifyPasscode
-            email={email}
-            type="LOGIN_PASSCODE"
-            onSuccess={() => {
-              toast.success('Login successful');
-            }}
-            onCancel={reset}
-          />
-        )}
-      </div>
-    );
-  }
-
-  return null;
+  return <LoginPassword />;
 }

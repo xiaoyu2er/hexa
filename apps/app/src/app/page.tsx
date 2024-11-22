@@ -1,56 +1,18 @@
+import { getProject } from '@/features/project/store';
+import { getDb } from '@/lib/db';
 import { getSession } from '@/lib/session';
-
-import { Header } from '@/components/header/header';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@hexa/ui/alert-dialog';
-import { Button } from '@hexa/ui/button';
+import {} from '@hexa/ui/alert-dialog';
 import { redirect } from 'next/navigation';
 
-function AlertDialogDemo() {
-  return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline">Show Dialog</Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Continue</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-  );
-}
-
-export default async function Home() {
+export default async function HomePage() {
   const { session, user } = await getSession();
-  if (session) {
-    return redirect(`/${user.name}/settings/profile`);
+  if (session && user) {
+    const project = await getProject(await getDb(), user.defaultProjectId);
+    if (project) {
+      return redirect(`/project/${project.slug}`);
+    }
+    // TODO onboarding process
+    return redirect('/project/create');
   }
-  return (
-    <>
-      <Header />
-      <div className="flex h-screen flex-col items-center justify-center px-2">
-        <div className="flex gap-12">
-          <AlertDialogDemo />
-        </div>
-      </div>
-    </>
-  );
+  return redirect('/login');
 }

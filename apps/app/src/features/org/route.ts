@@ -8,15 +8,17 @@ import {
   leaveOrg,
   updateOrg,
 } from '@/features/org/store';
-import auth from '@/features/user/middleware';
+import { createProject, getProjectWithRole } from '@/features/project/store';
+import { assertAuthMiddleware } from '@/features/user/middleware';
 import { ApiError } from '@/lib/error/error';
-import type { Context } from '@/lib/types';
+import type { Context } from '@/lib/route-types';
+import { generateProjectSlug } from '@/lib/slug';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
 import { z } from 'zod';
 
 const org = new Hono<Context>()
-  .use('/org/*', auth)
+  .use('/org/*', assertAuthMiddleware)
   // Get user's organizations
   .get('/org/all', async (c) => {
     const { db, userId } = c.var;
@@ -50,7 +52,17 @@ const org = new Hono<Context>()
       userId,
     });
 
-    return c.json(org);
+    const project = await createProject(db, {
+      name: `${name}'s project`,
+      slug: generateProjectSlug(),
+      orgId: org.id,
+    });
+
+    const projectWithRole = await getProjectWithRole(db, project.id, userId);
+    if (!projectWithRole) {
+      throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create workspace');
+    }
+    return c.json(projectWithRole);
   })
 
   // Update organization

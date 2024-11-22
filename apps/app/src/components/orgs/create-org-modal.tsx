@@ -4,7 +4,7 @@ import { Input } from '@hexa/ui/input';
 
 import { $createOrg } from '@/lib/api';
 import { setFormError } from '@/lib/form';
-import { invalidateWorkspacesQuery } from '@/lib/queries/workspace';
+import { invalidateProjectsQuery } from '@/lib/queries/workspace';
 import { Button } from '@hexa/ui/button';
 import {
   Dialog,
@@ -31,10 +31,12 @@ import { InsertOrgSchema, type InsertOrgType } from '@/features/org/schema';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
 export const CreateOrgModal = NiceModal.create(() => {
   const modal = useModal();
+  const router = useRouter();
   const form = useForm<InsertOrgType>({
     resolver: zodResolver(InsertOrgSchema),
   });
@@ -51,11 +53,12 @@ export const CreateOrgModal = NiceModal.create(() => {
       setFormError(err, setError);
       modal.reject(err);
     },
-    onSuccess: () => {
-      toast.success('Workspace created successfully');
+    onSuccess: (project) => {
+      toast.success('Organization created successfully');
       modal.resolve();
       modal.remove();
-      invalidateWorkspacesQuery();
+      router.push(`/${project.id}`);
+      invalidateProjectsQuery();
     },
   });
 

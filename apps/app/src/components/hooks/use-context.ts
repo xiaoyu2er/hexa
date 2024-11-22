@@ -16,8 +16,8 @@ export const useMode = () => {
 export const useContext = () => {
   const { isOrgMode, isUserMode } = useMode();
   const { user } = useSession();
-  const { owner, ws } = useParams() as { owner: string; ws: string };
-  const slug = `${owner}/${ws}`;
+  const { owner, project } = useParams() as { owner: string; project: string };
+  const slug = `${owner}/${project}`;
 
   const { data: org } = useSuspenseQuery(
     queryOrgByNameOptions(isOrgMode ? owner : undefined)

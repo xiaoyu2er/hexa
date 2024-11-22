@@ -1,21 +1,23 @@
-import type { OrgRole } from '@/features/org-member/schema';
-import { orgTable } from '@/features/org/table';
+import type { OrgMemberRole } from '@/features/org-member/schema';
+import { orgIdNotNull } from '@/features/org/table';
 import { userIdNotNull } from '@/features/user/table';
 import { generateId } from '@/lib/crypto';
-import { primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { index, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
 
 export const orgMemberTable = sqliteTable(
   'org_member',
   {
-    id: text('id').$defaultFn(() => generateId('orgm')),
-    orgId: text('org_id')
-      .notNull()
-      .references(() => orgTable.id, { onDelete: 'cascade' }),
+    id: text('id')
+      .primaryKey()
+      .$default(() => generateId('orgm')),
+    ...orgIdNotNull,
     ...userIdNotNull,
-    role: text('role').$type<OrgRole>().default('MEMBER').notNull(),
+    role: text('role').$type<OrgMemberRole>().default('MEMBER').notNull(),
   },
   (t) => ({
-    pk: primaryKey({ columns: [t.userId, t.orgId] }),
+    orgMemberIndex: uniqueIndex('org_member_index').on(t.userId, t.orgId),
+    userIdIndex: index('org_member_user_id_index').on(t.userId),
+    orgIdIndex: index('org_member_org_id_index').on(t.orgId),
   })
 );
 

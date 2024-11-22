@@ -39,33 +39,40 @@ export const CodeSchema = z.object({
 export type CodeType = z.infer<typeof CodeSchema>;
 
 // Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen.
-const name = z
-  .string()
-  .min(3, 'Please enter a valid name')
-  .max(40, 'name must be 3 to 40 characters')
-  .refine((username) => isValidUsername(username), {
-    message:
-      'Name may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen.',
-  });
+export const zNameString = z
+  .string({
+    message: 'Please enter your name',
+  })
+  .max(32, 'Name must be less than 32 characters');
+
+const RESERVERD_SLUGS = ['new'];
+
+export const zSlugString = z
+  .string({ message: 'Please enter a slug' })
+  .min(3, 'Min 3 characters')
+  .max(32, 'Max 32 characters')
+  .refine(
+    (v) => /^[a-z0-9-]+$/.test(v),
+    'Only lowercase letters, numbers and dash are allowed'
+  )
+  .refine((v) => !RESERVERD_SLUGS.includes(v), 'This slug is reserved keyword');
+
+export const zOrgNameString = z
+  .string({
+    message: 'Please enter your organization name',
+  })
+  .max(32, 'Organization name must be less than 32 characters');
+
 export const NameSchema = z.object({
-  name,
+  name: zNameString,
 });
+
 export type NameType = z.infer<typeof NameSchema>;
 
 function isValidUsername(username: string) {
   const usernameRegex = /^(?!-)[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*(?<!-)$/;
   return usernameRegex.test(username);
 }
-
-const displayName = z
-  .string()
-  // .min(1, "Please enter a name")
-  .max(32, 'Name must be less than 32 characters');
-// .nullable();
-
-export const DisplayNameSchema = z.object({
-  displayName,
-});
 
 // Example usage
 // console.log(isValidUsername("valid-username")); // true
@@ -84,7 +91,7 @@ export const EmailSchema = z.object({
 
 export type EmailType = z.infer<typeof EmailSchema>;
 
-const password = z
+export const zPasswordString = z
   .string()
   .min(
     MIN_PASSWORD_LENGTH,
@@ -93,8 +100,13 @@ const password = z
   .max(255);
 
 export const PasswordSchema = z.object({
-  password,
+  password: zPasswordString,
 });
 export type PasswordType = z.infer<typeof PasswordSchema>;
 
 export const EmptySchema = z.object({});
+
+export const ConfirmSchema = z.object({
+  confirm: z.string(),
+});
+export type ConfirmType = z.infer<typeof ConfirmSchema>;

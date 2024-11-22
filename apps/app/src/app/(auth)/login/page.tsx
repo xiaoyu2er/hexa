@@ -1,4 +1,4 @@
-import { LoginPage } from './login-page';
+import { LoginPassword } from '@/app/(auth)/login/login-password';
 
 export const metadata = {
   title: 'Login',
@@ -6,5 +6,5 @@ export const metadata = {
 };
 
 export default function () {
-  return <LoginPage />;
+  return <LoginPassword />;
 }

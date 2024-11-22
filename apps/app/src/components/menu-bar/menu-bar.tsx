@@ -8,9 +8,7 @@ import { New } from '@/components/menu-bar/new';
 import { UserAccountNav } from '@/components/menu-bar/user-account-nav';
 import { LogoIcon } from '@hexa/ui/icons';
 import { MaxWidth } from '@hexa/ui/max-width';
-import { Skeleton } from '@hexa/ui/skeleton';
 import Link from 'next/link';
-import { Suspense } from 'react';
 
 export const MenuBar = () => {
   return (
@@ -21,9 +19,8 @@ export const MenuBar = () => {
             <Link href="/" className="hidden sm:block">
               <LogoIcon />
             </Link>
-            <Suspense fallback={<Skeleton className="h-4 w-[250px]" />}>
-              <ContextSwitcher />
-            </Suspense>
+
+            <ContextSwitcher />
           </div>
           <div className="flex items-center space-x-4">
             <ModeToggle />

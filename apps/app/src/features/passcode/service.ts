@@ -1,30 +1,51 @@
 'use server';
-import type { FindPasscodeByEmailType } from '@/features/passcode/schema';
-import { addDBToken } from '@/features/passcode/store';
+import type {
+  AddPasscodeType,
+  UpdatePasscodeType,
+} from '@/features/passcode/schema';
+import { addPasscode, updatePasscode } from '@/features/passcode/store';
 
 import { sendVerifyCodeAndUrlEmail } from '@/lib/emails';
-import type { DbType } from '@/lib/types';
+import type { DbType } from '@/lib/route-types';
 
-export async function updatePasscodeAndSendEmail(
+export async function addPasscodeAndSendEmail(
   db: DbType,
   {
     userId,
     tmpUserId,
     email,
     type,
-    publicUrl,
-  }: {
-    publicUrl: string;
-  } & FindPasscodeByEmailType
-): Promise<{ email: string; tmpUserId: string | null | undefined }> {
-  const { code: verificationCode, token } = await addDBToken(db, {
+    verifyUrlPrefex,
+  }: AddPasscodeType & { verifyUrlPrefex: string }
+) {
+  const {
+    code: verificationCode,
+    token,
+    expiresAt,
+    id,
+  } = await addPasscode(db, {
     userId,
     tmpUserId,
     email,
     type,
   });
 
-  const url = `${publicUrl}/api/verify-token?token=${token}&type=${type}`;
+  const url = `${verifyUrlPrefex}${token}`;
   const data = await sendVerifyCodeAndUrlEmail(email, verificationCode, url);
-  return { ...data, tmpUserId };
+  return { id, expiresAt, ...data };
+}
+
+export async function resendPasscodeAndSendEmail(
+  db: DbType,
+  { id, verifyUrlPrefex }: UpdatePasscodeType & { verifyUrlPrefex: string }
+) {
+  const {
+    code: verificationCode,
+    token,
+    expiresAt,
+    email,
+  } = await updatePasscode(db, { id });
+  const url = `${verifyUrlPrefex}/${token}`;
+  const data = await sendVerifyCodeAndUrlEmail(email, verificationCode, url);
+  return { expiresAt, ...data };
 }
