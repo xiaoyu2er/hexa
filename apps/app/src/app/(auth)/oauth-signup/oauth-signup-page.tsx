@@ -1,10 +1,10 @@
 'use client';
 import { VerifyPasscode } from '@/components/auth/verify-passcode';
-import type { SelectOauthAccountType } from '@/features/auth/oauth/schema';
 import {
   $oauthSignupResendPasscode,
   $oauthSignupVerifyPasscode,
 } from '@/lib/api';
+import type { SelectOauthAccountType } from '@/server/schema/oauth';
 import { toast } from '@hexa/ui/sonner';
 import { useRouter } from 'next/navigation';
 import { type FC, useState } from 'react';

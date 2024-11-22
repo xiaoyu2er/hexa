@@ -19,8 +19,8 @@ import { SlugField } from '@/components/form/slug-field';
 import {
   UpdateProjectSlugSchema,
   type UpdateProjectSlugType,
-} from '@/features/project/schema';
-import type { SelectProjectType } from '@/features/project/schema';
+} from '@/server/schema/project';
+import type { SelectProjectType } from '@/server/schema/project';
 import { Form } from '@hexa/ui/form';
 import { ExclamationTriangleIcon } from '@hexa/ui/icons';
 import { zodResolver } from '@hookform/resolvers/zod';

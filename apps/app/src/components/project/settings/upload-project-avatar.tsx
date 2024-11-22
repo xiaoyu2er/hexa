@@ -7,13 +7,13 @@ import { useEffect, useState } from 'react';
 
 import { useProject } from '@/components/providers/project-provicer';
 import { useSession } from '@/components/providers/session-provider';
-import {
-  UpdateProjectAvatarSchema,
-  type UpdateProjectAvatarType,
-} from '@/features/project/schema';
 import { $updateProjectAvatar } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import {} from '@/lib/queries/workspace';
+import {
+  UpdateProjectAvatarSchema,
+  type UpdateProjectAvatarType,
+} from '@/server/schema/project';
 import { Button } from '@hexa/ui/button';
 import {
   Card,

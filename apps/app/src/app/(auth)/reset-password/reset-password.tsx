@@ -1,11 +1,11 @@
 'use client';
 
+import { $resetPassword } from '@/lib/api';
+import { setFormError } from '@/lib/form';
 import {
   ResetPasswordSchema,
   type ResetPasswordType,
-} from '@/features/auth/reset-password/schema';
-import { $resetPassword } from '@/lib/api';
-import { setFormError } from '@/lib/form';
+} from '@/server/schema/reset-password';
 import { Button } from '@hexa/ui/button';
 import {
   Card,

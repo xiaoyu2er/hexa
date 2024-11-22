@@ -6,12 +6,12 @@ import { toast } from '@hexa/ui/sonner';
 import { useEffect, useState } from 'react';
 
 import { useSession } from '@/components/providers/session-provider';
+import { $updateUserAvatar } from '@/lib/api';
+import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import {
   UpdateAvatarSchema,
   type UpdateAvatarType,
-} from '@/features/common/schema';
-import { $updateUserAvatar } from '@/lib/api';
-import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
+} from '@/server/schema/common';
 import { Button } from '@hexa/ui/button';
 import {
   Card,

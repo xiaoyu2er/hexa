@@ -1,4 +1,4 @@
-import type { UpdateProjectSlugType } from '@/features/project/schema';
+import type { UpdateProjectSlugType } from '@/server/schema/project';
 import { FormControl, FormLabel, FormMessage } from '@hexa/ui/form';
 import { FormField, FormItem } from '@hexa/ui/form';
 import { Input } from '@hexa/ui/input';

@@ -8,15 +8,15 @@ import {
   CardTitle,
 } from '@hexa/ui/card';
 
-import {
-  DELETE_PROJECT_CONFIRMATION,
-  DeleteProjectSchema,
-  type DeleteProjectType,
-} from '@/features/project/schema';
 import { $deleteProject } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import { setFormError } from '@/lib/form';
 import { invalidateProjectsQuery } from '@/lib/queries/workspace';
+import {
+  DELETE_PROJECT_CONFIRMATION,
+  DeleteProjectSchema,
+  type DeleteProjectType,
+} from '@/server/schema/project';
 import { Button } from '@hexa/ui/button';
 import { Form } from '@hexa/ui/form';
 

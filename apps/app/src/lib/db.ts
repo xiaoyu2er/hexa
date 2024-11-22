@@ -1,7 +1,7 @@
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { drizzle } from 'drizzle-orm/d1';
 
-import * as schema from '../db/schema';
+import * as schema from '@/server/table';
 
 export const getD1 = async () => {
   const { env } = await getCloudflareContext();

@@ -1,8 +1,8 @@
-import { EmailSchema, type EmailType } from '@/features/common/schema';
 import {
   $addUserEmailSendPasscode,
   type InferApiResponseType,
 } from '@/lib/api';
+import { EmailSchema, type EmailType } from '@/server/schema/common';
 import { Button } from '@hexa/ui/button';
 import {
   Card,

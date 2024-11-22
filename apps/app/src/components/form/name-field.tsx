@@ -1,4 +1,4 @@
-import type { NameType } from '@/features/common/schema';
+import type { NameType } from '@/server/schema/common';
 import { FormControl, FormLabel, FormMessage } from '@hexa/ui/form';
 import { FormField, FormItem } from '@hexa/ui/form';
 import { Input } from '@hexa/ui/input';

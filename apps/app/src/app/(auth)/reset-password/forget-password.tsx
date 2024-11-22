@@ -13,14 +13,14 @@ import { Form } from '@hexa/ui/form';
 
 import { EmailField } from '@/components/form/email-field';
 import {
-  SendPasscodeSchema,
-  type SendPasscodeType,
-} from '@/features/passcode/schema';
-import {
   $resetPasswordSendPasscode,
   type InferApiResponseType,
 } from '@/lib/api';
 import { setFormError } from '@/lib/form';
+import {
+  SendPasscodeSchema,
+  type SendPasscodeType,
+} from '@/server/schema/passcode';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';

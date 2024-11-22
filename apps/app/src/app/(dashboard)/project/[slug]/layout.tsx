@@ -1,11 +1,11 @@
 import { ProjectProvider } from '@/components/providers/project-provicer';
-import { getProjectWithRoleBySlug } from '@/features/project/store';
 import { getDb } from '@/lib/db';
 import { getSession } from '@/lib/session';
-import { redirect } from 'next/navigation';
+import { getProjectWithRoleBySlug } from '@/server/store/project';
+import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
 
-export default async function DashLayout({
+export default async function ProjectLayout({
   children,
   params: { slug },
 }: {
@@ -13,15 +13,19 @@ export default async function DashLayout({
   params: { slug: string };
 }) {
   const { session } = await getSession();
+
+  if (!session) {
+    return null;
+  }
+
   const project = await getProjectWithRoleBySlug(
     await getDb(),
     slug,
-    // @ts-ignore
     session.userId
   );
 
   if (!project || !project.role) {
-    return redirect('/');
+    return notFound();
   }
   return <ProjectProvider project={project}>{children}</ProjectProvider>;
 }

@@ -1,18 +1,15 @@
 'use client';
 
 import { useTurnstile } from '@/components/hooks/use-turnstile';
-import {
-  TurnstileSchema,
-  type TurnstileType,
-} from '@/features/auth/turnstile/schema';
+import { RESEND_VERIFY_CODE_TIME_SPAN, VERIFY_CODE_LENGTH } from '@/lib/const';
+import { setFormError } from '@/lib/form';
 import {
   type ResendPasscodeType,
   type VerifyPasscodeOnlyCodeType,
   VerifyPasscodeSchema,
   type VerifyPasscodeType,
-} from '@/features/passcode/schema';
-import { RESEND_VERIFY_CODE_TIME_SPAN, VERIFY_CODE_LENGTH } from '@/lib/const';
-import { setFormError } from '@/lib/form';
+} from '@/server/schema/passcode';
+import { TurnstileSchema, type TurnstileType } from '@/server/schema/turnstile';
 import { Button } from '@hexa/ui/button';
 import {
   Card,

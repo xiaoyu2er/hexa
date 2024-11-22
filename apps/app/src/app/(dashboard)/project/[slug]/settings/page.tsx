@@ -4,7 +4,7 @@ import { EditProjectSlug } from '@/components/project/settings/edit-project-slug
 import { ProjectId } from '@/components/project/settings/project-id';
 import { UploadProjectAvatar } from '@/components/project/settings/upload-project-avatar';
 
-export default function () {
+export default function ProjectSettingsPage() {
   return (
     <>
       <EditProjectName />

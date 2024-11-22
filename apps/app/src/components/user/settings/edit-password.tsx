@@ -1,11 +1,11 @@
 'use client';
 import { PasswordField } from '@/components/form/password-field';
 import { useSession } from '@/components/providers/session-provider';
-import { EditPasswordSchema } from '@/features/auth/reset-password/schema';
-import type { EditPasswordType } from '@/features/auth/reset-password/schema';
 import { $updateUserPassword } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import { setFormError } from '@/lib/form';
+import { EditPasswordSchema } from '@/server/schema/reset-password';
+import type { EditPasswordType } from '@/server/schema/reset-password';
 import { Button } from '@hexa/ui/button';
 import {
   Card,

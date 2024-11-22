@@ -3,7 +3,7 @@
 import {
   SendPasscodeSchema,
   type SendPasscodeType,
-} from '@/features/passcode/schema';
+} from '@/server/schema/passcode';
 import { Button } from '@hexa/ui/button';
 import { Form } from '@hexa/ui/form';
 

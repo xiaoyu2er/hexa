@@ -1,6 +1,6 @@
-import { getProject } from '@/features/project/store';
 import { getDb } from '@/lib/db';
 import { getSession } from '@/lib/session';
+import { getProject } from '@/server/store/project';
 import {} from '@hexa/ui/alert-dialog';
 import { redirect } from 'next/navigation';
 

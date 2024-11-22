@@ -1,4 +1,4 @@
-import type { OrgNameType } from '@/features/auth/signup/schema';
+import type { OrgNameType } from '@/server/schema/signup';
 import {
   FormControl,
   FormDescription,
