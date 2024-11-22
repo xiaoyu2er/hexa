@@ -2,13 +2,13 @@ import { SiteBanner } from '@/components/site-banner';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { siteConfig } from '@/config/site';
-import type { ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 
 export default function HomeLayout({
   children,
 }: {
   children: ReactNode;
-}) {
+}): ReactElement {
   return (
     <>
       <SiteBanner href={siteConfig.links.github} title="Star on GitHub" />
