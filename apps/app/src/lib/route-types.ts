@@ -1,11 +1,11 @@
-import type { SelectProjectType } from '@/features/project/schema';
+import type { SelectProjectType } from '@/server/schema/project';
 import type { DrizzleD1Database } from 'drizzle-orm/d1';
 import type { Session, User } from 'lucia';
 
-import type { GitHubUser, GoogleUser } from '@/features/auth/oauth/schema';
-import type { SelectedPasscodeType } from '@/features/passcode/schema';
-import type { SelectTmpUserType } from '@/features/tmp-user/schema';
 import type { DbSchema } from '@/lib/db';
+import type { GitHubUser, GoogleUser } from '@/server/schema/oauth';
+import type { SelectedPasscodeType } from '@/server/schema/passcode';
+import type { SelectTmpUserType } from '@/server/schema/tmp-user';
 import type { ExecutionContext, ValidationTargets } from 'hono';
 import type { Simplify } from 'type-fest';
 

@@ -1,4 +1,4 @@
-import type { PasswordType } from '@/features/common/schema';
+import type { PasswordType } from '@/server/schema/common';
 import {
   FormControl,
   FormField,

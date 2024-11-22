@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-import {} from '@/features/auth/signup/schema';
+import {} from '@/server/schema/signup';
 import { Button } from '@hexa/ui/button';
 import {
   Card,
@@ -21,11 +21,11 @@ import { OauthButtons } from '@/components/auth/oauth-buttons';
 import { EmailField } from '@/components/form/email-field';
 import { PasswordField } from '@/components/form/password-field';
 import { useTurnstile } from '@/components/hooks/use-turnstile';
-import { PasswordSchema, type PasswordType } from '@/features/common/schema';
-import { CheckEmailSchema } from '@/features/user/schema';
-import type { CheckEmailType } from '@/features/user/schema';
 import { $checkEmail } from '@/lib/api';
 import { setFormError } from '@/lib/form';
+import { PasswordSchema, type PasswordType } from '@/server/schema/common';
+import { CheckEmailSchema } from '@/server/schema/user';
+import type { CheckEmailType } from '@/server/schema/user';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { omit } from 'lodash';

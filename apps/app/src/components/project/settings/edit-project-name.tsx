@@ -15,11 +15,11 @@ import { invalidateProjectsQuery } from '@/lib/queries/workspace';
 
 import { NameField } from '@/components/form/name-field';
 import { useProject } from '@/components/providers/project-provicer';
+import { $updateProjectName } from '@/lib/api';
 import {
   type UpdateProjectNameType,
   UpdateProjectrNameSchema,
-} from '@/features/project/schema';
-import { $updateProjectName } from '@/lib/api';
+} from '@/server/schema/project';
 import { Button } from '@hexa/ui/button';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';

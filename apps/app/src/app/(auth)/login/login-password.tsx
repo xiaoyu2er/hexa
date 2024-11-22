@@ -9,7 +9,7 @@ import { Button } from '@hexa/ui/button';
 import {
   LoginPasswordSchema,
   type LoginPasswordType,
-} from '@/features/auth/login/schema';
+} from '@/server/schema/login';
 
 import { OauthButtons } from '@/components/auth/oauth-buttons';
 import { EmailField } from '@/components/form/email-field';

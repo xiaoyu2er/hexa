@@ -8,14 +8,14 @@ import {
   CardTitle,
 } from '@hexa/ui/card';
 
+import { $deleteUser } from '@/lib/api';
+import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
+import { setFormError } from '@/lib/form';
 import {
   DELETE_USER_CONFIRMATION,
   DeleteUserSchema,
   type DeleteUserType,
-} from '@/features/auth/close/schema';
-import { $deleteUser } from '@/lib/api';
-import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
-import { setFormError } from '@/lib/form';
+} from '@/server/schema/user';
 import { Button } from '@hexa/ui/button';
 import { Form } from '@hexa/ui/form';
 

@@ -14,13 +14,13 @@ import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 
 import { NameField } from '@/components/form/name-field';
 import { useSession } from '@/components/providers/session-provider';
-import {} from '@/features/project/schema';
+import { $updateUserName } from '@/lib/api';
+import { setFormError } from '@/lib/form';
+import {} from '@/server/schema/project';
 import {
   UpdateUserNameSchema,
   type UpdateUserNameType,
-} from '@/features/user/schema';
-import { $updateUserName } from '@/lib/api';
-import { setFormError } from '@/lib/form';
+} from '@/server/schema/user';
 import { Button } from '@hexa/ui/button';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';

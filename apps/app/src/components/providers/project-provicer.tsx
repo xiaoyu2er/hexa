@@ -1,10 +1,10 @@
 'use client';
 
-import type { SelectProjectType } from '@/features/project/schema';
 import {
   invalidateProject,
   queryProjectOptions,
 } from '@/lib/queries/workspace';
+import type { SelectProjectType } from '@/server/schema/project';
 import { useQuery } from '@tanstack/react-query';
 import { type FC, type ReactNode, createContext, useContext } from 'react';
 

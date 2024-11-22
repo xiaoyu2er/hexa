@@ -6,7 +6,7 @@ config({
 });
 
 export default defineConfig({
-  schema: './src/db/schema.ts',
+  schema: './src/server/table/index.ts',
   out: './drizzle/migrations',
   dialect: 'sqlite',
   // driver: 'd1-http',

@@ -16,11 +16,11 @@ import {
   DialogTitle,
 } from '@hexa/ui/responsive-dialog';
 
+import { queryOrgsOptions } from '@/lib/queries/orgs';
 import {
   InsertProjectSchema,
   type InsertProjectType,
-} from '@/features/project/schema';
-import { queryOrgsOptions } from '@/lib/queries/orgs';
+} from '@/server/schema/project';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import {
   Form,

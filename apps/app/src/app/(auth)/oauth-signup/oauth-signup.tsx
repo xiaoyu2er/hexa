@@ -5,14 +5,14 @@ import { EmailField } from '@/components/form/email-field';
 import { NameField } from '@/components/form/name-field';
 import { OrgNameField } from '@/components/form/org-name-field';
 import { useTurnstile } from '@/components/hooks/use-turnstile';
+import { $oauthSignup, type InferApiResponseType } from '@/lib/api';
+import { setFormError } from '@/lib/form';
 import {
   OauthSignupSchema,
   type OauthSignupType,
   type SelectOauthAccountType,
-} from '@/features/auth/oauth/schema';
-import {} from '@/features/auth/signup/schema';
-import { $oauthSignup, type InferApiResponseType } from '@/lib/api';
-import { setFormError } from '@/lib/form';
+} from '@/server/schema/oauth';
+import {} from '@/server/schema/signup';
 import { Button } from '@hexa/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@hexa/ui/card';
 import { Form } from '@hexa/ui/form';

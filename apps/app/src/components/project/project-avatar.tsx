@@ -1,5 +1,5 @@
-import type { SelectProjectType } from '@/features/project/schema';
 import { getProjectAvatarFallbackUrl } from '@/lib/project';
+import type { SelectProjectType } from '@/server/schema/project';
 import { Avatar, AvatarImage } from '@hexa/ui/avatar';
 import { cn } from '@hexa/utils';
 

@@ -5,7 +5,7 @@ import type { NavTab } from '@/components/menu-bar/types';
 import { SettingsIcon } from '@hexa/ui/icons';
 import type { ReactNode } from 'react';
 
-export default async function ({
+export default async function ProjectSettingsLayout({
   children,
   params,
 }: {

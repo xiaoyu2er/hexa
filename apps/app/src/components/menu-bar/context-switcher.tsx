@@ -2,9 +2,9 @@
 
 import { useSession } from '@/components/providers/session-provider';
 import { UserAvatar } from '@/components/user/settings/user-avatar';
-import type { SelectProjectType } from '@/features/project/schema';
 import { $updateUserDefaultProject } from '@/lib/api';
 import { queryProjectsOptions } from '@/lib/queries/workspace';
+import type { SelectProjectType } from '@/server/schema/project';
 import { useModal } from '@ebay/nice-modal-react';
 import { Badge } from '@hexa/ui/badge';
 import { Button } from '@hexa/ui/button';
