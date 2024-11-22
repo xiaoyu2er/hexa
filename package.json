@@ -6,16 +6,18 @@
     "dev": "turbo dev",
     "format-and-lint": "biome check .",
     "format-and-lint:fix": "biome check . --write",
-    "check-types": "turbo check-types"
+    "check-types": "turbo check-types",
+    "sync-deps": "syncpack list"
   },
   "devDependencies": {
-    "@hexa/typescript-config": "workspace:*",
     "@biomejs/biome": "1.9.4",
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
+    "@hexa/typescript-config": "workspace:*",
+    "syncpack": "^13.0.0",
     "turbo": "^2.0.4",
-    "typescript": "5.4.5",
-    "ultracite": "4.1.6"
+    "typescript": "5.7.2",
+    "ultracite": "4.1.7"
   },
   "packageManager": "pnpm@8.15.6",
   "engines": {
