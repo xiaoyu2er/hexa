@@ -1,8 +1,11 @@
 import { oauthAccountTable } from '@/features/auth/oauth/table';
+import { OrgNameSchema } from '@/features/auth/signup/schema';
 import { TurnstileSchema } from '@/features/auth/turnstile/schema';
-import { NameSchema } from '@/features/common/schema';
+import { EmailSchema, NameSchema } from '@/features/common/schema';
+import { SelectUserSchema } from '@/features/user/schema';
 
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
+import type { Simplify } from 'type-fest';
 import { z } from 'zod';
 
 export const ProviderTypeSchema = z.enum(['GOOGLE', 'GITHUB']);
@@ -12,20 +15,38 @@ export type ProviderType = z.infer<typeof ProviderTypeSchema>;
 export const InsertOauthAccountSchema = createInsertSchema(oauthAccountTable, {
   provider: ProviderTypeSchema,
 });
-export type InsertOauthAccountType = z.infer<typeof InsertOauthAccountSchema>;
+export type InsertOauthAccountType = Simplify<
+  z.infer<typeof InsertOauthAccountSchema>
+>;
 export const SelectOauthAccountSchema = createSelectSchema(oauthAccountTable, {
   provider: ProviderTypeSchema,
 });
 export type SelectOauthAccountType = z.infer<typeof SelectOauthAccountSchema>;
 
+export const SelectOauthAccountWithUserSchema = SelectOauthAccountSchema.extend(
+  {
+    user: SelectUserSchema.nullable(),
+  }
+);
+
+export type SelectOauthAccountWithUserType = z.infer<
+  typeof SelectOauthAccountWithUserSchema
+>;
+
+export const zOauthAccountId = z.string();
+export const OauthAccountSchema = z.object({
+  oauthAccountId: zOauthAccountId,
+});
+
 export const OauthSignupSchema = z
-  .object({
-    oauthAccountId: z.string(),
-    // password,
-  })
+  .object({})
+  .merge(OauthAccountSchema)
+  .merge(EmailSchema)
+  .merge(OrgNameSchema)
   .merge(NameSchema)
   .merge(TurnstileSchema);
-export type OauthSignupInput = z.infer<typeof OauthSignupSchema>;
+
+export type OauthSignupType = z.infer<typeof OauthSignupSchema>;
 
 export const DeleteOauthAccountSchema = z.object({
   provider: ProviderTypeSchema,
@@ -57,6 +78,8 @@ export interface GitHubUser {
   blog: string;
   location: string;
   email: string;
+  // this is we added
+  email_verified: boolean;
   hireable: null;
   bio: string;
   twitter_username: null;

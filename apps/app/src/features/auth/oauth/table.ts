@@ -1,4 +1,4 @@
-import { primaryKey } from 'drizzle-orm/sqlite-core';
+import { index, integer, uniqueIndex } from 'drizzle-orm/sqlite-core';
 
 import { sqliteTable } from 'drizzle-orm/sqlite-core';
 
@@ -15,20 +15,45 @@ export const oauthAccountTable = sqliteTable(
   'oauth_account',
   {
     id: text('id')
-      .notNull()
-      .$defaultFn(() => generateId('oauth')),
+      .primaryKey()
+      .$default(() => generateId('oa')),
     ...userIdNullable,
     ...providerType,
     name: text('name'),
     avatarUrl: text('avatar_url'),
     email: text('email').notNull(),
+    emailVerified: integer('email_verified', { mode: 'boolean' }).default(
+      false
+    ),
     providerAccountId: text('provider_account_id').notNull(),
     username: text('username').notNull(),
   },
   (t) => ({
-    pk: primaryKey({ columns: [t.provider, t.providerAccountId] }),
+    oauthAccountIndex: uniqueIndex('oauth_account_index').on(
+      t.provider,
+      t.providerAccountId
+    ),
+    userIdIndex: index('oauth_account_user_id_index').on(t.userId),
   })
 );
+
+export const oauthAccountIdNotNull = {
+  oauthAccountId: text('oauth_account_id')
+    .notNull()
+    .references(() => oauthAccountTable.id, {
+      onDelete: 'cascade',
+    }),
+};
+
+export const oauthAccountIdNullable = {
+  oauthAccountId: text('oauth_account_id').references(
+    () => oauthAccountTable.id,
+    {
+      onDelete: 'cascade',
+    }
+  ),
+};
+
 export default {
   oauthAccountTable,
 };

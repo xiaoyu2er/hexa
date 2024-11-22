@@ -1,11 +1,15 @@
 'use client';
-
+import { VerifyPasscode } from '@/components/auth/verify-passcode';
 import type { SelectOauthAccountType } from '@/features/auth/oauth/schema';
-import { deleteCookie } from '@/lib/cookie';
+import {
+  $oauthSignupResendPasscode,
+  $oauthSignupVerifyPasscode,
+} from '@/lib/api';
 import { toast } from '@hexa/ui/sonner';
 import { useRouter } from 'next/navigation';
-import { type FC, useEffect } from 'react';
-import { OauthSignup } from './oauth-signup-form';
+import { type FC, useState } from 'react';
+import { useStep } from 'usehooks-ts';
+import { OauthSignup } from './oauth-signup';
 
 export interface SignupPageProps {
   oauthAccount: SelectOauthAccountType;
@@ -13,19 +17,47 @@ export interface SignupPageProps {
 
 export const OauthSignupPage: FC<SignupPageProps> = ({ oauthAccount }) => {
   const router = useRouter();
-  useEffect(() => {
-    deleteCookie('oauth_account_id');
-  }, []);
+  const [passcodeId, setPasscodeId] = useState('');
+  const [currentStep, { goToNextStep, reset }] = useStep(3);
 
   return (
-    <OauthSignup
-      oauthAccount={oauthAccount}
-      onSuccess={() => {
-        toast.success('Sign up successful');
-      }}
-      onCancel={() => {
-        router.push('/');
-      }}
-    />
+    <>
+      {currentStep === 1 && (
+        <OauthSignup
+          oauthAccount={oauthAccount}
+          onSuccess={(data) => {
+            // Passcode id
+            if ('id' in data) {
+              // @ts-ignore
+              setPasscodeId(data.id);
+              goToNextStep();
+            }
+          }}
+          onCancel={() => {
+            router.push('/');
+          }}
+        />
+      )}
+      {currentStep === 2 && (
+        <VerifyPasscode
+          passcodeId={passcodeId}
+          email={oauthAccount.email}
+          onVerify={(json) => {
+            return $oauthSignupVerifyPasscode({
+              json,
+            });
+          }}
+          onResend={(json) => {
+            return $oauthSignupResendPasscode({
+              json,
+            });
+          }}
+          onSuccess={() => {
+            toast.success('Sign up successful');
+          }}
+          onCancel={reset}
+        />
+      )}
+    </>
   );
 };

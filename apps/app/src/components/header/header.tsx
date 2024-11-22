@@ -1,37 +1,7 @@
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
-import { getSession } from '@/lib/session';
 import { Button } from '@hexa/ui/button';
-import { Loader2Icon } from '@hexa/ui/icons';
 import { ModeToggle } from '@hexa/ui/mode-toggle';
 import Link from 'next/link';
-import { Suspense } from 'react';
-
-async function HeaderActions() {
-  const { user } = await getSession();
-  const isSignedIn = !!user;
-
-  return (
-    <>
-      {isSignedIn ? (
-        <>
-          <div className="hidden md:block">
-            <ModeToggle />
-          </div>
-          <Button asChild variant="secondary">
-            <Link href={`/${user.name}/settings/profile`}>Dashboard</Link>
-          </Button>
-        </>
-      ) : (
-        <>
-          <ModeToggle />
-          <Button asChild variant="secondary">
-            <Link href="/login">Log In</Link>
-          </Button>
-        </>
-      )}
-    </>
-  );
-}
 
 export function Header() {
   return (
@@ -43,15 +13,12 @@ export function Header() {
           </Link>
         </div>
         <div className="flex items-center justify-between gap-5">
-          <Suspense
-            fallback={
-              <div className="flex w-40 items-center justify-center">
-                <Loader2Icon className="h-4 w-4 animate-spin" />
-              </div>
-            }
-          >
-            <HeaderActions />
-          </Suspense>
+          <div className="hidden md:block">
+            <ModeToggle />
+          </div>
+          <Button asChild variant="secondary">
+            <Link href="/user/settings/profile">Dashboard</Link>
+          </Button>
         </div>
       </div>
     </div>

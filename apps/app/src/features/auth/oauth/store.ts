@@ -3,10 +3,12 @@ import type {
   GoogleUser,
   InsertOauthAccountType,
   ProviderType,
+  SelectOauthAccountType,
+  SelectOauthAccountWithUserType,
 } from '@/features/auth/oauth/schema';
 import { oauthAccountTable } from '@/features/auth/oauth/table';
 import type { SelectUserType } from '@/features/user/schema';
-import type { DbType } from '@/lib/types';
+import type { DbType } from '@/lib/route-types';
 import { and, eq } from 'drizzle-orm';
 
 export async function getAccountByGoogleId(db: DbType, googleId: string) {
@@ -15,6 +17,14 @@ export async function getAccountByGoogleId(db: DbType, googleId: string) {
       eq(oauthAccountTable.provider, 'GOOGLE'),
       eq(oauthAccountTable.providerAccountId, googleId)
     ),
+    with: {
+      user: true,
+    },
+  });
+}
+export async function getAccountById(db: DbType, id: string) {
+  return await db.query.oauthAccountTable.findFirst({
+    where: eq(oauthAccountTable.id, id),
     with: {
       user: true,
     },
@@ -33,9 +43,30 @@ export async function getAccountByGithubId(db: DbType, githubId: number) {
   });
 }
 
+export async function getAccountByProviderUser(
+  db: DbType,
+  provider: ProviderType,
+  providerUser: GitHubUser | GoogleUser
+) {
+  // Find existing oauthAccount
+  let existingAccount: SelectOauthAccountWithUserType | undefined;
+  if (provider === 'GITHUB') {
+    existingAccount = await getAccountByGithubId(
+      db,
+      (providerUser as GitHubUser).id
+    );
+  } else if (provider === 'GOOGLE') {
+    existingAccount = await getAccountByGoogleId(
+      db,
+      (providerUser as GoogleUser).sub
+    );
+  }
+  return existingAccount;
+}
+
 export async function createGithubAccount(
   db: DbType,
-  userId: SelectUserType['id'] | null,
+  userId: string | null,
   githubUser: GitHubUser
 ) {
   return (
@@ -47,6 +78,7 @@ export async function createGithubAccount(
         providerAccountId: String(githubUser.id),
         avatarUrl: githubUser.avatar_url,
         email: githubUser.email,
+        emailVerified: githubUser.email_verified,
         name: githubUser.name,
         username: githubUser.login,
       })
@@ -56,8 +88,10 @@ export async function createGithubAccount(
           oauthAccountTable.providerAccountId,
         ],
         set: {
+          userId: userId,
           avatarUrl: githubUser.avatar_url,
           email: githubUser.email,
+          emailVerified: githubUser.email_verified,
           name: githubUser.name,
           username: githubUser.login,
         },
@@ -68,7 +102,7 @@ export async function createGithubAccount(
 
 export async function createGoogleAccount(
   db: DbType,
-  userId: SelectUserType['id'] | null,
+  userId: string | null,
   googleUser: GoogleUser
 ) {
   return (
@@ -80,6 +114,7 @@ export async function createGoogleAccount(
         providerAccountId: googleUser.sub,
         avatarUrl: googleUser.picture,
         email: googleUser.email,
+        emailVerified: googleUser.email_verified,
         name: googleUser.name,
         username: googleUser.email,
       })
@@ -91,6 +126,7 @@ export async function createGoogleAccount(
         set: {
           avatarUrl: googleUser.picture,
           email: googleUser.email,
+          emailVerified: googleUser.email_verified,
           name: googleUser.name,
           username: googleUser.email,
         },
@@ -99,10 +135,22 @@ export async function createGoogleAccount(
   )[0];
 }
 
-export async function getUserOauthAccounts(
+export async function createOauthAccount(
   db: DbType,
-  userId: SelectUserType['id']
+  userId: string | null,
+  provider: ProviderType,
+  providerUser: GitHubUser | GoogleUser
 ) {
+  let account: SelectOauthAccountType | undefined;
+  if (provider === 'GITHUB') {
+    account = await createGithubAccount(db, userId, providerUser as GitHubUser);
+  } else if (provider === 'GOOGLE') {
+    account = await createGoogleAccount(db, userId, providerUser as GoogleUser);
+  }
+  return account;
+}
+
+export async function getUserOauthAccounts(db: DbType, userId: string) {
   return await db.query.oauthAccountTable.findMany({
     where: eq(oauthAccountTable.userId, userId),
   });

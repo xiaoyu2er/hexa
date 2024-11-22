@@ -1,49 +1,43 @@
 import type {
-  FindPasscodeByEmailType,
-  FindPasscodeByTokenType,
+  AddPasscodeType,
+  QueryPasscodeByTokenType,
+  SelectedPasscodeType,
+  UpdatePasscodeType,
   VerifyTokenType,
 } from '@/features/passcode/schema';
 import { passcodeTable } from '@/features/passcode/table';
 import { RESET_PASSWORD_EXPIRE_TIME_SPAN } from '@/lib/const';
 import { generateCode, generateId } from '@/lib/crypto';
-import { IS_DEVELOPMENT } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
-import type { DbType } from '@/lib/types';
-import { and, eq } from 'drizzle-orm';
+import type { DbType } from '@/lib/route-types';
+import { eq } from 'drizzle-orm';
 import { createDate, isWithinExpirationDate } from 'oslo';
 
-export function deleteDBToken(
-  db: DbType,
-  { email, type }: FindPasscodeByEmailType
-) {
-  return db
-    .delete(passcodeTable)
-    .where(and(eq(passcodeTable.email, email), eq(passcodeTable.type, type)));
+export function deletePasscode(db: DbType, id: string) {
+  return db.delete(passcodeTable).where(eq(passcodeTable.id, id));
 }
 
-export async function findDBToken(
+export async function findPasscode(
   db: DbType,
-  { email, type }: FindPasscodeByEmailType
-) {
+  id: string
+): Promise<SelectedPasscodeType | undefined> {
   return db.query.passcodeTable.findFirst({
-    where: (table, { eq, and }) =>
-      and(eq(table.email, email), eq(table.type, type)),
+    where: (table, { eq }) => eq(table.id, id),
     with: {
       user: true,
-      tmpUser: true,
+      tmpUser: {
+        with: {
+          oauthAccount: true,
+        },
+      },
     },
   });
 }
 
-export async function addDBToken(
+export async function addPasscode(
   db: DbType,
-  { userId, tmpUserId, email, type }: FindPasscodeByEmailType
+  { userId, tmpUserId, email, type }: AddPasscodeType
 ) {
-  await db
-    .delete(passcodeTable)
-    .where(and(eq(passcodeTable.email, email), eq(passcodeTable.type, type)))
-    .returning();
-
   const code = generateCode();
   const token = generateId();
   const row = (
@@ -58,94 +52,87 @@ export async function addDBToken(
         expiresAt: createDate(RESET_PASSWORD_EXPIRE_TIME_SPAN),
         type,
       })
+      .onConflictDoNothing()
       .returning()
   )[0];
 
   if (!row) {
     throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create token');
   }
+
   return row;
 }
 
-export async function getTokenByToken(
+export async function updatePasscode(db: DbType, { id }: UpdatePasscodeType) {
+  const code = generateCode();
+  const token = generateId();
+  const newValues = {
+    code,
+    token,
+    expiresAt: createDate(RESET_PASSWORD_EXPIRE_TIME_SPAN),
+  };
+  const newRow = (
+    await db
+      .update(passcodeTable)
+      .set(newValues)
+      .where(eq(passcodeTable.id, id))
+      .returning()
+  )[0];
+
+  if (!newRow) {
+    throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to resend passcode');
+  }
+  return newRow;
+}
+
+export async function findPasscodeByToken(
   db: DbType,
-  { token, type }: FindPasscodeByTokenType
-) {
+  { token, type }: QueryPasscodeByTokenType
+): Promise<SelectedPasscodeType | undefined> {
   return db.query.passcodeTable.findFirst({
     where: (table, { eq, and }) =>
       and(eq(table.token, token), eq(table.type, type)),
     with: {
       user: true,
-      tmpUser: true,
+      tmpUser: {
+        with: {
+          oauthAccount: true,
+        },
+      },
     },
   });
 }
 
-// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
-export async function verifyDBTokenByCode(
+export async function verifyPasscode(
   db: DbType,
-  {
-    code,
-    email,
-    token,
-    type,
-    tmpUserId,
-    deleteRow = true,
-  }: {
-    deleteRow?: boolean;
-  } & VerifyTokenType
+  { code, id, token }: VerifyTokenType
 ) {
-  if (!code && !token) {
-    throw new ApiError('CONFLICT', 'Code or token is required');
-  }
-  const tokenRow = await findDBToken(db, { email, type });
+  const passcode = await findPasscode(db, id);
 
   // No record
-  if (!tokenRow) {
-    throw new ApiError(
-      'CONFLICT',
-      IS_DEVELOPMENT ? '[dev]Code was not sent' : 'Code is invalid or expired'
-    );
+  if (!passcode) {
+    throw new ApiError('CONFLICT', 'Passcode is invalid or expired');
   }
 
   // Expired
-  if (!isWithinExpirationDate(tokenRow.expiresAt)) {
-    // Delete the verification row
-    if (deleteRow) {
-      await deleteDBToken(db, { email, type });
-    }
-
-    throw new ApiError(
-      'CONFLICT',
-      IS_DEVELOPMENT ? '[dev]Code is expired' : 'Code is invalid or expired'
-    );
+  if (!isWithinExpirationDate(passcode.expiresAt)) {
+    throw new ApiError('CONFLICT', 'Passcode is invalid or expired');
   }
 
   if (code) {
     // Not matching code
-    if (tokenRow.code !== code) {
-      throw new ApiError(
-        'CONFLICT',
-        IS_DEVELOPMENT
-          ? '[dev]Code does not match'
-          : 'Code is invalid or expired'
-      );
+    if (passcode.code !== code) {
+      throw new ApiError('CONFLICT', 'Passcode is invalid or expired');
     }
-  } else if (token) {
+    return passcode;
+  }
+  if (token) {
     // Not matching token
-    if (tokenRow.token !== token) {
-      throw new ApiError(
-        'CONFLICT',
-        IS_DEVELOPMENT
-          ? '[dev]Token does not match'
-          : 'Token is invalid or expired'
-      );
+    if (passcode.token !== token) {
+      throw new ApiError('CONFLICT', 'Passcode is invalid or expired');
     }
+    return passcode;
   }
 
-  if (deleteRow) {
-    await deleteDBToken(db, { email, type });
-  }
-
-  return tokenRow;
+  throw new ApiError('CONFLICT', 'Passcode is invalid or expired');
 }

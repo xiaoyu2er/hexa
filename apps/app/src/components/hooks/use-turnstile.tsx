@@ -11,7 +11,7 @@ import {
 } from '@/lib/env';
 import { Turnstile } from '@marsidev/react-turnstile';
 import { useTheme } from 'next-themes';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import type { FieldValues, UseFormReturn } from 'react-hook-form';
 
 export function useTurnstile<T extends FieldValues>({
@@ -67,10 +67,17 @@ export function useTurnstile<T extends FieldValues>({
     />
   );
 
-  const allowNext = DISABLE_CLOUDFLARE_TURNSTILE
-    ? true
-    : // @ts-ignore
-      !!watch('cf-turnstile-response');
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (DISABLE_CLOUDFLARE_TURNSTILE) {
+      // @ts-ignore
+      setValue('cf-turnstile-response', 'always-pass');
+      onSuccess?.('always-pass');
+    }
+  }, []);
+
+  // @ts-ignore
+  const allowNext = !!watch('cf-turnstile-response');
 
   return {
     resetTurnstile,

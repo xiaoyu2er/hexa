@@ -20,5 +20,5 @@ export default async function () {
     }
   }
 
-  redirect('/sign-up');
+  redirect('/signup');
 }

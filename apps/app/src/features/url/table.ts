@@ -1,26 +1,33 @@
-import { userTable } from '@/features/user/table';
-import { workspaceTable } from '@/features/workspace/table';
+import { projectIdNotNull } from '@/features/project/table';
 import { generateId } from '@/lib/crypto';
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import {
+  index,
+  integer,
+  sqliteTable,
+  text,
+  uniqueIndex,
+} from 'drizzle-orm/sqlite-core';
 
 // URL table
-export const shortUrlTable = sqliteTable('short_url', {
-  id: text('id')
-    .primaryKey()
-    .$defaultFn(() => generateId('url')),
-  repositoryId: text('repository_id')
-    .notNull()
-    .references(() => workspaceTable.id, { onDelete: 'cascade' }),
-  creatorId: text('creator_id')
-    .notNull()
-    .references(() => userTable.id),
-  originalUrl: text('original_url').notNull(),
-  shortCode: text('short_code').unique().notNull(),
-  title: text('title'),
-  description: text('description'),
-  clicks: integer('clicks').notNull().default(0),
-});
+export const urlTable = sqliteTable(
+  'short_url',
+  {
+    id: text('id')
+      .primaryKey()
+      .$default(() => generateId('url')),
+    ...projectIdNotNull,
+    destUrl: text('dest_url').notNull(),
+    slug: text('slug').notNull(),
+    title: text('title'),
+    desc: text('desc'),
+    clicks: integer('clicks').notNull().default(0),
+  },
+  (t) => ({
+    slugIndex: uniqueIndex('url_slug_index').on(t.slug),
+    projectIndex: index('url_project_index').on(t.projectId),
+  })
+);
 
 export default {
-  shortUrlTable,
+  urlTable,
 };

@@ -1,12 +1,12 @@
 import type {
   InsertOrgMemberType,
-  OrgRole,
+  OrgMemberRole,
 } from '@/features/org-member/schema';
 import { orgMemberTable } from '@/features/org-member/table';
 import type { InsertOrgType, SelectUserOrgType } from '@/features/org/schema';
 import { orgTable } from '@/features/org/table';
 import { ApiError } from '@/lib/error/error';
-import type { DbType } from '@/lib/types';
+import type { DbType } from '@/lib/route-types';
 import { and, eq } from 'drizzle-orm';
 
 // 1. List all orgs that user belongs to with roles
@@ -154,7 +154,7 @@ export const updateOrgMemberRole = async (
   }: {
     orgId: string;
     targetUserId: string;
-    newRole: Exclude<OrgRole, 'OWNER'>; // Can't set someone as owner this way
+    newRole: Exclude<OrgMemberRole, 'OWNER'>; // Can't set someone as owner this way
     currentUserId: string;
   }
 ) => {
@@ -245,7 +245,7 @@ export const assertUserHasOrgRole = async (
   }: {
     orgId: string;
     userId: string;
-    requiredRole: OrgRole[];
+    requiredRole: OrgMemberRole[];
   }
 ) => {
   const member = await db.query.orgMemberTable.findFirst({
@@ -275,7 +275,7 @@ export const addOrgMember = async (
   }: {
     orgId: string;
     targetUserId: string;
-    role: Exclude<OrgRole, 'OWNER'>; // Can't add someone as owner directly
+    role: Exclude<OrgMemberRole, 'OWNER'>; // Can't add someone as owner directly
     currentUserId: string;
   }
 ) => {

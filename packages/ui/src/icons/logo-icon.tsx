@@ -9,10 +9,7 @@ export const LogoIcon = ({ className }: { className?: string }) => {
         className
       )}
     >
-      <AvatarImage
-        src="https://dubassets.com/avatars/cly4x47ur000ftlbgbn7ilmx7"
-        alt="Hexa"
-      />
+      <AvatarImage src="https://hexacdn.com/h.png" alt="Hexa" />
       <AvatarFallback delayMs={200}>Hexa</AvatarFallback>
     </Avatar>
   );

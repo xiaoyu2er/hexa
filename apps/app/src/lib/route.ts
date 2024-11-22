@@ -4,18 +4,17 @@ import logout from '@/features/auth/logout/route';
 import oauth from '@/features/auth/oauth/route';
 import resetPassword from '@/features/auth/reset-password/route';
 import signup from '@/features/auth/signup/route';
+import email from '@/features/email/route';
 import setEnv from '@/features/env/middleware';
 import test from '@/features/env/route';
 import org from '@/features/org/route';
-import passcode from '@/features/passcode/route';
+import project from '@/features/project/route';
 import user from '@/features/user/route';
-import owner from '@/features/workspace-owner/route';
-import workspace from '@/features/workspace/route';
 import { IS_DEVELOPMENT } from '@/lib/env';
 import { ERROR_CODE_TO_HTTP_STATUS } from '@/lib/error/error';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import type { Context } from './types';
+import type { Context } from './route-types';
 
 export const app = new Hono<Context>()
   .basePath('/api')
@@ -27,11 +26,10 @@ export const app = new Hono<Context>()
   .route('/', resetPassword)
   .route('/', signup)
   .route('/', user)
-  .route('/', passcode)
   .route('/', oauth)
-  .route('/', workspace)
+  .route('/', project)
   .route('/', org)
-  .route('/', owner)
+  .route('/', email)
   .onError((error, c) => {
     // @ts-ignore
     const code = error.code;

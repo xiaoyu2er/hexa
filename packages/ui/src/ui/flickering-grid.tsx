@@ -98,7 +98,7 @@ const FlickeringGrid: FC<FlickeringGridProps> = ({
       width: number,
       height: number,
       cols: number,
-      rows: number,
+      _roproject: number,
       squares: Float32Array,
       dpr: number
     ) => {

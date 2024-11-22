@@ -69,18 +69,42 @@ export type InferApiResponseType<
 > = Awaited<ReturnType<T>>;
 
 // ==================== Auth ====================
-// passcode
-export const $sendPasscode = h(api['send-passcode'].$post);
-export const $resendPasscode = h(api['resend-passcode'].$post);
-export const $verifyPasscode = h(api['verify-passcode'].$post);
 // login
 export const $loginPassword = h(api['login-password'].$post);
+export const $loginPasscodeSendPasscode = h(
+  api['login-passcode']['send-passcode'].$post
+);
+export const $loginPasscodeResendPasscode = h(
+  api['login-passcode']['resend-passcode'].$post
+);
+export const $loginPasscodeVerifyPasscode = h(
+  api['login-passcode']['verify-passcode'].$post
+);
 // reset password
+export const $resetPasswordSendPasscode = h(
+  api['reset-password']['send-passcode'].$post
+);
+export const $resetPasswordResendPasscode = h(
+  api['reset-password']['resend-passcode'].$post
+);
+export const $resetPasswordVerifyPasscode = h(
+  api['reset-password']['verify-passcode'].$post
+);
 export const $resetPassword = h(api['reset-password'].$post);
+
 // signup
-export const $signup = h(api.signup.$post);
+export const $signupSendPasscode = h(api.signup['send-passcode'].$post);
+export const $signupResendPasscode = h(api.signup['resend-passcode'].$post);
+export const $signupVerifyPasscode = h(api.signup['verify-passcode'].$post);
 // oauth
 export const $oauthSignup = h(api['oauth-signup'].$post);
+export const $oauthSignupResendPasscode = h(
+  api['oauth-signup']['resend-passcode'].$post
+);
+export const $oauthSignupVerifyPasscode = h(
+  api['oauth-signup']['verify-passcode'].$post
+);
+
 // logout
 export const $logout = h(api.logout.$post);
 
@@ -89,34 +113,44 @@ export const $logout = h(api.logout.$post);
 export const $getUserInfo = h(api.user.info.$get);
 export const $getUserEmails = h(api.user.emails.$get);
 export const $getUserOauthAccounts = h(api.user['oauth-accounts'].$get);
-export const $updateUserPrimaryEmail = h(api.user.emails.primary.$put);
-export const $updateUserDisplayName = h(api.user['display-name'].$put);
-export const $updateUsername = h(api.user.username.$put);
-export const $addUserEmail = h(api.user.emails.$post);
-export const $deleteUserEmail = h(api.user.emails.$delete);
-export const $updateUserAvatar = h(api.user.avatar.$put);
-export const $deleteUser = h(api.user.$delete);
-export const $deleteUserOauthAccount = h(api.user['oauth-accounts'].$delete);
-export const $updateUserDefaultWorkspace = h(
-  api.user['default-workspace'].$put
+export const $updateUserPrimaryEmail = h(api.user['set-primary-email'].$put);
+export const $updateUserName = h(api.user['update-name'].$put);
+export const $updateUserPassword = h(api.user['update-password'].$put);
+
+export const $addUserEmailSendPasscode = h(
+  api.user['add-email']['send-passcode'].$post
 );
-// ==================== Workspace ====================
-// workspace
-export const $getOwnerWorkspaces = h(api.workspace[':owner'].$get);
-export const $getAccessibleWorkspaces = h(api.workspace.all.$get);
-export const $getWorkspaceBySlug = h(api.workspace.$get);
-export const $createWorkspace = h(api.workspace.new.$post);
-export const $deleteWorkspace = h(api.workspace[':workspaceId'].$delete);
-export const $updateWorkspaceName = h(api.workspace[':workspaceId'].name.$put);
-export const $updateWorkspaceSlug = h(api.workspace[':workspaceId'].name.$put);
-export const $updateWorkspaceAvatar = h(
-  api.workspace[':workspaceId'].avatar.$put
+export const $addUserEmailResendPasscode = h(
+  api.user['add-email']['resend-passcode'].$post
 );
+export const $addUserEmailVerifyPasscode = h(
+  api.user['add-email']['verify-passcode'].$post
+);
+
+export const $deleteUserEmail = h(api.user['delete-email'].$delete);
+export const $updateUserAvatar = h(api.user['update-avatar'].$put);
+export const $deleteUser = h(api.user['delete-user'].$delete);
+export const $deleteUserOauthAccount = h(
+  api.user['delete-oauth-account'].$delete
+);
+export const $updateUserDefaultProject = h(
+  api.user['update-default-project'].$put
+);
+export const $checkEmail = h(api.email.$post);
+
+// ==================== Project ====================
+export const $getAccessibleProjects = h(api.project.all.$get);
+export const $getProject = h(api.project[':projectId'].$get);
+export const $createProject = h(api.project['create-project'].$post);
+export const $deleteProject = h(api.project['delete-project'].$delete);
+export const $updateProjectName = h(api.project['update-project-name'].$put);
+export const $updateProjectSlug = h(api.project['update-project-slug'].$put);
+export const $updateProjectAvatar = h(
+  api.project['update-project-avatar'].$put
+);
+
 // ==================== Org ====================
 export const $getOrgs = h(api.org.all.$get);
 export const $createOrg = h(api.org.$post);
 export const $deleteOrg = h(api.org[':orgId'].$delete);
 export const $getOrgByName = h(api.org[':name'].$get);
-
-// ==================== Owner ====================
-export const $getOwner = h(api.owner[':name'].$get);

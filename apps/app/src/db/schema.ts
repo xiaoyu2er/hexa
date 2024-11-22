@@ -1,28 +1,32 @@
 import { oauthAccountTable } from '@/features/auth/oauth/table';
 import { emailTable } from '@/features/email/table';
+import { inviteTable } from '@/features/invite/table';
 import { orgMemberTable } from '@/features/org-member/table';
 import { orgTable } from '@/features/org/table';
 import { passcodeTable } from '@/features/passcode/table';
+import { projectTable } from '@/features/project/table';
 import { sessionTable } from '@/features/session/table';
 import { tmpUserTable } from '@/features/tmp-user/table';
-import { shortUrlTable } from '@/features/url/table';
+import { urlTable } from '@/features/url/table';
 import { userTable } from '@/features/user/table';
-import { workspaceOwnerTable } from '@/features/workspace-owner/table';
-import { workspaceTable } from '@/features/workspace/table';
 import { relations } from 'drizzle-orm';
 
 export {
+  // auth
   sessionTable,
   oauthAccountTable,
   emailTable,
-  orgMemberTable,
-  orgTable,
   passcodeTable,
   tmpUserTable,
-  shortUrlTable,
+  // core
   userTable,
-  workspaceOwnerTable,
-  workspaceTable,
+  projectTable,
+  orgTable,
+  orgMemberTable,
+  // url
+  urlTable,
+  // invite
+  inviteTable,
 };
 
 // ================ Relations ================
@@ -39,17 +43,22 @@ export const oauthAccountRelations = relations(
 // User relations
 export const userRelations = relations(userTable, ({ many, one }) => ({
   emails: many(emailTable),
-  tokens: many(passcodeTable),
+  passcodes: many(passcodeTable),
   oauthAccounts: many(oauthAccountTable),
-  defaultWs: one(workspaceTable, {
-    fields: [userTable.defaultWsId],
-    references: [workspaceTable.id],
+  defaultProject: one(projectTable, {
+    fields: [userTable.defaultProjectId],
+    references: [projectTable.id],
   }),
+  orgMembers: many(orgMemberTable),
 }));
 
 // Temp user relations
-export const tmpUserRelations = relations(tmpUserTable, ({ many }) => ({
+export const tmpUserRelations = relations(tmpUserTable, ({ many, one }) => ({
   tokens: many(passcodeTable),
+  oauthAccount: one(oauthAccountTable, {
+    fields: [tmpUserTable.oauthAccountId],
+    references: [oauthAccountTable.id],
+  }),
 }));
 
 // Email relations
@@ -75,7 +84,8 @@ export const passcodeRelations = relations(passcodeTable, ({ one }) => ({
 // Org relations
 export const orgRelations = relations(orgTable, ({ many }) => ({
   members: many(orgMemberTable),
-  workspaces: many(workspaceOwnerTable),
+  projects: many(projectTable),
+  invites: many(inviteTable),
 }));
 
 // Organization member relations
@@ -90,45 +100,31 @@ export const orgMemberRelations = relations(orgMemberTable, ({ one }) => ({
   }),
 }));
 
-// Repository relations
-export const workspaceRelations = relations(
-  workspaceTable,
-  ({ one, many }) => ({
-    owner: one(workspaceOwnerTable, {
-      fields: [workspaceTable.id],
-      references: [workspaceOwnerTable.wsId],
-    }),
-    shortUrls: many(shortUrlTable),
-  })
-);
+// Invite relations
+export const inviteRelations = relations(inviteTable, ({ one }) => ({
+  inviter: one(userTable, {
+    fields: [inviteTable.inviterId],
+    references: [userTable.id],
+  }),
+  org: one(orgTable, {
+    fields: [inviteTable.orgId],
+    references: [orgTable.id],
+  }),
+}));
 
-// Workspace owner relations
-export const workspaceOwnerRelations = relations(
-  workspaceOwnerTable,
-  ({ one }) => ({
-    workspace: one(workspaceTable, {
-      fields: [workspaceOwnerTable.wsId],
-      references: [workspaceTable.id],
-    }),
-    user: one(userTable, {
-      fields: [workspaceOwnerTable.userId],
-      references: [userTable.id],
-    }),
-    org: one(orgTable, {
-      fields: [workspaceOwnerTable.orgId],
-      references: [orgTable.id],
-    }),
-  })
-);
+// Project relations
+export const projectRelations = relations(projectTable, ({ one, many }) => ({
+  org: one(orgTable, {
+    fields: [projectTable.orgId],
+    references: [orgTable.id],
+  }),
+  shortUrls: many(urlTable),
+}));
 
 // Short url relations
-export const shortUrlRelations = relations(shortUrlTable, ({ one }) => ({
-  workspace: one(workspaceTable, {
-    fields: [shortUrlTable.repositoryId],
-    references: [workspaceTable.id],
-  }),
-  creator: one(userTable, {
-    fields: [shortUrlTable.creatorId],
-    references: [userTable.id],
+export const shortUrlRelations = relations(urlTable, ({ one }) => ({
+  project: one(projectTable, {
+    fields: [urlTable.projectId],
+    references: [projectTable.id],
   }),
 }));

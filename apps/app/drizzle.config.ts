@@ -7,7 +7,7 @@ config({
 
 export default defineConfig({
   schema: './src/db/schema.ts',
-  out: './migrations',
+  out: './drizzle/migrations',
   dialect: 'sqlite',
   // driver: 'd1-http',
   dbCredentials: {

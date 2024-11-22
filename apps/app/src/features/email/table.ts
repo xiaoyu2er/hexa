@@ -1,18 +1,30 @@
-import { userTable } from '@/features/user/table';
+import { lower } from '@/features/common/table';
+import { userIdNotNull } from '@/features/user/table';
 import { generateId } from '@/lib/crypto';
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import {
+  index,
+  integer,
+  sqliteTable,
+  text,
+  uniqueIndex,
+} from 'drizzle-orm/sqlite-core';
 
-export const emailTable = sqliteTable('email', {
-  id: text('id')
-    .primaryKey()
-    .$defaultFn(() => generateId('em')),
-  userId: text('user_id')
-    .notNull()
-    .references(() => userTable.id, { onDelete: 'cascade' }),
-  email: text('email').notNull(),
-  primary: integer('primary', { mode: 'boolean' }).notNull().default(false),
-  verified: integer('verified', { mode: 'boolean' }).notNull().default(false),
-});
+export const emailTable = sqliteTable(
+  'email',
+  {
+    id: text('id')
+      .primaryKey()
+      .$default(() => generateId('email')),
+    ...userIdNotNull,
+    email: text('email').notNull(),
+    primary: integer('primary', { mode: 'boolean' }).notNull().default(false),
+    verified: integer('verified', { mode: 'boolean' }).notNull().default(false),
+  },
+  (t) => ({
+    emailIndex: uniqueIndex('email_index').on(t.userId, lower(t.email)),
+    userIdIndex: index('email_user_id_index').on(t.userId),
+  })
+);
 
 export default {
   emailTable,

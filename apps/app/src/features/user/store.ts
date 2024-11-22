@@ -5,22 +5,23 @@ import { userTable } from '@/features/user/table';
 import { getHash } from '@/lib/crypto';
 import { IS_DEVELOPMENT } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
-import type { DbType } from '@/lib/types';
+import type { DbType } from '@/lib/route-types';
 import { and, eq, ne } from 'drizzle-orm';
 
 export async function getUser(db: DbType, uid: string) {
   const user = await db.query.userTable.findFirst({
     where: eq(userTable.id, uid),
   });
-
   return user;
 }
 
-export async function getUserByName(db: DbType, name: string) {
+export async function getUserWithProject(db: DbType, uid: string) {
   const user = await db.query.userTable.findFirst({
-    where: eq(userTable.name, name),
+    where: eq(userTable.id, uid),
+    with: {
+      defaultProject: true,
+    },
   });
-
   return user;
 }
 
@@ -48,18 +49,8 @@ export async function getUserEmails(db: DbType, uid: string) {
   });
 }
 
-export async function getUserEmail(db: DbType, email: string) {
-  const emailItem = await db.query.emailTable.findFirst({
-    where: (table, { eq }) => eq(table.email, email),
-    with: {
-      user: true,
-    },
-  });
-  return emailItem;
-}
-
 export const getUserEmailOrThrowError = async (db: DbType, email: string) => {
-  const emailItem = await getUserEmail(db, email);
+  const emailItem = await getEmail(db, email);
 
   if (!emailItem || !emailItem.user) {
     throw new ApiError(
@@ -72,7 +63,7 @@ export const getUserEmailOrThrowError = async (db: DbType, email: string) => {
   return emailItem;
 };
 
-export async function createUserEmail(
+export async function createEmail(
   db: DbType,
   { email, verified, primary, userId }: InsertEmailType
 ) {
@@ -97,14 +88,13 @@ export async function removeUserEmail(db: DbType, uid: string, email: string) {
 
 export async function createUser(
   db: DbType,
-  { password, avatarUrl, name, displayName }: InsertUserType
+  { password, avatarUrl, name }: InsertUserType
 ) {
   return (
     await db
       .insert(userTable)
       .values({
         avatarUrl: avatarUrl ?? null,
-        displayName,
         name: name,
         ...(password ? { password } : {}),
       })
@@ -130,6 +120,24 @@ export async function updateUserPrimaryEmail(
   uid: string,
   email: string
 ) {
+  const emailItem = await getEmail(db, email);
+
+  if (!emailItem) {
+    throw new ApiError('NOT_FOUND', 'Email not found');
+  }
+
+  if (emailItem.userId !== uid) {
+    throw new ApiError('NOT_FOUND', 'Email not found');
+  }
+
+  if (emailItem.primary) {
+    throw new ApiError('BAD_REQUEST', 'Email is already primary');
+  }
+
+  if (!emailItem.verified) {
+    throw new ApiError('BAD_REQUEST', 'Email is not verified');
+  }
+
   await db
     .update(emailTable)
     .set({ primary: true })
@@ -161,13 +169,6 @@ export async function updateUserProfile(
   await db
     .update(userTable)
     .set({ avatarUrl: imageUrl })
-    .where(eq(userTable.id, uid));
-}
-
-export async function updateProfileName(db: DbType, uid: string, name: string) {
-  await db
-    .update(userTable)
-    .set({ displayName: name })
     .where(eq(userTable.id, uid));
 }
 

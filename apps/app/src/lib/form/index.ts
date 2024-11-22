@@ -8,17 +8,21 @@ export function setFormError<TFieldValues extends FieldValues>(
     | FieldPath<TFieldValues>
     | `root.${string}`
     | 'root'
-    | undefined = 'root'
+    | undefined = 'root',
+  onlyUseDefaultField = false
 ) {
-  if (err instanceof ZodError) {
-    for (const { path, message } of err.issues) {
-      // @ts-ignore
-      setError(path.join('.'), {
-        message: message,
-      });
+  if (err instanceof ZodError && err.issues.length > 0) {
+    if (onlyUseDefaultField) {
+      setError(defaultField ?? 'root', { message: err.issues[0]?.message });
+    } else {
+      for (const { path, message } of err.issues) {
+        // @ts-ignore
+        setError(path.join('.'), {
+          message: message,
+        });
+      }
     }
-  }
-  if (err.message) {
+  } else if (err.message) {
     setError(defaultField ?? 'root', { message: err.message });
   }
 }

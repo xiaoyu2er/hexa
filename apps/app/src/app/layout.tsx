@@ -5,10 +5,12 @@ import { Toaster } from '@hexa/ui/sonner';
 import { cn } from '@hexa/utils';
 import '@hexa/ui/globals.css';
 import { Provider as NiceModalProvider } from '@/components/modal';
-import { QueryClientProvider } from '@/components/providers/query-client-provider';
 import { SessionProvider } from '@/components/providers/session-provider';
 import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { getSession } from '@/lib/session';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
+import { QueryClientProvider } from '@/components/providers/query-client-provider';
 import { ThemeProvider } from 'next-themes';
 import type { ReactNode } from 'react';
 
@@ -19,8 +21,10 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
+  params: { slug },
 }: Readonly<{
   children: ReactNode;
+  params: { slug: string };
 }>) {
   const session = await getSession();
 
@@ -43,6 +47,8 @@ export default async function RootLayout({
               <SessionProvider {...session}>{children}</SessionProvider>
               <Toaster richColors position="top-center" />
               <TailwindIndicator />
+              <ReactQueryDevtools initialIsOpen={false} />
+
               {/* <Analytics /> */}
               {/* <SpeedInsights /> */}
             </ThemeProvider>

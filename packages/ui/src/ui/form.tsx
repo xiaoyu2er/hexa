@@ -7,12 +7,14 @@ import {
   type FieldPath,
   type FieldValues,
   FormProvider,
+  useForm,
   useFormContext,
 } from 'react-hook-form';
 
 import { Label } from '@hexa/ui/label';
 import { cn } from '@hexa/utils';
 
+export { useForm };
 const Form = FormProvider;
 
 type FormFieldContextValue<

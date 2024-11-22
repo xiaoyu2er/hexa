@@ -45,6 +45,7 @@ export {
   Search,
   Settings,
   Loader2,
+  Loader,
   UploadCloud,
   Copy,
   Check,
