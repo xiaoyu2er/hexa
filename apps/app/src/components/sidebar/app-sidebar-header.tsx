@@ -1,4 +1,4 @@
-import { ContextSwitcher } from '@/components/menu-bar/context-switcher';
+import { ContextSwitcher } from '@/components/sidebar/context-switcher';
 
 import { SidebarHeader, SidebarMenu, SidebarMenuItem } from '@hexa/ui/sidebar';
 
