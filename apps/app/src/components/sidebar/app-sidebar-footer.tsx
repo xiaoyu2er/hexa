@@ -73,7 +73,7 @@ export function AppSidebarFooter() {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <Link href="/user/settings">
+                <Link href="/user/profile">
                   <BadgeCheck />
                   Account
                 </Link>

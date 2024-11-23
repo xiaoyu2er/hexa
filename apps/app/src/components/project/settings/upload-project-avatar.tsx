@@ -5,7 +5,7 @@ import { FileUpload } from '@hexa/ui/file-upload';
 import { toast } from '@hexa/ui/sonner';
 import { useEffect, useState } from 'react';
 
-import { useProject } from '@/components/providers/project-provicer';
+import { useProject } from '@/hooks/use-project';
 import { useUser } from '@/hooks/use-user';
 import { $updateProjectAvatar } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';

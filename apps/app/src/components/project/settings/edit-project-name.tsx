@@ -11,10 +11,10 @@ import {
 import { Form } from '@hexa/ui/form';
 
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
-import { invalidateProjectsQuery } from '@/lib/queries/workspace';
+import { invalidateProjectsQuery } from '@/lib/queries/project';
 
 import { NameField } from '@/components/form/name-field';
-import { useProject } from '@/components/providers/project-provicer';
+import { useProject } from '@/hooks/use-project';
 import { $updateProjectName } from '@/lib/api';
 import {
   type UpdateProjectNameType,

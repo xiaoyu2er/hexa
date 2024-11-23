@@ -45,7 +45,7 @@ export function UserSideBarContent() {
           <SidebarGroupContent>
             <SidebarMenu>
               {USER_NAVS.map((item) => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem key={item.url}>
                   <SidebarMenuButton asChild isActive={item.url === pathname}>
                     <Link href={item.url}>
                       <item.icon />

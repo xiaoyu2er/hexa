@@ -4,7 +4,7 @@ import { Input } from '@hexa/ui/input';
 
 import { $createProject } from '@/lib/api';
 import { setFormError } from '@/lib/form';
-import { invalidateProjectsQuery } from '@/lib/queries/workspace';
+import { invalidateProjectsQuery } from '@/lib/queries/project';
 import { Button } from '@hexa/ui/button';
 import {
   Dialog,

@@ -1,6 +1,6 @@
 import { Collapsible } from '@hexa/ui/collapsible';
 
-import { Calendar, Home, Inbox, Search, Settings } from '@hexa/ui/icons';
+import { Home, Inbox } from '@hexa/ui/icons';
 
 import {
   SidebarContent,
@@ -9,57 +9,44 @@ import {
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem,
 } from '@hexa/ui/sidebar';
 
-const items = [
-  {
-    title: 'Home',
-    url: '#',
-    icon: Home,
-  },
-  {
-    title: 'Inbox',
-    url: '#',
-    icon: Inbox,
-  },
-  {
-    title: 'Calendar',
-    url: '#',
-    icon: Calendar,
-  },
-  {
-    title: 'Search',
-    url: '#',
-    icon: Search,
-  },
-  {
-    title: 'Settings',
-    url: '#',
-    icon: Settings,
-  },
-];
+import Link from 'next/link';
 
-export function ProjectSideBarContent() {
+import { usePathname } from 'next/navigation';
+
+export function ProjectSideBarContent({ slug }: { slug: string }) {
+  const pathname = usePathname();
+  const PROJECT_NAVS = [
+    {
+      title: 'Links',
+      url: `/project/${slug}`,
+      icon: Home,
+    },
+    {
+      title: 'Settings',
+      url: `/project/${slug}/settings`,
+      icon: Inbox,
+    },
+  ];
   return (
     <SidebarContent>
       <Collapsible defaultOpen className="group/collapsible">
         <SidebarGroup>
           <SidebarGroupLabel>Project</SidebarGroupLabel>
-          {/* <SidebarGroupAction>
-            <Plus /> <span className="sr-only">Add Project</span>
-          </SidebarGroupAction> */}
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+              {PROJECT_NAVS.map((item) => (
+                <SidebarMenuButton
+                  asChild
+                  isActive={item.url === pathname}
+                  key={item.url}
+                >
+                  <Link href={item.url}>
+                    <item.icon />
+                    <span>{item.title}</span>
+                  </Link>
+                </SidebarMenuButton>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
