@@ -2,6 +2,7 @@
 
 import { UserAvatar } from '@/components/user/settings/user-avatar';
 import { useUser } from '@/hooks/use-user';
+import { $logout } from '@/lib/api';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,11 +26,21 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@hexa/ui/sidebar';
+import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export function AppSidebarFooter() {
   const { user } = useUser();
+  const router = useRouter();
   const { isMobile } = useSidebar();
+
+  const { mutateAsync: execLogout, isPending } = useMutation({
+    mutationFn: $logout,
+    onSuccess() {
+      router.push('/');
+    },
+  });
 
   return (
     <SidebarMenu>
@@ -88,7 +99,10 @@ export function AppSidebarFooter() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => execLogout({})}
+              disabled={isPending}
+            >
               <LogOut />
               Log out
             </DropdownMenuItem>
