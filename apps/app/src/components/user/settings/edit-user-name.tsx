@@ -10,8 +10,6 @@ import {
 } from '@hexa/ui/card';
 import { Form } from '@hexa/ui/form';
 
-import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
-
 import { NameField } from '@/components/form/name-field';
 import { useUser } from '@/hooks/use-user';
 import { $updateUserName } from '@/lib/api';
@@ -76,10 +74,10 @@ export function EditUserName() {
       >
         <Card x-chunk="dashboard-04-chunk-1">
           <CardHeader>
-            <CardTitle>Name</CardTitle>
+            <CardTitle>User name</CardTitle>
             <CardDescription>
-              This will be your name on&nbsp;
-              {NEXT_PUBLIC_APP_NAME} seen by your team.
+              This is your public display name. It can be your real name or a
+              pseudonym.
             </CardDescription>
           </CardHeader>
           <CardContent>
