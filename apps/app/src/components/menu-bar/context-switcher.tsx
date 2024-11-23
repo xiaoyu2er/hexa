@@ -1,7 +1,8 @@
 'use client';
-
-import { useSession } from '@/components/providers/session-provider';
+import { CreateProjectModal } from '@/components/project/create-project-modal';
+import { ProjectAvatar } from '@/components/project/project-avatar';
 import { UserAvatar } from '@/components/user/settings/user-avatar';
+import { useUser } from '@/hooks/use-user';
 import { $updateUserDefaultProject } from '@/lib/api';
 import { queryProjectsOptions } from '@/lib/queries/workspace';
 import type { SelectProjectType } from '@/server/schema/project';
@@ -21,13 +22,11 @@ import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useBoolean } from 'usehooks-ts';
-import { CreateProjectModal } from '../project/create-project-modal';
-import { ProjectAvatar } from '../project/project-avatar';
 
 export function ContextSwitcher() {
   const { slug } = useParams() as { slug: string };
-  const { user } = useSession();
-  // const { project } = useProject();
+  const { user } = useUser();
+
   const {
     data: workspaces = [],
     refetch,

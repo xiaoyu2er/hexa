@@ -13,7 +13,7 @@ import { Form } from '@hexa/ui/form';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 
 import { NameField } from '@/components/form/name-field';
-import { useSession } from '@/components/providers/session-provider';
+import { useUser } from '@/hooks/use-user';
 import { $updateUserName } from '@/lib/api';
 import { setFormError } from '@/lib/form';
 import {} from '@/server/schema/project';
@@ -29,7 +29,7 @@ import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
 export function EditUserName() {
-  const { user, refetch } = useSession();
+  const { user, refetch } = useUser();
   const form = useForm<UpdateUserNameType>({
     resolver: zodResolver(UpdateUserNameSchema),
     defaultValues: useMemo(() => {

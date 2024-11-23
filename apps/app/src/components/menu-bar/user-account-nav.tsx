@@ -1,7 +1,6 @@
 'use client';
-
-import { useSession } from '@/components/providers/session-provider';
 import { UserAvatar } from '@/components/user/settings/user-avatar';
+import { useUser } from '@/hooks/use-user';
 import { $logout } from '@/lib/api';
 import { Button } from '@hexa/ui/button';
 import {
@@ -18,7 +17,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 export function UserAccountNav() {
-  const { user } = useSession();
+  const { user } = useUser();
   const router = useRouter();
   const { mutateAsync: execLogout, isPending } = useMutation({
     mutationFn: $logout,

@@ -1,7 +1,7 @@
 'use client';
 
 import { ReadOnly } from '@/components/form/read-only';
-import { useSession } from '@/components/providers/session-provider';
+import { useUser } from '@/hooks/use-user';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import {
   Card,
@@ -12,7 +12,7 @@ import {
 } from '@hexa/ui/card';
 
 export function UserId() {
-  const { user } = useSession();
+  const { user } = useUser();
 
   return (
     <Card>

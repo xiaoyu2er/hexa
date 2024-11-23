@@ -3,7 +3,9 @@
   "aliases": {
     "components": "@hexa",
     "ui": "@hexa/ui",
-    "utils": "@hexa/utils"
+    "utils": "@hexa/utils",
+    "hooks": "@hexa/ui/hooks",
+    "lib": "@hexa"
   },
   "rsc": true,
   "style": "new-york",

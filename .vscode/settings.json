@@ -27,5 +27,8 @@
   "javascript.preferences.importModuleSpecifier": "non-relative",
   "[github-actions-workflow]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[less]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

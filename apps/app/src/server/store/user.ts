@@ -7,12 +7,37 @@ import type { InsertUserType } from '@/server/schema/user';
 import { emailTable } from '@/server/table/email';
 import { userTable } from '@/server/table/user';
 import { and, eq, ne } from 'drizzle-orm';
+import { pick } from 'lodash';
 
 export async function getUser(db: DbType, uid: string) {
   const user = await db.query.userTable.findFirst({
     where: eq(userTable.id, uid),
   });
+  if (!user) {
+    throw new ApiError('NOT_FOUND', 'User not found');
+  }
   return user;
+}
+
+export async function getUserForClient(db: DbType, uid: string) {
+  const user = await db.query.userTable.findFirst({
+    where: eq(userTable.id, uid),
+    with: {
+      emails: {
+        where: eq(emailTable.primary, true),
+        limit: 1,
+      },
+    },
+  });
+  if (!user) {
+    throw new ApiError('NOT_FOUND', 'User not found');
+  }
+
+  return {
+    ...pick(user, ['id', 'name', 'avatarUrl']),
+    hasPassword: !!user?.password,
+    email: user.emails?.[0]?.email,
+  };
 }
 
 export async function getUserWithProject(db: DbType, uid: string) {

@@ -1,11 +1,16 @@
 const pkg = require('../package.json');
 const fs = require('node:fs');
 const path = require('node:path');
-const uiFiles = fs.readdirSync(path.resolve(__dirname, '../src/ui'));
+const uiFiles = fs.readdirSync(path.resolve(__dirname, '../src/ui'), {
+  withFileTypes: true,
+});
 
 const uiExports = uiFiles.reduce((acc, file) => {
-  const name = file.replace(/\.tsx$/, '');
-  acc[`./${name}`] = `./src/ui/${file}`;
+  if (!file.isFile()) {
+    return acc;
+  }
+  const name = file.name.replace(/\.tsx$/, '');
+  acc[`./${name}`] = `./src/ui/${file.name}`;
   return acc;
 }, {});
 
@@ -27,7 +32,7 @@ const otherExports = otherFiles.reduce((acc, file) => {
 
 pkg.exports = {
   './globals.css': './src/globals.css',
-  './hooks/*': './src/hooks/*.tsx',
+  './hooks/*': './src/ui/hooks/*.tsx',
   './icons': './src/icons/index.tsx',
   './font': './src/font/font.tsx',
   ...uiExports,

@@ -1,6 +1,6 @@
 'use client';
 import { PasswordField } from '@/components/form/password-field';
-import { useSession } from '@/components/providers/session-provider';
+import { useUser } from '@/hooks/use-user';
 import { $updateUserPassword } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import { setFormError } from '@/lib/form';
@@ -25,7 +25,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 export function EditPassword() {
-  const { user, refetch } = useSession();
+  const { user, refetch } = useUser();
   const [showResetPassword, setShowResetPassword] = useState(false);
   const form = useForm<EditPasswordType>({
     resolver: zodResolver(EditPasswordSchema),

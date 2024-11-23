@@ -1,13 +1,9 @@
 'use client';
 
-import { getAvatarFallbackUrl } from '@/lib/user';
-import { FileUpload } from '@hexa/ui/file-upload';
-import { toast } from '@hexa/ui/sonner';
-import { useEffect, useState } from 'react';
-
-import { useSession } from '@/components/providers/session-provider';
+import { useUser } from '@/hooks/use-user';
 import { $updateUserAvatar } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
+import { getAvatarFallbackUrl } from '@/lib/user';
 import {
   UpdateAvatarSchema,
   type UpdateAvatarType,
@@ -21,6 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@hexa/ui/card';
+import { FileUpload } from '@hexa/ui/file-upload';
 import {
   Form,
   FormControl,
@@ -28,12 +25,14 @@ import {
   FormItem,
   FormMessage,
 } from '@hexa/ui/form';
+import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function UploadAvatar() {
-  const { user, refetch } = useSession();
+  const { user, refetch } = useUser();
 
   const form = useForm<UpdateAvatarType>({
     resolver: zodResolver(UpdateAvatarSchema),

@@ -8,7 +8,7 @@ import { Button } from '@hexa/ui/button';
 import { Form } from '@hexa/ui/form';
 
 import { EmailField } from '@/components/form/email-field';
-import { useTurnstile } from '@/components/hooks/use-turnstile';
+import { useTurnstile } from '@/hooks/use-turnstile';
 import {
   $loginPasscodeSendPasscode,
   type InferApiResponseType,

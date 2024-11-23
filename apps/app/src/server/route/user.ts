@@ -39,6 +39,7 @@ import {
   getEmail,
   getUser,
   getUserEmails,
+  getUserForClient,
   removeUserEmail,
   updateUserAvatar,
   updateUserEmailVerified,
@@ -52,8 +53,8 @@ import { Hono } from 'hono';
 const user = new Hono<Context>()
   .use('/user/*', assertAuthMiddleware)
   // Get user info
-  .get('/user/info', (c) => {
-    const { user } = c.var;
+  .get('/user/info', async (c) => {
+    const user = await getUserForClient(c.var.db, c.var.userId);
     return c.json(user);
   })
   // Get user email
