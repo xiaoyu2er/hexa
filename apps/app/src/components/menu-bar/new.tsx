@@ -4,7 +4,7 @@ import { useModal } from '@/components/modal';
 import { CreateOrgModal } from '@/components/orgs/create-org-modal';
 import { CreateProjectModal } from '@/components/project/create-project-modal';
 import { queryOrgsOptions } from '@/lib/queries/orgs';
-import { invalidateProjectsQuery } from '@/lib/queries/workspace';
+import { invalidateProjectsQuery } from '@/lib/queries/project';
 import { Button } from '@hexa/ui/button';
 import {
   DropdownMenu,

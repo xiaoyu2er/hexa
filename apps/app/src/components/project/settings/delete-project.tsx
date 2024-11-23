@@ -11,7 +11,7 @@ import {
 import { $deleteProject } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import { setFormError } from '@/lib/form';
-import { invalidateProjectsQuery } from '@/lib/queries/workspace';
+import { invalidateProjectsQuery } from '@/lib/queries/project';
 import {
   DELETE_PROJECT_CONFIRMATION,
   DeleteProjectSchema,

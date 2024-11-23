@@ -11,7 +11,7 @@ import {} from '@hexa/ui/form';
 
 import { ReadOnly } from '@/components/form/read-only';
 import { EditProjectSlugModal } from '@/components/project/settings/edit-project-slug-modal';
-import { useProject } from '@/components/providers/project-provicer';
+import { useProject } from '@/hooks/use-project';
 import type { SelectProjectType } from '@/server/schema/project';
 import { useModal } from '@ebay/nice-modal-react';
 import { Button } from '@hexa/ui/button';

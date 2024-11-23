@@ -1,14 +1,8 @@
 import { SessionProvider } from '@/components/providers/session-provider';
 import { AppSidebar } from '@/components/sidebar/app-sidebar';
+import { AppSidebarBreadcrumb } from '@/components/sidebar/app-sidebar-breadcrumb';
 import { getSession } from '@/lib/session';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@hexa/ui/breadcrumb';
+import {} from '@hexa/ui/breadcrumb';
 import { Separator } from '@hexa/ui/separator';
 import {
   SidebarInset,
@@ -39,22 +33,10 @@ export default async function DashLayout({
       >
         <AppSidebar />
         <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 px-4">
+          <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center gap-2 bg-background px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Building Your Application
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
+            <AppSidebarBreadcrumb />
           </header>
           {/* fullscreen fallback */}
           {/* <div className="flex flex-1 flex-col gap-4 p-4 pt-0">

@@ -1,14 +1,10 @@
 'use client';
 
-import {
-  invalidateProject,
-  queryProjectOptions,
-} from '@/lib/queries/workspace';
+import {} from '@/lib/queries/project';
 import type { SelectProjectType } from '@/server/schema/project';
-import { useQuery } from '@tanstack/react-query';
-import { type FC, type ReactNode, createContext, useContext } from 'react';
+import { type FC, type ReactNode, createContext } from 'react';
 
-const ProjectContext = createContext<SelectProjectType | null>(null);
+export const ProjectContext = createContext<SelectProjectType | null>(null);
 
 export const ProjectProvider: FC<{
   children: ReactNode;
@@ -19,20 +15,4 @@ export const ProjectProvider: FC<{
       {children}
     </ProjectContext.Provider>
   );
-};
-
-export const useProject = () => {
-  const project = useContext(ProjectContext);
-  if (!project) {
-    throw new Error('Project context not found');
-  }
-  const { data } = useQuery({
-    ...queryProjectOptions(project.id),
-    initialData: project,
-  });
-
-  return {
-    project: data,
-    invalidate: () => invalidateProject(project.id),
-  };
 };

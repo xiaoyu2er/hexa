@@ -1,6 +1,6 @@
 'use client';
 
-import { queryProjectsOptions } from '@/lib/queries/workspace';
+import { queryProjectsOptions } from '@/lib/queries/project';
 import { CardSkeleton } from '@hexa/ui/card-skeleton';
 import { useQuery } from '@tanstack/react-query';
 import NoProject from './no-project';

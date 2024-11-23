@@ -4,7 +4,7 @@ import { ProjectAvatar } from '@/components/project/project-avatar';
 import { UserAvatar } from '@/components/user/settings/user-avatar';
 import { useUser } from '@/hooks/use-user';
 import { $updateUserDefaultProject } from '@/lib/api';
-import { queryProjectsOptions } from '@/lib/queries/workspace';
+import { queryProjectsOptions } from '@/lib/queries/project';
 import type { SelectProjectType } from '@/server/schema/project';
 import { useModal } from '@ebay/nice-modal-react';
 import { Badge } from '@hexa/ui/badge';

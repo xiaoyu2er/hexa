@@ -1,6 +1,6 @@
 'use client';
 
-import { invalidateProjectsQuery } from '@/lib/queries/workspace';
+import { invalidateProjectsQuery } from '@/lib/queries/project';
 import { useModal } from '@ebay/nice-modal-react';
 import { Button } from '@hexa/ui/button';
 import { CreateProjectModal } from './create-project-modal';

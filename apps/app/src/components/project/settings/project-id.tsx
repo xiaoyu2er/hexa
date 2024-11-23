@@ -1,7 +1,7 @@
 'use client';
 
 import { ReadOnly } from '@/components/form/read-only';
-import { useProject } from '@/components/providers/project-provicer';
+import { useProject } from '@/hooks/use-project';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import {
   Card,

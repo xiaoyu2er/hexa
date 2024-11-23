@@ -1,5 +1,5 @@
 'use client';
-import { useProject } from '@/components/providers/project-provicer';
+import { useProject } from '@/hooks/use-project';
 
 export default function ProjectPage() {
   const { project } = useProject();
