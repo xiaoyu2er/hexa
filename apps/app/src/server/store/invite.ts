@@ -1,6 +1,6 @@
 import { INVITE_EXPIRE_TIME_SPAN } from '@/lib/const';
 import { ApiError } from '@/lib/error/error';
-import type { DbType } from '@/lib/route-types';
+import type { DbType } from '@/server/route/route-types';
 import type { InsertInviteType, InviteStatus } from '@/server/schema/invite';
 import type { OrgMemberRole } from '@/server/schema/org-memeber';
 import { inviteTable } from '@/server/table/invite';

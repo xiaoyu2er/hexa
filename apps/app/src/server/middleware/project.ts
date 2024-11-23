@@ -1,5 +1,5 @@
 import { ApiError } from '@/lib/error/error';
-import type { ValidTarget } from '@/lib/route-types';
+import type { ValidTarget } from '@/server/route/route-types';
 import { getProjectWithRole } from '@/server/store/project';
 import { createMiddleware } from 'hono/factory';
 

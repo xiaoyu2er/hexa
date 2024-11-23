@@ -1,7 +1,7 @@
 import { RESET_PASSWORD_EXPIRE_TIME_SPAN } from '@/lib/const';
 import { generateCode, generateId } from '@/lib/crypto';
 import { ApiError } from '@/lib/error/error';
-import type { DbType } from '@/lib/route-types';
+import type { DbType } from '@/server/route/route-types';
 import type {
   AddPasscodeType,
   QueryPasscodeByTokenType,

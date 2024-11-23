@@ -1,4 +1,4 @@
-import type { DbType } from '@/lib/route-types';
+import type { DbType } from '@/server/route/route-types';
 import type {
   GitHubUser,
   GoogleUser,

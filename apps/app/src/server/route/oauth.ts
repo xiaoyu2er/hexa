@@ -13,7 +13,6 @@ import {} from '@/server/store/oauth';
 
 import { IS_PRODUCTION, PUBLIC_URL } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
-import type { Context } from '@/lib/route-types';
 import {
   getPasscodeByTokenMiddleware,
   getPasscodeMiddleware,
@@ -21,6 +20,7 @@ import {
 } from '@/server/middleware/passcode';
 import { getSessionMiddleware } from '@/server/middleware/session';
 import { turnstileMiddleware } from '@/server/middleware/turnstile';
+import type { Context } from '@/server/route/route-types';
 import {
   ResendPasscodeSchema,
   VerifyPassTokenSchema,

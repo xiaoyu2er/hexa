@@ -14,7 +14,7 @@ import signup from '@/server/route/signup';
 import user from '@/server/route/user';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import type { Context } from './route-types';
+import type { Context } from '../server/route/route-types';
 
 export const app = new Hono<Context>()
   .basePath('/api')

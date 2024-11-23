@@ -1,9 +1,9 @@
 import { generateId } from '@/lib/crypto';
 import { ApiError } from '@/lib/error/error';
-import type { Context } from '@/lib/route-types';
 import { isStored, storage } from '@/lib/storage';
 import authProject from '@/server/middleware/project';
 import { assertAuthMiddleware } from '@/server/middleware/user';
+import type { Context } from '@/server/route/route-types';
 import {
   DeleteProjectSchema,
   InsertProjectSchema,

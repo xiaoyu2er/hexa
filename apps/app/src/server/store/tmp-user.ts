@@ -3,7 +3,7 @@ import { ApiError } from '@/lib/error/error';
 import type { InsertTmpUser } from '@/server/schema/tmp-user';
 import { tmpUserTable } from '@/server/table/tmp-user';
 import { eq } from 'drizzle-orm';
-import type { DbType } from '../../lib/route-types';
+import type { DbType } from '../route/route-types';
 
 export async function addTmpUser(
   db: DbType,

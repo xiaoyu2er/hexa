@@ -152,5 +152,6 @@ export const $updateProjectAvatar = h(
 // ==================== Org ====================
 export const $getOrgs = h(api.org.all.$get);
 export const $createOrg = h(api.org.$post);
-export const $deleteOrg = h(api.org[':orgId'].$delete);
+export const $deleteOrg = h(api.org['delete-org'].$delete);
 export const $getOrgByName = h(api.org[':name'].$get);
+export const $updateOrgName = h(api.org['update-org-name'].$put);

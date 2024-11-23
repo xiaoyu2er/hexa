@@ -9,7 +9,6 @@ import {
 import { generateId, isHashValid } from '@/lib/crypto';
 import { PUBLIC_URL } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
-import type { Context } from '@/lib/route-types';
 import { invalidateUserSessions } from '@/lib/session';
 import { isStored, storage } from '@/lib/storage';
 import {
@@ -20,6 +19,7 @@ import {
 import authProject from '@/server/middleware/project';
 import { turnstileMiddleware } from '@/server/middleware/turnstile';
 import { assertAuthMiddleware } from '@/server/middleware/user';
+import type { Context } from '@/server/route/route-types';
 import {
   ResendPasscodeSchema,
   VerifyPassTokenSchema,

@@ -6,7 +6,7 @@ import type {
 import { addPasscode, updatePasscode } from '@/server/store/passcode';
 
 import { sendVerifyCodeAndUrlEmail } from '@/lib/emails';
-import type { DbType } from '@/lib/route-types';
+import type { DbType } from '@/server/route/route-types';
 
 export async function addPasscodeAndSendEmail(
   db: DbType,

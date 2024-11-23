@@ -10,10 +10,10 @@ import {
 } from '@hexa/ui/breadcrumb';
 import { useParams, usePathname } from 'next/navigation';
 import { Fragment } from 'react';
-
-export function AppSidebarBreadcrumb() {
-  const pathname = usePathname();
-  const { slug } = useParams() as { slug: string };
+export const getSidebarBreadcrumb = ({
+  slug,
+  pathname,
+}: { slug: string; pathname: string }) => {
   const items: Record<string, { name: string; link?: string }[]> = {
     '/user/profile': [
       {
@@ -58,21 +58,47 @@ export function AppSidebarBreadcrumb() {
         name: 'Settings',
       },
     ],
+    [`/project/${slug}/org`]: [
+      {
+        name: 'Organization',
+      },
+      {
+        name: 'Settings',
+      },
+    ],
+    [`/project/${slug}/org/members`]: [
+      {
+        name: 'Organization',
+      },
+      {
+        name: 'Members',
+      },
+    ],
   };
-  const dreadcrumbItems = items[pathname];
-  if (!dreadcrumbItems) {
+  const breadcrumbs = items[pathname];
+  if (!breadcrumbs) {
+    return null;
+  }
+  return breadcrumbs;
+};
+
+export function AppSidebarBreadcrumb() {
+  const pathname = usePathname();
+  const { slug } = useParams() as { slug: string };
+  const breadcrumbs = getSidebarBreadcrumb({ slug, pathname });
+  if (!breadcrumbs) {
     return null;
   }
 
   return (
     <Breadcrumb>
       <BreadcrumbList>
-        {dreadcrumbItems.map((item, index) => {
+        {breadcrumbs.map((item, index) => {
           return (
             <Fragment key={item.name}>
               <BreadcrumbItem
                 className={
-                  index === dreadcrumbItems.length - 1 ? '' : 'hidden md:block'
+                  index === breadcrumbs.length - 1 ? '' : 'hidden md:block'
                 }
               >
                 {item.link ? (
@@ -81,7 +107,7 @@ export function AppSidebarBreadcrumb() {
                   <BreadcrumbPage>{item.name}</BreadcrumbPage>
                 )}
               </BreadcrumbItem>
-              {index !== dreadcrumbItems.length - 1 && (
+              {index !== breadcrumbs.length - 1 && (
                 <BreadcrumbSeparator className="hidden md:block" />
               )}
             </Fragment>

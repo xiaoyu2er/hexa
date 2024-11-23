@@ -1,6 +1,5 @@
 import { PUBLIC_URL } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
-import type { Context } from '@/lib/route-types';
 import {} from '@/lib/session';
 import { creatUserFromTmpUserMiddleware } from '@/server/middleware/oauth';
 import {
@@ -9,6 +8,7 @@ import {
   resendPasscodeMiddleware,
 } from '@/server/middleware/passcode';
 import { turnstileMiddleware } from '@/server/middleware/turnstile';
+import type { Context } from '@/server/route/route-types';
 import { OauthSignupSchema } from '@/server/schema/oauth';
 import {
   ResendPasscodeSchema,

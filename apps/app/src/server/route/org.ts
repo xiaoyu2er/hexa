@@ -1,8 +1,13 @@
 import { ApiError } from '@/lib/error/error';
-import type { Context } from '@/lib/route-types';
 import { generateProjectSlug } from '@/lib/slug';
+import authOrg from '@/server/middleware/org';
 import { assertAuthMiddleware } from '@/server/middleware/user';
-import { InsertOrgSchema } from '@/server/schema/org';
+import type { Context } from '@/server/route/route-types';
+import {
+  DeleteOrgSchema,
+  InsertOrgSchema,
+  UpdateOrgNameSchema,
+} from '@/server/schema/org';
 import {
   assertUserHasOrgRole,
   createOrg,
@@ -11,6 +16,7 @@ import {
   getUserOrgs,
   leaveOrg,
   updateOrg,
+  updateOrgName,
 } from '@/server/store/org';
 import { createProject, getProjectWithRole } from '@/server/store/project';
 import { zValidator } from '@hono/zod-validator';
@@ -65,6 +71,29 @@ const org = new Hono<Context>()
     return c.json(projectWithRole);
   })
 
+  // Update workspace name
+  .put(
+    '/org/update-org-name',
+    zValidator('json', UpdateOrgNameSchema),
+    authOrg('json'),
+    async (c) => {
+      const { db, userId, orgId } = c.var;
+      const { name } = c.req.valid('json');
+      const org = await updateOrgName(db, {
+        orgId,
+        name,
+        userId,
+      });
+      if (!org) {
+        throw new ApiError(
+          'INTERNAL_SERVER_ERROR',
+          'Failed to update workspace slug'
+        );
+      }
+      return c.json(org);
+    }
+  )
+
   // Update organization
   .put('/org/:orgId', zValidator('json', InsertOrgSchema), async (c) => {
     const { db, userId } = c.var;
@@ -83,20 +112,25 @@ const org = new Hono<Context>()
   })
 
   // Delete organization
-  .delete('/org/:orgId', async (c) => {
-    const { db, userId } = c.var;
-    const { orgId } = c.req.param();
+  .delete(
+    '/org/delete-org',
+    zValidator('json', DeleteOrgSchema),
+    authOrg('json'),
+    async (c) => {
+      const { db, userId } = c.var;
+      const { orgId } = c.req.valid('json');
 
-    // Verify user is owner
-    await assertUserHasOrgRole(db, {
-      orgId,
-      userId,
-      requiredRole: ['OWNER'],
-    });
+      // Verify user is owner
+      await assertUserHasOrgRole(db, {
+        orgId,
+        userId,
+        requiredRole: ['OWNER'],
+      });
 
-    await deleteOrg(db, orgId);
-    return c.json({});
-  })
+      await deleteOrg(db, orgId);
+      return c.json({});
+    }
+  )
 
   // // Add member to organization
   // .post('/org/:orgId/members', async (c) => {

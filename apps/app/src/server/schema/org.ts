@@ -2,6 +2,7 @@ import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 
 import { orgTable } from '@/server/table/org';
 
+import { NameSchema } from '@/server/schema/common';
 import type { OrgMemberRole } from '@/server/schema/org-memeber';
 import { z } from 'zod';
 
@@ -17,3 +18,29 @@ export type SelectUserOrgType = SelectOrgType & {
 export const zOrgIdString = z
   .string({ message: 'Please select an organization' })
   .min(1, 'Please select an organization');
+
+export const OrgIdSchema = z.object({
+  orgId: zOrgIdString,
+});
+
+// Update Org Name
+export const UpdateOrgNameSchema = z
+  .object({})
+  .merge(OrgIdSchema)
+  .merge(NameSchema);
+
+export type UpdateOrgNameType = z.infer<typeof UpdateOrgNameSchema>;
+
+// Delete Org
+export const DELETE_ORG_CONFIRMATION = 'Confirm delete organization';
+export const DeleteOrgSchema = z
+  .object({
+    confirm: z
+      .string()
+      .refine(
+        (v) => v === DELETE_ORG_CONFIRMATION,
+        `Please type '${DELETE_ORG_CONFIRMATION}' to delete your organization.`
+      ),
+  })
+  .merge(OrgIdSchema);
+export type DeleteOrgType = z.infer<typeof DeleteOrgSchema>;

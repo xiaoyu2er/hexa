@@ -1,5 +1,5 @@
 import { ApiError } from '@/lib/error/error';
-import type { DbType } from '@/lib/route-types';
+import type { DbType } from '@/server/route/route-types';
 import type { InsertOrgType, SelectUserOrgType } from '@/server/schema/org';
 import type {
   InsertOrgMemberType,
@@ -408,11 +408,11 @@ export const getOrgByName = async (db: DbType, name: string) => {
 // Get org by name and check if userId is a member
 export const getOrgWithUserRole = async (
   db: DbType,
-  name: string,
+  orgId: string,
   userId: string
 ) => {
   const org = await db.query.orgTable.findFirst({
-    where: eq(orgTable.name, name),
+    where: eq(orgTable.id, orgId),
     with: {
       members: {
         where: eq(orgMemberTable.userId, userId),
@@ -428,4 +428,25 @@ export const getOrgWithUserRole = async (
     ...org,
     role: org.members[0]?.role ?? null,
   };
+};
+
+// Update org name
+export const updateOrgName = async (
+  db: DbType,
+  { orgId, userId, name }: { orgId: string; userId: string; name: string }
+) => {
+  // Check if user is owner
+  await assertUserHasOrgRole(db, {
+    orgId,
+    userId,
+    requiredRole: ['OWNER', 'ADMIN'],
+  });
+
+  const [updatedOrg] = await db
+    .update(orgTable)
+    .set({ name })
+    .where(eq(orgTable.id, orgId))
+    .returning();
+
+  return updatedOrg;
 };
