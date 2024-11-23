@@ -1,16 +1,13 @@
 import { SessionProvider } from '@/components/providers/session-provider';
+import { SidebarProvider } from '@/components/providers/sidebar-provider';
 import { AppSidebar } from '@/components/sidebar/app-sidebar';
 import { AppSidebarBreadcrumb } from '@/components/sidebar/app-sidebar-breadcrumb';
 import { getSession } from '@/lib/session';
 import {} from '@hexa/ui/breadcrumb';
 import { Separator } from '@hexa/ui/separator';
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from '@hexa/ui/sidebar';
+import { SidebarInset, SidebarTrigger } from '@hexa/ui/sidebar';
 import { redirect } from 'next/navigation';
-import type { CSSProperties, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 export default async function DashLayout({
   children,
@@ -18,19 +15,14 @@ export default async function DashLayout({
   children: ReactNode;
 }) {
   const { session, user } = await getSession();
+
   if (!session) {
     return redirect('/login');
   }
 
   return (
     <SessionProvider user={user} session={session}>
-      <SidebarProvider
-        style={
-          {
-            '--sidebar-width': '16rem',
-          } as CSSProperties
-        }
-      >
+      <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
           <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center gap-2 bg-background px-4">
