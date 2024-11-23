@@ -1,7 +1,7 @@
 import { getHash } from '@/lib/crypto';
 import { IS_DEVELOPMENT } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
-import type { DbType } from '@/lib/route-types';
+import type { DbType } from '@/server/route/route-types';
 import type { InsertEmailType } from '@/server/schema/email';
 import type { InsertUserType } from '@/server/schema/user';
 import { emailTable } from '@/server/table/email';

@@ -1,5 +1,5 @@
 import { ApiError } from '@/lib/error/error';
-import type { ValidTarget } from '@/lib/route-types';
+import type { ValidTarget } from '@/server/route/route-types';
 import type { PasscodeType } from '@/server/schema/passcode';
 import { resendPasscodeAndSendEmail } from '@/server/service/passcode';
 import { findPasscodeByToken, verifyPasscode } from '@/server/store/passcode';

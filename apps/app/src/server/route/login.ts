@@ -1,7 +1,6 @@
 import { isHashValid } from '@/lib/crypto';
 import { PUBLIC_URL } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
-import type { Context } from '@/lib/route-types';
 import { setSession } from '@/lib/session';
 import { verifyLoginPasscodeMiddleware } from '@/server/middleware/login';
 import {
@@ -10,6 +9,7 @@ import {
   resendPasscodeMiddleware,
 } from '@/server/middleware/passcode';
 import { turnstileMiddleware } from '@/server/middleware/turnstile';
+import type { Context } from '@/server/route/route-types';
 import { LoginPasswordSchema } from '@/server/schema/login';
 import {
   ResendPasscodeSchema,

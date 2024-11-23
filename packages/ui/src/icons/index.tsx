@@ -19,6 +19,9 @@ export { StarIcon } from '@heroicons/react/24/solid';
 export type { LucideIcon } from 'lucide-react';
 // https://lucide.dev/icons/
 export {
+  Cog,
+  Users,
+  User,
   BadgeCheck,
   Bell,
   ChevronsUpDown,
@@ -71,6 +74,7 @@ export {
   SettingsIcon,
   BookMarkedIcon,
   UserRoundIcon,
+  ArrowLeft,
 } from 'lucide-react';
 
 // https://www.radix-ui.com/icons

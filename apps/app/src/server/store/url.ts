@@ -1,5 +1,5 @@
 import { ApiError } from '@/lib/error/error';
-import type { DbType } from '@/lib/route-types';
+import type { DbType } from '@/server/route/route-types';
 import type { InsertShortUrlType } from '@/server/schema/url';
 import { urlTable } from '@/server/table/url';
 import { and, eq, or, sql } from 'drizzle-orm';

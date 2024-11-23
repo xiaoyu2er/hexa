@@ -9,7 +9,7 @@ import {
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
   PUBLIC_URL,
 } from '@/lib/env';
-import type { Context } from '@/lib/route-types';
+import type { Context } from '@/server/route/route-types';
 import { Hono } from 'hono';
 
 const test = new Hono<Context>()

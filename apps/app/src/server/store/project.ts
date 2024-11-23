@@ -5,7 +5,7 @@ import { eq, inArray } from 'drizzle-orm';
 import type { InsertProjectType } from '@/server/schema/project';
 import { orgMemberTable } from '@/server/table/org-member';
 import { projectTable } from '@/server/table/project';
-import type { DbType } from '../../lib/route-types';
+import type { DbType } from '../route/route-types';
 
 // Helper function to check workspace permissions
 async function assertProjectPermission(

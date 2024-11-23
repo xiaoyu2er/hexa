@@ -1,6 +1,6 @@
 import { ApiError } from '@/lib/error/error';
-import type { Context } from '@/lib/route-types';
 import { turnstileMiddleware } from '@/server/middleware/turnstile';
+import type { Context } from '@/server/route/route-types';
 import { CheckEmailSchema } from '@/server/schema/user';
 import { getEmail } from '@/server/store/user';
 import { zValidator } from '@hono/zod-validator';

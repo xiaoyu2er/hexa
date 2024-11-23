@@ -8,20 +8,21 @@ import {
   CardTitle,
 } from '@hexa/ui/card';
 
-import { $deleteProject } from '@/lib/api';
+import { $deleteOrg } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import { setFormError } from '@/lib/form';
 import { invalidateProjectsQuery } from '@/lib/queries/project';
-import {
-  DELETE_PROJECT_CONFIRMATION,
-  DeleteProjectSchema,
-  type DeleteProjectType,
-} from '@/server/schema/project';
+import {} from '@/server/schema/project';
 import { Button } from '@hexa/ui/button';
 import { Form } from '@hexa/ui/form';
 
 import { ConfirmField } from '@/components/form/confirm-field';
 import { InputField } from '@/components/form/input-field';
+import {
+  DELETE_ORG_CONFIRMATION,
+  DeleteOrgSchema,
+  type DeleteOrgType,
+} from '@/server/schema/org';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import {
   Dialog,
@@ -38,10 +39,10 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
-export function DeleteProject() {
+export function DeleteOrg() {
   const router = useRouter();
-  const form = useForm<DeleteProjectType>({
-    resolver: zodResolver(DeleteProjectSchema),
+  const form = useForm<DeleteOrgType>({
+    resolver: zodResolver(DeleteOrgSchema),
     defaultValues: {},
   });
 
@@ -51,8 +52,8 @@ export function DeleteProject() {
     formState: { isSubmitting, errors },
   } = form;
 
-  const { mutateAsync: deleteProject } = useMutation({
-    mutationFn: $deleteProject,
+  const { mutateAsync: deleteOrg } = useMutation({
+    mutationFn: $deleteOrg,
     onError: (err) => {
       setFormError(err, setError);
     },
@@ -66,9 +67,9 @@ export function DeleteProject() {
   return (
     <Card className="border border-red-600">
       <CardHeader>
-        <CardTitle>Delete project</CardTitle>
+        <CardTitle>Delete organization</CardTitle>
         <CardDescription>
-          Permanently delete your {NEXT_PUBLIC_APP_NAME} project, and it's
+          Permanently delete your {NEXT_PUBLIC_APP_NAME} organization, and it's
           respective stats. This action cannot be undone - please proceed with
           caution.
         </CardDescription>
@@ -77,7 +78,7 @@ export function DeleteProject() {
         <Dialog>
           <DialogTrigger asChild>
             <Button type="submit" variant="destructive" className="shrink-0">
-              Delete project
+              Delete organization
             </Button>
           </DialogTrigger>
 
@@ -85,25 +86,25 @@ export function DeleteProject() {
             <Form {...form}>
               <form
                 onSubmit={handleSubmit((json) =>
-                  deleteProject({
+                  deleteOrg({
                     json,
                   })
                 )}
                 className="space-y-4"
               >
                 <DialogHeader>
-                  <DialogTitle>Delete Project</DialogTitle>
+                  <DialogTitle>Delete Organization</DialogTitle>
                   <DialogDescription>
-                    Permanently delete your {NEXT_PUBLIC_APP_NAME} project, and
-                    it's respective stats. This action cannot be undone - please
-                    proceed with caution.
+                    Permanently delete your {NEXT_PUBLIC_APP_NAME} organization,
+                    and it's respective stats. This action cannot be undone -
+                    please proceed with caution.
                   </DialogDescription>
                 </DialogHeader>
 
-                <InputField form={form} name="projectId" label="Project ID" />
+                <InputField form={form} name="orgId" label="Organization ID" />
                 <ConfirmField
                   form={form}
-                  confirmation={DELETE_PROJECT_CONFIRMATION}
+                  confirmation={DELETE_ORG_CONFIRMATION}
                 />
                 <FormErrorMessage message={errors.root?.message} />
 
@@ -114,7 +115,7 @@ export function DeleteProject() {
                     type="submit"
                     loading={isSubmitting}
                   >
-                    {DELETE_PROJECT_CONFIRMATION}
+                    {DELETE_ORG_CONFIRMATION}
                   </Button>
                 </DialogFooter>
               </form>

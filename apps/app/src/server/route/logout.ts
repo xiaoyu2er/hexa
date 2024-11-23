@@ -1,5 +1,5 @@
-import type { Context } from '@/lib/route-types';
 import { invalidateSession, setBlankSessionCookie } from '@/lib/session';
+import type { Context } from '@/server/route/route-types';
 
 import { assertAuthMiddleware } from '@/server/middleware/user';
 import { Hono } from 'hono';

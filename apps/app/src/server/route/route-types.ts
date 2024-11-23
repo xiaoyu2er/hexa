@@ -4,6 +4,7 @@ import type { Session, User } from 'lucia';
 
 import type { DbSchema } from '@/lib/db';
 import type { GitHubUser, GoogleUser } from '@/server/schema/oauth';
+import type { SelectOrgType } from '@/server/schema/org';
 import type { SelectedPasscodeType } from '@/server/schema/passcode';
 import type { SelectTmpUserType } from '@/server/schema/tmp-user';
 import type { ExecutionContext, ValidationTargets } from 'hono';
@@ -30,6 +31,8 @@ export type ContextVariables = {
   passcode: SelectedPasscodeType | undefined;
   providerUser: GoogleUser | GitHubUser | undefined;
   tmpUser: SelectTmpUserType | undefined;
+  org: SelectOrgType;
+  orgId: string;
 };
 
 export type Context = {
