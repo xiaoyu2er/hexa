@@ -10,7 +10,7 @@ export function UserAvatar({
   className,
 }: {
   user: User;
-  className: string;
+  className?: string;
 }) {
   return (
     <Avatar className={cn('h-6 w-6', className)}>

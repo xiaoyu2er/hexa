@@ -5,7 +5,7 @@
   "sideEffects": false,
   "exports": {
     "./globals.css": "./src/globals.css",
-    "./hooks/*": "./src/hooks/*.tsx",
+    "./hooks/*": "./src/ui/hooks/*.tsx",
     "./icons": "./src/icons/index.tsx",
     "./font": "./src/font/font.tsx",
     "./accordion": "./src/ui/accordion.tsx",
@@ -87,6 +87,7 @@
     "./sheet": "./src/ui/sheet.tsx",
     "./shimmer-button": "./src/ui/shimmer-button.tsx",
     "./shine-border": "./src/ui/shine-border.tsx",
+    "./sidebar": "./src/ui/sidebar.tsx",
     "./skeleton": "./src/ui/skeleton.tsx",
     "./slider": "./src/ui/slider.tsx",
     "./sonner": "./src/ui/sonner.tsx",

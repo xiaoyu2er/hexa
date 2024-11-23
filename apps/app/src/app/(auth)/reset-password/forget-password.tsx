@@ -1,6 +1,6 @@
 'use client';
 
-import { useTurnstile } from '@/components/hooks/use-turnstile';
+import { useTurnstile } from '@/hooks/use-turnstile';
 import { Button } from '@hexa/ui/button';
 import {
   Card,

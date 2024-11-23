@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "paths": {
-      "@hexa/ui": ["./src/ui"],
+      "@hexa/ui/hooks/*": ["./src/ui/hooks/*"],
       "@hexa/ui/*": ["./src/ui/*", "./src/*"],
-      "@hexa/ui/hooks/*": ["./src/hooks/*"]
+      "@hexa/ui": ["./src/ui"]
     }
   },
   "exclude": ["node_modules", "dist"],

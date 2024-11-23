@@ -19,6 +19,18 @@ export { StarIcon } from '@heroicons/react/24/solid';
 export type { LucideIcon } from 'lucide-react';
 // https://lucide.dev/icons/
 export {
+  BadgeCheck,
+  Bell,
+  ChevronsUpDown,
+  CreditCard,
+  Sparkles,
+  Plus,
+  ChevronUp,
+  User2,
+  ChevronDown,
+  Calendar,
+  Home,
+  Inbox,
   ExternalLinkIcon,
   Settings2,
   ChevronLeft,

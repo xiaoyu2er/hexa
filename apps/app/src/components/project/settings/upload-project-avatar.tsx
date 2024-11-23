@@ -6,10 +6,9 @@ import { toast } from '@hexa/ui/sonner';
 import { useEffect, useState } from 'react';
 
 import { useProject } from '@/components/providers/project-provicer';
-import { useSession } from '@/components/providers/session-provider';
+import { useUser } from '@/hooks/use-user';
 import { $updateProjectAvatar } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
-import {} from '@/lib/queries/workspace';
 import {
   UpdateProjectAvatarSchema,
   type UpdateProjectAvatarType,
@@ -36,7 +35,7 @@ import { useForm } from 'react-hook-form';
 
 export function UploadProjectAvatar() {
   const { project, invalidate } = useProject();
-  const { user } = useSession();
+  const { user } = useUser();
 
   const form = useForm<UpdateProjectAvatarType>({
     resolver: zodResolver(UpdateProjectAvatarSchema),

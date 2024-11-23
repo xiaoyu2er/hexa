@@ -4,7 +4,7 @@ import { TermsPrivacy } from '@/components/auth/terms-privacy';
 import { EmailField } from '@/components/form/email-field';
 import { NameField } from '@/components/form/name-field';
 import { OrgNameField } from '@/components/form/org-name-field';
-import { useTurnstile } from '@/components/hooks/use-turnstile';
+import { useTurnstile } from '@/hooks/use-turnstile';
 import { $oauthSignup, type InferApiResponseType } from '@/lib/api';
 import { setFormError } from '@/lib/form';
 import {

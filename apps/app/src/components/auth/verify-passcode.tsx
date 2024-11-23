@@ -1,6 +1,6 @@
 'use client';
 
-import { useTurnstile } from '@/components/hooks/use-turnstile';
+import { useTurnstile } from '@/hooks/use-turnstile';
 import { RESEND_VERIFY_CODE_TIME_SPAN, VERIFY_CODE_LENGTH } from '@/lib/const';
 import { setFormError } from '@/lib/form';
 import {

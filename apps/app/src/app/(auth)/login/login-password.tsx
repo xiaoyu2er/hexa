@@ -14,7 +14,7 @@ import {
 import { OauthButtons } from '@/components/auth/oauth-buttons';
 import { EmailField } from '@/components/form/email-field';
 import { PasswordField } from '@/components/form/password-field';
-import { useTurnstile } from '@/components/hooks/use-turnstile';
+import { useTurnstile } from '@/hooks/use-turnstile';
 import { $loginPassword } from '@/lib/api';
 import { setFormError } from '@/lib/form';
 import {
