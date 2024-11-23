@@ -9,6 +9,7 @@ import {
   BreadcrumbSeparator,
 } from '@hexa/ui/breadcrumb';
 import { useParams, usePathname } from 'next/navigation';
+import { Fragment } from 'react';
 
 export function AppSidebarBreadcrumb() {
   const pathname = usePathname();
@@ -68,12 +69,11 @@ export function AppSidebarBreadcrumb() {
       <BreadcrumbList>
         {dreadcrumbItems.map((item, index) => {
           return (
-            <>
+            <Fragment key={item.name}>
               <BreadcrumbItem
                 className={
                   index === dreadcrumbItems.length - 1 ? '' : 'hidden md:block'
                 }
-                key={index}
               >
                 {item.link ? (
                   <BreadcrumbLink href={item.link}>{item.name}</BreadcrumbLink>
@@ -84,7 +84,7 @@ export function AppSidebarBreadcrumb() {
               {index !== dreadcrumbItems.length - 1 && (
                 <BreadcrumbSeparator className="hidden md:block" />
               )}
-            </>
+            </Fragment>
           );
         })}
       </BreadcrumbList>
