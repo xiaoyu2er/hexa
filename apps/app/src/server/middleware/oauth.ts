@@ -134,7 +134,7 @@ export const creatUserFromTmpUserMiddleware = createMiddleware(async (c) => {
     throw new ApiError('BAD_REQUEST', 'Failed to create org');
   }
 
-  // create workspace
+  // create project
   const project = await createProject(db, {
     name: `${tmpUser.name}'s project`,
     slug: generateProjectSlug(),
@@ -149,7 +149,7 @@ export const creatUserFromTmpUserMiddleware = createMiddleware(async (c) => {
   if (!newUser) {
     throw new ApiError(
       'INTERNAL_SERVER_ERROR',
-      'Failed to set default workspace'
+      'Failed to set default project'
     );
   }
 

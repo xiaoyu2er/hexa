@@ -1,22 +1,13 @@
 'use client';
 
-import { Input } from '@hexa/ui/input';
-
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { toast } from '@hexa/ui/sonner';
 
 import { $deleteUserEmail } from '@/lib/api';
 import { setFormError } from '@/lib/form';
-import { EmailSchema, type EmailType } from '@/server/schema/common';
+import {} from '@/server/schema/common';
 import { Button } from '@hexa/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@hexa/ui/form';
+import { Form } from '@hexa/ui/form';
 
 import {
   Dialog,
@@ -28,6 +19,8 @@ import {
   DialogTitle,
 } from '@hexa/ui/responsive-dialog';
 
+import { InputField } from '@/components/form/input-field';
+import { DeleteEmailSchema, type DeleteEmailType } from '@/server/schema/email';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
@@ -39,8 +32,8 @@ export const DeleteUserEmailModal = NiceModal.create(
   ({ email }: DeleteUserEmailProps) => {
     const modal = useModal();
 
-    const form = useForm<EmailType>({
-      resolver: zodResolver(EmailSchema),
+    const form = useForm<DeleteEmailType>({
+      resolver: zodResolver(DeleteEmailSchema),
       defaultValues: {
         email: '',
       },
@@ -90,24 +83,15 @@ export const DeleteUserEmailModal = NiceModal.create(
               className="md:space-y-4"
             >
               <DialogBody className="space-y-2">
-                <FormField
-                  control={form.control}
+                <InputField
+                  form={form}
                   name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        To verify, type&nbsp;
-                        <span className="font-bold">{email}</span>&nbsp;below
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className={errors.email ? 'border-destructive' : ''}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label={
+                    <>
+                      To verify, type&nbsp;
+                      <span className="font-bold">{email}</span>&nbsp;below
+                    </>
+                  }
                 />
               </DialogBody>
 

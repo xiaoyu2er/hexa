@@ -16,7 +16,9 @@ export type UpdateUserAvatarType = UpdateAvatarType;
 // User
 export const InsertUserSchema = createInsertSchema(userTable);
 export type InsertUserType = z.infer<typeof InsertUserSchema>;
-export const SelectUserSchema = createSelectSchema(userTable);
+export const SelectUserSchema = createSelectSchema(userTable).omit({
+  password: true,
+});
 export type SelectUserType = Simplify<z.infer<typeof SelectUserSchema>>;
 
 export const UpdateUserNameSchema = z.object({}).merge(NameSchema);
@@ -33,10 +35,12 @@ export const DELETE_USER_CONFIRMATION = 'Confirm delete account';
 
 export const DeleteUserSchema = z.object({
   confirm: z
-    .string()
+    .string({
+      message: 'Please type confirmation text',
+    })
     .refine(
       (v) => v === DELETE_USER_CONFIRMATION,
-      `Please type '${DELETE_USER_CONFIRMATION}' to delete your account.`
+      'Please type confirmation text'
     ),
 });
 

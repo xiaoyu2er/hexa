@@ -27,11 +27,5 @@ export default async function ProjectLayout({
   if (!project || !project.role) {
     return notFound();
   }
-  return (
-    <ProjectProvider project={project}>
-      <div className="mx-auto grid w-full max-w-3xl gap-y-4 px-3 py-4 lg:px-10">
-        {children}
-      </div>
-    </ProjectProvider>
-  );
+  return <ProjectProvider project={project}>{children}</ProjectProvider>;
 }

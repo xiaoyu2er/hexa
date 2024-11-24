@@ -33,12 +33,12 @@ export function ContextSwitcher() {
   const { user } = useUser();
 
   const {
-    data: workspaces = [],
+    data: projects = [],
     refetch,
 
     isFetched,
   } = useQuery(
-    queryProjectsOptions // if not owner, get all accessible workspaces
+    queryProjectsOptions // if not owner, get all accessible projects
   );
 
   const {
@@ -48,7 +48,7 @@ export function ContextSwitcher() {
   } = useBoolean();
 
   const modal = useModal(CreateProjectModal);
-  const selectedProject = workspaces?.find(
+  const selectedProject = projects?.find(
     (project) => `${project.slug}` === slug
   );
   const router = useRouter();
@@ -60,14 +60,14 @@ export function ContextSwitcher() {
       router.push(`/project/${project.slug}`);
     },
     onError(err) {
-      toast.error(`Failed to switch workspace${err.message}`);
+      toast.error(`Failed to switch project${err.message}`);
     },
   });
 
-  const workspacesByOrg: Record<
+  const projectsByOrg: Record<
     string,
     { name: string; projects: SelectProjectType[] }
-  > = workspaces.reduce(
+  > = projects.reduce(
     (acc, project) => {
       const orgId = project.orgId;
       if (!acc[orgId]) {
@@ -147,14 +147,14 @@ export function ContextSwitcher() {
           <div className="px-4 py-2">
             <Input
               type="search"
-              placeholder="Search workspaces..."
+              placeholder="Search projects..."
               className="h-8"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 
-          {Object.entries(workspacesByOrg).map(([orgId, org]) => (
+          {Object.entries(projectsByOrg).map(([orgId, org]) => (
             <div key={orgId}>
               <div className="px-4 py-2">
                 <p className="font-medium text-muted-foreground text-sm">
@@ -204,7 +204,7 @@ export function ContextSwitcher() {
             }}
           >
             <PlusCircledIcon className="mr-2 h-6 w-6" />
-            <span className="grow text-left">Create workspace</span>
+            <span className="grow text-left">Create project</span>
           </Button>
         </PopoverContent>
       </Popover>

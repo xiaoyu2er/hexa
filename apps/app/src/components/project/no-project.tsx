@@ -10,7 +10,7 @@ export default function NoProject() {
       {/* see more here https://popsy.co/illustrations */}
       <Image
         src="/illustrations/freelancer.svg"
-        alt="No workspaces"
+        alt="No projects"
         width={400}
         height={400}
         className="pointer-events-none my-8 w-72"

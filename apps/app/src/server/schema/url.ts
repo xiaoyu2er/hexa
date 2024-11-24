@@ -17,7 +17,7 @@ export const SelectShortUrlSchema = createSelectSchema(urlTable, {
   destUrl: z.string().url(),
   slug: z.string(),
 }).extend({
-  workspace: z.object({
+  project: z.object({
     id: z.number(),
     name: z.string(),
     org: z.object({

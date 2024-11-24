@@ -18,8 +18,7 @@ import { type FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { OauthButtons } from '@/components/auth/oauth-buttons';
-import { EmailField } from '@/components/form/email-field';
-import { PasswordField } from '@/components/form/password-field';
+import { InputField } from '@/components/form/input-field';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import { $checkEmail } from '@/lib/api';
 import { setFormError } from '@/lib/form';
@@ -95,8 +94,13 @@ export const SignupEmailPassword: FC<SignupEmailPasswordProps> = ({
             method="POST"
             className="space-y-2"
           >
-            <EmailField form={form} />
-            <PasswordField form={form} />
+            <InputField form={form} name="email" label="Email" type="email" />
+            <InputField
+              form={form}
+              name="password"
+              label="Password"
+              type="password"
+            />
             <FormErrorMessage message={errors.root?.message} />
             {turnstile}
             <Button variant="link" size="sm" className="p-0" asChild>

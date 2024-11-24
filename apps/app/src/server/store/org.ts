@@ -3,7 +3,7 @@ import type { DbType } from '@/server/route/route-types';
 import type { InsertOrgType, SelectUserOrgType } from '@/server/schema/org';
 import type {
   InsertOrgMemberType,
-  OrgMemberRole,
+  OrgMemberRoleType,
 } from '@/server/schema/org-memeber';
 import { orgTable } from '@/server/table/org';
 import { orgMemberTable } from '@/server/table/org-member';
@@ -154,7 +154,7 @@ export const updateOrgMemberRole = async (
   }: {
     orgId: string;
     targetUserId: string;
-    newRole: Exclude<OrgMemberRole, 'OWNER'>; // Can't set someone as owner this way
+    newRole: Exclude<OrgMemberRoleType, 'OWNER'>; // Can't set someone as owner this way
     currentUserId: string;
   }
 ) => {
@@ -245,7 +245,7 @@ export const assertUserHasOrgRole = async (
   }: {
     orgId: string;
     userId: string;
-    requiredRole: OrgMemberRole[];
+    requiredRole: OrgMemberRoleType[];
   }
 ) => {
   const member = await db.query.orgMemberTable.findFirst({
@@ -275,7 +275,7 @@ export const addOrgMember = async (
   }: {
     orgId: string;
     targetUserId: string;
-    role: Exclude<OrgMemberRole, 'OWNER'>; // Can't add someone as owner directly
+    role: Exclude<OrgMemberRoleType, 'OWNER'>; // Can't add someone as owner directly
     currentUserId: string;
   }
 ) => {
@@ -394,15 +394,6 @@ export const deleteOrg = async (db: DbType, orgId: string) => {
   }
 
   return deletedOrg;
-};
-
-// Get org by name
-export const getOrgByName = async (db: DbType, name: string) => {
-  const org = await db.query.orgTable.findFirst({
-    where: eq(orgTable.name, name),
-  });
-
-  return org;
 };
 
 // Get org by name and check if userId is a member

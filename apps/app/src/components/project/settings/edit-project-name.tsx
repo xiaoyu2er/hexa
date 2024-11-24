@@ -10,12 +10,11 @@ import {
 } from '@hexa/ui/card';
 import { Form } from '@hexa/ui/form';
 
-import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
-import { invalidateProjectsQuery } from '@/lib/queries/project';
-
-import { NameField } from '@/components/form/name-field';
+import { InputField } from '@/components/form/input-field';
 import { useProject } from '@/hooks/use-project';
 import { $updateProjectName } from '@/lib/api';
+import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
+import { invalidateProjectsQuery } from '@/lib/queries/project';
 import {
   type UpdateProjectNameType,
   UpdateProjectrNameSchema,
@@ -59,7 +58,7 @@ export function EditProjectName() {
       setError('name', { message: err.message });
     },
     onSuccess: () => {
-      toast.success('The workspace name has been updated');
+      toast.success('The project name has been updated');
       reset();
       invalidate();
       invalidateProjectsQuery();
@@ -85,11 +84,7 @@ export function EditProjectName() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <NameField
-              form={form}
-              inputClassName="max-w-md"
-              showLabel={false}
-            />
+            <InputField form={form} name="name" className="max-w-md" />
           </CardContent>
           <CardFooter className="flex-row-reverse items-center justify-between border-t px-6 py-4">
             <Button

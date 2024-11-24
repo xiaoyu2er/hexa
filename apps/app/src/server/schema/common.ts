@@ -83,10 +83,10 @@ function isValidUsername(username: string) {
 // console.log(isValidUsername("in--valid")); // false
 // console.log(isValidUsername("in-valid-name")); // true
 
-const email = z.string().email('Please enter a valid email');
+export const zEmailString = z.string().email('Please enter a valid email');
 
 export const EmailSchema = z.object({
-  email,
+  email: zEmailString,
 });
 
 export type EmailType = z.infer<typeof EmailSchema>;
@@ -105,8 +105,3 @@ export const PasswordSchema = z.object({
 export type PasswordType = z.infer<typeof PasswordSchema>;
 
 export const EmptySchema = z.object({});
-
-export const ConfirmSchema = z.object({
-  confirm: z.string(),
-});
-export type ConfirmType = z.infer<typeof ConfirmSchema>;

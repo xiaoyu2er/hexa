@@ -8,8 +8,7 @@ import { type FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { TermsPrivacy } from '@/components/auth/terms-privacy';
-import { NameField } from '@/components/form/name-field';
-import { OrgNameField } from '@/components/form/org-name-field';
+import { InputField } from '@/components/form/input-field';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import { $signupSendPasscode, type InferApiResponseType } from '@/lib/api';
 import { setFormError } from '@/lib/form';
@@ -75,8 +74,18 @@ export const SignupUserInfo: FC<SignupProps> = ({
             method="POST"
             className="space-y-4"
           >
-            <NameField form={form} />
-            <OrgNameField form={form} />
+            <InputField
+              form={form}
+              name="name"
+              label="Your name"
+              placeholder="Jane Doe"
+            />
+            <InputField
+              form={form}
+              name="orgName"
+              label="Organization name"
+              placeholder="Acme Inc."
+            />
             <FormErrorMessage message={errors.root?.message} />
             {turnstile}
 

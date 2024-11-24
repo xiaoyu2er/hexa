@@ -1,7 +1,7 @@
 import { emailTable } from '@/server/table/email';
-import { inviteTable } from '@/server/table/invite';
 import { oauthAccountTable } from '@/server/table/oauth';
 import { orgTable } from '@/server/table/org';
+import { orgInviteTable } from '@/server/table/org-invite';
 import { orgMemberTable } from '@/server/table/org-member';
 import { passcodeTable } from '@/server/table/passcode';
 import { projectTable } from '@/server/table/project';
@@ -66,7 +66,7 @@ export const passcodeRelations = relations(passcodeTable, ({ one }) => ({
 export const orgRelations = relations(orgTable, ({ many }) => ({
   members: many(orgMemberTable),
   projects: many(projectTable),
-  invites: many(inviteTable),
+  invites: many(orgInviteTable),
 }));
 
 // Organization member relations
@@ -82,13 +82,13 @@ export const orgMemberRelations = relations(orgMemberTable, ({ one }) => ({
 }));
 
 // Invite relations
-export const inviteRelations = relations(inviteTable, ({ one }) => ({
+export const orgInviteRelations = relations(orgInviteTable, ({ one }) => ({
   inviter: one(userTable, {
-    fields: [inviteTable.inviterId],
+    fields: [orgInviteTable.inviterId],
     references: [userTable.id],
   }),
   org: one(orgTable, {
-    fields: [inviteTable.orgId],
+    fields: [orgInviteTable.orgId],
     references: [orgTable.id],
   }),
 }));

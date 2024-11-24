@@ -7,7 +7,7 @@ import { orgMemberTable } from '@/server/table/org-member';
 import { projectTable } from '@/server/table/project';
 import type { DbType } from '../route/route-types';
 
-// Helper function to check workspace permissions
+// Helper function to check project permissions
 export async function assertProjectPermission(
   db: DbType,
   projectId: string,
@@ -16,7 +16,7 @@ export async function assertProjectPermission(
 ) {
   const member = await getProjectMember(db, projectId, userId);
   if (!member) {
-    throw new ApiError('FORBIDDEN', 'You are not a member of this workspace');
+    throw new ApiError('FORBIDDEN', 'You are not a member of this project');
   }
 
   if (!requiredRoles.includes(member.role)) {
@@ -28,7 +28,7 @@ export async function assertProjectPermission(
   return member;
 }
 
-// Set user's default workspace
+// Set user's default project
 export async function setUserDefaultProject(
   db: DbType,
   { userId, projectId }: { userId: string; projectId: string | null }
@@ -42,7 +42,7 @@ export async function setUserDefaultProject(
   )[0];
 }
 
-// Get all workspaces accessible by a user (owned directly or through org membership)
+// Get all projects accessible by a user (owned directly or through org membership)
 export async function getUserAccessibleProjects(db: DbType, userId: string) {
   const subquery = db
     .select({
@@ -83,7 +83,7 @@ export async function getUserAccessibleProjects(db: DbType, userId: string) {
   });
 }
 
-// Get all workspaces owned by an org
+// Get all projects owned by an org
 export async function getOrgProjects(db: DbType, orgId: string) {
   const projects = await db.query.projectTable.findMany({
     where: eq(projectTable.orgId, orgId),
@@ -105,7 +105,7 @@ export async function getProjectBySlug(db: DbType, { slug }: { slug: string }) {
 
   return project;
 }
-// Get workspace by ID
+// Get project by ID
 export async function getProject(db: DbType, projectId: string) {
   const project = await db.query.projectTable.findFirst({
     where: eq(projectTable.id, projectId),
@@ -117,7 +117,7 @@ export async function getProject(db: DbType, projectId: string) {
   return project;
 }
 
-// Get workspace by ID
+// Get project by ID
 export async function getProjectWithRole(
   db: DbType,
   projectId: string,
@@ -175,25 +175,25 @@ export async function getProjectWithRoleBySlug(
   };
 }
 
-// Create workspace with owner
+// Create project with owner
 export async function createProject(
   db: DbType,
   { name, orgId, desc, slug }: InsertProjectType
 ) {
-  // Create workspace
+  // Create project
   const [project] = await db
     .insert(projectTable)
     .values({ name, orgId, desc, slug })
     .returning();
 
   if (!project) {
-    throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create workspace');
+    throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create project');
   }
 
   return project;
 }
 
-// Delete workspace
+// Delete project
 export async function deleteProject(
   db: DbType,
   { projectId, userId }: { projectId: string; userId: string }
@@ -202,7 +202,7 @@ export async function deleteProject(
   await db.delete(projectTable).where(eq(projectTable.id, projectId));
 }
 
-// Update workspace name
+// Update project name
 export async function updateProjectName(
   db: DbType,
   {

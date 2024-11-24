@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  SendPasscodeSchema,
-  type SendPasscodeType,
-} from '@/server/schema/passcode';
-import { Button } from '@hexa/ui/button';
-import { Form } from '@hexa/ui/form';
-
-import { EmailField } from '@/components/form/email-field';
+import { InputField } from '@/components/form/input-field';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import {
   $loginPasscodeSendPasscode,
@@ -15,12 +8,18 @@ import {
 } from '@/lib/api';
 import { setFormError } from '@/lib/form';
 import {
+  SendPasscodeSchema,
+  type SendPasscodeType,
+} from '@/server/schema/passcode';
+import { Button } from '@hexa/ui/button';
+import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from '@hexa/ui/card';
+import { Form } from '@hexa/ui/form';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -30,7 +29,7 @@ import { useForm } from 'react-hook-form';
 
 interface LoginPasscodeProps {
   onSuccess?: (
-    data: InferApiResponseType<typeof $loginPasscodeSendPasscode>
+    _data: InferApiResponseType<typeof $loginPasscodeSendPasscode>
   ) => void;
 }
 
@@ -81,7 +80,7 @@ export function LoginPasscode({ onSuccess }: LoginPasscodeProps) {
               )}
               className="space-y-2"
             >
-              <EmailField form={form} />
+              <InputField form={form} name="email" label="Email" type="email" />
               <FormErrorMessage message={errors.root?.message} />
               {turnstile}
 

@@ -28,5 +28,5 @@ export function generateId(prefix = '') {
    * If size is a multiple of 5, the output size will be (size * 8) / 5 (see base32 encoding).
    * @example "62zhs6gceakgksk3k5igjpumudeo4sxiehfwx6tu"
    */
-  return `${prefix}_${generateIdFromEntropySize(20).slice(prefix.length)}`; // 32 characters
+  return `${prefix}_${generateIdFromEntropySize(20).slice(prefix.length)}`;
 }

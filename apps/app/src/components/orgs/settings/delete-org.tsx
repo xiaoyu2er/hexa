@@ -8,21 +8,19 @@ import {
   CardTitle,
 } from '@hexa/ui/card';
 
+import { InputField } from '@/components/form/input-field';
 import { $deleteOrg } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import { setFormError } from '@/lib/form';
 import { invalidateProjectsQuery } from '@/lib/queries/project';
-import {} from '@/server/schema/project';
-import { Button } from '@hexa/ui/button';
-import { Form } from '@hexa/ui/form';
-
-import { ConfirmField } from '@/components/form/confirm-field';
-import { InputField } from '@/components/form/input-field';
 import {
   DELETE_ORG_CONFIRMATION,
   DeleteOrgSchema,
   type DeleteOrgType,
 } from '@/server/schema/org';
+import {} from '@/server/schema/project';
+import { Button } from '@hexa/ui/button';
+import { Form } from '@hexa/ui/form';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import {
   Dialog,
@@ -60,7 +58,7 @@ export function DeleteOrg() {
     onSuccess: () => {
       toast.success('Account deleted successfully');
       invalidateProjectsQuery();
-      router.replace('/workspaces');
+      router.replace('/');
     },
   });
 
@@ -102,9 +100,18 @@ export function DeleteOrg() {
                 </DialogHeader>
 
                 <InputField form={form} name="orgId" label="Organization ID" />
-                <ConfirmField
+                <InputField
                   form={form}
-                  confirmation={DELETE_ORG_CONFIRMATION}
+                  name="confirm"
+                  label={
+                    <>
+                      To verify, type
+                      <span className="px-1 font-bold">
+                        {DELETE_ORG_CONFIRMATION}
+                      </span>
+                      below
+                    </>
+                  }
                 />
                 <FormErrorMessage message={errors.root?.message} />
 

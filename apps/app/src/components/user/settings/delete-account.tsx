@@ -19,6 +19,7 @@ import {
 import { Button } from '@hexa/ui/button';
 import { Form } from '@hexa/ui/form';
 
+import { InputField } from '@/components/form/input-field';
 import {
   Dialog,
   DialogBody,
@@ -29,8 +30,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@hexa/ui/responsive-dialog';
-
-import { ConfirmField } from '@/components/form/confirm-field';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -87,14 +86,23 @@ export function DeleteAccount() {
             </DialogHeader>
             <Form {...form}>
               <form
-                onSubmit={handleSubmit(() => deleteUser({}))}
+                onSubmit={handleSubmit((json) => deleteUser({ json }))}
                 method="POST"
                 className="md:space-y-4"
               >
                 <DialogBody className="space-y-2">
-                  <ConfirmField
+                  <InputField
                     form={form}
-                    confirmation={DELETE_USER_CONFIRMATION}
+                    name="confirm"
+                    label={
+                      <>
+                        To verify, type
+                        <span className="px-1 font-bold">
+                          {DELETE_USER_CONFIRMATION}
+                        </span>
+                        below
+                      </>
+                    }
                   />
                 </DialogBody>
                 <DialogFooter>

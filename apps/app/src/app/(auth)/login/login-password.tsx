@@ -12,8 +12,7 @@ import {
 } from '@/server/schema/login';
 
 import { OauthButtons } from '@/components/auth/oauth-buttons';
-import { EmailField } from '@/components/form/email-field';
-import { PasswordField } from '@/components/form/password-field';
+import { InputField } from '@/components/form/input-field';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import { $loginPassword } from '@/lib/api';
 import { setFormError } from '@/lib/form';
@@ -25,7 +24,6 @@ import {
   CardTitle,
 } from '@hexa/ui/card';
 import { Divider } from '@hexa/ui/divider';
-import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -85,9 +83,14 @@ export function LoginPassword() {
               method="POST"
               className="space-y-2"
             >
-              <EmailField form={form} />
-              <PasswordField form={form} />
-              <FormErrorMessage message={errors.root?.message} />
+              <InputField form={form} name="email" label="Email" type="email" />
+              <InputField
+                form={form}
+                name="password"
+                label="Password"
+                type="password"
+              />
+
               {turnstile}
 
               <div className="flex flex-wrap justify-between">

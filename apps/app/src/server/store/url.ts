@@ -6,7 +6,7 @@ import { and, eq, or, sql } from 'drizzle-orm';
 
 // Create a new short URL
 export async function createShortUrl(db: DbType, data: InsertShortUrlType) {
-  // Check if slug is already taken in this workspace
+  // Check if slug is already taken in this project
   const existing = await db.query.urlTable.findFirst({
     where: and(
       eq(urlTable.projectId, data.projectId),
@@ -15,7 +15,7 @@ export async function createShortUrl(db: DbType, data: InsertShortUrlType) {
   });
 
   if (existing) {
-    throw new ApiError('CONFLICT', 'URL slug already exists in this workspace');
+    throw new ApiError('CONFLICT', 'URL slug already exists in this project');
   }
 
   // Create new URL
@@ -40,7 +40,7 @@ export async function getUrlById(db: DbType, urlId: string) {
   return url;
 }
 
-// Get URL by workspace ID and slug
+// Get URL by project ID and slug
 export async function getUrlBySlug(
   db: DbType,
   projectId: string,
@@ -60,7 +60,7 @@ export async function getUrlBySlug(
   return url;
 }
 
-// Get all URLs in a workspace
+// Get all URLs in a project
 export async function getProjectUrls(
   db: DbType,
   projectId: string,
@@ -137,7 +137,7 @@ export async function deleteUrl(db: DbType, urlId: string) {
   return deleted;
 }
 
-// Search URLs in workspace
+// Search URLs in project
 export async function searchProjectUrls(
   db: DbType,
   projectId: string,
