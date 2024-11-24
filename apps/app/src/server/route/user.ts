@@ -184,7 +184,6 @@ const user = new Hono<Context>()
           }
         })()
       );
-      // revalidatePath("/");
       return c.json({});
     }
   )

@@ -450,3 +450,23 @@ export const updateOrgName = async (
 
   return updatedOrg;
 };
+
+// Update org avatar
+export async function updateOrgAvatar(
+  db: DbType,
+  {
+    orgId,
+    avatarUrl,
+  }: {
+    orgId: string;
+    avatarUrl: string;
+  }
+) {
+  return (
+    await db
+      .update(orgTable)
+      .set({ avatarUrl })
+      .where(eq(orgTable.id, orgId))
+      .returning()
+  )[0];
+}

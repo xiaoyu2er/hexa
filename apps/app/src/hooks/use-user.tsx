@@ -10,5 +10,9 @@ export const useUser = () => {
   const { data, refetch } = useQuery({
     ...queryUserOptions,
   });
-  return { user: (data || user) as User & { email: string }, refetch };
+  return {
+    user: (data || user) as User & { email: string },
+    refetch,
+    invalidate: refetch,
+  };
 };

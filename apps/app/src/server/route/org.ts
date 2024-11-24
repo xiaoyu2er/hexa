@@ -1,11 +1,14 @@
+import { generateId } from '@/lib/crypto';
 import { ApiError } from '@/lib/error/error';
 import { generateProjectSlug } from '@/lib/slug';
+import { isStored, storage } from '@/lib/storage';
 import authOrg from '@/server/middleware/org';
 import { assertAuthMiddleware } from '@/server/middleware/user';
 import type { Context } from '@/server/route/route-types';
 import {
   DeleteOrgSchema,
   InsertOrgSchema,
+  UpdateOrgAvatarSchema,
   UpdateOrgNameSchema,
 } from '@/server/schema/org';
 import {
@@ -16,6 +19,7 @@ import {
   getUserOrgs,
   leaveOrg,
   updateOrg,
+  updateOrgAvatar,
   updateOrgName,
 } from '@/server/store/org';
 import { createProject, getProjectWithRole } from '@/server/store/project';
@@ -71,7 +75,7 @@ const org = new Hono<Context>()
     return c.json(projectWithRole);
   })
 
-  // Update workspace name
+  // Update organization name
   .put(
     '/org/update-org-name',
     zValidator('json', UpdateOrgNameSchema),
@@ -87,10 +91,43 @@ const org = new Hono<Context>()
       if (!org) {
         throw new ApiError(
           'INTERNAL_SERVER_ERROR',
-          'Failed to update workspace slug'
+          'Failed to update organization name'
         );
       }
       return c.json(org);
+    }
+  )
+  // Update project avatar
+  .put(
+    '/org/update-org-avatar',
+    zValidator('form', UpdateOrgAvatarSchema),
+    authOrg('form', ['OWNER', 'ADMIN']),
+    async (c) => {
+      const { db, org, orgId } = c.var;
+      const { image } = c.req.valid('form');
+      const { url } = await storage.upload(
+        `org-avatars/${generateId()}`,
+        image
+      );
+      const newOrg = await updateOrgAvatar(db, {
+        orgId,
+        avatarUrl: url,
+      });
+      if (!newOrg) {
+        throw new ApiError(
+          'INTERNAL_SERVER_ERROR',
+          'Failed to update organization avatar'
+        );
+      }
+      c.ctx.waitUntil(
+        (async () => {
+          if (org.avatarUrl && isStored(org.avatarUrl)) {
+            await storage.delete(org.avatarUrl);
+          }
+        })()
+      );
+
+      return c.json(newOrg);
     }
   )
 

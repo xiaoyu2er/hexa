@@ -2,7 +2,7 @@ import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 
 import { orgTable } from '@/server/table/org';
 
-import { NameSchema } from '@/server/schema/common';
+import { NameSchema, UpdateAvatarSchema } from '@/server/schema/common';
 import type { OrgMemberRole } from '@/server/schema/org-memeber';
 import { z } from 'zod';
 
@@ -44,3 +44,7 @@ export const DeleteOrgSchema = z
   })
   .merge(OrgIdSchema);
 export type DeleteOrgType = z.infer<typeof DeleteOrgSchema>;
+
+// Update Org Avatar
+export const UpdateOrgAvatarSchema = UpdateAvatarSchema.merge(OrgIdSchema);
+export type UpdateOrgAvatarType = z.infer<typeof UpdateOrgAvatarSchema>;
