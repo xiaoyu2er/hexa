@@ -1,11 +1,5 @@
-import { EditUserName } from '@/components/user/settings/edit-user-name';
-import UploadAvatar from '@/components/user/settings/upload-avatar';
+import { ProfilePage } from '@/app/(dashboard)/user/profile/profile-page';
 
 export default function () {
-  return (
-    <>
-      <EditUserName />
-      <UploadAvatar />
-    </>
-  );
+  return <ProfilePage />;
 }

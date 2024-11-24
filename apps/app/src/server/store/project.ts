@@ -8,7 +8,7 @@ import { projectTable } from '@/server/table/project';
 import type { DbType } from '../route/route-types';
 
 // Helper function to check workspace permissions
-async function assertProjectPermission(
+export async function assertProjectPermission(
   db: DbType,
   projectId: string,
   userId: string,
@@ -258,20 +258,17 @@ export async function updateProjectSlug(
   return project;
 }
 
-// Update workspace avatar (check permissions)
+// Update project avatar
 export async function updateProjectAvatar(
   db: DbType,
   {
     projectId,
     avatarUrl,
-    userId,
   }: {
     projectId: string;
     avatarUrl: string;
-    userId: string;
   }
 ) {
-  await assertProjectPermission(db, projectId, userId, ['OWNER', 'ADMIN']);
   return (
     await db
       .update(projectTable)

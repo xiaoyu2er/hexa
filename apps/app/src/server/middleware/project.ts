@@ -1,9 +1,14 @@
 import { ApiError } from '@/lib/error/error';
+import { checkPermission } from '@/lib/permission';
 import type { ValidTarget } from '@/server/route/route-types';
+import type { OrgMemberRole } from '@/server/schema/org-memeber';
 import { getProjectWithRole } from '@/server/store/project';
 import { createMiddleware } from 'hono/factory';
 
-const authProject = (target: ValidTarget) =>
+const authProject = (
+  target: ValidTarget,
+  requiredRoles: OrgMemberRole[] = ['MEMBER']
+) =>
   createMiddleware(async (c, next) => {
     // Get projectId from body or formData
     // @ts-ignore
@@ -24,6 +29,8 @@ const authProject = (target: ValidTarget) =>
     if (!project.role) {
       throw new ApiError('FORBIDDEN', 'You are not a member of this project');
     }
+
+    checkPermission(requiredRoles, project.role);
 
     c.set('project', project);
     c.set('projectId', project.id);

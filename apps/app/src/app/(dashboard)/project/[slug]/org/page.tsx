@@ -1,13 +1,5 @@
-import { DeleteOrg } from '@/components/orgs/settings/delete-org';
-import { EditOrgName } from '@/components/orgs/settings/edit-org-name';
-import { OrgId } from '@/components/orgs/settings/org-id';
+import OrgSettingsPage from '@/app/(dashboard)/project/[slug]/org/org-page';
 
-export default function OrgSettingsPage() {
-  return (
-    <>
-      <EditOrgName />
-      <OrgId />
-      <DeleteOrg />
-    </>
-  );
+export default function OrgPage() {
+  return <OrgSettingsPage />;
 }

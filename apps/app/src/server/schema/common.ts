@@ -8,7 +8,7 @@ import { z } from 'zod';
 
 // https://github.com/colinhacks/zod/issues/387#issuecomment-1191390673
 const avatarImage = z
-  .any()
+  .custom<File>()
   .refine((file) => !!file, 'Image is required.')
   .refine(
     (file) => file.size <= MAX_PROFILE_FILE_SIZE,

@@ -1,17 +1,5 @@
-import { DeleteProject } from '@/components/project/settings/delete-project';
-import { EditProjectName } from '@/components/project/settings/edit-project-name';
-import { EditProjectSlug } from '@/components/project/settings/edit-project-slug';
-import { ProjectId } from '@/components/project/settings/project-id';
-import { UploadProjectAvatar } from '@/components/project/settings/upload-project-avatar';
+import ProjectSettingsPage from './settings-page';
 
-export default function ProjectSettingsPage() {
-  return (
-    <>
-      <EditProjectName />
-      <EditProjectSlug />
-      <UploadProjectAvatar />
-      <ProjectId />
-      <DeleteProject />
-    </>
-  );
+export default function () {
+  return <ProjectSettingsPage />;
 }

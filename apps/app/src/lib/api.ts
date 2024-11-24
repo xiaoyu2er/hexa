@@ -129,6 +129,7 @@ export const $addUserEmailVerifyPasscode = h(
 
 export const $deleteUserEmail = h(api.user['delete-email'].$delete);
 export const $updateUserAvatar = h(api.user['update-avatar'].$put);
+export type UpdateAvatarFunctionType = typeof $updateUserAvatar;
 export const $deleteUser = h(api.user['delete-user'].$delete);
 export const $deleteUserOauthAccount = h(
   api.user['delete-oauth-account'].$delete
@@ -155,3 +156,4 @@ export const $createOrg = h(api.org.$post);
 export const $deleteOrg = h(api.org['delete-org'].$delete);
 export const $getOrgByName = h(api.org[':name'].$get);
 export const $updateOrgName = h(api.org['update-org-name'].$put);
+export const $updateOrgAvatar = h(api.org['update-org-avatar'].$put);

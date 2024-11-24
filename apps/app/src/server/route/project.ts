@@ -38,6 +38,7 @@ const project = new Hono<Context>()
   .post(
     '/project/create-project',
     zValidator('json', InsertProjectSchema),
+    authProject('json', ['OWNER', 'ADMIN']),
     async (c) => {
       const { db } = c.var;
       const { name, orgId, desc, slug } = c.req.valid('json');
@@ -70,7 +71,7 @@ const project = new Hono<Context>()
   .delete(
     '/project/delete-project',
     zValidator('json', DeleteProjectSchema),
-    authProject('json'),
+    authProject('json', ['OWNER', 'ADMIN']),
     async (c) => {
       const { db, projectId, userId } = c.var;
       await setUserDefaultProject(db, { userId, projectId });
@@ -83,7 +84,7 @@ const project = new Hono<Context>()
   .put(
     '/project/update-project-name',
     zValidator('json', UpdateProjectrNameSchema),
-    authProject('json'),
+    authProject('json', ['OWNER', 'ADMIN']),
     async (c) => {
       const { db, userId, projectId } = c.var;
       const { name } = c.req.valid('json');
@@ -105,7 +106,7 @@ const project = new Hono<Context>()
   .put(
     '/project/update-project-slug',
     zValidator('json', UpdateProjectSlugSchema),
-    authProject('json'),
+    authProject('json', ['OWNER', 'ADMIN']),
     async (c) => {
       const { db, projectId, userId } = c.var;
       const { slug } = c.req.valid('json');
@@ -117,23 +118,28 @@ const project = new Hono<Context>()
       return c.json(project);
     }
   )
-  // Update workspace avatar
+  // Update project avatar
   .put(
     '/project/update-project-avatar',
     zValidator('form', UpdateProjectAvatarSchema),
-    authProject('form'),
+    authProject('form', ['OWNER', 'ADMIN']),
     async (c) => {
-      const { db, project, userId, projectId } = c.var;
+      const { db, project, projectId } = c.var;
       const { image } = c.req.valid('form');
       const { url } = await storage.upload(
         `project-avatars/${generateId()}`,
         image
       );
-      const newWs = await updateProjectAvatar(db, {
+      const newProject = await updateProjectAvatar(db, {
         projectId: projectId,
         avatarUrl: url,
-        userId,
       });
+      if (!newProject) {
+        throw new ApiError(
+          'INTERNAL_SERVER_ERROR',
+          'Failed to update project avatar'
+        );
+      }
       c.ctx.waitUntil(
         (async () => {
           if (project.avatarUrl && isStored(project.avatarUrl)) {
@@ -141,8 +147,8 @@ const project = new Hono<Context>()
           }
         })()
       );
-      // revalidatePath("/");
-      return c.json(newWs);
+
+      return c.json(newProject);
     }
   );
 

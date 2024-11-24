@@ -1,18 +1,9 @@
 'use client';
-
-import { getProjectAvatarFallbackUrl } from '@/lib/project';
-import { FileUpload } from '@hexa/ui/file-upload';
-import { toast } from '@hexa/ui/sonner';
-import { useEffect, useState } from 'react';
-
-import { useProject } from '@/hooks/use-project';
-import { useUser } from '@/hooks/use-user';
-import { $updateProjectAvatar } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import {
-  UpdateProjectAvatarSchema,
-  type UpdateProjectAvatarType,
-} from '@/server/schema/project';
+  UpdateAvatarSchema,
+  type UpdateAvatarType,
+} from '@/server/schema/common';
 import { Button } from '@hexa/ui/button';
 import {
   Card,
@@ -22,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@hexa/ui/card';
+import { FileUpload } from '@hexa/ui/file-upload';
 import {
   Form,
   FormControl,
@@ -29,19 +21,25 @@ import {
   FormItem,
   FormMessage,
 } from '@hexa/ui/form';
+import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-export function UploadProjectAvatar() {
-  const { project, invalidate } = useProject();
-  const { user } = useUser();
-
-  const form = useForm<UpdateProjectAvatarType>({
-    resolver: zodResolver(UpdateProjectAvatarSchema),
-    defaultValues: {
-      projectId: project.id,
-    },
+export default function UploadAvatar({
+  onUpdate,
+  avatarUrl: avatarUrlProp,
+  title,
+  description,
+}: {
+  onUpdate: (form: UpdateAvatarType) => Promise<unknown>;
+  avatarUrl: string;
+  title?: string;
+  description?: string;
+}) {
+  const form = useForm<UpdateAvatarType>({
+    resolver: zodResolver(UpdateAvatarSchema),
   });
 
   const {
@@ -50,40 +48,37 @@ export function UploadProjectAvatar() {
     formState: { isSubmitting },
   } = form;
 
-  const { mutateAsync: updateProjectAvatar } = useMutation({
-    mutationFn: $updateProjectAvatar,
+  const { mutateAsync: updateAvatar } = useMutation({
+    mutationFn: onUpdate,
     onError: (err) => {
       setError('image', { message: err.message });
     },
     onSuccess: () => {
-      toast.success("Successfully updated the workspace's avatar image!");
-      invalidate();
+      toast.success('Successfully updated avatar!');
     },
   });
 
   const [avatarUrl, setAvatarUrl] = useState<string | null | undefined>(
-    project.avatarUrl
+    avatarUrlProp
   );
 
   useEffect(() => {
-    setAvatarUrl(project.avatarUrl ?? getProjectAvatarFallbackUrl(project));
-  }, [project]);
+    setAvatarUrl(avatarUrlProp);
+  }, [avatarUrlProp]);
 
   return (
     <Form {...form}>
       <form
-        onSubmit={handleSubmit((form) => {
-          return updateProjectAvatar({
-            form,
-          });
-        })}
+        onSubmit={handleSubmit((form) => updateAvatar(form))}
+        method="POST"
         className="grid gap-4"
       >
-        <Card>
+        <Card x-chunk="dashboard-04-chunk-1">
           <CardHeader>
-            <CardTitle>Project avatar</CardTitle>
+            <CardTitle>{title ?? 'Avatar'}</CardTitle>
             <CardDescription>
-              This is workspace's avatar image on {NEXT_PUBLIC_APP_NAME}.
+              {description ??
+                `This avatar will be used on ${NEXT_PUBLIC_APP_NAME}.`}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -117,7 +112,7 @@ export function UploadProjectAvatar() {
             <Button
               className="mr-2 shrink-0"
               loading={isSubmitting}
-              disabled={avatarUrl === user.avatarUrl}
+              disabled={avatarUrl === avatarUrlProp}
             >
               Update
             </Button>
