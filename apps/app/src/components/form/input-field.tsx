@@ -45,6 +45,7 @@ export const InputField = <T extends FieldValues = FieldValues>({
           <FormControl>
             <Input
               {...field}
+              type={type}
               {...otherProps}
               className={
                 get(form.formState.errors, name) ? 'border-destructive' : ''

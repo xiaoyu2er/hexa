@@ -83,7 +83,6 @@ export function LoginPasscode({ onSuccess }: LoginPasscodeProps) {
               <InputField form={form} name="email" label="Email" type="email" />
               <FormErrorMessage message={errors.root?.message} />
               {turnstile}
-
               <Button
                 type="submit"
                 className="!mt-4 w-full"

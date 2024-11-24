@@ -1,7 +1,5 @@
 'use client';
 
-import { Input } from '@hexa/ui/input';
-
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { toast } from '@hexa/ui/sonner';
 
@@ -13,14 +11,7 @@ import {
 } from '@/server/schema/oauth';
 import type { ProviderType } from '@/server/schema/oauth';
 import { Button } from '@hexa/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@hexa/ui/form';
+import { Form } from '@hexa/ui/form';
 
 import {
   Dialog,
@@ -32,6 +23,7 @@ import {
   DialogTitle,
 } from '@hexa/ui/responsive-dialog';
 
+import { InputField } from '@/components/form/input-field';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
@@ -96,26 +88,15 @@ export const DeleteOauthAccountModal = NiceModal.create(
               className="md:space-y-4"
             >
               <DialogBody className="space-y-2">
-                <FormField
-                  control={form.control}
+                <InputField
+                  form={form}
                   name="provider"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        To verify, type&nbsp;
-                        <span className="font-bold">{provider}</span>&nbsp;below
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className={
-                            errors.provider ? 'border-destructive' : ''
-                          }
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label={
+                    <>
+                      To verify, type&nbsp;
+                      <span className="font-bold">{provider}</span>&nbsp;below
+                    </>
+                  }
                 />
               </DialogBody>
               <DialogFooter>

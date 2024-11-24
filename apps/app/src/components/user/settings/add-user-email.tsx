@@ -1,3 +1,4 @@
+import { InputField } from '@/components/form/input-field';
 import {
   $addUserEmailSendPasscode,
   type InferApiResponseType,
@@ -12,15 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@hexa/ui/card';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from '@hexa/ui/form';
-import { Input } from '@hexa/ui/input';
-import { Label } from '@hexa/ui/label';
+import { Form } from '@hexa/ui/form';
 
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -78,19 +71,7 @@ export const AddUserEmail: FC<AddUserEmailProps> = ({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <Label>Email</Label>
-                  <FormControl>
-                    <Input {...field} className="max-w-md" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <InputField form={form} name="email" label="Email" />
           </CardContent>
           <CardFooter className="flex-row-reverse items-center gap-4 border-t px-6 py-4">
             <Button
