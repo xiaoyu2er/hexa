@@ -3,5 +3,5 @@ import { useProject } from '@/hooks/use-project';
 
 export default function ProjectPage() {
   const { project } = useProject();
-  return <>Project page {JSON.stringify(project)}</>;
+  return <div className="text-wrap">Project page {project.name}</div>;
 }

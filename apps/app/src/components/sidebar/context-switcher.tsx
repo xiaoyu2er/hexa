@@ -10,6 +10,7 @@ import { useModal } from '@ebay/nice-modal-react';
 import { Badge } from '@hexa/ui/badge';
 import { Button } from '@hexa/ui/button';
 import {} from '@hexa/ui/collapsible';
+import { useIsMobile } from '@hexa/ui/hooks/use-mobile';
 import { CaretSortIcon, CheckIcon, PlusCircledIcon } from '@hexa/ui/icons';
 import { Input } from '@hexa/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@hexa/ui/popover';
@@ -25,6 +26,8 @@ import { useState } from 'react';
 import { useBoolean } from 'usehooks-ts';
 
 export function ContextSwitcher() {
+  const isMobile = useIsMobile();
+
   const { slug } = useParams() as { slug: string };
   const { state } = useSidebar();
   const { user } = useUser();
@@ -136,7 +139,11 @@ export function ContextSwitcher() {
             <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-72 p-0" align="start" side="right">
+        <PopoverContent
+          className="w-72 p-0"
+          align="start"
+          side={isMobile ? 'bottom' : 'right'}
+        >
           <div className="px-4 py-2">
             <Input
               type="search"
