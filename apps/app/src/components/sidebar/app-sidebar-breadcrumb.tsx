@@ -96,20 +96,14 @@ export function AppSidebarBreadcrumb() {
         {breadcrumbs.map((item, index) => {
           return (
             <Fragment key={item.name}>
-              <BreadcrumbItem
-                className={
-                  index === breadcrumbs.length - 1 ? '' : 'hidden md:block'
-                }
-              >
+              <BreadcrumbItem>
                 {item.link ? (
                   <BreadcrumbLink href={item.link}>{item.name}</BreadcrumbLink>
                 ) : (
                   <BreadcrumbPage>{item.name}</BreadcrumbPage>
                 )}
               </BreadcrumbItem>
-              {index !== breadcrumbs.length - 1 && (
-                <BreadcrumbSeparator className="hidden md:block" />
-              )}
+              {index !== breadcrumbs.length - 1 && <BreadcrumbSeparator />}
             </Fragment>
           );
         })}
