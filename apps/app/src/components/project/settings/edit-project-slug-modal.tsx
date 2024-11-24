@@ -1,10 +1,18 @@
 'use client';
 
+import { InputField } from '@/components/form/input-field';
 import { $updateProjectSlug } from '@/lib/api';
 import { setFormError } from '@/lib/form';
+import {
+  UpdateProjectSlugSchema,
+  type UpdateProjectSlugType,
+} from '@/server/schema/project';
+import type { SelectProjectType } from '@/server/schema/project';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { Alert, AlertDescription, AlertTitle } from '@hexa/ui/alert';
 import { Button } from '@hexa/ui/button';
+import { Form } from '@hexa/ui/form';
+import { ExclamationTriangleIcon } from '@hexa/ui/icons';
 import {
   Dialog,
   DialogBody,
@@ -14,15 +22,6 @@ import {
   DialogTitle,
 } from '@hexa/ui/responsive-dialog';
 import { toast } from '@hexa/ui/sonner';
-
-import { SlugField } from '@/components/form/slug-field';
-import {
-  UpdateProjectSlugSchema,
-  type UpdateProjectSlugType,
-} from '@/server/schema/project';
-import type { SelectProjectType } from '@/server/schema/project';
-import { Form } from '@hexa/ui/form';
-import { ExclamationTriangleIcon } from '@hexa/ui/icons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
@@ -82,7 +81,7 @@ export const EditProjectSlugModal = NiceModal.create(
                 className="md:space-y-4"
               >
                 <DialogBody className="space-y-2">
-                  <SlugField form={form} />
+                  <InputField form={form} name="slug" label="Slug" />
                 </DialogBody>
                 <DialogFooter>
                   <Button

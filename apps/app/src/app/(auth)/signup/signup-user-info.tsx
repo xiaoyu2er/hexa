@@ -88,7 +88,6 @@ export const SignupUserInfo: FC<SignupProps> = ({
             />
             <FormErrorMessage message={errors.root?.message} />
             {turnstile}
-
             <Button
               className="w-full"
               type="submit"

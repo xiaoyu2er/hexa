@@ -1,15 +1,12 @@
 'use client';
 
-import Link from 'next/link';
-
-import { Form } from '@hexa/ui/form';
-
-import { Button } from '@hexa/ui/button';
-
 import {
   LoginPasswordSchema,
   type LoginPasswordType,
 } from '@/server/schema/login';
+import { Button } from '@hexa/ui/button';
+import { Form } from '@hexa/ui/form';
+import Link from 'next/link';
 
 import { OauthButtons } from '@/components/auth/oauth-buttons';
 import { InputField } from '@/components/form/input-field';
@@ -24,6 +21,7 @@ import {
   CardTitle,
 } from '@hexa/ui/card';
 import { Divider } from '@hexa/ui/divider';
+import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -90,9 +88,8 @@ export function LoginPassword() {
                 label="Password"
                 type="password"
               />
-
+              <FormErrorMessage message={errors.root?.message} />
               {turnstile}
-
               <div className="flex flex-wrap justify-between">
                 <Button variant="link" size="sm" className="p-0" asChild>
                   <Link href="/signup">Not signed up? Sign up now.</Link>
@@ -101,7 +98,6 @@ export function LoginPassword() {
                   <Link href="/reset-password">Forget password?</Link>
                 </Button>
               </div>
-
               <Button
                 type="submit"
                 className="w-full"
@@ -111,7 +107,6 @@ export function LoginPassword() {
               >
                 Login
               </Button>
-
               <Button variant="ghost" className="w-full" key="cancel" asChild>
                 <Link href="/login-passcode" replace>
                   Login with Passcode
