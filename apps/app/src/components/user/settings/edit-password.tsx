@@ -1,5 +1,5 @@
 'use client';
-import { PasswordField } from '@/components/form/password-field';
+import { InputField } from '@/components/form/input-field';
 import { useUser } from '@/hooks/use-user';
 import { $updateUserPassword } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
@@ -80,21 +80,24 @@ export function EditPassword() {
           >
             <CardContent className="max-w-md space-y-2">
               {user.hasPassword && (
-                <PasswordField
+                <InputField
                   form={form}
                   name="oldPassword"
                   label="Old Password"
+                  type="password"
                 />
               )}
-              <PasswordField
+              <InputField
                 form={form}
                 name="password"
                 label={user.hasPassword ? 'New Password' : 'Password'}
+                type="password"
               />
-              <PasswordField
+              <InputField
                 form={form}
                 name="confirmPassword"
                 label="Confirm Password"
+                type="password"
               />
               <FormErrorMessage message={errors.root?.message} />
               <Button variant="link" size="sm" className="p-0" asChild>

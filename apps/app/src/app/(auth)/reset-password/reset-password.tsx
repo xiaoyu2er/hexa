@@ -1,5 +1,6 @@
 'use client';
 
+import { InputField } from '@/components/form/input-field';
 import { $resetPassword } from '@/lib/api';
 import { setFormError } from '@/lib/form';
 import {
@@ -15,11 +16,9 @@ import {
   CardTitle,
 } from '@hexa/ui/card';
 import { Form } from '@hexa/ui/form';
-import { useMutation } from '@tanstack/react-query';
-
-import { PasswordField } from '@/components/form/password-field';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { type FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -79,11 +78,17 @@ export const ResetPassword: FC<ResetParsswordCardProps> = ({
             method="POST"
             className="space-y-2"
           >
-            <PasswordField form={form} name="password" label="Password" />
-            <PasswordField
+            <InputField
+              form={form}
+              name="password"
+              label="Password"
+              type="password"
+            />
+            <InputField
               form={form}
               name="confirmPassword"
               label="Confirm Password"
+              type="password"
             />
             <FormErrorMessage message={errors.root?.message} />
 

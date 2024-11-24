@@ -1,5 +1,5 @@
 import { getQueryClient } from '@/components/providers/get-query-client';
-import { $getOrgByName, $getOrgs } from '@/lib/api';
+import { $getOrgInvites, $getOrgMembers, $getOrgs } from '@/lib/api';
 import { queryOptions } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 
@@ -8,10 +8,16 @@ export const queryOrgsOptions = queryOptions({
   queryFn: $getOrgs,
 });
 
-export const queryOrgByNameOptions = (name?: string) =>
+export const queryOrgMembersOptions = (orgId: string) =>
   queryOptions({
-    queryKey: ['orgs/', name],
-    queryFn: name ? () => $getOrgByName({ param: { name } }) : () => null,
+    queryKey: ['orgs', orgId, 'members'],
+    queryFn: () => $getOrgMembers({ param: { orgId } }),
+  });
+
+export const queryOrgInvitesOptions = (orgId: string) =>
+  queryOptions({
+    queryKey: ['orgs', orgId, 'invites'],
+    queryFn: () => $getOrgInvites({ param: { orgId } }),
   });
 
 export const invalidateOrg = () => {

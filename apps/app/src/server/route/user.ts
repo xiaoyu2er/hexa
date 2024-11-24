@@ -27,6 +27,7 @@ import {
 } from '@/server/schema/passcode';
 import { ProjectIdSchema } from '@/server/schema/project';
 import {
+  DeleteUserSchema,
   UpdateUserAvatarSchema,
   UpdateUserNameSchema,
 } from '@/server/schema/user';
@@ -49,6 +50,7 @@ import {
 } from '@/server/store/user';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
+import { DeleteEmailSchema } from '../schema/email';
 
 const user = new Hono<Context>()
   .use('/user/*', assertAuthMiddleware)
@@ -157,12 +159,16 @@ const user = new Hono<Context>()
     }
   )
   // Remove user email
-  .delete('/user/delete-email', zValidator('json', EmailSchema), async (c) => {
-    const { db, userId } = c.var;
-    const { email } = c.req.valid('json');
-    await removeUserEmail(db, userId, email);
-    return c.json({});
-  })
+  .delete(
+    '/user/delete-email',
+    zValidator('json', DeleteEmailSchema),
+    async (c) => {
+      const { db, userId } = c.var;
+      const { email } = c.req.valid('json');
+      await removeUserEmail(db, userId, email);
+      return c.json({});
+    }
+  )
   // Update user avatar
   .put(
     '/user/update-avatar',
@@ -188,13 +194,17 @@ const user = new Hono<Context>()
     }
   )
   // Delete user
-  .delete('/user/delete-user', async (c) => {
-    const { db, userId } = c.var;
-    await deleteUser(db, userId);
-    await invalidateUserSessions(userId);
-    // setBlankSessionCookie();
-    return c.json({});
-  })
+  .delete(
+    '/user/delete-user',
+    zValidator('json', DeleteUserSchema),
+    async (c) => {
+      const { db, userId } = c.var;
+      await deleteUser(db, userId);
+      await invalidateUserSessions(userId);
+      // setBlankSessionCookie();
+      return c.json({});
+    }
+  )
   // Remove user oauth account
   .delete(
     '/user/delete-oauth-account',
@@ -206,7 +216,7 @@ const user = new Hono<Context>()
       return c.json({});
     }
   )
-  // Set user default workspace
+  // Set user default project
   .put(
     '/user/update-default-project',
     zValidator('json', ProjectIdSchema),
@@ -217,7 +227,7 @@ const user = new Hono<Context>()
       if (!newUser) {
         throw new ApiError(
           'INTERNAL_SERVER_ERROR',
-          'Failed to set default workspace'
+          'Failed to set default project'
         );
       }
       const project = await getProject(db, projectId);

@@ -11,8 +11,8 @@ import type { Simplify } from 'type-fest';
 import { z } from 'zod';
 
 export const zProjectIdString = z
-  .string({ message: 'Please select a workspace' })
-  .min(1, 'Please select a workspace');
+  .string({ message: 'Please select a project' })
+  .min(1, 'Please select a project');
 
 export const ProjectIdSchema = z.object({
   projectId: zProjectIdString,

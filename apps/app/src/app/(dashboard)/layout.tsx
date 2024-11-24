@@ -39,7 +39,9 @@ export default async function DashLayout({
             </div>
             <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
           </div> */}
-          {children}
+          <div className="mx-auto grid w-full max-w-screen-xl gap-5 px-3 pt-3 pb-10 lg:px-10">
+            {children}
+          </div>
         </SidebarInset>
       </SidebarProvider>
     </SessionProvider>

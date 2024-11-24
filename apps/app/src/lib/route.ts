@@ -1,7 +1,5 @@
-import { inspect } from 'node:util';
-import { IS_DEVELOPMENT } from '@/lib/env';
-import { ERROR_CODE_TO_HTTP_STATUS } from '@/lib/error/error';
 import setEnv from '@/server/middleware/env';
+import { onError } from '@/server/middleware/on-error';
 import email from '@/server/route/email';
 import test from '@/server/route/env';
 import login from '@/server/route/login';
@@ -30,42 +28,6 @@ export const app = new Hono<Context>()
   .route('/', project)
   .route('/', org)
   .route('/', email)
-  .onError((error, c) => {
-    // @ts-ignore
-    const code = error.code;
-    if (code) {
-      // @ts-ignore
-      const status = ERROR_CODE_TO_HTTP_STATUS[code] ?? 500;
-      return c.json(
-        {
-          error: {
-            message: error.message,
-          },
-        },
-        status
-      );
-    }
-
-    if (IS_DEVELOPMENT) {
-      return c.json(
-        {
-          error: {
-            cause: inspect(error, { depth: null }),
-            message: error.message,
-          },
-        },
-        500
-      );
-    }
-
-    return c.json(
-      {
-        error: {
-          message: error.message,
-        },
-      },
-      500
-    );
-  });
+  .onError(onError);
 
 export type AppType = typeof app;

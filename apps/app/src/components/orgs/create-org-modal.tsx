@@ -1,7 +1,5 @@
 'use client';
 
-import { Input } from '@hexa/ui/input';
-
 import { $createOrg } from '@/lib/api';
 import { setFormError } from '@/lib/form';
 import { invalidateProjectsQuery } from '@/lib/queries/project';
@@ -17,14 +15,7 @@ import {
 } from '@hexa/ui/responsive-dialog';
 
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@hexa/ui/form';
+import { Form } from '@hexa/ui/form';
 import { toast } from '@hexa/ui/sonner';
 
 import { InsertOrgSchema, type InsertOrgType } from '@/server/schema/org';
@@ -33,6 +24,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { InputField } from '../form/input-field';
 
 export const CreateOrgModal = NiceModal.create(() => {
   const modal = useModal();
@@ -85,39 +77,18 @@ export const CreateOrgModal = NiceModal.create(() => {
             className="md:space-y-4"
           >
             <DialogBody className="space-y-2">
-              <FormField
-                control={form.control}
+              <InputField
+                form={form}
                 name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Organization Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        className={errors.name ? 'border-destructive' : ''}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                label="Organization name"
+                placeholder="Acme Inc."
               />
 
-              <FormField
-                control={form.control}
+              <InputField
+                form={form}
                 name="desc"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Organization Description</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ''}
-                        className={errors.desc ? 'border-destructive' : ''}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                label="Organization Description"
+                placeholder="A description of the organization"
               />
 
               <FormErrorMessage message={errors.root?.message} />

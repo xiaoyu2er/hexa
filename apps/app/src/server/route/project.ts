@@ -26,7 +26,7 @@ import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
 
 const project = new Hono<Context>()
-  // Get all workspaces
+  // Get all projects
   .use('/project/*', assertAuthMiddleware)
   .get('/project/all', async (c) => {
     const { db, userId } = c.var;
@@ -34,7 +34,7 @@ const project = new Hono<Context>()
     return c.json(projects);
   })
 
-  // Create workspace
+  // Create project
   .post(
     '/project/create-project',
     zValidator('json', InsertProjectSchema),
@@ -67,7 +67,7 @@ const project = new Hono<Context>()
     }
   )
 
-  // Delete workspace
+  // Delete project
   .delete(
     '/project/delete-project',
     zValidator('json', DeleteProjectSchema),
@@ -80,7 +80,7 @@ const project = new Hono<Context>()
     }
   )
 
-  // Update workspace name
+  // Update project name
   .put(
     '/project/update-project-name',
     zValidator('json', UpdateProjectrNameSchema),
@@ -96,13 +96,13 @@ const project = new Hono<Context>()
       if (!project) {
         throw new ApiError(
           'INTERNAL_SERVER_ERROR',
-          'Failed to update workspace slug'
+          'Failed to update project slug'
         );
       }
       return c.json(project);
     }
   )
-  // Update workspace slug
+  // Update project slug
   .put(
     '/project/update-project-slug',
     zValidator('json', UpdateProjectSlugSchema),

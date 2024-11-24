@@ -1,16 +1,6 @@
 'use client';
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@hexa/ui/card';
-import { Form } from '@hexa/ui/form';
-
-import { NameField } from '@/components/form/name-field';
+import { InputField } from '@/components/form/input-field';
 import { useUser } from '@/hooks/use-user';
 import { $updateUserName } from '@/lib/api';
 import { setFormError } from '@/lib/form';
@@ -20,6 +10,15 @@ import {
   type UpdateUserNameType,
 } from '@/server/schema/user';
 import { Button } from '@hexa/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@hexa/ui/card';
+import { Form } from '@hexa/ui/form';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -81,7 +80,7 @@ export function EditUserName() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <NameField form={form} showLabel={false} />
+            <InputField form={form} name="name" className="max-w-md" />
           </CardContent>
           <CardFooter className="flex-row-reverse items-center justify-between border-t px-6 py-4">
             <Button

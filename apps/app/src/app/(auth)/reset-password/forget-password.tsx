@@ -1,17 +1,7 @@
 'use client';
 
+import { InputField } from '@/components/form/input-field';
 import { useTurnstile } from '@/hooks/use-turnstile';
-import { Button } from '@hexa/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@hexa/ui/card';
-import { Form } from '@hexa/ui/form';
-
-import { EmailField } from '@/components/form/email-field';
 import {
   $resetPasswordSendPasscode,
   type InferApiResponseType,
@@ -21,6 +11,15 @@ import {
   SendPasscodeSchema,
   type SendPasscodeType,
 } from '@/server/schema/passcode';
+import { Button } from '@hexa/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@hexa/ui/card';
+import { Form } from '@hexa/ui/form';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -90,7 +89,7 @@ export const ForgetPassword: FC<ForgetPasswordProps> = ({
             method="POST"
             className="space-y-2"
           >
-            <EmailField form={form} />
+            <InputField form={form} name="email" label="Email" type="email" />
             <FormErrorMessage message={errors.root?.message} />
             {turnstile}
             <Button variant="link" size="sm" className="p-0" asChild>

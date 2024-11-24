@@ -1,9 +1,7 @@
 'use client';
 
 import { TermsPrivacy } from '@/components/auth/terms-privacy';
-import { EmailField } from '@/components/form/email-field';
-import { NameField } from '@/components/form/name-field';
-import { OrgNameField } from '@/components/form/org-name-field';
+import { InputField } from '@/components/form/input-field';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import { $oauthSignup, type InferApiResponseType } from '@/lib/api';
 import { setFormError } from '@/lib/form';
@@ -75,9 +73,19 @@ export const OauthSignup: FC<OauthSignupProps> = ({
             method="POST"
             className="space-y-4"
           >
-            <EmailField form={form} disabled />
-            <NameField form={form} />
-            <OrgNameField form={form} />
+            <InputField form={form} disabled name="email" label="Email" />
+            <InputField
+              form={form}
+              name="name"
+              label="Your name"
+              placeholder="Jane Doe"
+            />
+            <InputField
+              form={form}
+              name="orgName"
+              label="Organization name"
+              placeholder="Acme Inc."
+            />
             <FormErrorMessage message={errors.root?.message} />
             {turnstile}
             <Button

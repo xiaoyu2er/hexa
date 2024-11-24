@@ -1,7 +1,5 @@
 'use client';
 
-import { Input } from '@hexa/ui/input';
-
 import { $createProject } from '@/lib/api';
 import { setFormError } from '@/lib/form';
 import { invalidateProjectsQuery } from '@/lib/queries/project';
@@ -43,6 +41,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { InputField } from '../form/input-field';
 
 export const CreateProjectModal = NiceModal.create(() => {
   const modal = useModal();
@@ -132,41 +131,10 @@ export const CreateProjectModal = NiceModal.create(() => {
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="slug"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Project Slug</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className={errors.name ? 'border-destructive' : ''}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <InputField form={form} name="slug" label="Project Slug" />
               </div>
 
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Project Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value ?? ''}
-                        className={errors.desc ? 'border-destructive' : ''}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <InputField form={form} name="name" label="Project Name" />
 
               <FormErrorMessage message={errors.root?.message} />
             </DialogBody>

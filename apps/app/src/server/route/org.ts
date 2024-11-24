@@ -8,24 +8,26 @@ import type { Context } from '@/server/route/route-types';
 import {
   DeleteOrgSchema,
   InsertOrgSchema,
+  OrgIdSchema,
   UpdateOrgAvatarSchema,
   UpdateOrgNameSchema,
 } from '@/server/schema/org';
+import { CreateInvitesSchema } from '@/server/schema/org-invite';
 import {
   assertUserHasOrgRole,
   createOrg,
   deleteOrg,
-  getOrgByName,
   getUserOrgs,
   leaveOrg,
   updateOrg,
   updateOrgAvatar,
   updateOrgName,
 } from '@/server/store/org';
+import { createInvites, getOrgInvites } from '@/server/store/org-invite';
+import { getOrgMembers } from '@/server/store/org-member';
 import { createProject, getProjectWithRole } from '@/server/store/project';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
-import { z } from 'zod';
 
 const org = new Hono<Context>()
   .use('/org/*', assertAuthMiddleware)
@@ -35,19 +37,6 @@ const org = new Hono<Context>()
     const orgs = await getUserOrgs(db, userId);
     return c.json(orgs);
   })
-  .get(
-    '/org/:name',
-    zValidator('param', z.object({ name: z.string() })),
-    async (c) => {
-      const { db } = c.var;
-      const { name } = c.req.param();
-      const org = await getOrgByName(db, name);
-      if (!org) {
-        throw new ApiError('NOT_FOUND', 'Organization not found');
-      }
-      return c.json(org);
-    }
-  )
 
   // Create organization
   .post('/org', zValidator('json', InsertOrgSchema), async (c) => {
@@ -70,7 +59,10 @@ const org = new Hono<Context>()
 
     const projectWithRole = await getProjectWithRole(db, project.id, userId);
     if (!projectWithRole) {
-      throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create workspace');
+      throw new ApiError(
+        'INTERNAL_SERVER_ERROR',
+        'Failed to create organization'
+      );
     }
     return c.json(projectWithRole);
   })
@@ -97,7 +89,7 @@ const org = new Hono<Context>()
       return c.json(org);
     }
   )
-  // Update project avatar
+  // Update organization avatar
   .put(
     '/org/update-org-avatar',
     zValidator('form', UpdateOrgAvatarSchema),
@@ -166,6 +158,45 @@ const org = new Hono<Context>()
 
       await deleteOrg(db, orgId);
       return c.json({});
+    }
+  )
+
+  // Get org members
+  .get(
+    '/org/:orgId/members',
+    zValidator('param', OrgIdSchema),
+    authOrg('param'),
+    async (c) => {
+      const { db, orgId } = c.var;
+      const members = await getOrgMembers(db, orgId);
+      return c.json(members);
+    }
+  )
+
+  // Get org invites
+  .get(
+    '/org/:orgId/invites',
+    zValidator('param', OrgIdSchema),
+    authOrg('param'),
+    async (c) => {
+      const { db, orgId } = c.var;
+      const invites = await getOrgInvites(db, orgId);
+      return c.json(invites);
+    }
+  )
+  .post(
+    '/org/create-invites',
+    zValidator('json', CreateInvitesSchema),
+    authOrg('json'),
+    async (c) => {
+      const { db, orgId, userId: inviterId } = c.var;
+      const { invites } = c.req.valid('json');
+      const newInvites = await createInvites(db, {
+        orgId,
+        inviterId,
+        invites,
+      });
+      return c.json(newInvites);
     }
   )
 

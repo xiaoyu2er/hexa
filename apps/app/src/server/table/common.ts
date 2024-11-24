@@ -4,7 +4,7 @@ import { type AnySQLiteColumn, integer } from 'drizzle-orm/sqlite-core';
 export const expiresAt = {
   expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull(),
 };
-const _createdAt = {
+export const createdAt = {
   createdAt: integer('created_at', { mode: 'timestamp' })
     .notNull()
     .default(sql`(unixepoch())`),

@@ -2,9 +2,9 @@
  * This file is used to export all the tables and relations
  */
 import { emailTable } from '@/server/table/email';
-import { inviteTable } from '@/server/table/invite';
 import { oauthAccountTable } from '@/server/table/oauth';
 import { orgTable } from '@/server/table/org';
+import { orgInviteTable } from '@/server/table/org-invite';
 import { orgMemberTable } from '@/server/table/org-member';
 import { passcodeTable } from '@/server/table/passcode';
 import { projectTable } from '@/server/table/project';
@@ -29,5 +29,5 @@ export {
   // url
   urlTable,
   // invite
-  inviteTable,
+  orgInviteTable,
 };

@@ -3,7 +3,7 @@ import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { orgTable } from '@/server/table/org';
 
 import { NameSchema, UpdateAvatarSchema } from '@/server/schema/common';
-import type { OrgMemberRole } from '@/server/schema/org-memeber';
+import type { OrgMemberRoleType } from '@/server/schema/org-memeber';
 import { z } from 'zod';
 
 // Org
@@ -12,7 +12,7 @@ export type InsertOrgType = z.infer<typeof InsertOrgSchema>;
 export const SelectOrgSchema = createSelectSchema(orgTable);
 export type SelectOrgType = z.infer<typeof SelectOrgSchema>;
 export type SelectUserOrgType = SelectOrgType & {
-  role: OrgMemberRole;
+  role: OrgMemberRoleType;
 };
 
 export const zOrgIdString = z
@@ -36,10 +36,10 @@ export const DELETE_ORG_CONFIRMATION = 'Confirm delete organization';
 export const DeleteOrgSchema = z
   .object({
     confirm: z
-      .string()
+      .string({ message: 'Please type the confirmation text' })
       .refine(
         (v) => v === DELETE_ORG_CONFIRMATION,
-        `Please type '${DELETE_ORG_CONFIRMATION}' to delete your organization.`
+        'Please type the confirmation text'
       ),
   })
   .merge(OrgIdSchema);

@@ -19,7 +19,7 @@ export function ProjectId() {
       <CardHeader>
         <CardTitle>Project ID</CardTitle>
         <CardDescription>
-          This is the unique workspace identifier on {NEXT_PUBLIC_APP_NAME}.
+          This is the unique project identifier on {NEXT_PUBLIC_APP_NAME}.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex items-center">
