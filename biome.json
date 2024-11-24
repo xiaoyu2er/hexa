@@ -8,8 +8,7 @@
       "apps/web/.wrangler/**/*",
       "apps/web/drizzle/**/*",
       "packages/email-templates/.react-email/**/*",
-      "apps/web/env.d.ts",
-      "packages/ui/src/**/*"
+      "apps/web/env.d.ts"
     ]
   },
   "linter": {
