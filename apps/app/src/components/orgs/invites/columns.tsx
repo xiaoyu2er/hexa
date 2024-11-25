@@ -3,11 +3,16 @@ import { DataTableColumnHeader } from '@/components/orgs/invites/data-table-colu
 import RevokeInvite from '@/components/orgs/invites/revoke-invite';
 import { UserAvatar } from '@/components/user/settings/user-avatar';
 import { invalidateOrgInvites } from '@/lib/queries/orgs';
+import { SortableColumnOptions } from '@/server/schema/org-invite';
 import type { QueryInviteType } from '@/server/schema/org-invite';
 import { Badge } from '@hexa/ui/badge';
-import {} from '@hexa/ui/dropdown-menu';
 import type { ColumnDef } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
+
+// Helper function to get column label
+const getColumnLabel = (columnId: string) =>
+  SortableColumnOptions.find((option) => option.value === columnId)?.label ??
+  capitalize(columnId);
 
 export const columns: ColumnDef<QueryInviteType>[] = [
   { id: 'search' },
@@ -16,25 +21,26 @@ export const columns: ColumnDef<QueryInviteType>[] = [
     id: 'email',
     accessorKey: 'email',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Invitee" className="ml-2" />
+      <DataTableColumnHeader column={column} title={getColumnLabel('email')} />
     ),
     cell: ({ row }) => {
       const invite = row.original;
       return <div className="flex items-center gap-2">{invite.email}</div>;
     },
-
     enableSorting: true,
+    enableHiding: false,
   },
   {
     accessorKey: 'role',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Role" />
+      <DataTableColumnHeader column={column} title={getColumnLabel('role')} />
     ),
     cell: ({ row }) => {
       const invite = row.original;
       return <Badge variant="secondary">{capitalize(invite.role)}</Badge>;
     },
     enableSorting: true,
+    enableHiding: false,
   },
   {
     accessorKey: 'inviter',
@@ -60,7 +66,10 @@ export const columns: ColumnDef<QueryInviteType>[] = [
   {
     accessorKey: 'createdAt',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Invited At" />
+      <DataTableColumnHeader
+        column={column}
+        title={getColumnLabel('createdAt')}
+      />
     ),
     cell: ({ row }) => {
       const invite = row.original;
@@ -71,7 +80,10 @@ export const columns: ColumnDef<QueryInviteType>[] = [
   {
     accessorKey: 'expiresAt',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Expires At" />
+      <DataTableColumnHeader
+        column={column}
+        title={getColumnLabel('expiresAt')}
+      />
     ),
     cell: ({ row }) => {
       const invite = row.original;
@@ -82,7 +94,7 @@ export const columns: ColumnDef<QueryInviteType>[] = [
   {
     accessorKey: 'status',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader column={column} title={getColumnLabel('status')} />
     ),
     cell: ({ row }) => {
       const invite = row.original;
@@ -99,7 +111,6 @@ export const columns: ColumnDef<QueryInviteType>[] = [
             <RevokeInvite
               invite={invite}
               onSuccess={() => {
-                // table.setPageIndex(0);
                 invalidateOrgInvites(invite.orgId, table.getState().pagination);
               }}
             />

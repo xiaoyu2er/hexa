@@ -15,13 +15,13 @@ import {
   InviteStatusOptions,
 } from '@/server/schema/org-invite';
 
-interface DataTableToolbarProps<TData> {
+interface DesktopTableToolbarProps<TData> {
   table: Table<TData>;
 }
 
-export function DataTableToolbar<TData>({
+export function DesktopTableToolbar<TData>({
   table,
-}: DataTableToolbarProps<TData>) {
+}: DesktopTableToolbarProps<TData>) {
   const [value, setValue] = useState('');
   const debouncedValue = useDebounce(value, 1000);
   const isFiltered = table.getState().columnFilters.length > 0;
