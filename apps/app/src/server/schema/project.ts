@@ -5,6 +5,7 @@ import {
   zSlugString,
 } from '@/server/schema/common';
 import { SelectOrgSchema, zOrgIdString } from '@/server/schema/org';
+import { zOrgMemberRoleEnum } from '@/server/schema/org-memeber';
 import { projectTable } from '@/server/table/project';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import type { Simplify } from 'type-fest';
@@ -31,6 +32,7 @@ export type InsertProjectType = Simplify<z.infer<typeof InsertProjectSchema>>;
 
 // Select Project
 export const SelectProjectSchema = createSelectSchema(projectTable).extend({
+  role: zOrgMemberRoleEnum,
   org: SelectOrgSchema,
 });
 export type SelectProjectType = z.infer<typeof SelectProjectSchema>;

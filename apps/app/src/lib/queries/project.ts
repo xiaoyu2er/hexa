@@ -7,6 +7,7 @@ import { queryOptions } from '@tanstack/react-query';
 export const queryProjectsOptions = queryOptions({
   queryKey: ['projects'],
   queryFn: () => $getAccessibleProjects({}),
+  staleTime: Number.POSITIVE_INFINITY,
 });
 
 export const invalidateProjectsQuery = () => {
@@ -16,11 +17,12 @@ export const invalidateProjectsQuery = () => {
   });
 };
 
-export const queryProjectOptions = (projectId: string | undefined) =>
+export const queryProjectOptions = (projectId: string) =>
   queryOptions({
     queryKey: ['project/', projectId],
-    queryFn: () => $getProject({ param: { projectId: projectId ?? '' } }),
-    enabled: !!projectId,
+    queryFn: () => $getProject({ param: { projectId } }),
+
+    staleTime: Number.POSITIVE_INFINITY,
   });
 
 export const invalidateProject = (projectId: string) => {

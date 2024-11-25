@@ -1,18 +1,14 @@
+import type { BaseFieldProps } from '@/components/form/form-type';
 import { FormControl, FormLabel, FormMessage } from '@hexa/ui/form';
 import { FormField, FormItem } from '@hexa/ui/form';
 import { Input } from '@hexa/ui/input';
+import { cn } from '@hexa/utils/cn';
 import { get } from 'lodash';
-import type { ComponentProps, ReactNode } from 'react';
-import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
+import type { ComponentProps } from 'react';
+import type { FieldValues } from 'react-hook-form';
 
-type BaseInputFieldProps<T extends FieldValues> = {
-  form: UseFormReturn<T>;
-  name: Path<T>;
-  label?: ReactNode;
-};
-
-export type InputFieldProps<T extends FieldValues> = BaseInputFieldProps<T> &
-  Omit<ComponentProps<'input'>, keyof BaseInputFieldProps<T>>;
+export type InputFieldProps<T extends FieldValues> = BaseFieldProps<T> &
+  Omit<ComponentProps<'input'>, keyof BaseFieldProps<T>>;
 
 const InputProps = {
   email: {
@@ -31,6 +27,8 @@ export const InputField = <T extends FieldValues = FieldValues>({
   name,
   label,
   type,
+  formItemClassName,
+  className,
   ...props
 }: InputFieldProps<T>) => {
   const otherProps = InputProps[type as keyof typeof InputProps] ?? {};
@@ -40,16 +38,17 @@ export const InputField = <T extends FieldValues = FieldValues>({
       control={form.control}
       name={name}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className={formItemClassName}>
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
             <Input
               {...field}
               type={type}
               {...otherProps}
-              className={
-                get(form.formState.errors, name) ? 'border-destructive' : ''
-              }
+              className={cn(
+                get(form.formState.errors, name) ? 'border-destructive' : '',
+                className
+              )}
               {...props}
             />
           </FormControl>

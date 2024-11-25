@@ -157,5 +157,7 @@ export const $deleteOrg = h(api.org['delete-org'].$delete);
 export const $updateOrgName = h(api.org['update-org-name'].$put);
 export const $updateOrgAvatar = h(api.org['update-org-avatar'].$put);
 export const $getOrgMembers = h(api.org[':orgId'].members.$get);
+// invites
 export const $getOrgInvites = h(api.org[':orgId'].invites.$get);
 export const $createInvites = h(api.org['create-invites'].$post);
+export const $revokeInvite = h(api.org['revoke-invite'].$put);

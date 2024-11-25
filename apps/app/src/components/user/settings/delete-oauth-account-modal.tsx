@@ -14,7 +14,6 @@ import { Button } from '@hexa/ui/button';
 import { Form } from '@hexa/ui/form';
 
 import {
-  Dialog,
   DialogBody,
   DialogContent,
   DialogDescription,
@@ -23,6 +22,7 @@ import {
   DialogTitle,
 } from '@hexa/ui/responsive-dialog';
 
+import { Dialog } from '@/components/dialog';
 import { InputField } from '@/components/form/input-field';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -62,15 +62,7 @@ export const DeleteOauthAccountModal = NiceModal.create(
     });
 
     return (
-      <Dialog
-        open={modal.visible}
-        onOpenChange={(v: boolean) => {
-          if (!v) {
-            modal.resolveHide();
-          }
-          !v && !modal.keepMounted && modal.remove();
-        }}
-      >
+      <Dialog control={modal}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Delete Connected Account</DialogTitle>

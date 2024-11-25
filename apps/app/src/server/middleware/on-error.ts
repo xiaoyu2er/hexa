@@ -6,7 +6,6 @@ import { ZodError } from 'zod';
 import type { Context } from '../route/route-types';
 
 export const onError: ErrorHandler<Context> = (error, c) => {
-  // console.log(error.name, error.code);
   if (error instanceof ZodError) {
     return c.json({ error: error, success: false }, 400);
   }

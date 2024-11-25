@@ -1,13 +1,13 @@
-import type { SelectProjectType } from '@/server/schema/project';
-import type { DrizzleD1Database } from 'drizzle-orm/d1';
-import type { Session, User } from 'lucia';
-
 import type { DbSchema } from '@/lib/db';
 import type { GitHubUser, GoogleUser } from '@/server/schema/oauth';
 import type { SelectOrgType } from '@/server/schema/org';
+import type { SelectInviteType } from '@/server/schema/org-invite';
 import type { SelectedPasscodeType } from '@/server/schema/passcode';
+import type { SelectProjectType } from '@/server/schema/project';
 import type { SelectTmpUserType } from '@/server/schema/tmp-user';
+import type { DrizzleD1Database } from 'drizzle-orm/d1';
 import type { ExecutionContext, ValidationTargets } from 'hono';
+import type { Session, User } from 'lucia';
 import type { Simplify } from 'type-fest';
 
 export type DbType = DrizzleD1Database<DbSchema>;
@@ -33,6 +33,7 @@ export type ContextVariables = {
   tmpUser: SelectTmpUserType | undefined;
   org: SelectOrgType;
   orgId: string;
+  invite: SelectInviteType;
 };
 
 export type Context = {

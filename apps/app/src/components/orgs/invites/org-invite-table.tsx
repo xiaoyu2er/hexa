@@ -1,16 +1,8 @@
 'use client';
-
-import {
-  type ColumnDef,
-  type ColumnFiltersState,
-  type VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from '@tanstack/react-table';
-
+import { DataTableToolbar } from '@/components/orgs/invites/data-table-toolbar';
+import { useInvites } from '@/hooks/use-invites';
+import type { QueryInviteType } from '@/server/schema/org-invite';
+import { Skeleton } from '@hexa/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -19,39 +11,119 @@ import {
   TableHeader,
   TableRow,
 } from '@hexa/ui/table';
-import { type ReactNode, useState } from 'react';
+import {
+  type ColumnFiltersState,
+  type PaginationState,
+  type SortingState,
+  type Table as TableType,
+  type VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+import {
+  type ReactNode,
+  forwardRef,
+  useImperativeHandle,
+  useState,
+} from 'react';
+import { columns } from './columns';
 import { DataTablePagination } from './data-table-pagination';
 
-interface OrgInviteTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-  rowCount: number;
+export interface OrgInviteTableRef {
+  table: TableType<QueryInviteType>;
 }
 
-export function OrgInviteTable<TData, TValue>({
-  columns,
-  data,
-  rowCount,
-}: OrgInviteTableProps<TData, TValue>) {
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+export const OrgInviteTable = forwardRef<OrgInviteTableRef>((_, ref) => {
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const {
+    data: {
+      data = [],
+      metadata = {
+        totalCount: 0,
+        pageCount: 0,
+        currentPage: 0,
+        pageSize: 5,
+        hasNextPage: false,
+        hasPreviousPage: false,
+      },
+    } = {},
+    isFetching,
+  } = useInvites(pagination, sorting, columnFilters);
+
   const table = useReactTable({
     data,
-    rowCount,
-    columns,
+    rowCount: metadata.totalCount,
+    columns: columns,
+    manualPagination: true,
+    manualSorting: true,
+    manualFiltering: true,
+    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
+    onSortingChange: setSorting,
     state: {
       columnFilters,
       columnVisibility,
+      pagination,
+      sorting,
     },
+    debugTable: true,
   });
 
+  useImperativeHandle(ref, () => ({
+    table,
+  }));
+
+  const loading = (
+    <>
+      {[0].map((i) => (
+        <TableRow key={i}>
+          <TableCell colSpan={columns.length}>
+            <Skeleton className="h-10 w-full" />
+          </TableCell>
+        </TableRow>
+      ))}
+    </>
+  );
+
+  const rows = table.getRowModel().rows?.map((row) => (
+    <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+      {row.getVisibleCells().map((cell) => (
+        <TableCell key={cell.id}>
+          {
+            flexRender(
+              cell.column.columnDef.cell,
+              cell.getContext()
+            ) as ReactNode
+          }
+        </TableCell>
+      ))}
+    </TableRow>
+  ));
+
+  const noResutls = (
+    <TableRow>
+      <TableCell colSpan={columns.length} className="h-24 text-center">
+        No results.
+      </TableCell>
+    </TableRow>
+  );
+
   return (
-    <div>
+    <div className="space-y-4">
+      <DataTableToolbar table={table} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -72,39 +144,20 @@ export function OrgInviteTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {
-                        flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        ) as ReactNode
-                      }
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
+            {isFetching
+              ? loading
+              : // biome-ignore lint/nursery/noNestedTernary: <explanation>
+                table.getRowModel().rows?.length
+                ? rows
+                : noResutls}
           </TableBody>
         </Table>
       </div>
-      {data.length > 9 && <DataTablePagination table={table} />}
+      <DataTablePagination table={table} />
     </div>
   );
-}
+});
+
+OrgInviteTable.displayName = 'OrgInviteTable';

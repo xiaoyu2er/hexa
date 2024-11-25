@@ -5,7 +5,6 @@ import { setFormError } from '@/lib/form';
 import { invalidateProjectsQuery } from '@/lib/queries/project';
 import { Button } from '@hexa/ui/button';
 import {
-  Dialog,
   DialogBody,
   DialogContent,
   DialogDescription,
@@ -18,6 +17,7 @@ import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { Form } from '@hexa/ui/form';
 import { toast } from '@hexa/ui/sonner';
 
+import { Dialog } from '@/components/dialog';
 import { InsertOrgSchema, type InsertOrgType } from '@/server/schema/org';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -55,15 +55,7 @@ export const CreateOrgModal = NiceModal.create(() => {
   });
 
   return (
-    <Dialog
-      open={modal.visible}
-      onOpenChange={(v: boolean) => {
-        if (!v) {
-          modal.resolveHide();
-        }
-        !v && !modal.keepMounted && modal.remove();
-      }}
-    >
+    <Dialog control={modal}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create Organization</DialogTitle>

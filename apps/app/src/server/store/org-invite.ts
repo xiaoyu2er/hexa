@@ -1,18 +1,23 @@
 import { INVITE_EXPIRE_TIME_SPAN } from '@/lib/const';
 import { generateId } from '@/lib/crypto';
 import { ApiError } from '@/lib/error/error';
+import type { PaginatedResult } from '@/lib/pagination';
+import { paginateQuery } from '@/lib/pagination';
 import type { DbType } from '@/server/route/route-types';
-import type {
-  CreateInvitesType,
-  InviteStatusType,
-  SelectInviteType,
+import {
+  type CreateInvitesType,
+  type InviteStatusType,
+  type OrgInviteQueryType,
+  type QueryInviteType,
+  type SelectInviteType,
+  transformSortParams,
 } from '@/server/schema/org-invite';
 import type { OrgMemberRoleType } from '@/server/schema/org-memeber';
 import { emailTable } from '@/server/table/email';
 import { orgInviteTable } from '@/server/table/org-invite';
 import { orgMemberTable } from '@/server/table/org-member';
-import { userTable } from '@/server/table/user';
-import { and, eq, gt, sql } from 'drizzle-orm';
+import type {} from '@tanstack/react-table';
+import { and, asc, desc, eq, gt, sql } from 'drizzle-orm';
 import { createDate } from 'oslo';
 import { ZodError, type ZodIssue } from 'zod';
 
@@ -36,11 +41,18 @@ export async function createInvites(
       );
       return {
         code: 'custom',
-        message: 'Invite already exists for this email',
+        message: `Invite already exists for ${invite.email}`,
         path: [`invites.${index}.email`],
       };
     });
-    throw new ZodError(issues);
+    throw new ZodError([
+      ...issues,
+      {
+        code: 'custom',
+        message: 'Please check the invites and try again',
+        path: ['root'],
+      },
+    ]);
   }
 
   // Create invite
@@ -55,12 +67,19 @@ export async function createInvites(
   const invites = await db
     .insert(orgInviteTable)
     .values(values)
-    .onConflictDoUpdate({
-      target: [orgInviteTable.email],
-      set: { expiresAt: sql`excluded.expiresAt` },
-    })
+    // .onConflictDoUpdate({
+    //   target: [orgInviteTable.email],
+    //   set: { expiresAt: sql`excluded.expiresAt` },
+    // })
     .returning();
   return invites;
+}
+
+export async function revokeInvite(db: DbType, inviteId: string) {
+  await db
+    .update(orgInviteTable)
+    .set({ status: 'REVOKED' })
+    .where(eq(orgInviteTable.id, inviteId));
 }
 
 // Get invite by token
@@ -100,13 +119,87 @@ export async function getInviteByToken(db: DbType, token: string) {
 //   return invites;
 // }
 
-// Get org invites
+export async function getOrgInvite(
+  db: DbType,
+  { inviteId, orgId }: { inviteId: string; orgId: string }
+): Promise<SelectInviteType> {
+  const invite = await db.query.orgInviteTable.findFirst({
+    where: and(
+      eq(orgInviteTable.id, inviteId),
+      eq(orgInviteTable.orgId, orgId)
+    ),
+    with: {
+      org: true,
+      inviter: {
+        with: {
+          orgMembers: {
+            where: eq(orgMemberTable.orgId, orgInviteTable.orgId),
+          },
+        },
+      },
+    },
+  });
+  if (!invite) {
+    throw new ApiError('NOT_FOUND', 'Invite not found');
+  }
+
+  if (!invite.inviter?.orgMembers[0]) {
+    throw new ApiError('NOT_FOUND', 'Inviter not found');
+  }
+
+  return {
+    ...invite,
+    inviter: {
+      ...invite.inviter,
+      role: invite.inviter.orgMembers[0].role,
+    },
+  };
+}
+
 export const getOrgInvites = async (
   db: DbType,
-  orgId: string
-): Promise<{ data: SelectInviteType[]; rowCount: number }> => {
-  const invites = await db.query.orgInviteTable.findMany({
-    where: eq(orgInviteTable.orgId, orgId),
+  {
+    orgId,
+    pageIndex,
+    pageSize,
+    filterStatus,
+    filterRole,
+    search,
+    ...sorting
+  }: { orgId: string } & OrgInviteQueryType
+): Promise<PaginatedResult<QueryInviteType>> => {
+  // Start with base conditions
+  const conditions = [eq(orgInviteTable.orgId, orgId)];
+
+  if (filterStatus?.length) {
+    // Add filter conditions
+    conditions.push(sql`${orgInviteTable.status} IN ${filterStatus}`);
+  }
+
+  if (filterRole?.length) {
+    conditions.push(sql`${orgInviteTable.role} IN ${filterRole}`);
+  }
+
+  if (search) {
+    conditions.push(
+      sql`(${orgInviteTable.email} LIKE ${`%${search}%`} OR 
+          ${orgInviteTable.name} LIKE ${`%${search}%`})`
+    );
+  }
+  const sortParams = transformSortParams(sorting);
+
+  // Use sortParams in your DB query
+  const orderBy =
+    sortParams.length > 0
+      ? sortParams.map(({ column, sort }) =>
+          sort === 'desc'
+            ? desc(orgInviteTable[column])
+            : asc(orgInviteTable[column])
+        )
+      : [desc(orgInviteTable.createdAt)];
+
+  const baseQuery = {
+    where: and(...conditions),
     with: {
       inviter: {
         columns: {
@@ -116,18 +209,22 @@ export const getOrgInvites = async (
         },
         with: {
           emails: {
-            where: and(
-              eq(emailTable.userId, userTable.id),
-              eq(emailTable.primary, true)
-            ),
+            where: and(eq(emailTable.primary, true)),
             limit: 1,
           },
         },
       },
     },
+    orderBy,
+  };
+
+  const result = await paginateQuery<QueryInviteType>(db, baseQuery, {
+    pageIndex,
+    pageSize,
   });
 
-  const data = invites.map((invite) => ({
+  // Transform the data as needed
+  const transformedData = result.data.map((invite) => ({
     ...invite,
     createdAt: invite.createdAt as unknown as string,
     expiresAt: invite.expiresAt as unknown as string,
@@ -135,13 +232,14 @@ export const getOrgInvites = async (
       id: invite.inviter.id,
       name: invite.inviter.name,
       avatarUrl: invite.inviter.avatarUrl,
-      email: invite.inviter.emails[0]?.email ?? null,
+      // @ts-ignore
+      email: invite.inviter.emails?.[0]?.email ?? null,
     },
   }));
 
   return {
-    data,
-    rowCount: data.length,
+    ...result,
+    data: transformedData,
   };
 };
 
