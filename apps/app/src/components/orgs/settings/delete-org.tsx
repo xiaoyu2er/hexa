@@ -79,7 +79,6 @@ export function DeleteOrg() {
               Delete organization
             </Button>
           </DialogTrigger>
-
           <DialogContent className="sm:max-w-[425px]">
             <Form {...form}>
               <form

@@ -73,7 +73,7 @@ export default function UploadAvatar({
         method="POST"
         className="grid gap-4"
       >
-        <Card x-chunk="dashboard-04-chunk-1">
+        <Card>
           <CardHeader>
             <CardTitle>{title ?? 'Avatar'}</CardTitle>
             <CardDescription>

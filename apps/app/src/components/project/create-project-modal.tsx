@@ -5,7 +5,6 @@ import { setFormError } from '@/lib/form';
 import { invalidateProjectsQuery } from '@/lib/queries/project';
 import { Button } from '@hexa/ui/button';
 import {
-  Dialog,
   DialogBody,
   DialogContent,
   DialogDescription,
@@ -14,34 +13,23 @@ import {
   DialogTitle,
 } from '@hexa/ui/responsive-dialog';
 
+import { Dialog } from '@/components/dialog';
+import { InputField } from '@/components/form/input-field';
+import { SelectField } from '@/components/form/select-field';
 import { queryOrgsOptions } from '@/lib/queries/orgs';
 import {
   InsertProjectSchema,
   type InsertProjectType,
 } from '@/server/schema/project';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@hexa/ui/form';
+import { Form } from '@hexa/ui/form';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@hexa/ui/select';
+import {} from '@hexa/ui/select';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { InputField } from '../form/input-field';
 
 export const CreateProjectModal = NiceModal.create(() => {
   const modal = useModal();
@@ -75,15 +63,7 @@ export const CreateProjectModal = NiceModal.create(() => {
   });
 
   return (
-    <Dialog
-      open={modal.visible}
-      onOpenChange={(v: boolean) => {
-        if (!v) {
-          modal.resolveHide();
-        }
-        !v && !modal.keepMounted && modal.remove();
-      }}
-    >
+    <Dialog control={modal}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create Project</DialogTitle>
@@ -100,35 +80,16 @@ export const CreateProjectModal = NiceModal.create(() => {
           >
             <DialogBody className="space-y-2">
               <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
+                <SelectField
+                  formItemClassName="flex-grow"
+                  form={form}
                   name="orgId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Owner</FormLabel>
-                      <FormControl>
-                        <Select
-                          {...field}
-                          value={field.value}
-                          onValueChange={(value) => {
-                            field.onChange(value);
-                          }}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {orgs?.map((org) => (
-                              <SelectItem key={org.id} value={org.id}>
-                                {org.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label="Owner"
+                  placeholder="Select an owner"
+                  options={orgs?.map((org) => ({
+                    label: org.name,
+                    value: org.id,
+                  }))}
                 />
 
                 <InputField form={form} name="slug" label="Project Slug" />

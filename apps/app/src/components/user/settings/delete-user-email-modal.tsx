@@ -5,12 +5,10 @@ import { toast } from '@hexa/ui/sonner';
 
 import { $deleteUserEmail } from '@/lib/api';
 import { setFormError } from '@/lib/form';
-import {} from '@/server/schema/common';
 import { Button } from '@hexa/ui/button';
 import { Form } from '@hexa/ui/form';
 
 import {
-  Dialog,
   DialogBody,
   DialogContent,
   DialogDescription,
@@ -19,6 +17,7 @@ import {
   DialogTitle,
 } from '@hexa/ui/responsive-dialog';
 
+import { Dialog } from '@/components/dialog';
 import { InputField } from '@/components/form/input-field';
 import { DeleteEmailSchema, type DeleteEmailType } from '@/server/schema/email';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -59,15 +58,7 @@ export const DeleteUserEmailModal = NiceModal.create(
     });
 
     return (
-      <Dialog
-        open={modal.visible}
-        onOpenChange={(v: boolean) => {
-          if (!v) {
-            modal.resolveHide();
-          }
-          !v && !modal.keepMounted && modal.remove();
-        }}
-      >
+      <Dialog control={modal}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Delete Email</DialogTitle>

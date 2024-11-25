@@ -3,6 +3,7 @@ import { ApiError } from '@/lib/error/error';
 import { generateProjectSlug } from '@/lib/slug';
 import { isStored, storage } from '@/lib/storage';
 import authOrg from '@/server/middleware/org';
+import { authInvite } from '@/server/middleware/org-invite';
 import { assertAuthMiddleware } from '@/server/middleware/user';
 import type { Context } from '@/server/route/route-types';
 import {
@@ -12,18 +13,25 @@ import {
   UpdateOrgAvatarSchema,
   UpdateOrgNameSchema,
 } from '@/server/schema/org';
-import { CreateInvitesSchema } from '@/server/schema/org-invite';
+import {
+  CreateInvitesSchema,
+  OrgInviteQuerySchema,
+  RevokeInviteSchema,
+} from '@/server/schema/org-invite';
 import {
   assertUserHasOrgRole,
   createOrg,
   deleteOrg,
   getUserOrgs,
   leaveOrg,
-  updateOrg,
   updateOrgAvatar,
   updateOrgName,
 } from '@/server/store/org';
-import { createInvites, getOrgInvites } from '@/server/store/org-invite';
+import {
+  createInvites,
+  getOrgInvites,
+  revokeInvite,
+} from '@/server/store/org-invite';
 import { getOrgMembers } from '@/server/store/org-member';
 import { createProject, getProjectWithRole } from '@/server/store/project';
 import { zValidator } from '@hono/zod-validator';
@@ -124,21 +132,21 @@ const org = new Hono<Context>()
   )
 
   // Update organization
-  .put('/org/:orgId', zValidator('json', InsertOrgSchema), async (c) => {
-    const { db, userId } = c.var;
-    const { orgId } = c.req.param();
-    const data = c.req.valid('json');
+  // .put('/org/:orgId', zValidator('json', InsertOrgSchema), async (c) => {
+  //   const { db, userId } = c.var;
+  //   const { orgId } = c.req.param();
+  //   const data = c.req.valid('json');
 
-    // Verify user is owner/admin
-    await assertUserHasOrgRole(db, {
-      orgId,
-      userId,
-      requiredRole: ['OWNER', 'ADMIN'],
-    });
+  //   // Verify user is owner/admin
+  //   await assertUserHasOrgRole(db, {
+  //     orgId,
+  //     userId,
+  //     requiredRole: ['OWNER', 'ADMIN'],
+  //   });
 
-    const updatedOrg = await updateOrg(db, orgId, data);
-    return c.json(updatedOrg);
-  })
+  //   const updatedOrg = await updateOrg(db, orgId, data);
+  //   return c.json(updatedOrg);
+  // })
 
   // Delete organization
   .delete(
@@ -177,10 +185,15 @@ const org = new Hono<Context>()
   .get(
     '/org/:orgId/invites',
     zValidator('param', OrgIdSchema),
+    zValidator('query', OrgInviteQuerySchema),
     authOrg('param'),
     async (c) => {
       const { db, orgId } = c.var;
-      const invites = await getOrgInvites(db, orgId);
+      const query = c.req.valid('query');
+      const invites = await getOrgInvites(db, {
+        orgId,
+        ...query,
+      });
       return c.json(invites);
     }
   )
@@ -197,6 +210,17 @@ const org = new Hono<Context>()
         invites,
       });
       return c.json(newInvites);
+    }
+  )
+  // Revoke invite
+  .put(
+    '/org/revoke-invite',
+    zValidator('json', RevokeInviteSchema),
+    authInvite('json'),
+    async (c) => {
+      const { db, invite } = c.var;
+      await revokeInvite(db, invite.id);
+      return c.json({});
     }
   )
 

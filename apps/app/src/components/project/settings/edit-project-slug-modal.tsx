@@ -1,5 +1,6 @@
 'use client';
 
+import { Dialog } from '@/components/dialog';
 import { InputField } from '@/components/form/input-field';
 import { $updateProjectSlug } from '@/lib/api';
 import { setFormError } from '@/lib/form';
@@ -14,7 +15,6 @@ import { Button } from '@hexa/ui/button';
 import { Form } from '@hexa/ui/form';
 import { ExclamationTriangleIcon } from '@hexa/ui/icons';
 import {
-  Dialog,
   DialogBody,
   DialogContent,
   DialogFooter,
@@ -59,15 +59,7 @@ export const EditProjectSlugModal = NiceModal.create(
     });
 
     return (
-      <Dialog
-        open={modal.visible}
-        onOpenChange={(v: boolean) => {
-          if (!v) {
-            modal.resolveHide();
-          }
-          !v && !modal.keepMounted && modal.remove();
-        }}
-      >
+      <Dialog control={modal}>
         {understandBool.value ? (
           <DialogContent className="md:max-w-[485px]">
             <DialogHeader>

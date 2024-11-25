@@ -2,7 +2,11 @@ import { ApiError } from '@/lib/error/error';
 import { userTable } from '@/server/table/user';
 import { eq, inArray } from 'drizzle-orm';
 
-import type { InsertProjectType } from '@/server/schema/project';
+import type { SelectOrgMemberType } from '@/server/schema/org-memeber';
+import type {
+  InsertProjectType,
+  SelectProjectType,
+} from '@/server/schema/project';
 import { orgMemberTable } from '@/server/table/org-member';
 import { projectTable } from '@/server/table/project';
 import type { DbType } from '../route/route-types';
@@ -43,7 +47,10 @@ export async function setUserDefaultProject(
 }
 
 // Get all projects accessible by a user (owned directly or through org membership)
-export async function getUserAccessibleProjects(db: DbType, userId: string) {
+export async function getUserAccessibleProjects(
+  db: DbType,
+  userId: string
+): Promise<SelectProjectType[]> {
   const subquery = db
     .select({
       projectId: projectTable.id,
@@ -67,20 +74,23 @@ export async function getUserAccessibleProjects(db: DbType, userId: string) {
     })
     .prepare();
 
-  return (await projects.all()).map((project) => {
-    // Extract role from members array
-    const role = project.org.members?.[0]?.role || null;
+  return (await projects.all())
+    .filter((project) => Boolean(project.org.members[0]))
+    .map((project) => {
+      // Extract role from members array
+      // @ts-expect-error
+      const role = project.org.members[0].role;
 
-    // Create new org object without members
-    const { members, ...orgWithoutMembers } = project.org;
+      // Create new org object without members
+      const { members, ...orgWithoutMembers } = project.org;
 
-    // Return cleaned up project object
-    return {
-      ...project,
-      org: orgWithoutMembers,
-      role,
-    };
-  });
+      // Return cleaned up project object
+      return {
+        ...project,
+        org: orgWithoutMembers,
+        role,
+      };
+    });
 }
 
 // Get all projects owned by an org
@@ -137,13 +147,17 @@ export async function getProjectWithRole(
   });
 
   if (!project) {
-    return null;
+    throw new ApiError('NOT_FOUND', 'Project not found');
   }
 
-  const member = project.org.members?.[0];
+  if (!project.org.members.length) {
+    throw new ApiError('NOT_FOUND', 'Project not found');
+  }
+
+  const member = project.org.members[0] as SelectOrgMemberType;
   return {
     ...project,
-    role: member?.role || null,
+    role: member.role,
   };
 }
 
@@ -166,12 +180,16 @@ export async function getProjectWithRoleBySlug(
   });
 
   if (!project) {
-    return null;
+    throw new ApiError('NOT_FOUND', 'Project not found');
+  }
+
+  if (!project?.org.members[0]) {
+    throw new ApiError('NOT_FOUND', 'Project not found');
   }
 
   return {
     ...project,
-    role: project.org.members?.[0]?.role || null,
+    role: project.org.members[0].role,
   };
 }
 

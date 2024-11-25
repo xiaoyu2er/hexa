@@ -105,3 +105,11 @@ export const PasswordSchema = z.object({
 export type PasswordType = z.infer<typeof PasswordSchema>;
 
 export const EmptySchema = z.object({});
+
+export const PaginationSchema = z.object({
+  pageIndex: z.string().transform((v) => Number.parseInt(v)),
+  pageSize: z.string().transform((v) => Number.parseInt(v)),
+});
+export type PaginationType = z.infer<typeof PaginationSchema>;
+
+export const zSortEnum = z.enum(['asc', 'desc']);
