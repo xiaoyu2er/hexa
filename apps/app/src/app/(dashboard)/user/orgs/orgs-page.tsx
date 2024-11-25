@@ -1,17 +1,28 @@
 'use client';
+import { toast } from '@hexa/ui/sonner';
+import {} from '@tanstack/react-query';
+import { useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 
-import { queryOrgsOptions } from '@/lib/queries/orgs';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { columns } from './columns';
-import { DataTable } from './data-table';
+import { DataTable } from '@/components/orgs/list/data-table';
 
 export const OrgPage = () => {
-  const {
-    data: { data, rowCount },
-  } = useSuspenseQuery(queryOrgsOptions);
+  const searchParams = useSearchParams();
+  const msg = searchParams.get('msg');
+
+  useEffect(() => {
+    if (msg) {
+      toast.success(msg);
+    }
+  }, [msg]);
+
   return (
-    <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={data} rowCount={rowCount} />
-    </div>
+    <>
+      <div>
+        <h2 className="font-bold text-2xl tracking-tight">Organizations</h2>
+        <p className="text-muted-foreground">Manage your organizations here.</p>
+      </div>
+      <DataTable />
+    </>
   );
 };

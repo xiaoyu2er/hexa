@@ -42,21 +42,6 @@ export const InviteStatusOptions = [
   },
 ];
 
-export const InviteRoleOptions = [
-  {
-    label: 'Member',
-    value: 'MEMBER',
-  },
-  {
-    label: 'Admin',
-    value: 'ADMIN',
-  },
-  {
-    label: 'Owner',
-    value: 'OWNER',
-  },
-];
-
 export const SortableColumnOptions = [
   { label: 'Invite Date', value: 'createdAt' },
   { label: 'Expiry Date', value: 'expiresAt' },
@@ -99,8 +84,9 @@ export const QueryInviteSchema = createSelectSchema(orgInviteTable, {
   }).extend({
     email: z.string().nullable(),
   }),
+  org: SelectOrgSchema,
 });
-export type QueryInviteType = z.infer<typeof QueryInviteSchema>;
+export type QueryInviteType = Simplify<z.infer<typeof QueryInviteSchema>>;
 
 export const CreateInvitesSchema = z.object({
   orgId: z.string(),

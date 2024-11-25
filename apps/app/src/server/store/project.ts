@@ -1,14 +1,12 @@
 import { ApiError } from '@/lib/error/error';
-import { userTable } from '@/server/table/user';
-import { eq, inArray } from 'drizzle-orm';
-
-import type { SelectOrgMemberType } from '@/server/schema/org-memeber';
 import type {
   InsertProjectType,
   SelectProjectType,
 } from '@/server/schema/project';
 import { orgMemberTable } from '@/server/table/org-member';
 import { projectTable } from '@/server/table/project';
+import { userTable } from '@/server/table/user';
+import { eq, inArray } from 'drizzle-orm';
 import type { DbType } from '../route/route-types';
 
 // Helper function to check project permissions
@@ -150,11 +148,12 @@ export async function getProjectWithRole(
     throw new ApiError('NOT_FOUND', 'Project not found');
   }
 
-  if (!project.org.members.length) {
+  if (!project.org.members[0]) {
     throw new ApiError('NOT_FOUND', 'Project not found');
   }
 
-  const member = project.org.members[0] as SelectOrgMemberType;
+  const member = project.org.members[0];
+
   return {
     ...project,
     role: member.role,

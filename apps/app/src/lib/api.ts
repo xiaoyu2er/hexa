@@ -137,7 +137,7 @@ export const $deleteUserOauthAccount = h(
 export const $updateUserDefaultProject = h(
   api.user['update-default-project'].$put
 );
-export const $checkEmail = h(api.email.$post);
+export const $checkEmail = h(api['check-email'].$post);
 
 // ==================== Project ====================
 export const $getAccessibleProjects = h(api.project.all.$get);
@@ -157,6 +157,7 @@ export const $deleteOrg = h(api.org['delete-org'].$delete);
 export const $updateOrgName = h(api.org['update-org-name'].$put);
 export const $updateOrgAvatar = h(api.org['update-org-avatar'].$put);
 export const $getOrgMembers = h(api.org[':orgId'].members.$get);
+export const $leaveOrg = h(api.org['leave-org'].$post);
 // invites
 export const $getOrgInvites = h(api.org[':orgId'].invites.$get);
 export const $createInvites = h(api.org['create-invites'].$post);

@@ -1,10 +1,10 @@
 'use client';
 
-import { CreateInvitesModal } from '@/components/orgs/invites/create-invites-modal';
+import { CreateInvitesModal } from '@/components/orgs/invites/invite-create-modal';
 import {
   OrgInviteTable,
   type OrgInviteTableRef,
-} from '@/components/orgs/invites/org-invite-table';
+} from '@/components/orgs/invites/invite-table';
 import { OrgMembers } from '@/components/orgs/members/org-members';
 import { useProject } from '@/hooks/use-project';
 import { invalidateOrgInvites } from '@/lib/queries/orgs';

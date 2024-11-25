@@ -155,5 +155,5 @@ export const creatUserFromTmpUserMiddleware = createMiddleware(async (c) => {
 
   await invalidateUserSessions(user.id);
   await setSession(user.id);
-  return c.redirect(`/project/${project.id}`);
+  return c.redirect(`/project/${project.slug}`);
 });

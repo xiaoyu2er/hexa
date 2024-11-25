@@ -1,10 +1,17 @@
 'use client';
-import { DesktopTable } from '@/components/orgs/invites/desktop-table';
-import { DesktopTableToolbar } from '@/components/orgs/invites/desktop-table-toolbar';
-import { MobileTable } from '@/components/orgs/invites/mobile-table';
-import { MobileTableToolbar } from '@/components/orgs/invites/mobile-table-toolbar';
+import { InviteTableDesktop } from '@/components/orgs/invites/invite-table-desktop';
+import { InviteTableMobile } from '@/components/orgs/invites/invite-table-mobile';
+import { TablePagination } from '@/components/table/table-pagination';
+import { TableToolbarDesktop } from '@/components/table/table-toolbar-desktop';
+import { TableToolbarMobile } from '@/components/table/table-toolbar-mobile';
+import type { FilterConfig } from '@/components/table/table-types';
 import { useInvites } from '@/hooks/use-invites';
-import type { QueryInviteType } from '@/server/schema/org-invite';
+import {
+  InviteStatusOptions,
+  type QueryInviteType,
+  SortableColumnOptions,
+} from '@/server/schema/org-invite';
+import { OrgRoleOptions } from '@/server/schema/org-memeber';
 import {} from '@hexa/ui/table';
 import {
   type ColumnFiltersState,
@@ -18,8 +25,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { forwardRef, useImperativeHandle, useState } from 'react';
-import { columns } from './columns';
-import { DataTablePagination } from './data-table-pagination';
+import { columns } from './invite-columns';
 
 export interface OrgInviteTableRef {
   table: TableType<QueryInviteType>;
@@ -75,17 +81,38 @@ export const OrgInviteTable = forwardRef<OrgInviteTableRef>((_, ref) => {
     table,
   }));
 
+  const filterConfigs: FilterConfig<QueryInviteType>[] = [
+    {
+      columnId: 'role',
+      label: 'Role',
+      options: OrgRoleOptions,
+    },
+    {
+      columnId: 'status',
+      label: 'Status',
+      options: InviteStatusOptions,
+    },
+  ];
   return (
     <>
       <div className="space-y-4 lg:hidden">
-        <MobileTableToolbar table={table} />
-        <MobileTable table={table} isFetching={isFetching} />
-        <DataTablePagination table={table} />
+        <TableToolbarMobile
+          table={table}
+          searchPlaceholder="Search invitee..."
+          filterConfigs={filterConfigs}
+          sortOptions={[...SortableColumnOptions]}
+        />
+        <InviteTableMobile table={table} isFetching={isFetching} />
+        <TablePagination table={table} />
       </div>
       <div className="hidden space-y-4 lg:block">
-        <DesktopTableToolbar table={table} />
-        <DesktopTable table={table} isFetching={isFetching} />
-        <DataTablePagination table={table} />
+        <TableToolbarDesktop
+          table={table}
+          searchPlaceholder="Search invitee..."
+          filterConfigs={filterConfigs}
+        />
+        <InviteTableDesktop table={table} isFetching={isFetching} />
+        <TablePagination table={table} />
       </div>
     </>
   );

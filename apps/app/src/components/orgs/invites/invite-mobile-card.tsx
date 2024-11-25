@@ -1,4 +1,4 @@
-import RevokeInvite from '@/components/orgs/invites/revoke-invite';
+import RevokeInvite from '@/components/orgs/invites/invite-revoke-button';
 import { UserAvatar } from '@/components/user/settings/user-avatar';
 import type { QueryInviteType } from '@/server/schema/org-invite';
 import { Badge } from '@hexa/ui/badge';

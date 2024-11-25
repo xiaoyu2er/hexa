@@ -61,6 +61,13 @@ export async function getEmail(db: DbType, email: string) {
   return emailItem;
 }
 
+export async function getUserEmail(db: DbType, uid: string, email: string) {
+  return await db.query.emailTable.findFirst({
+    where: (table, { eq }) =>
+      and(eq(table.userId, uid), eq(table.email, email.toLowerCase())),
+  });
+}
+
 export async function getUserPrimaryEmail(db: DbType, uid: string) {
   return await db.query.emailTable.findFirst({
     where: (table, { eq }) =>

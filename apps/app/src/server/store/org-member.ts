@@ -34,6 +34,7 @@ export const getOrgMembers = async (
 
   const data = members.map((member) => ({
     ...member,
+    createdAt: member.createdAt as unknown as string,
     user: {
       id: member.user.id,
       name: member.user.name,

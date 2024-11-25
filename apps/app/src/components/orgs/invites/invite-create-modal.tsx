@@ -29,6 +29,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useFieldArray, useForm } from 'react-hook-form';
 
+import { OrgRoleOptions } from '@/server/schema/org-memeber';
+
 export const CreateInvitesModal = NiceModal.create(
   (project: SelectProjectType) => {
     const modal = useModal();
@@ -68,18 +70,11 @@ export const CreateInvitesModal = NiceModal.create(
     const getRoleOptions = () => {
       switch (project.role) {
         case 'OWNER':
-          return [
-            { label: 'Member', value: 'MEMBER' },
-            { label: 'Admin', value: 'ADMIN' },
-            { label: 'Owner', value: 'OWNER' },
-          ];
+          return OrgRoleOptions;
         case 'ADMIN':
-          return [
-            { label: 'Member', value: 'MEMBER' },
-            { label: 'Admin', value: 'ADMIN' },
-          ];
+          return OrgRoleOptions.filter((option) => option.value !== 'OWNER');
         default:
-          return [{ label: 'Member', value: 'MEMBER' }];
+          return OrgRoleOptions.filter((option) => option.value === 'MEMBER');
       }
     };
 

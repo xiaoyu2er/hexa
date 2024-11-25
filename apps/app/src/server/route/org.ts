@@ -1,4 +1,5 @@
 import { generateId } from '@/lib/crypto';
+import { sendOrgInviteEmails } from '@/lib/emails';
 import { ApiError } from '@/lib/error/error';
 import { generateProjectSlug } from '@/lib/slug';
 import { isStored, storage } from '@/lib/storage';
@@ -9,6 +10,7 @@ import type { Context } from '@/server/route/route-types';
 import {
   DeleteOrgSchema,
   InsertOrgSchema,
+  LeaveOrgSchema,
   OrgIdSchema,
   UpdateOrgAvatarSchema,
   UpdateOrgNameSchema,
@@ -29,6 +31,7 @@ import {
 } from '@/server/store/org';
 import {
   createInvites,
+  getInvitesByIds,
   getOrgInvites,
   revokeInvite,
 } from '@/server/store/org-invite';
@@ -204,12 +207,23 @@ const org = new Hono<Context>()
     async (c) => {
       const { db, orgId, userId: inviterId } = c.var;
       const { invites } = c.req.valid('json');
-      const newInvites = await createInvites(db, {
+
+      // Create invites
+      const insertedInvites = await createInvites(db, {
         orgId,
         inviterId,
         invites,
       });
-      return c.json(newInvites);
+
+      // Get full details
+      const invitesWithDetails = await getInvitesByIds(
+        db,
+        insertedInvites.map((invite) => invite.id)
+      );
+
+      const emails = await sendOrgInviteEmails(invitesWithDetails);
+
+      return c.json(emails);
     }
   )
   // Revoke invite
@@ -272,12 +286,17 @@ const org = new Hono<Context>()
   // })
 
   // Leave organization
-  .post('/org/:orgId/leave', async (c) => {
-    const { db, userId } = c.var;
-    const { orgId } = c.req.param();
+  .post(
+    '/org/leave-org',
+    zValidator('json', LeaveOrgSchema),
+    authOrg('json'),
+    async (c) => {
+      const { db, userId } = c.var;
+      const { orgId } = c.req.valid('json');
 
-    await leaveOrg(db, { orgId, userId });
-    return c.json({});
-  });
+      await leaveOrg(db, { orgId, userId });
+      return c.json({});
+    }
+  );
 
 export default org;

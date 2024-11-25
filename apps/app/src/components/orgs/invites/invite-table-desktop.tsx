@@ -1,55 +1,25 @@
+import { TableNoResults } from '@/components/table/table-no-results';
+import { TableRows } from '@/components/table/table-rows';
+import { TableSkeleton } from '@/components/table/table-skeleton';
 import type { QueryInviteType } from '@/server/schema/org-invite';
-import { Skeleton } from '@hexa/ui/skeleton';
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from '@hexa/ui/table';
 import { type Table as TableType, flexRender } from '@tanstack/react-table';
-import type { ReactNode } from 'react';
-import { columns } from './columns';
 
-export const DesktopTable = ({
+export const InviteTableDesktop = ({
   table,
   isFetching,
 }: { table: TableType<QueryInviteType>; isFetching: boolean }) => {
-  const loading = (
-    <>
-      {[0].map((i) => (
-        <TableRow key={i}>
-          <TableCell colSpan={columns.length}>
-            <Skeleton className="h-10 w-full" />
-          </TableCell>
-        </TableRow>
-      ))}
-    </>
-  );
+  const loading = <TableSkeleton rows={5} />;
 
-  const rows = table.getRowModel().rows?.map((row) => (
-    <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-      {row.getVisibleCells().map((cell) => (
-        <TableCell key={cell.id}>
-          {
-            flexRender(
-              cell.column.columnDef.cell,
-              cell.getContext()
-            ) as ReactNode
-          }
-        </TableCell>
-      ))}
-    </TableRow>
-  ));
+  const rows = <TableRows table={table} />;
 
-  const noResutls = (
-    <TableRow>
-      <TableCell colSpan={columns.length} className="h-24 text-center">
-        No results.
-      </TableCell>
-    </TableRow>
-  );
+  const noResutls = <TableNoResults table={table} />;
 
   return (
     <div className="rounded-md border">

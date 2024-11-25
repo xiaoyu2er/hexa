@@ -46,7 +46,8 @@ export default function OrgInviteTemplate({
 
             <Text className="text-black text-sm leading-6">
               <span className="font-semibold">{inviterName}</span> (
-              {inviterEmail}) has invited you ({email}) to join
+              {inviterEmail ? `(${inviterEmail})` : ''}) has invited you (
+              {email}) to join
               <span className="font-semibold">{orgName}</span> as a
               <span className="font-semibold">{role.toLowerCase()}</span>.
             </Text>

@@ -1,7 +1,6 @@
 import { Check, PlusCircle } from '@hexa/ui/icons';
-import type { Column } from '@tanstack/react-table';
-import type * as React from 'react';
 
+import type { TableFacetedFilterProps } from '@/components/table/table-types';
 import { Badge } from '@hexa/ui/badge';
 import { Button } from '@hexa/ui/button';
 import {
@@ -17,21 +16,11 @@ import { Popover, PopoverContent, PopoverTrigger } from '@hexa/ui/popover';
 import { Separator } from '@hexa/ui/separator';
 import { cn } from '@hexa/utils';
 
-interface DataTableFacetedFilterProps<TData, TValue> {
-  column?: Column<TData, TValue>;
-  title?: string;
-  options: {
-    label: string;
-    value: string;
-    icon?: React.ComponentType<{ className?: string }>;
-  }[];
-}
-
 export function DataTableFacetedFilter<TData, TValue>({
   column,
   title,
   options,
-}: DataTableFacetedFilterProps<TData, TValue>) {
+}: TableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
 
@@ -60,11 +49,13 @@ export function DataTableFacetedFilter<TData, TValue>({
                   </Badge>
                 ) : (
                   options
-                    .filter((option) => selectedValues.has(option.value))
+                    .filter((option) =>
+                      selectedValues.has(String(option.value))
+                    )
                     .map((option) => (
                       <Badge
                         variant="secondary"
-                        key={option.value}
+                        key={String(option.value)}
                         className="rounded-sm px-1 font-normal"
                       >
                         {option.label}
@@ -83,15 +74,15 @@ export function DataTableFacetedFilter<TData, TValue>({
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
               {options.map((option) => {
-                const isSelected = selectedValues.has(option.value);
+                const isSelected = selectedValues.has(String(option.value));
                 return (
                   <CommandItem
-                    key={option.value}
+                    key={String(option.value)}
                     onSelect={() => {
                       if (isSelected) {
-                        selectedValues.delete(option.value);
+                        selectedValues.delete(String(option.value));
                       } else {
-                        selectedValues.add(option.value);
+                        selectedValues.add(String(option.value));
                       }
                       const filterValues = Array.from(selectedValues);
                       column?.setFilterValue(

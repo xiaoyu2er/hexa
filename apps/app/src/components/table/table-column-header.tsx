@@ -10,17 +10,17 @@ import { cn } from '@hexa/utils';
 import type { Column } from '@tanstack/react-table';
 import type { HTMLAttributes } from 'react';
 
-interface DataTableColumnHeaderProps<TData, TValue>
+interface TableColumnHeaderProps<TData, TValue>
   extends HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>;
   title: string;
 }
 
-export function DataTableColumnHeader<TData, TValue>({
+export function TableColumnHeader<TData, TValue>({
   column,
   title,
   className,
-}: DataTableColumnHeaderProps<TData, TValue>) {
+}: TableColumnHeaderProps<TData, TValue>) {
   if (!column.getCanSort()) {
     return (
       <div

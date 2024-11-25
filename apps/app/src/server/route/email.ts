@@ -9,7 +9,7 @@ import { Hono } from 'hono';
 const email = new Hono<Context>()
   // Check if email is already taken
   .post(
-    '/email',
+    '/check-email',
     zValidator('json', CheckEmailSchema),
     turnstileMiddleware(),
     async (c) => {
