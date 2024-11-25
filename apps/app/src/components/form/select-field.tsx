@@ -12,7 +12,7 @@ import type { FieldValues } from 'react-hook-form';
 
 type BaseSelectFieldProps = {
   placeholder?: string;
-  options: {
+  options: readonly {
     label: string;
     value: string;
   }[];

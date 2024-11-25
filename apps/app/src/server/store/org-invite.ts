@@ -30,7 +30,8 @@ export async function createInvites(
   const existings = await db.query.orgInviteTable.findMany({
     where: and(
       eq(orgInviteTable.orgId, data.orgId),
-      sql`${orgInviteTable.email} IN ${data.invites.map((invite) => invite.email)}`
+      sql`${orgInviteTable.email} IN ${data.invites.map((invite) => invite.email)}`,
+      eq(orgInviteTable.status, 'PENDING')
     ),
   });
 
@@ -55,24 +56,36 @@ export async function createInvites(
     ]);
   }
 
-  // Create invite
+  // Create invite values with all fields we want to update
   const values = data.invites.map((invite) => ({
     ...invite,
     email: invite.email.toLowerCase(),
     orgId: data.orgId,
     inviterId: data.inviterId,
+    createdAt: new Date(),
     expiresAt: createDate(INVITE_EXPIRE_TIME_SPAN),
     token: generateId(),
+    status: 'PENDING' as InviteStatusType,
   }));
-  const invites = await db
+
+  const insertedInvites = await db
     .insert(orgInviteTable)
     .values(values)
-    // .onConflictDoUpdate({
-    //   target: [orgInviteTable.email],
-    //   set: { expiresAt: sql`excluded.expiresAt` },
-    // })
+    .onConflictDoUpdate({
+      target: [orgInviteTable.orgId, orgInviteTable.email],
+      set: {
+        status: sql`excluded.status`,
+        createdAt: sql`excluded.created_at`,
+        expiresAt: sql`excluded.expires_at`,
+        token: sql`excluded.token`,
+        inviterId: sql`excluded.inviter_id`,
+        role: sql`excluded.role`,
+        name: sql`excluded.name`,
+      },
+    })
     .returning();
-  return invites;
+
+  return insertedInvites;
 }
 
 export async function revokeInvite(db: DbType, inviteId: string) {
@@ -96,6 +109,10 @@ export async function getInviteByToken(db: DbType, token: string) {
     },
   });
 
+  if (!invite) {
+    throw new ApiError('NOT_FOUND', 'Invite is invalid');
+  }
+
   return invite;
 }
 
@@ -118,6 +135,44 @@ export async function getInviteByToken(db: DbType, token: string) {
 
 //   return invites;
 // }
+
+// New function to get invites with details
+export async function getInvitesByIds(
+  db: DbType,
+  inviteIds: string[]
+): Promise<QueryInviteType[]> {
+  const invites = await db.query.orgInviteTable.findMany({
+    where: sql`${orgInviteTable.id} IN ${inviteIds}`,
+    with: {
+      org: true,
+      inviter: {
+        columns: {
+          id: true,
+          name: true,
+          avatarUrl: true,
+        },
+        with: {
+          emails: {
+            where: and(eq(emailTable.primary, true)),
+            limit: 1,
+          },
+        },
+      },
+    },
+  });
+
+  return invites.map((invite) => ({
+    ...invite,
+    createdAt: invite.createdAt.toISOString(),
+    expiresAt: invite.expiresAt.toISOString(),
+    inviter: {
+      id: invite.inviter.id,
+      name: invite.inviter.name,
+      avatarUrl: invite.inviter.avatarUrl,
+      email: invite.inviter.emails?.[0]?.email ?? null,
+    },
+  }));
+}
 
 export async function getOrgInvite(
   db: DbType,
@@ -196,7 +251,7 @@ export const getOrgInvites = async (
             ? desc(orgInviteTable[column])
             : asc(orgInviteTable[column])
         )
-      : [desc(orgInviteTable.createdAt)];
+      : [desc(orgInviteTable.expiresAt)];
 
   const baseQuery = {
     where: and(...conditions),

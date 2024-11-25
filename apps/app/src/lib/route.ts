@@ -2,6 +2,7 @@ import setEnv from '@/server/middleware/env';
 import { onError } from '@/server/middleware/on-error';
 import email from '@/server/route/email';
 import test from '@/server/route/env';
+import invite from '@/server/route/invite';
 import login from '@/server/route/login';
 import logout from '@/server/route/logout';
 import oauth from '@/server/route/oauth';
@@ -27,6 +28,7 @@ export const app = new Hono<Context>()
   .route('/', oauth)
   .route('/', project)
   .route('/', org)
+  .route('/', invite)
   .route('/', email)
   .onError(onError);
 

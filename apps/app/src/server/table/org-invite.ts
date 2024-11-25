@@ -1,7 +1,7 @@
 import { generateId } from '@/lib/crypto';
 import type { InviteStatusType } from '@/server/schema/org-invite';
 import type { OrgMemberRoleType } from '@/server/schema/org-memeber';
-import { createdAt, expiresAt, lower } from '@/server/table/common';
+import { createdAt, expiresAt } from '@/server/table/common';
 import { orgIdNotNull } from '@/server/table/org';
 import { userTable } from '@/server/table/user';
 import { index, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
@@ -32,7 +32,7 @@ export const orgInviteTable = sqliteTable(
   (t) => ({
     inviteOrgEmailIndex: uniqueIndex('invite_org_email_index').on(
       t.orgId,
-      lower(t.email)
+      t.email
     ),
     inviteOrgIdIndex: index('invite_org_id_index').on(t.orgId),
   })

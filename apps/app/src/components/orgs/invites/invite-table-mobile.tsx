@@ -1,12 +1,12 @@
 import {
   MobileCardSkeleton,
   MobileCardWithActions,
-} from '@/components/orgs/invites/mobile-card';
+} from '@/components/orgs/invites/invite-mobile-card';
 import type { QueryInviteType } from '@/server/schema/org-invite';
 import {} from '@hexa/ui/card';
 import type { Table as TableType } from '@tanstack/react-table';
 
-export const MobileTable = ({
+export const InviteTableMobile = ({
   table,
   isFetching,
 }: { table: TableType<QueryInviteType>; isFetching: boolean }) => {

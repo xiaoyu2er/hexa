@@ -48,3 +48,6 @@ export type DeleteOrgType = z.infer<typeof DeleteOrgSchema>;
 // Update Org Avatar
 export const UpdateOrgAvatarSchema = UpdateAvatarSchema.merge(OrgIdSchema);
 export type UpdateOrgAvatarType = z.infer<typeof UpdateOrgAvatarSchema>;
+
+export const LeaveOrgSchema = OrgIdSchema;
+export type LeaveOrgType = z.infer<typeof LeaveOrgSchema>;

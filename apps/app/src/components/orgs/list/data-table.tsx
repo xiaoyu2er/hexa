@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  type ColumnDef,
   type ColumnFiltersState,
   type VisibilityState,
   flexRender,
@@ -11,21 +10,17 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
+import { queryOrgsOptions } from '@/lib/queries/orgs';
 import { Table, TableBody, TableCell, TableRow } from '@hexa/ui/table';
+import { useQuery } from '@tanstack/react-query';
 import { type ReactNode, useState } from 'react';
+import { columns } from './columns';
 import { DataTablePagination } from './data-table-pagination';
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-  rowCount: number;
-}
-
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-  rowCount,
-}: DataTableProps<TData, TValue>) {
+export function DataTable() {
+  const {
+    data: { data = [], rowCount = 0 } = {},
+  } = useQuery(queryOrgsOptions);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const table = useReactTable({

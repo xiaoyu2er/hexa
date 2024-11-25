@@ -1,5 +1,6 @@
 import { generateId } from '@/lib/crypto';
 import type { OrgMemberRoleType } from '@/server/schema/org-memeber';
+import { createdAt } from '@/server/table/common';
 import { orgIdNotNull } from '@/server/table/org';
 import { userIdNotNull } from '@/server/table/user';
 import { index, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
@@ -13,6 +14,7 @@ export const orgMemberTable = sqliteTable(
     ...orgIdNotNull,
     ...userIdNotNull,
     role: text('role').$type<OrgMemberRoleType>().default('MEMBER').notNull(),
+    ...createdAt,
   },
   (t) => ({
     orgMemberIndex: uniqueIndex('org_member_index').on(t.userId, t.orgId),

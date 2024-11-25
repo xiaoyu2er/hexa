@@ -1,5 +1,6 @@
 'use client';
 
+import { LeaveOrg } from '@/components/orgs/list/leave-org';
 import { OrgAvatar } from '@/components/orgs/org-avatar';
 import type { SelectUserOrgType } from '@/server/schema/org';
 import { Badge } from '@hexa/ui/badge';
@@ -30,11 +31,9 @@ export const columns: ColumnDef<SelectUserOrgType>[] = [
       return (
         <div className="flex items-center justify-end gap-2">
           <Button variant="outline" size="sm" asChild>
-            <Link href={`/${org.name}/settings/profile`}>Settings</Link>
+            <Link href="/">Settings</Link>
           </Button>
-          <Button variant="destructive" size="sm">
-            Leave
-          </Button>
+          <LeaveOrg orgId={org.id} onSuccess={() => {}} />
         </div>
       );
     },

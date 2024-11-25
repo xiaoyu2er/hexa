@@ -7,7 +7,7 @@ import type {
 } from '@/server/schema/org-memeber';
 import { orgTable } from '@/server/table/org';
 import { orgMemberTable } from '@/server/table/org-member';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 
 // 1. List all orgs that user belongs to with roles
 export const getUserOrgs = async (
@@ -103,12 +103,12 @@ export const transferOrgOwnership = async (
   return true;
 };
 
-// 3. Leave organization
+// Leave organization
 export const leaveOrg = async (
   db: DbType,
   { orgId, userId }: { orgId: string; userId: string }
 ) => {
-  // Check if user is owner
+  // Check if user is member
   const member = await db.query.orgMemberTable.findFirst({
     where: and(
       eq(orgMemberTable.orgId, orgId),
@@ -123,11 +123,26 @@ export const leaveOrg = async (
     );
   }
 
+  // If member is owner, check if there are other owners
   if (member.role === 'OWNER') {
-    throw new ApiError(
-      'FORBIDDEN',
-      'Organization owner must transfer ownership before leaving'
-    );
+    const otherOwnersCount = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(orgMemberTable)
+      .where(
+        and(
+          eq(orgMemberTable.orgId, orgId),
+          eq(orgMemberTable.role, 'OWNER'),
+          sql`${orgMemberTable.userId} != ${userId}`
+        )
+      )
+      .then((result) => Number(result[0]?.count ?? 0));
+
+    if (otherOwnersCount === 0) {
+      throw new ApiError(
+        'FORBIDDEN',
+        'Cannot leave organization as the only owner - transfer ownership first'
+      );
+    }
   }
 
   // Remove user from org

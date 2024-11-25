@@ -2,26 +2,19 @@
 
 import { useDebounce } from '@hexa/ui/hooks/use-debounce';
 import { X } from '@hexa/ui/icons';
-import type { Table } from '@tanstack/react-table';
 import { useEffect, useState } from 'react';
 
-import { DataTableViewOptions } from '@/components/orgs/invites/data-table-view-options';
+import { DataTableFacetedFilter } from '@/components/table/table-faceted-filter';
+import type { TableToolbarDesktopProps } from '@/components/table/table-types';
+import { DataTableViewOptions } from '@/components/table/table-view-options';
 import { Button } from '@hexa/ui/button';
 import { Input } from '@hexa/ui/input';
 
-import { DataTableFacetedFilter } from '@/components/orgs/invites/data-table-faceted-filter';
-import {
-  InviteRoleOptions,
-  InviteStatusOptions,
-} from '@/server/schema/org-invite';
-
-interface DesktopTableToolbarProps<TData> {
-  table: Table<TData>;
-}
-
-export function DesktopTableToolbar<TData>({
+export function TableToolbarDesktop<TData>({
   table,
-}: DesktopTableToolbarProps<TData>) {
+  filterConfigs = [],
+  searchPlaceholder = 'Search...',
+}: TableToolbarDesktopProps<TData>) {
   const [value, setValue] = useState('');
   const debouncedValue = useDebounce(value, 1000);
   const isFiltered = table.getState().columnFilters.length > 0;
@@ -38,25 +31,26 @@ export function DesktopTableToolbar<TData>({
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
         <Input
-          placeholder="Search invitee..."
+          placeholder={searchPlaceholder}
           value={value}
           onChange={(event) => setValue(event.target.value)}
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        {table.getColumn('role') && (
-          <DataTableFacetedFilter
-            column={table.getColumn('role')}
-            title="Role"
-            options={InviteRoleOptions}
-          />
-        )}
-        {table.getColumn('status') && (
-          <DataTableFacetedFilter
-            column={table.getColumn('status')}
-            title="Status"
-            options={InviteStatusOptions}
-          />
-        )}
+        {filterConfigs.map((config) => {
+          const column = table.getColumn(String(config.columnId));
+          if (!column) {
+            return null;
+          }
+
+          return (
+            <DataTableFacetedFilter
+              key={String(config.columnId)}
+              column={column}
+              title={config.label}
+              options={config.options}
+            />
+          );
+        })}
         {isFiltered && (
           <Button
             variant="ghost"
@@ -67,7 +61,7 @@ export function DesktopTableToolbar<TData>({
             className="h-8 px-2 lg:px-3"
           >
             Reset
-            <X />
+            <X className="ml-2 h-4 w-4" />
           </Button>
         )}
       </div>

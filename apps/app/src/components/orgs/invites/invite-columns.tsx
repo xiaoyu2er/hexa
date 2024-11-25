@@ -1,6 +1,6 @@
 'use client';
-import { DataTableColumnHeader } from '@/components/orgs/invites/data-table-column-header';
-import RevokeInvite from '@/components/orgs/invites/revoke-invite';
+import RevokeInvite from '@/components/orgs/invites/invite-revoke-button';
+import { TableColumnHeader } from '@/components/table/table-column-header';
 import { UserAvatar } from '@/components/user/settings/user-avatar';
 import { invalidateOrgInvites } from '@/lib/queries/orgs';
 import { SortableColumnOptions } from '@/server/schema/org-invite';
@@ -8,6 +8,7 @@ import type { QueryInviteType } from '@/server/schema/org-invite';
 import { Badge } from '@hexa/ui/badge';
 import type { ColumnDef } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
+import { InviteLink } from './invite-link';
 
 // Helper function to get column label
 const getColumnLabel = (columnId: string) =>
@@ -16,12 +17,11 @@ const getColumnLabel = (columnId: string) =>
 
 export const columns: ColumnDef<QueryInviteType>[] = [
   { id: 'search' },
-
   {
     id: 'email',
     accessorKey: 'email',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title={getColumnLabel('email')} />
+      <TableColumnHeader column={column} title={getColumnLabel('email')} />
     ),
     cell: ({ row }) => {
       const invite = row.original;
@@ -33,7 +33,7 @@ export const columns: ColumnDef<QueryInviteType>[] = [
   {
     accessorKey: 'role',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title={getColumnLabel('role')} />
+      <TableColumnHeader column={column} title={getColumnLabel('role')} />
     ),
     cell: ({ row }) => {
       const invite = row.original;
@@ -45,7 +45,7 @@ export const columns: ColumnDef<QueryInviteType>[] = [
   {
     accessorKey: 'inviter',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Inviter" />
+      <TableColumnHeader column={column} title="Inviter" />
     ),
     cell: ({ row }) => {
       const member = row.original;
@@ -66,10 +66,7 @@ export const columns: ColumnDef<QueryInviteType>[] = [
   {
     accessorKey: 'createdAt',
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title={getColumnLabel('createdAt')}
-      />
+      <TableColumnHeader column={column} title={getColumnLabel('createdAt')} />
     ),
     cell: ({ row }) => {
       const invite = row.original;
@@ -80,10 +77,7 @@ export const columns: ColumnDef<QueryInviteType>[] = [
   {
     accessorKey: 'expiresAt',
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title={getColumnLabel('expiresAt')}
-      />
+      <TableColumnHeader column={column} title={getColumnLabel('expiresAt')} />
     ),
     cell: ({ row }) => {
       const invite = row.original;
@@ -94,12 +88,23 @@ export const columns: ColumnDef<QueryInviteType>[] = [
   {
     accessorKey: 'status',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title={getColumnLabel('status')} />
+      <TableColumnHeader column={column} title={getColumnLabel('status')} />
     ),
     cell: ({ row }) => {
       const invite = row.original;
       return <Badge variant="secondary">{capitalize(invite.status)}</Badge>;
     },
+  },
+  {
+    id: 'invite-link',
+    header: ({ column }) => (
+      <TableColumnHeader column={column} title="Invite Link" />
+    ),
+    cell: ({ row }) => {
+      const invite = row.original;
+      return <InviteLink token={invite.token} />;
+    },
+    enableSorting: false,
   },
   {
     id: 'actions',

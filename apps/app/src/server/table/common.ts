@@ -7,7 +7,7 @@ export const expiresAt = {
 export const createdAt = {
   createdAt: integer('created_at', { mode: 'timestamp' })
     .notNull()
-    .default(sql`(unixepoch())`),
+    .$default(() => sql`unixepoch()`),
 };
 
 // custom lower function
