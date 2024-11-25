@@ -3,12 +3,17 @@
   "extends": ["ultracite"],
   "files": {
     "ignore": [
-      "apps/web/.next/**/*",
-      "apps/web/.worker-next/**/*",
-      "apps/web/.wrangler/**/*",
-      "apps/web/drizzle/**/*",
-      "packages/email-templates/.react-email/**/*",
-      "apps/web/env.d.ts"
+      "apps/app/.next/**/*",
+      "apps/app/.worker-next/**/*",
+      "apps/app/.wrangler/**/*",
+      "apps/app/drizzle/**/*",
+      "apps/app/env.d.ts",
+      "apps/www/.next/**/*",
+      "apps/www/.worker-next/**/*",
+      "apps/www/.wrangler/**/*",
+      "apps/www/drizzle/**/*",
+      "apps/www/env.d.ts",
+      "packages/email-templates/.react-email/**/*"
     ]
   },
   "linter": {
