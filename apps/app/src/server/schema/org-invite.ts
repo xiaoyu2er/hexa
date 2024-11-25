@@ -57,6 +57,14 @@ export const InviteRoleOptions = [
   },
 ];
 
+export const SortableColumnOptions = [
+  { label: 'Invite Date', value: 'createdAt' },
+  { label: 'Expiry Date', value: 'expiresAt' },
+  { label: 'Invitee Email', value: 'email' },
+  { label: 'Invitee Role', value: 'role' },
+  { label: 'Status', value: 'status' },
+] as const;
+
 export type InviteStatusType = z.infer<typeof zInviteStatusEnum>;
 
 export const InsertInviteSchema = createInsertSchema(orgInviteTable, {

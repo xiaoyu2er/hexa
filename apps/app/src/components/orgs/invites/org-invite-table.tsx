@@ -1,34 +1,23 @@
 'use client';
-import { DataTableToolbar } from '@/components/orgs/invites/data-table-toolbar';
+import { DesktopTable } from '@/components/orgs/invites/desktop-table';
+import { DesktopTableToolbar } from '@/components/orgs/invites/desktop-table-toolbar';
+import { MobileTable } from '@/components/orgs/invites/mobile-table';
+import { MobileTableToolbar } from '@/components/orgs/invites/mobile-table-toolbar';
 import { useInvites } from '@/hooks/use-invites';
 import type { QueryInviteType } from '@/server/schema/org-invite';
-import { Skeleton } from '@hexa/ui/skeleton';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@hexa/ui/table';
+import {} from '@hexa/ui/table';
 import {
   type ColumnFiltersState,
   type PaginationState,
   type SortingState,
   type Table as TableType,
   type VisibilityState,
-  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import {
-  type ReactNode,
-  forwardRef,
-  useImperativeHandle,
-  useState,
-} from 'react';
+import { forwardRef, useImperativeHandle, useState } from 'react';
 import { columns } from './columns';
 import { DataTablePagination } from './data-table-pagination';
 
@@ -86,77 +75,19 @@ export const OrgInviteTable = forwardRef<OrgInviteTableRef>((_, ref) => {
     table,
   }));
 
-  const loading = (
-    <>
-      {[0].map((i) => (
-        <TableRow key={i}>
-          <TableCell colSpan={columns.length}>
-            <Skeleton className="h-10 w-full" />
-          </TableCell>
-        </TableRow>
-      ))}
-    </>
-  );
-
-  const rows = table.getRowModel().rows?.map((row) => (
-    <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-      {row.getVisibleCells().map((cell) => (
-        <TableCell key={cell.id}>
-          {
-            flexRender(
-              cell.column.columnDef.cell,
-              cell.getContext()
-            ) as ReactNode
-          }
-        </TableCell>
-      ))}
-    </TableRow>
-  ));
-
-  const noResutls = (
-    <TableRow>
-      <TableCell colSpan={columns.length} className="h-24 text-center">
-        No results.
-      </TableCell>
-    </TableRow>
-  );
-
   return (
-    <div className="space-y-4">
-      <DataTableToolbar table={table} />
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-
-          <TableBody>
-            {isFetching
-              ? loading
-              : // biome-ignore lint/nursery/noNestedTernary: <explanation>
-                table.getRowModel().rows?.length
-                ? rows
-                : noResutls}
-          </TableBody>
-        </Table>
+    <>
+      <div className="space-y-4 lg:hidden">
+        <MobileTableToolbar table={table} />
+        <MobileTable table={table} isFetching={isFetching} />
+        <DataTablePagination table={table} />
       </div>
-      <DataTablePagination table={table} />
-    </div>
+      <div className="hidden space-y-4 lg:block">
+        <DesktopTableToolbar table={table} />
+        <DesktopTable table={table} isFetching={isFetching} />
+        <DataTablePagination table={table} />
+      </div>
+    </>
   );
 });
 
