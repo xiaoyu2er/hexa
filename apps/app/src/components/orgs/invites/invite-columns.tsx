@@ -3,7 +3,7 @@ import RevokeInvite from '@/components/orgs/invites/invite-revoke-button';
 import { TableColumnHeader } from '@/components/table/table-column-header';
 import { UserAvatar } from '@/components/user/settings/user-avatar';
 import { invalidateOrgInvites } from '@/lib/queries/orgs';
-import { SortableColumnOptions } from '@/server/schema/org-invite';
+import { InviteSortableColumnOptions } from '@/server/schema/org-invite';
 import type { QueryInviteType } from '@/server/schema/org-invite';
 import { Badge } from '@hexa/ui/badge';
 import type { ColumnDef } from '@tanstack/react-table';
@@ -12,8 +12,8 @@ import { InviteLink } from './invite-link';
 
 // Helper function to get column label
 const getColumnLabel = (columnId: string) =>
-  SortableColumnOptions.find((option) => option.value === columnId)?.label ??
-  capitalize(columnId);
+  InviteSortableColumnOptions.find((option) => option.value === columnId)
+    ?.label ?? capitalize(columnId);
 
 export const columns: ColumnDef<QueryInviteType>[] = [
   { id: 'search' },

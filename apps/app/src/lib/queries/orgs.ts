@@ -15,42 +15,51 @@ export const queryOrgsOptions = queryOptions({
   staleTime: Number.POSITIVE_INFINITY,
 });
 
-export const queryOrgMembersOptions = (orgId: string) =>
+export interface TableQuery {
+  pagination: PaginationState;
+  sorting: SortingState;
+  filters: ColumnFiltersState;
+}
+
+export const getTableQuery = ({
+  pagination,
+  sorting,
+  filters,
+}: TableQuery) => ({
+  pageIndex: pagination.pageIndex.toString(),
+  pageSize: pagination.pageSize.toString(),
+  ...Object.fromEntries(
+    sorting.map((sort) => [
+      `${camelCase(`sort_${sort.id}`)}`,
+      sort.desc ? 'desc' : 'asc',
+    ])
+  ),
+  ...Object.fromEntries(
+    filters.map((filter) => [
+      filter.id === 'search' ? 'search' : `${camelCase(`filter_${filter.id}`)}`,
+      filter.value,
+    ])
+  ),
+});
+
+export const queryOrgMembersOptions = (orgId: string, query: TableQuery) =>
   queryOptions({
-    queryKey: ['orgs', orgId, 'members'],
-    queryFn: () => $getOrgMembers({ param: { orgId } }),
+    queryKey: ['orgs', orgId, 'members', query],
+    queryFn: () =>
+      $getOrgMembers({
+        param: { orgId },
+        query: getTableQuery(query),
+      }),
     staleTime: Number.POSITIVE_INFINITY,
   });
 
-export const queryOrgInvitesOptions = (
-  orgId: string,
-  pagination: PaginationState,
-  sorting: SortingState,
-  filters: ColumnFiltersState
-) =>
+export const queryOrgInvitesOptions = (orgId: string, query: TableQuery) =>
   queryOptions({
-    queryKey: ['orgs', orgId, 'invites', pagination, sorting, filters],
+    queryKey: ['orgs', orgId, 'invites', query],
     queryFn: () =>
       $getOrgInvites({
         param: { orgId },
-        query: {
-          pageIndex: pagination.pageIndex.toString(),
-          pageSize: pagination.pageSize.toString(),
-          ...Object.fromEntries(
-            sorting.map((sort) => [
-              `${camelCase(`sort_${sort.id}`)}`,
-              sort.desc ? 'desc' : 'asc',
-            ])
-          ),
-          ...Object.fromEntries(
-            filters.map((filter) => [
-              filter.id === 'search'
-                ? 'search'
-                : `${camelCase(`filter_${filter.id}`)}`,
-              filter.value,
-            ])
-          ),
-        },
+        query: getTableQuery(query),
       }),
     staleTime: Number.POSITIVE_INFINITY,
   });

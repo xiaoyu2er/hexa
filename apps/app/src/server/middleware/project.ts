@@ -1,7 +1,7 @@
 import { ApiError } from '@/lib/error/error';
 import { checkPermission } from '@/lib/permission';
 import type { ValidTarget } from '@/server/route/route-types';
-import type { OrgMemberRoleType } from '@/server/schema/org-memeber';
+import type { OrgMemberRoleType } from '@/server/schema/org-member';
 import { getProjectWithRole } from '@/server/store/project';
 import { createMiddleware } from 'hono/factory';
 

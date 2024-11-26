@@ -20,6 +20,7 @@ import {
   OrgInviteQuerySchema,
   RevokeInviteSchema,
 } from '@/server/schema/org-invite';
+import { OrgMemberQuerySchema } from '@/server/schema/org-member';
 import {
   assertUserHasOrgRole,
   createOrg,
@@ -176,10 +177,12 @@ const org = new Hono<Context>()
   .get(
     '/org/:orgId/members',
     zValidator('param', OrgIdSchema),
+    zValidator('query', OrgMemberQuerySchema),
     authOrg('param'),
     async (c) => {
       const { db, orgId } = c.var;
-      const members = await getOrgMembers(db, orgId);
+      const query = c.req.valid('query');
+      const members = await getOrgMembers(db, { orgId, ...query });
       return c.json(members);
     }
   )

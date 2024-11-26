@@ -3,7 +3,7 @@ import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { orgTable } from '@/server/table/org';
 
 import { NameSchema, UpdateAvatarSchema } from '@/server/schema/common';
-import type { OrgMemberRoleType } from '@/server/schema/org-memeber';
+import type { OrgMemberRoleType } from '@/server/schema/org-member';
 import { z } from 'zod';
 
 // Org

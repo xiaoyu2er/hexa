@@ -22,15 +22,14 @@ interface TableToolbarBaseProps<TData> {
   table: Table<TData>;
   filterConfigs?: FilterConfig<TData>[];
   searchPlaceholder?: string;
+  sortOptions: SortOption<TData>[];
 }
 
 export interface TableToolbarDesktopProps<TData>
   extends TableToolbarBaseProps<TData> {}
 
 export interface TableToolbarMobileProps<TData>
-  extends TableToolbarBaseProps<TData> {
-  sortOptions: SortOption<TData>[];
-}
+  extends TableToolbarBaseProps<TData> {}
 
 export interface TableFacetedFilterProps<TData, TValue> {
   column: Column<TData>;

@@ -5,7 +5,7 @@ import {
   OrgInviteTable,
   type OrgInviteTableRef,
 } from '@/components/orgs/invites/invite-table';
-import { OrgMembers } from '@/components/orgs/members/org-members';
+import { OrgMemberTable } from '@/components/orgs/members/org-member-table';
 import { useProject } from '@/hooks/use-project';
 import { invalidateOrgInvites } from '@/lib/queries/orgs';
 import { useModal } from '@ebay/nice-modal-react';
@@ -25,7 +25,7 @@ export function MembersPage() {
         <p className="text-muted-foreground">Manage your team members here.</p>
       </div>
 
-      <Tabs defaultValue="invites">
+      <Tabs defaultValue="members">
         <TabsList>
           <TabsTrigger value="members">Members</TabsTrigger>
           <TabsTrigger value="invites">Invites</TabsTrigger>
@@ -43,7 +43,7 @@ export function MembersPage() {
           Invite
         </Button>
         <TabsContent value="members" className="mt-4">
-          <OrgMembers />
+          <OrgMemberTable />
         </TabsContent>
         <TabsContent value="invites" className="mt-4">
           <OrgInviteTable ref={inviteTableRef} />

@@ -1,6 +1,5 @@
 'use client';
-
-import { SortableColumnOptions } from '@/server/schema/org-invite';
+import type { SortOption } from '@/components/table/table-types';
 import { Button } from '@hexa/ui/button';
 import { DropdownMenuTrigger } from '@hexa/ui/dropdown-menu';
 import {
@@ -14,32 +13,24 @@ import { Settings2 } from '@hexa/ui/icons';
 import type { Table } from '@tanstack/react-table';
 
 // Helper function to get column label
-const getColumnLabel = (columnId: string) => {
+function getColumnLabel<TData>(options: SortOption<TData>[], columnId: string) {
   // First check for sortable columns
-  const sortableOption = SortableColumnOptions.find(
-    (option) => option.value === columnId
-  );
+  const sortableOption = options.find((option) => option.value === columnId);
   if (sortableOption) {
     return sortableOption.label;
   }
 
-  // Then handle special cases
-  switch (columnId) {
-    case 'inviter':
-      return 'Inviter';
-    case 'actions':
-      return 'Actions';
-    default:
-      return columnId;
-  }
-};
+  return columnId;
+}
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>;
+  sortOptions: SortOption<TData>[];
 }
 
 export function DataTableViewOptions<TData>({
   table,
+  sortOptions = [],
 }: DataTableViewOptionsProps<TData>) {
   return (
     <DropdownMenu>
@@ -70,7 +61,7 @@ export function DataTableViewOptions<TData>({
                 checked={column.getIsVisible()}
                 onCheckedChange={(value) => column.toggleVisibility(!!value)}
               >
-                {getColumnLabel(column.id)}
+                {getColumnLabel(sortOptions, column.id)}
               </DropdownMenuCheckboxItem>
             );
           })}

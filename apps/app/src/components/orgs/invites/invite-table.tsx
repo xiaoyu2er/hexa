@@ -1,17 +1,21 @@
 'use client';
-import { InviteTableDesktop } from '@/components/orgs/invites/invite-table-desktop';
-import { InviteTableMobile } from '@/components/orgs/invites/invite-table-mobile';
+import {
+  InviteCardSkeleton,
+  InviteCardWithActions,
+} from '@/components/orgs/invites/invite-card';
+import { InviteTableDesktop } from '@/components/table/table-desktop';
+import { TableMobile } from '@/components/table/table-mobile';
 import { TablePagination } from '@/components/table/table-pagination';
 import { TableToolbarDesktop } from '@/components/table/table-toolbar-desktop';
 import { TableToolbarMobile } from '@/components/table/table-toolbar-mobile';
 import type { FilterConfig } from '@/components/table/table-types';
 import { useInvites } from '@/hooks/use-invites';
 import {
+  InviteSortableColumnOptions,
   InviteStatusOptions,
   type QueryInviteType,
-  SortableColumnOptions,
 } from '@/server/schema/org-invite';
-import { OrgRoleOptions } from '@/server/schema/org-memeber';
+import { OrgRoleOptions } from '@/server/schema/org-member';
 import {} from '@hexa/ui/table';
 import {
   type ColumnFiltersState,
@@ -40,23 +44,13 @@ export const OrgInviteTable = forwardRef<OrgInviteTableRef>((_, ref) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const {
-    data: {
-      data = [],
-      metadata = {
-        totalCount: 0,
-        pageCount: 0,
-        currentPage: 0,
-        pageSize: 5,
-        hasNextPage: false,
-        hasPreviousPage: false,
-      },
-    } = {},
+    data: { data = [], rowCount = 0 } = {},
     isFetching,
-  } = useInvites(pagination, sorting, columnFilters);
+  } = useInvites({ pagination, sorting, filters: columnFilters });
 
   const table = useReactTable({
     data,
-    rowCount: metadata.totalCount,
+    rowCount,
     columns: columns,
     manualPagination: true,
     manualSorting: true,
@@ -100,9 +94,14 @@ export const OrgInviteTable = forwardRef<OrgInviteTableRef>((_, ref) => {
           table={table}
           searchPlaceholder="Search invitee..."
           filterConfigs={filterConfigs}
-          sortOptions={[...SortableColumnOptions]}
+          sortOptions={InviteSortableColumnOptions}
         />
-        <InviteTableMobile table={table} isFetching={isFetching} />
+        <TableMobile
+          table={table}
+          isFetching={isFetching}
+          MobileCard={InviteCardWithActions}
+          MobileCardSkeleton={InviteCardSkeleton}
+        />
         <TablePagination table={table} />
       </div>
       <div className="hidden space-y-4 lg:block">
@@ -110,6 +109,7 @@ export const OrgInviteTable = forwardRef<OrgInviteTableRef>((_, ref) => {
           table={table}
           searchPlaceholder="Search invitee..."
           filterConfigs={filterConfigs}
+          sortOptions={InviteSortableColumnOptions}
         />
         <InviteTableDesktop table={table} isFetching={isFetching} />
         <TablePagination table={table} />

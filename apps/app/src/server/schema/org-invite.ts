@@ -4,7 +4,7 @@ import {
   zSortEnum,
 } from '@/server/schema/common';
 import { SelectOrgSchema } from '@/server/schema/org';
-import { zOrgMemberRoleEnum } from '@/server/schema/org-memeber';
+import { zOrgMemberRoleEnum } from '@/server/schema/org-member';
 import { orgInviteTable } from '@/server/table/org-invite';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import type { Simplify } from 'type-fest';
@@ -18,6 +18,7 @@ export const zInviteStatusEnum = z.enum([
   'REJECTED',
   'EXPIRED',
 ]);
+export type InviteStatusType = z.infer<typeof zInviteStatusEnum>;
 
 export const InviteStatusOptions = [
   {
@@ -42,15 +43,20 @@ export const InviteStatusOptions = [
   },
 ];
 
-export const SortableColumnOptions = [
-  { label: 'Invite Date', value: 'createdAt' },
-  { label: 'Expiry Date', value: 'expiresAt' },
-  { label: 'Invitee Email', value: 'email' },
-  { label: 'Invitee Role', value: 'role' },
+export const InviteSortableColumnOptions = [
+  { label: 'Expires', value: 'expiresAt' },
+  { label: 'Created', value: 'createdAt' },
+  { label: 'Name', value: 'name' },
+  { label: 'Email', value: 'email' },
+  { label: 'Role', value: 'role' },
   { label: 'Status', value: 'status' },
-] as const;
+] as const satisfies Array<{
+  label: string;
+  value: keyof QueryInviteType;
+}>;
 
-export type InviteStatusType = z.infer<typeof zInviteStatusEnum>;
+export type InviteSortableColumn =
+  (typeof InviteSortableColumnOptions)[number]['value'];
 
 export const InsertInviteSchema = createInsertSchema(orgInviteTable, {
   role: zOrgMemberRoleEnum,

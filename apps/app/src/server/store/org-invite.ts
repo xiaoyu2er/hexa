@@ -1,8 +1,6 @@
 import { INVITE_EXPIRE_TIME_SPAN } from '@/lib/const';
 import { generateId } from '@/lib/crypto';
 import { ApiError } from '@/lib/error/error';
-import type { PaginatedResult } from '@/lib/pagination';
-import { paginateQuery } from '@/lib/pagination';
 import type { DbType } from '@/server/route/route-types';
 import {
   type CreateInvitesType,
@@ -12,7 +10,7 @@ import {
   type SelectInviteType,
   transformSortParams,
 } from '@/server/schema/org-invite';
-import type { OrgMemberRoleType } from '@/server/schema/org-memeber';
+import type { OrgMemberRoleType } from '@/server/schema/org-member';
 import { emailTable } from '@/server/table/email';
 import { orgInviteTable } from '@/server/table/org-invite';
 import { orgMemberTable } from '@/server/table/org-member';
@@ -222,7 +220,7 @@ export const getOrgInvites = async (
     search,
     ...sorting
   }: { orgId: string } & OrgInviteQueryType
-): Promise<PaginatedResult<QueryInviteType>> => {
+): Promise<{ data: QueryInviteType[]; rowCount: number }> => {
   // Start with base conditions
   const conditions = [eq(orgInviteTable.orgId, orgId)];
 
@@ -253,9 +251,13 @@ export const getOrgInvites = async (
         )
       : [desc(orgInviteTable.expiresAt)];
 
-  const baseQuery = {
-    where: and(...conditions),
+  // Calculate offset
+  const offset = pageIndex * pageSize;
+
+  // Execute the paginated query with limit and offset
+  const data = await db.query.orgInviteTable.findMany({
     with: {
+      org: true,
       inviter: {
         columns: {
           id: true,
@@ -271,29 +273,37 @@ export const getOrgInvites = async (
       },
     },
     orderBy,
-  };
-
-  const result = await paginateQuery<QueryInviteType>(db, baseQuery, {
-    pageIndex,
-    pageSize,
+    limit: pageSize,
+    offset: offset,
   });
 
+  // Get total count using a separate count query
+  const [result] = await db
+    .select({
+      count: sql`count(*)`,
+    })
+    .from(orgInviteTable)
+    .where(and(...conditions));
+
+  const rowCount = Number(result?.count) ?? 0;
+
   // Transform the data as needed
-  const transformedData = result.data.map((invite) => ({
-    ...invite,
-    createdAt: invite.createdAt as unknown as string,
-    expiresAt: invite.expiresAt as unknown as string,
-    inviter: {
-      id: invite.inviter.id,
-      name: invite.inviter.name,
-      avatarUrl: invite.inviter.avatarUrl,
-      // @ts-ignore
-      email: invite.inviter.emails?.[0]?.email ?? null,
-    },
-  }));
+  const transformedData: QueryInviteType[] = data.map((invite) => {
+    return {
+      ...invite,
+      createdAt: invite.createdAt as unknown as string,
+      expiresAt: invite.expiresAt as unknown as string,
+      inviter: {
+        id: invite.inviter.id,
+        name: invite.inviter.name,
+        avatarUrl: invite.inviter.avatarUrl,
+        email: invite.inviter.emails?.[0]?.email ?? null,
+      },
+    };
+  });
 
   return {
-    ...result,
+    rowCount,
     data: transformedData,
   };
 };
