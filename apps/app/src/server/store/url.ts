@@ -1,23 +1,86 @@
 import { ApiError } from '@/lib/error/error';
 import type { DbType } from '@/server/route/route-types';
-import type { InsertShortUrlType } from '@/server/schema/url';
+import { transformSortParams } from '@/server/schema/url';
+import type {
+  InsertUrlType,
+  SelectUrlType,
+  UrlQueryType,
+} from '@/server/schema/url';
 import { urlTable } from '@/server/table/url';
-import { and, eq, or, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, sql } from 'drizzle-orm';
 
-// Create a new short URL
-export async function createShortUrl(db: DbType, data: InsertShortUrlType) {
-  // Check if slug is already taken in this project
-  const existing = await db.query.urlTable.findFirst({
-    where: and(
-      eq(urlTable.projectId, data.projectId),
-      eq(urlTable.slug, data.slug)
-    ),
-  });
+// Get all URLs in a project
+export async function getUrls(
+  db: DbType,
+  projectId: string,
+  { filterDomain, search, pageIndex, pageSize, ...sorting }: UrlQueryType
+): Promise<{ rowCount: number; data: SelectUrlType[] }> {
+  // Start with base conditions
+  const conditions = [eq(urlTable.projectId, projectId)];
 
-  if (existing) {
-    throw new ApiError('CONFLICT', 'URL slug already exists in this project');
+  if (filterDomain?.length) {
+    // Add filter conditions
+    conditions.push(sql`${urlTable.domain} IN ${filterDomain}`);
   }
 
+  if (search) {
+    conditions.push(
+      sql`(${urlTable.domain} LIKE ${`%${search}%`} OR 
+          ${urlTable.destUrl} LIKE ${`%${search}%`}) OR 
+          ${urlTable.slug} LIKE ${`%${search}%`} OR 
+          ${urlTable.title} LIKE ${`%${search}%`})`
+    );
+  }
+  const sortParams = transformSortParams(sorting);
+
+  // Use sortParams in your DB query
+  const orderBy =
+    sortParams.length > 0
+      ? sortParams.map(({ column, sort }) =>
+          sort === 'desc' ? desc(urlTable[column]) : asc(urlTable[column])
+        )
+      : [desc(urlTable.createdAt)];
+
+  // Calculate offset
+  const offset = pageIndex * pageSize;
+
+  // Execute the paginated query with limit and offset
+  const data = await db.query.urlTable.findMany({
+    // with: {
+    //   project: true,
+    // },
+    where: and(...conditions),
+    orderBy,
+    limit: pageSize,
+    offset: offset,
+  });
+
+  // Get total count using a separate count query
+  const [result] = await db
+    .select({
+      count: sql`count(*)`,
+    })
+    .from(urlTable)
+    .where(and(...conditions));
+
+  const rowCount = Number(result?.count) ?? 0;
+
+  // Transform the data as needed
+  const transformedData: SelectUrlType[] = data.map((url) => {
+    return {
+      ...url,
+      createdAt: url.createdAt as unknown as string,
+    };
+  });
+
+  return {
+    rowCount,
+    data: transformedData,
+  };
+}
+
+// Create a new short URL
+export async function createUrl(db: DbType, data: InsertUrlType) {
   // Create new URL
   const [url] = await db.insert(urlTable).values(data).returning();
 
@@ -40,80 +103,15 @@ export async function getUrlById(db: DbType, urlId: string) {
   return url;
 }
 
-// Get URL by project ID and slug
-export async function getUrlBySlug(
-  db: DbType,
-  projectId: string,
-  slug: string
-) {
-  const url = await db.query.urlTable.findFirst({
-    where: and(eq(urlTable.projectId, projectId), eq(urlTable.slug, slug)),
-    with: {
-      project: {
-        with: {
-          org: true,
-        },
-      },
-    },
-  });
-
-  return url;
-}
-
-// Get all URLs in a project
-export async function getProjectUrls(
-  db: DbType,
-  projectId: string,
-  options: {
-    limit?: number;
-    offset?: number;
-  } = {}
-) {
-  const urls = await db.query.urlTable.findMany({
-    where: eq(urlTable.projectId, projectId),
-    with: {
-      project: {
-        with: {
-          org: true,
-        },
-      },
-    },
-    limit: options.limit,
-    offset: options.offset,
-  });
-
-  const total = await db
-    .select({ count: sql<number>`count(*)` })
-    .from(urlTable)
-    .where(eq(urlTable.projectId, projectId));
-
-  return {
-    data: urls,
-    total: total[0]?.count ?? 0,
-  };
-}
-
 // Update URL
 export async function updateUrl(
   db: DbType,
-  urlId: string,
-  data: Partial<InsertShortUrlType>
+  data: Partial<InsertUrlType> & { id: string }
 ) {
-  // If updating slug, check it's not taken
-  if (data.slug) {
-    const existing = await db.query.urlTable.findFirst({
-      where: eq(urlTable.slug, data.slug),
-    });
-
-    if (existing && existing.id !== urlId) {
-      throw new ApiError('CONFLICT', 'URL slug already exists');
-    }
-  }
-
   const [updated] = await db
     .update(urlTable)
     .set(data)
-    .where(eq(urlTable.id, urlId))
+    .where(eq(urlTable.id, data.id))
     .returning();
 
   if (!updated) {
@@ -135,56 +133,4 @@ export async function deleteUrl(db: DbType, urlId: string) {
   }
 
   return deleted;
-}
-
-// Search URLs in project
-export async function searchProjectUrls(
-  db: DbType,
-  projectId: string,
-  query: string,
-  options: {
-    limit?: number;
-    offset?: number;
-  } = {}
-) {
-  const urls = await db.query.urlTable.findMany({
-    where: and(
-      eq(urlTable.projectId, projectId),
-      or(
-        sql`${urlTable.slug} LIKE ${`%${query}%`}`,
-        sql`${urlTable.title} LIKE ${`%${query}%`}`,
-        sql`${urlTable.desc} LIKE ${`%${query}%`}`,
-        sql`${urlTable.destUrl} LIKE ${`%${query}%`}`
-      )
-    ),
-    with: {
-      project: {
-        with: {
-          org: true,
-        },
-      },
-    },
-    limit: options.limit,
-    offset: options.offset,
-  });
-
-  const total = await db
-    .select({ count: sql<number>`count(*)` })
-    .from(urlTable)
-    .where(
-      and(
-        eq(urlTable.projectId, projectId),
-        or(
-          sql`${urlTable.slug} LIKE ${`%${query}%`}`,
-          sql`${urlTable.title} LIKE ${`%${query}%`}`,
-          sql`${urlTable.desc} LIKE ${`%${query}%`}`,
-          sql`${urlTable.destUrl} LIKE ${`%${query}%`}`
-        )
-      )
-    );
-
-  return {
-    data: urls,
-    total: total[0]?.count ?? 0,
-  };
 }

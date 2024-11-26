@@ -1,11 +1,11 @@
 'use client';
 
-import ProjectPage from './project-page';
+import { UrlTable } from '@/components/url/url-table';
 
 export default function () {
   return (
     <>
-      <ProjectPage />
+      <UrlTable />
     </>
   );
 }

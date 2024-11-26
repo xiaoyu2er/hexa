@@ -182,7 +182,7 @@ const org = new Hono<Context>()
     async (c) => {
       const { db, orgId } = c.var;
       const query = c.req.valid('query');
-      const members = await getOrgMembers(db, { orgId, ...query });
+      const members = await getOrgMembers(db, orgId, query);
       return c.json(members);
     }
   )
@@ -196,10 +196,7 @@ const org = new Hono<Context>()
     async (c) => {
       const { db, orgId } = c.var;
       const query = c.req.valid('query');
-      const invites = await getOrgInvites(db, {
-        orgId,
-        ...query,
-      });
+      const invites = await getOrgInvites(db, orgId, query);
       return c.json(invites);
     }
   )

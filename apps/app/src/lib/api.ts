@@ -149,6 +149,8 @@ export const $updateProjectSlug = h(api.project['update-project-slug'].$put);
 export const $updateProjectAvatar = h(
   api.project['update-project-avatar'].$put
 );
+// urls
+export const $getUrls = h(api.project[':projectId'].urls.$get);
 
 // ==================== Org ====================
 export const $getOrgs = h(api.org.all.$get);

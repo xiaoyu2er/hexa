@@ -10,6 +10,7 @@ import org from '@/server/route/org';
 import project from '@/server/route/project';
 import resetPassword from '@/server/route/reset-password';
 import signup from '@/server/route/signup';
+import url from '@/server/route/url';
 import user from '@/server/route/user';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
@@ -29,6 +30,7 @@ export const app = new Hono<Context>()
   .route('/', project)
   .route('/', org)
   .route('/', invite)
+  .route('/', url)
   .route('/', email)
   .onError(onError);
 
