@@ -2,31 +2,29 @@ import {} from '@hexa/ui/card';
 import type { Row, Table as TableType } from '@tanstack/react-table';
 import type { ComponentType } from 'react';
 
-interface TableMobileProps<T> {
+interface TableCardProps<T> {
   table: TableType<T>;
   isFetching: boolean;
-  MobileCardSkeleton: ComponentType;
-  MobileCard: ComponentType<{ row: Row<T> }>;
+  CardSkeleton: ComponentType;
+  Card: ComponentType<{ row: Row<T> }>;
 }
 
-export const TableMobile = <T,>({
+export const TableCard = <T,>({
   table,
   isFetching,
-  MobileCard,
-  MobileCardSkeleton,
-}: TableMobileProps<T>) => {
+  Card,
+  CardSkeleton,
+}: TableCardProps<T>) => {
   return (
     <div className="space-y-4">
       {isFetching ? (
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <MobileCardSkeleton key={i} />
+            <CardSkeleton key={i} />
           ))}
         </div>
       ) : (
-        table
-          .getRowModel()
-          .rows?.map((row) => <MobileCard key={row.id} row={row} />)
+        table.getRowModel().rows?.map((row) => <Card key={row.id} row={row} />)
       )}
     </div>
   );

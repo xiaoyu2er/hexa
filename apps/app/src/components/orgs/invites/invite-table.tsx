@@ -3,9 +3,9 @@ import {
   InviteCardSkeleton,
   InviteCardWithActions,
 } from '@/components/orgs/invites/invite-card';
-import { InviteTableDesktop } from '@/components/table/table-desktop';
-import { TableMobile } from '@/components/table/table-mobile';
+import { TableCard } from '@/components/table/table-card';
 import { TablePagination } from '@/components/table/table-pagination';
+import { TableRows } from '@/components/table/table-rows';
 import { TableToolbarDesktop } from '@/components/table/table-toolbar-desktop';
 import { TableToolbarMobile } from '@/components/table/table-toolbar-mobile';
 import type { FilterConfig } from '@/components/table/table-types';
@@ -96,11 +96,11 @@ export const OrgInviteTable = forwardRef<OrgInviteTableRef>((_, ref) => {
           filterConfigs={filterConfigs}
           sortOptions={InviteSortableColumnOptions}
         />
-        <TableMobile
+        <TableCard
           table={table}
           isFetching={isFetching}
-          MobileCard={InviteCardWithActions}
-          MobileCardSkeleton={InviteCardSkeleton}
+          Card={InviteCardWithActions}
+          CardSkeleton={InviteCardSkeleton}
         />
         <TablePagination table={table} />
       </div>
@@ -111,7 +111,7 @@ export const OrgInviteTable = forwardRef<OrgInviteTableRef>((_, ref) => {
           filterConfigs={filterConfigs}
           sortOptions={InviteSortableColumnOptions}
         />
-        <InviteTableDesktop table={table} isFetching={isFetching} />
+        <TableRows table={table} isFetching={isFetching} />
         <TablePagination table={table} />
       </div>
     </>
