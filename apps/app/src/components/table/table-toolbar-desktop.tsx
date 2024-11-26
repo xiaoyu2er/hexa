@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 import { DataTableFacetedFilter } from '@/components/table/table-faceted-filter';
 import type { TableToolbarDesktopProps } from '@/components/table/table-types';
-import { DataTableViewOptions } from '@/components/table/table-view-options';
+import { TableViewOptions } from '@/components/table/table-view-options';
 import { Button } from '@hexa/ui/button';
 import { Input } from '@hexa/ui/input';
 
@@ -15,6 +15,8 @@ export function TableToolbarDesktop<TData>({
   filterConfigs = [],
   searchPlaceholder = 'Search...',
   sortOptions = [],
+  view = 'rows',
+  onViewChange,
 }: TableToolbarDesktopProps<TData>) {
   const [value, setValue] = useState('');
   const debouncedValue = useDebounce(value, 1000);
@@ -66,7 +68,13 @@ export function TableToolbarDesktop<TData>({
           </Button>
         )}
       </div>
-      <DataTableViewOptions table={table} sortOptions={sortOptions} />
+      <TableViewOptions
+        table={table}
+        sortOptions={sortOptions}
+        filterConfigs={filterConfigs}
+        view={view}
+        onViewChange={onViewChange}
+      />
     </div>
   );
 }

@@ -8,7 +8,7 @@ import { TablePagination } from '@/components/table/table-pagination';
 import { TableRows } from '@/components/table/table-rows';
 import { TableToolbarDesktop } from '@/components/table/table-toolbar-desktop';
 import { TableToolbarMobile } from '@/components/table/table-toolbar-mobile';
-import type { FilterConfig } from '@/components/table/table-types';
+import type { FilterConfig, TableView } from '@/components/table/table-types';
 import { useInvites } from '@/hooks/use-invites';
 import {
   InviteSortableColumnOptions,
@@ -43,6 +43,7 @@ export const OrgInviteTable = forwardRef<OrgInviteTableRef>((_, ref) => {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [view, setView] = useState<TableView>('rows');
   const {
     data: { data = [], rowCount = 0 } = {},
     isFetching,
@@ -107,11 +108,22 @@ export const OrgInviteTable = forwardRef<OrgInviteTableRef>((_, ref) => {
       <div className="hidden space-y-4 lg:block">
         <TableToolbarDesktop
           table={table}
+          view={view}
+          onViewChange={setView}
           searchPlaceholder="Search invitee..."
           filterConfigs={filterConfigs}
           sortOptions={InviteSortableColumnOptions}
         />
-        <TableRows table={table} isFetching={isFetching} />
+        {view === 'rows' ? (
+          <TableRows table={table} isFetching={isFetching} />
+        ) : (
+          <TableCard
+            table={table}
+            isFetching={isFetching}
+            Card={InviteCardWithActions}
+            CardSkeleton={InviteCardSkeleton}
+          />
+        )}
         <TablePagination table={table} />
       </div>
     </>

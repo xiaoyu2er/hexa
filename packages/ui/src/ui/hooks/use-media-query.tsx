@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 
 export function useMediaQuery(query: string) {
-  const [value, setValue] = React.useState(false);
+  const [value, setValue] = React.useState(query.includes('min-width'));
 
   useEffect(() => {
     function onChange(event: MediaQueryListEvent) {
