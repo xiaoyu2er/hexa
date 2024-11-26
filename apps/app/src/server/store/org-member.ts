@@ -13,14 +13,8 @@ import { and, asc, desc, eq, sql } from 'drizzle-orm';
 // Get org members
 export const getOrgMembers = async (
   db: DbType,
-  {
-    orgId,
-    pageIndex,
-    pageSize,
-    filterRole,
-    search,
-    ...sorting
-  }: { orgId: string } & OrgMemberQueryType
+  orgId: string,
+  { pageIndex, pageSize, filterRole, search, ...sorting }: OrgMemberQueryType
 ): Promise<{ data: SelectOrgMemberType[]; rowCount: number }> => {
   const conditions = [eq(orgMemberTable.orgId, orgId)];
 

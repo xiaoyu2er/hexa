@@ -211,15 +211,15 @@ export async function getOrgInvite(
 
 export const getOrgInvites = async (
   db: DbType,
+  orgId: string,
   {
-    orgId,
-    pageIndex,
-    pageSize,
     filterStatus,
     filterRole,
     search,
+    pageIndex,
+    pageSize,
     ...sorting
-  }: { orgId: string } & OrgInviteQueryType
+  }: OrgInviteQueryType
 ): Promise<{ data: QueryInviteType[]; rowCount: number }> => {
   // Start with base conditions
   const conditions = [eq(orgInviteTable.orgId, orgId)];

@@ -1,11 +1,11 @@
 'use client';
 
-import { CreateInvitesModal } from '@/components/orgs/invites/invite-create-modal';
+import { CreateInvitesModal } from '@/components/orgs/invite/invite-create-modal';
 import {
   OrgInviteTable,
   type OrgInviteTableRef,
-} from '@/components/orgs/invites/invite-table';
-import { OrgMemberTable } from '@/components/orgs/members/org-member-table';
+} from '@/components/orgs/invite/invite-table';
+import { OrgMemberTable } from '@/components/orgs/member/member-table';
 import { useProject } from '@/hooks/use-project';
 import { invalidateOrgInvites } from '@/lib/queries/orgs';
 import { useModal } from '@ebay/nice-modal-react';

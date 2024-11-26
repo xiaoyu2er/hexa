@@ -2,7 +2,7 @@
 import {
   InviteCardSkeleton,
   InviteCardWithActions,
-} from '@/components/orgs/invites/invite-card';
+} from '@/components/orgs/invite/invite-card';
 import { TableCard } from '@/components/table/table-card';
 import { TablePagination } from '@/components/table/table-pagination';
 import { TableRows } from '@/components/table/table-rows';

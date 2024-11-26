@@ -1,12 +1,7 @@
 import { generateId } from '@/lib/crypto';
+import { createdAt } from '@/server/table/common';
 import { projectIdNotNull } from '@/server/table/project';
-import {
-  index,
-  integer,
-  sqliteTable,
-  text,
-  uniqueIndex,
-} from 'drizzle-orm/sqlite-core';
+import { index, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
 
 // URL table
 export const urlTable = sqliteTable(
@@ -16,14 +11,18 @@ export const urlTable = sqliteTable(
       .primaryKey()
       .$default(() => generateId('url')),
     ...projectIdNotNull,
+    ...createdAt,
     destUrl: text('dest_url').notNull(),
     slug: text('slug').notNull(),
     title: text('title'),
     desc: text('desc'),
-    clicks: integer('clicks').notNull().default(0),
+    domain: text('domain').notNull(),
   },
   (t) => ({
-    slugIndex: uniqueIndex('url_slug_index').on(t.slug),
+    urlDomainSlugIndex: uniqueIndex('url_domain_slug_index').on(
+      t.domain,
+      t.slug
+    ),
     projectIndex: index('url_project_index').on(t.projectId),
   })
 );

@@ -1,6 +1,6 @@
 import { Skeleton } from '@hexa/ui/skeleton';
 import { TableCell, TableRow } from '@hexa/ui/table';
-import { columns } from '../orgs/invites/invite-columns';
+import { columns } from '../orgs/invite/invite-columns';
 
 export const TableSkeleton = ({ rows }: { rows: number }) => {
   return (

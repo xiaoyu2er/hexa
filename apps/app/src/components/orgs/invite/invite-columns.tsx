@@ -1,5 +1,5 @@
 'use client';
-import RevokeInvite from '@/components/orgs/invites/invite-revoke-button';
+import RevokeInvite from '@/components/orgs/invite/invite-revoke-button';
 import { TableColumnHeader } from '@/components/table/table-column-header';
 import { UserAvatar } from '@/components/user/settings/user-avatar';
 import { invalidateOrgInvites } from '@/lib/queries/orgs';
@@ -116,7 +116,11 @@ export const columns: ColumnDef<QueryInviteType>[] = [
             <RevokeInvite
               invite={invite}
               onSuccess={() => {
-                invalidateOrgInvites(invite.orgId, table.getState().pagination);
+                invalidateOrgInvites(invite.orgId, {
+                  pagination: table.getState().pagination,
+                  sorting: table.getState().sorting,
+                  filters: table.getState().columnFilters,
+                });
               }}
             />
           )}

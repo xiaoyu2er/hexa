@@ -1,6 +1,6 @@
 import { useProject } from '@/hooks/use-project';
 import { queryOrgInvitesOptions } from '@/lib/queries/orgs';
-import type { TableQuery } from '@/lib/queries/orgs';
+import type { TableQuery } from '@/lib/queries/table';
 import { useQuery } from '@tanstack/react-query';
 import type {} from '@tanstack/react-table';
 
