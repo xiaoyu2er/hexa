@@ -1,13 +1,12 @@
 'use client';
 
 import { CreateInvitesModal } from '@/components/orgs/invite/invite-create-modal';
-import {
-  OrgInviteTable,
-  type OrgInviteTableRef,
-} from '@/components/orgs/invite/invite-table';
+import { OrgInviteTable } from '@/components/orgs/invite/invite-table';
 import { OrgMemberTable } from '@/components/orgs/member/member-table';
+import type { TableRef } from '@/components/table/base-table';
 import { useProject } from '@/hooks/use-project';
 import { invalidateOrgInvites } from '@/lib/queries/orgs';
+import type { QueryInviteType } from '@/server/schema/org-invite';
 import { useModal } from '@ebay/nice-modal-react';
 import { Button } from '@hexa/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@hexa/ui/tabs';
@@ -16,7 +15,7 @@ import { useRef } from 'react';
 export function MembersPage() {
   const { project } = useProject();
   const modal = useModal(CreateInvitesModal);
-  const inviteTableRef = useRef<OrgInviteTableRef>(null);
+  const inviteTableRef = useRef<TableRef<QueryInviteType>>(null);
 
   return (
     <>

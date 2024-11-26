@@ -1,8 +1,14 @@
 'use client';
 
 import { TableColumnHeader } from '@/components/table/table-column-header';
+import type { FilterConfig } from '@/components/table/table-types';
+import { useUrls } from '@/hooks/use-urls';
 import {} from '@/server/schema/org-member';
-import { type SelectUrlType, UrlColumnOptions } from '@/server/schema/url';
+import {
+  type SelectUrlType,
+  UrlColumnOptions,
+  UrlSortableColumnOptions,
+} from '@/server/schema/url';
 import { Button } from '@hexa/ui/button';
 import {
   DropdownMenu,
@@ -77,3 +83,18 @@ export const columns: ColumnDef<SelectUrlType>[] = [
     },
   },
 ];
+
+export const useData = useUrls;
+export const filterConfigs: FilterConfig<SelectUrlType>[] = [
+  {
+    columnId: 'domain',
+    label: 'Domain',
+    options: [
+      { label: 'All', value: '' },
+      { label: 'Hexa', value: 'hexa.im' },
+      { label: 'Google', value: 'google.com' },
+    ],
+  },
+];
+export const searchPlaceholder = 'Search url...';
+export const sortOptions = UrlSortableColumnOptions;

@@ -1,5 +1,5 @@
 import type { Column, Table } from '@tanstack/react-table';
-import type { ComponentType } from 'react';
+import type { ComponentType, ReactNode } from 'react';
 
 export interface FilterOption<T> {
   value: T;
@@ -18,23 +18,15 @@ export interface SortOption<TData> {
   label: string;
 }
 
-interface TableToolbarBaseProps<TData> {
+interface TableToolbarProps<TData> {
   table: Table<TData>;
   filterConfigs?: FilterConfig<TData>[];
   searchPlaceholder?: string;
-  sortOptions: SortOption<TData>[];
+  sortOptions?: SortOption<TData>[];
+  children?: ReactNode;
 }
 
 export type TableView = 'rows' | 'cards';
-
-export interface TableToolbarDesktopProps<TData>
-  extends TableToolbarBaseProps<TData> {
-  view?: TableView;
-  onViewChange?: (view: TableView) => void;
-}
-
-export interface TableToolbarMobileProps<TData>
-  extends TableToolbarBaseProps<TData> {}
 
 export interface TableFacetedFilterProps<TData, TValue> {
   column: Column<TData>;

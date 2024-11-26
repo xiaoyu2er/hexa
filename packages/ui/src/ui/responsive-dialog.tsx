@@ -22,8 +22,8 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@hexa/ui/drawer';
-import { useMediaQuery } from '@hexa/ui/hooks/use-media-query';
 import { cn } from '@hexa/utils';
+import { useMediaQuery } from 'usehooks-ts';
 
 interface BaseProps {
   children: React.ReactNode;

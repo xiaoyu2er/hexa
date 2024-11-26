@@ -1,9 +1,13 @@
 'use client';
 
 import { TableColumnHeader } from '@/components/table/table-column-header';
+import type { FilterConfig } from '@/components/table/table-types';
 import { UserAvatar } from '@/components/user/settings/user-avatar';
+import { useMembers } from '@/hooks/use-members';
 import {
   OrgMemberColumnOptions,
+  OrgMemberSortableColumnOptions,
+  OrgRoleOptions,
   type SelectOrgMemberType,
 } from '@/server/schema/org-member';
 import { Badge } from '@hexa/ui/badge';
@@ -95,3 +99,14 @@ export const columns: ColumnDef<SelectOrgMemberType>[] = [
     },
   },
 ];
+
+export const filterConfigs: FilterConfig<SelectOrgMemberType>[] = [
+  {
+    columnId: 'role',
+    label: 'Role',
+    options: OrgRoleOptions,
+  },
+];
+export const sortOptions = OrgMemberSortableColumnOptions;
+export const searchPlaceholder = 'Search members';
+export const useData = useMembers;

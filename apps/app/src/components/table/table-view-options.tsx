@@ -6,8 +6,6 @@ import type {
 } from '@/components/table/table-types';
 import { Button } from '@hexa/ui/button';
 import { Checkbox } from '@hexa/ui/checkbox';
-import {} from '@hexa/ui/command';
-import { useMediaQuery } from '@hexa/ui/hooks/use-media-query';
 import {
   ArrowDown,
   ArrowUp,
@@ -16,7 +14,6 @@ import {
   Settings2,
   X,
 } from '@hexa/ui/icons';
-import {} from '@hexa/ui/icons';
 import { Label } from '@hexa/ui/label';
 import { MultiSelect } from '@hexa/ui/multi-select';
 import { Popover, PopoverContent, PopoverTrigger } from '@hexa/ui/popover';
@@ -37,6 +34,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@hexa/ui/tabs';
 import type { Table } from '@tanstack/react-table';
 import { useState } from 'react';
+import { useMediaQuery } from 'usehooks-ts';
 
 // Helper function to get column label
 function getColumnLabel<TData>(options: SortOption<TData>[], columnId: string) {

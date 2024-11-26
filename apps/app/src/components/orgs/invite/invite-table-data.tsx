@@ -1,10 +1,16 @@
 'use client';
 import RevokeInvite from '@/components/orgs/invite/invite-revoke-button';
 import { TableColumnHeader } from '@/components/table/table-column-header';
+import type { FilterConfig } from '@/components/table/table-types';
 import { UserAvatar } from '@/components/user/settings/user-avatar';
+import { useInvites } from '@/hooks/use-invites';
 import { invalidateOrgInvites } from '@/lib/queries/orgs';
-import { InviteSortableColumnOptions } from '@/server/schema/org-invite';
+import {
+  InviteSortableColumnOptions,
+  InviteStatusOptions,
+} from '@/server/schema/org-invite';
 import type { QueryInviteType } from '@/server/schema/org-invite';
+import { OrgRoleOptions } from '@/server/schema/org-member';
 import { Badge } from '@hexa/ui/badge';
 import type { ColumnDef } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
@@ -129,3 +135,22 @@ export const columns: ColumnDef<QueryInviteType>[] = [
     },
   },
 ];
+
+export const filterConfigs: FilterConfig<QueryInviteType>[] = [
+  {
+    columnId: 'role',
+    label: 'Role',
+    options: OrgRoleOptions,
+  },
+  {
+    columnId: 'status',
+    label: 'Status',
+    options: InviteStatusOptions,
+  },
+];
+
+export const useData = useInvites;
+
+export const searchPlaceholder = 'Search invites';
+
+export const sortOptions = InviteSortableColumnOptions;

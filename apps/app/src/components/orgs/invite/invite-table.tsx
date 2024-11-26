@@ -1,133 +1,34 @@
 'use client';
+import { BaseTable, type TableRef } from '@/components/table/base-table';
+import type { QueryInviteType } from '@/server/schema/org-invite';
+import { forwardRef } from 'react';
 import {
-  InviteCardSkeleton,
-  InviteCardWithActions,
-} from '@/components/orgs/invite/invite-card';
-import { TableCard } from '@/components/table/table-card';
-import { TablePagination } from '@/components/table/table-pagination';
-import { TableRows } from '@/components/table/table-rows';
-import { TableToolbarDesktop } from '@/components/table/table-toolbar-desktop';
-import { TableToolbarMobile } from '@/components/table/table-toolbar-mobile';
-import type { FilterConfig, TableView } from '@/components/table/table-types';
-import { useInvites } from '@/hooks/use-invites';
+  InviteCardWithActions as Card,
+  InviteCardSkeleton as CardSkeleton,
+} from './invite-card';
 import {
-  InviteSortableColumnOptions,
-  InviteStatusOptions,
-  type QueryInviteType,
-} from '@/server/schema/org-invite';
-import { OrgRoleOptions } from '@/server/schema/org-member';
-import {} from '@hexa/ui/table';
-import {
-  type ColumnFiltersState,
-  type PaginationState,
-  type SortingState,
-  type Table as TableType,
-  type VisibilityState,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from '@tanstack/react-table';
-import { forwardRef, useImperativeHandle, useState } from 'react';
-import { columns } from './invite-columns';
+  columns,
+  filterConfigs,
+  searchPlaceholder,
+  sortOptions,
+  useData,
+} from './invite-table-data';
 
-export interface OrgInviteTableRef {
-  table: TableType<QueryInviteType>;
-}
-
-export const OrgInviteTable = forwardRef<OrgInviteTableRef>((_, ref) => {
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [view, setView] = useState<TableView>('rows');
-  const {
-    data: { data = [], rowCount = 0 } = {},
-    isFetching,
-  } = useInvites({ pagination, sorting, filters: columnFilters });
-
-  const table = useReactTable({
-    data,
-    rowCount,
-    columns: columns,
-    manualPagination: true,
-    manualSorting: true,
-    manualFiltering: true,
-    onPaginationChange: setPagination,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onSortingChange: setSorting,
-    state: {
-      columnFilters,
-      columnVisibility,
-      pagination,
-      sorting,
-    },
-    debugTable: true,
-  });
-
-  useImperativeHandle(ref, () => ({
-    table,
-  }));
-
-  const filterConfigs: FilterConfig<QueryInviteType>[] = [
-    {
-      columnId: 'role',
-      label: 'Role',
-      options: OrgRoleOptions,
-    },
-    {
-      columnId: 'status',
-      label: 'Status',
-      options: InviteStatusOptions,
-    },
-  ];
-  return (
-    <>
-      <div className="space-y-4 lg:hidden">
-        <TableToolbarMobile
-          table={table}
-          searchPlaceholder="Search invitee..."
-          filterConfigs={filterConfigs}
-          sortOptions={InviteSortableColumnOptions}
-        />
-        <TableCard
-          table={table}
-          isFetching={isFetching}
-          Card={InviteCardWithActions}
-          CardSkeleton={InviteCardSkeleton}
-        />
-        <TablePagination table={table} />
-      </div>
-      <div className="hidden space-y-4 lg:block">
-        <TableToolbarDesktop
-          table={table}
-          view={view}
-          onViewChange={setView}
-          searchPlaceholder="Search invitee..."
-          filterConfigs={filterConfigs}
-          sortOptions={InviteSortableColumnOptions}
-        />
-        {view === 'rows' ? (
-          <TableRows table={table} isFetching={isFetching} />
-        ) : (
-          <TableCard
-            table={table}
-            isFetching={isFetching}
-            Card={InviteCardWithActions}
-            CardSkeleton={InviteCardSkeleton}
-          />
-        )}
-        <TablePagination table={table} />
-      </div>
-    </>
-  );
-});
+export const OrgInviteTable = forwardRef<TableRef<QueryInviteType>>(
+  (_, ref) => {
+    return (
+      <BaseTable
+        ref={ref}
+        columns={columns}
+        useData={useData}
+        Card={Card}
+        searchPlaceholder={searchPlaceholder}
+        filterConfigs={filterConfigs}
+        sortOptions={sortOptions}
+        CardSkeleton={CardSkeleton}
+      />
+    );
+  }
+);
 
 OrgInviteTable.displayName = 'OrgInviteTable';
