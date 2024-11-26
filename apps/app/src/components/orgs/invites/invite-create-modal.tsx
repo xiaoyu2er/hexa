@@ -29,7 +29,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useFieldArray, useForm } from 'react-hook-form';
 
-import { OrgRoleOptions } from '@/server/schema/org-memeber';
+import { OrgRoleOptions } from '@/server/schema/org-member';
 
 export const CreateInvitesModal = NiceModal.create(
   (project: SelectProjectType) => {

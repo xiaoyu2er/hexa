@@ -4,7 +4,7 @@ import type { InsertOrgType, SelectUserOrgType } from '@/server/schema/org';
 import type {
   InsertOrgMemberType,
   OrgMemberRoleType,
-} from '@/server/schema/org-memeber';
+} from '@/server/schema/org-member';
 import { orgTable } from '@/server/table/org';
 import { orgMemberTable } from '@/server/table/org-member';
 import { and, eq, sql } from 'drizzle-orm';

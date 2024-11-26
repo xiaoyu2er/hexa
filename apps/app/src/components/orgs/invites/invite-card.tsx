@@ -16,12 +16,12 @@ import type { Row } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
 import { type HTMLAttributes, forwardRef } from 'react';
 
-export const MobileCardWithActions = ({
+export const InviteCardWithActions = ({
   row,
 }: { row: Row<QueryInviteType> }) => (
   <Sheet>
     <SheetTrigger asChild>
-      <MobileCard row={row} />
+      <InviteCard row={row} />
     </SheetTrigger>
 
     <SheetContent side="bottom" className="h-fit max-h-[50vh]">
@@ -36,7 +36,7 @@ export const MobileCardWithActions = ({
   </Sheet>
 );
 
-export const MobileCard = forwardRef<
+export const InviteCard = forwardRef<
   HTMLDivElement,
   { row: Row<QueryInviteType> } & HTMLAttributes<HTMLDivElement>
 >(({ row, className, ...props }, ref) => (
@@ -101,9 +101,9 @@ export const MobileCard = forwardRef<
   </Card>
 ));
 
-MobileCard.displayName = 'MobileCard';
+InviteCard.displayName = 'InviteCard';
 
-export const MobileCardSkeleton = () => (
+export const InviteCardSkeleton = () => (
   <Card>
     <CardContent className="p-4">
       <div className="space-y-3">

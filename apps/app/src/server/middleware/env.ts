@@ -3,7 +3,8 @@ import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { createMiddleware } from 'hono/factory';
 
 const setEnv = createMiddleware(async (c, next) => {
-  c.set('db', await getDb());
+  const db = await getDb();
+  c.set('db', db);
   const { env, cf, ctx } = await getCloudflareContext();
   c.env = env;
   c.req.cf = cf;

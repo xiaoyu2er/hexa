@@ -14,6 +14,7 @@ export function TableToolbarDesktop<TData>({
   table,
   filterConfigs = [],
   searchPlaceholder = 'Search...',
+  sortOptions = [],
 }: TableToolbarDesktopProps<TData>) {
   const [value, setValue] = useState('');
   const debouncedValue = useDebounce(value, 1000);
@@ -65,7 +66,7 @@ export function TableToolbarDesktop<TData>({
           </Button>
         )}
       </div>
-      <DataTableViewOptions table={table} />
+      <DataTableViewOptions table={table} sortOptions={sortOptions} />
     </div>
   );
 }

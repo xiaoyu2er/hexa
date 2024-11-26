@@ -1,5 +1,5 @@
 import { generateId } from '@/lib/crypto';
-import type { OrgMemberRoleType } from '@/server/schema/org-memeber';
+import type { OrgMemberRoleType } from '@/server/schema/org-member';
 import { createdAt } from '@/server/table/common';
 import { orgIdNotNull } from '@/server/table/org';
 import { userIdNotNull } from '@/server/table/user';

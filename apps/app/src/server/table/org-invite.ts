@@ -1,6 +1,6 @@
 import { generateId } from '@/lib/crypto';
 import type { InviteStatusType } from '@/server/schema/org-invite';
-import type { OrgMemberRoleType } from '@/server/schema/org-memeber';
+import type { OrgMemberRoleType } from '@/server/schema/org-member';
 import { createdAt, expiresAt } from '@/server/table/common';
 import { orgIdNotNull } from '@/server/table/org';
 import { userTable } from '@/server/table/user';

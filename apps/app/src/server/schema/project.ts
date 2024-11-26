@@ -5,7 +5,7 @@ import {
   zSlugString,
 } from '@/server/schema/common';
 import { SelectOrgSchema, zOrgIdString } from '@/server/schema/org';
-import { zOrgMemberRoleEnum } from '@/server/schema/org-memeber';
+import { zOrgMemberRoleEnum } from '@/server/schema/org-member';
 import { projectTable } from '@/server/table/project';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import type { Simplify } from 'type-fest';
