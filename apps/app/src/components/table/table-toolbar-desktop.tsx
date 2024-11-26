@@ -5,8 +5,7 @@ import { X } from '@hexa/ui/icons';
 import { useEffect, useState } from 'react';
 
 import { DataTableFacetedFilter } from '@/components/table/table-faceted-filter';
-import type { TableToolbarDesktopProps } from '@/components/table/table-types';
-import { TableViewOptions } from '@/components/table/table-view-options';
+import type { TableToolbarProps } from '@/components/table/table-types';
 import { Button } from '@hexa/ui/button';
 import { Input } from '@hexa/ui/input';
 
@@ -14,10 +13,8 @@ export function TableToolbarDesktop<TData>({
   table,
   filterConfigs = [],
   searchPlaceholder = 'Search...',
-  sortOptions = [],
-  view = 'rows',
-  onViewChange,
-}: TableToolbarDesktopProps<TData>) {
+  children,
+}: TableToolbarProps<TData>) {
   const [value, setValue] = useState('');
   const debouncedValue = useDebounce(value, 1000);
   const isFiltered = table.getState().columnFilters.length > 0;
@@ -68,13 +65,7 @@ export function TableToolbarDesktop<TData>({
           </Button>
         )}
       </div>
-      <TableViewOptions
-        table={table}
-        sortOptions={sortOptions}
-        filterConfigs={filterConfigs}
-        view={view}
-        onViewChange={onViewChange}
-      />
+      {children}
     </div>
   );
 }

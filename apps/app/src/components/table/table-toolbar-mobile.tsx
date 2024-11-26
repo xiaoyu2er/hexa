@@ -1,7 +1,6 @@
 'use client';
 
-import type { TableToolbarMobileProps } from '@/components/table/table-types';
-import { TableViewOptions } from '@/components/table/table-view-options';
+import type { TableToolbarProps } from '@/components/table/table-types';
 import { Badge } from '@hexa/ui/badge';
 import { Button } from '@hexa/ui/button';
 import { useDebounce } from '@hexa/ui/hooks/use-debounce';
@@ -15,8 +14,9 @@ export function TableToolbarMobile<TData>({
   table,
   filterConfigs = [],
   searchPlaceholder = 'Search...',
+  children,
   sortOptions = [],
-}: TableToolbarMobileProps<TData>) {
+}: TableToolbarProps<TData>) {
   const [value, setValue] = useState('');
   const debouncedValue = useDebounce(value, 1000);
   const activeFilters = table.getState().columnFilters;
@@ -40,11 +40,7 @@ export function TableToolbarMobile<TData>({
           onChange={(event) => setValue(event.target.value)}
           className="h-10"
         />
-        <TableViewOptions
-          table={table}
-          sortOptions={sortOptions}
-          filterConfigs={filterConfigs}
-        />
+        {children}
       </div>
 
       {/* Active State Display */}

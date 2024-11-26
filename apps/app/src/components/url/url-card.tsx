@@ -24,6 +24,5 @@ export const UrlCardSkeleton = () => {
 
 export const UrlCardWithActions = ({ row }: { row: Row<SelectUrlType> }) => {
   const url = row.original;
-
   return url.destUrl;
 };
