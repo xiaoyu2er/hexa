@@ -25,8 +25,13 @@ interface TableToolbarBaseProps<TData> {
   sortOptions: SortOption<TData>[];
 }
 
+export type TableView = 'rows' | 'cards';
+
 export interface TableToolbarDesktopProps<TData>
-  extends TableToolbarBaseProps<TData> {}
+  extends TableToolbarBaseProps<TData> {
+  view?: TableView;
+  onViewChange?: (view: TableView) => void;
+}
 
 export interface TableToolbarMobileProps<TData>
   extends TableToolbarBaseProps<TData> {}

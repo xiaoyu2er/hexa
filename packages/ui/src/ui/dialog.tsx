@@ -1,10 +1,9 @@
 'use client';
 
+import { cn } from '@hexa/utils';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
-import React from 'react';
-
-import { cn } from '@hexa/utils';
+import * as React from 'react';
 
 const Dialog = DialogPrimitive.Root;
 
@@ -58,7 +57,10 @@ const DialogHeader = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn('flex flex-col space-y-1.5 text-left', className)}
+    className={cn(
+      'flex flex-col space-y-1.5 text-center sm:text-left',
+      className
+    )}
     {...props}
   />
 );

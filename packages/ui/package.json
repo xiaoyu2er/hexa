@@ -66,6 +66,7 @@
     "./marquee.stories": "./src/ui/marquee.stories.tsx",
     "./marquee": "./src/ui/marquee.tsx",
     "./menubar": "./src/ui/menubar.tsx",
+    "./multi-select": "./src/ui/multi-select.tsx",
     "./navigation-menu": "./src/ui/navigation-menu.tsx",
     "./number-ticker": "./src/ui/number-ticker.tsx",
     "./pagination": "./src/ui/pagination.tsx",

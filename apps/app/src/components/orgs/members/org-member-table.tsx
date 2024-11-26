@@ -9,7 +9,7 @@ import { TablePagination } from '@/components/table/table-pagination';
 import { TableRows } from '@/components/table/table-rows';
 import { TableToolbarDesktop } from '@/components/table/table-toolbar-desktop';
 import { TableToolbarMobile } from '@/components/table/table-toolbar-mobile';
-import type { FilterConfig } from '@/components/table/table-types';
+import type { FilterConfig, TableView } from '@/components/table/table-types';
 import { useMembers } from '@/hooks/use-members';
 import {
   OrgMemberSortableColumnOptions,
@@ -43,6 +43,7 @@ export const OrgMemberTable = forwardRef<OrgMemberTableRef>((_, ref) => {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [view, setView] = useState<TableView>('rows');
   const {
     data: { data = [], rowCount = 0 } = {},
     isFetching,
@@ -105,8 +106,19 @@ export const OrgMemberTable = forwardRef<OrgMemberTableRef>((_, ref) => {
           searchPlaceholder="Search invitee..."
           filterConfigs={filterConfigs}
           sortOptions={OrgMemberSortableColumnOptions}
+          view={view}
+          onViewChange={setView}
         />
-        <TableRows table={table} isFetching={isFetching} />
+        {view === 'rows' ? (
+          <TableRows table={table} isFetching={isFetching} />
+        ) : (
+          <TableCard
+            table={table}
+            isFetching={isFetching}
+            Card={MemberCardWithActions}
+            CardSkeleton={MemberCardSkeleton}
+          />
+        )}
         <TablePagination table={table} />
       </div>
     </>
