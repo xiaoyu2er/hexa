@@ -12,6 +12,7 @@ import {
 
 import { Dialog } from '@/components/dialog';
 import { InputField } from '@/components/form/input-field';
+import { SelectField } from '@/components/form/select-field';
 import { $createUrl } from '@/lib/api';
 import type { SelectProjectType } from '@/server/schema/project';
 import { InsertUrlSchema, type InsertUrlType } from '@/server/schema/url';
@@ -69,7 +70,17 @@ export const CreateUrlModal = NiceModal.create((project: SelectProjectType) => {
           >
             <DialogBody className="space-y-2">
               <InputField form={form} name="destUrl" label="Destination URL" />
-              <InputField form={form} name="domain" label="Domain" />
+
+              <SelectField
+                form={form}
+                name="domain"
+                label="Domain"
+                placeholder="Select a domain"
+                options={project.domains.map((domain) => ({
+                  label: domain,
+                  value: domain,
+                }))}
+              />
               <InputField form={form} name="slug" label="Slug" />
               <InputField form={form} name="title" label="Link Name" />
               <InputField form={form} name="desc" label="Description" />

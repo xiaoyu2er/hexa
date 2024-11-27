@@ -26,3 +26,6 @@ STORAGE_SECRET_ACCESS_KEY=
 STRIPE_SECRET_KEY=
 # Set this environment variable to support webhooks — https://stripe.com/docs/webhooks#verify-events
 STRIPE_WEBHOOK_SECRET=
+
+# default domains, comma separated
+DEFAULT_DOMAINS=example.com

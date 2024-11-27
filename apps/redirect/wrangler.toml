@@ -4,6 +4,13 @@ main = "src/index.ts"
 compatibility_date = "2024-11-12"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = false
+
+[env.local]
+routes = [
+  { pattern = "localhost:7001", custom_domain = true }
+]
+
+[env.production]
 routes = [
   { pattern = "hexa.im", custom_domain = true }
 ]
@@ -23,7 +30,9 @@ id = "1eed1bf2d8ae4aa9a112121be24ad5d7"
 [env.staging]
 name="hexa-redirect-xyz"
 workers_dev = true
-routes = []
+routes = [
+  { pattern = "redirect.xyz.hexa.im", custom_domain = true }
+]
 
 [[env.staging.kv_namespaces]]
 binding = "REDIRECT"

@@ -28,9 +28,6 @@ const test = new Hono<Context>()
       ),
     });
   })
-  .get('/hello', (c) => {
-    return c.text(c.env.hello);
-  })
   // Get environment variables
   .get('/env', async (c) => {
     const env = c.env;
