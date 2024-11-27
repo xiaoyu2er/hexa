@@ -1,3 +1,5 @@
+'use server';
+
 import { ApiError } from '@/lib/error/error';
 import type {
   InsertProjectType,
@@ -6,8 +8,14 @@ import type {
 import { orgMemberTable } from '@/server/table/org-member';
 import { projectTable } from '@/server/table/project';
 import { userTable } from '@/server/table/user';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { eq, inArray } from 'drizzle-orm';
 import type { DbType } from '../route/route-types';
+
+export const getDefaultDomains = async () => {
+  const { env } = await getCloudflareContext();
+  return env.DEFAULT_DOMAINS?.split(',') ?? [];
+};
 
 // Helper function to check project permissions
 export async function assertProjectPermission(
@@ -72,6 +80,8 @@ export async function getUserAccessibleProjects(
     })
     .prepare();
 
+  const domains = await getDefaultDomains();
+
   return (await projects.all())
     .filter((project) => Boolean(project.org.members[0]))
     .map((project) => {
@@ -85,6 +95,7 @@ export async function getUserAccessibleProjects(
       // Return cleaned up project object
       return {
         ...project,
+        domains,
         org: orgWithoutMembers,
         role,
       };
@@ -154,8 +165,11 @@ export async function getProjectWithRole(
 
   const member = project.org.members[0];
 
+  const domains = await getDefaultDomains();
+
   return {
     ...project,
+    domains,
     role: member.role,
   };
 }
@@ -186,8 +200,11 @@ export async function getProjectWithRoleBySlug(
     throw new ApiError('NOT_FOUND', 'Project not found');
   }
 
+  const domains = await getDefaultDomains();
+
   return {
     ...project,
+    domains,
     role: project.org.members[0].role,
   };
 }

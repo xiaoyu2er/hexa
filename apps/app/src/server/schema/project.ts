@@ -35,7 +35,9 @@ export const SelectProjectSchema = createSelectSchema(projectTable).extend({
   role: zOrgMemberRoleEnum,
   org: SelectOrgSchema,
 });
-export type SelectProjectType = z.infer<typeof SelectProjectSchema>;
+export type SelectProjectType = z.infer<typeof SelectProjectSchema> & {
+  domains: string[];
+};
 
 // Update Project Name
 export const UpdateProjectrNameSchema = z

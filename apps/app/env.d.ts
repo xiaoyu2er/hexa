@@ -2,7 +2,6 @@
 
 interface CloudflareEnv {
 	REDIRECT: KVNamespace;
-	hello: "Hello World from Hexa!";
 	RESEND_API_KEY: string;
 	GITHUB_CLIENT_ID: string;
 	GITHUB_CLIENT_SECRET: string;
@@ -13,6 +12,7 @@ interface CloudflareEnv {
 	STORAGE_SECRET_ACCESS_KEY: string;
 	STRIPE_SECRET_KEY: string;
 	STRIPE_WEBHOOK_SECRET: string;
+	DEFAULT_DOMAINS: string;
 	DB: D1Database;
 	ASSETS: Fetcher;
 }

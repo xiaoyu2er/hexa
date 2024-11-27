@@ -1,3 +1,4 @@
+import { ApiError } from '@/lib/error/error';
 import authProject from '@/server/middleware/project';
 import { assertAuthMiddleware } from '@/server/middleware/user';
 import type { Context } from '@/server/route/route-types';
@@ -29,6 +30,12 @@ const url = new Hono<Context>()
     const url = await createUrl(db, {
       ...json,
     });
+    if (!url) {
+      throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create URL');
+    }
+    // Store the URL in the KV store
+    const key = `${url.domain}/${url.slug}`;
+    await c.env.REDIRECT.put(key, JSON.stringify(url));
     return c.json(url);
   })
   .put('/url/update-url', zValidator('json', InsertUrlSchema), async (c) => {

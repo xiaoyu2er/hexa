@@ -1,3 +1,4 @@
+import { IS_DEVELOPMENT } from '@/lib/env';
 import { PaginationSchema } from '@/server/schema/common';
 import { zSortEnum } from '@/server/schema/common';
 import { urlTable } from '@/server/table/url';
@@ -5,9 +6,16 @@ import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import type { Simplify } from 'type-fest';
 import { z } from 'zod';
 
-export const zDomain = z
-  .string()
-  .regex(/^[a-zA-Z0-9][a-zA-Z0-9-_.]*[a-zA-Z0-9]$/, 'Invalid domain');
+export const zDomain = z.string().refine((val) => {
+  // Allow localhost in development
+  if (IS_DEVELOPMENT && val.includes('localhost')) {
+    return true;
+  }
+  if (/^[a-zA-Z0-9][a-zA-Z0-9-_.]*[a-zA-Z0-9]$/.test(val)) {
+    return true;
+  }
+  return false;
+}, 'Invalid domain');
 
 // Url schemas
 export const InsertUrlSchema = createInsertSchema(urlTable, {

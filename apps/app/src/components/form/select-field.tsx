@@ -1,5 +1,11 @@
 import type { BaseFieldProps } from '@/components/form/form-type';
-import { FormControl, FormField, FormItem, FormLabel } from '@hexa/ui/form';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@hexa/ui/form';
 import {
   SelectContent,
   SelectItem,
@@ -7,6 +13,8 @@ import {
   SelectValue,
 } from '@hexa/ui/select';
 import { Select } from '@hexa/ui/select';
+import { cn } from '@hexa/utils/cn';
+import { get } from 'lodash';
 import type { ComponentProps } from 'react';
 import type { FieldValues } from 'react-hook-form';
 
@@ -16,6 +24,7 @@ type BaseSelectFieldProps = {
     label: string;
     value: string;
   }[];
+  className?: string;
 };
 
 export type SelectFieldProps<T extends FieldValues> = BaseFieldProps<T> &
@@ -29,6 +38,7 @@ export const SelectField = <T extends FieldValues = FieldValues>({
   options,
   placeholder,
   formItemClassName,
+  className,
   ...props
 }: SelectFieldProps<T>) => {
   return (
@@ -45,7 +55,12 @@ export const SelectField = <T extends FieldValues = FieldValues>({
             value={field.value?.toString()}
           >
             <FormControl>
-              <SelectTrigger>
+              <SelectTrigger
+                className={cn(
+                  get(form.formState.errors, name) ? 'border-destructive' : '',
+                  className
+                )}
+              >
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
@@ -57,6 +72,7 @@ export const SelectField = <T extends FieldValues = FieldValues>({
               ))}
             </SelectContent>
           </Select>
+          <FormMessage />
         </FormItem>
       )}
     />
