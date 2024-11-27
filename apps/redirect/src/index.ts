@@ -1,25 +1,45 @@
 export default {
   async fetch(request: Request, env: Env, _ctx): Promise<Response> {
-    // biome-ignore lint/suspicious/noConsole: <explanation>
-    console.log('fetch', request.url);
     const url = new URL(request.url);
 
-    // Add stats endpoint to view collected data
+    // Add test endpoint to write sample data
+    if (url.pathname === '/test-analytics') {
+      try {
+        await env.REDIRECT_ANALYTICS.writeDataPoint({
+          blobs: ['test-host.com', '/test-path', 'test-result'],
+          doubles: [1],
+          indexes: ['test-key'],
+        });
+        return new Response('Test data point written successfully');
+      } catch (error) {
+        // biome-ignore lint/suspicious/noConsole: <explanation>
+        console.error('Failed to write test data:', error);
+        // @ts-ignore
+        return new Response(`Failed to write test data: ${error.message}`, {
+          status: 500,
+        });
+      }
+    }
+
+    // Modify stats endpoint to look back further and add more logging
     if (url.pathname === '/stats') {
       const query = `
         SELECT 
           blob1 as host,
           blob2 as pathname,
           blob3 as result,
-          count() as requests
+          count(*) as requests
         FROM redirect_events
-        WHERE timestamp > NOW() - INTERVAL '1' DAY
+        WHERE timestamp > NOW() - INTERVAL '7' DAY
         GROUP BY host, pathname, result
         ORDER BY requests DESC
         LIMIT 100
       `;
 
       const API = `https://api.cloudflare.com/client/v4/accounts/${env.ACCOUNT_ID}/analytics_engine/sql`;
+      // biome-ignore lint/suspicious/noConsole: <explanation>
+      console.log('Querying analytics:', API);
+
       const response = await fetch(API, {
         method: 'POST',
         headers: {
@@ -29,9 +49,10 @@ export default {
       });
 
       if (response.status !== 200) {
-        // biome-ignore lint/suspicious/noConsole: <explanation>
-        console.error(await response.text());
-        return new Response('Analytics query failed', { status: 500 });
+        const errorText = await response.text();
+        return new Response(`Analytics query failed: ${errorText}`, {
+          status: 500,
+        });
       }
 
       const data = await response.json();
@@ -40,8 +61,18 @@ export default {
       });
     }
 
+    // Regular redirect logic with enhanced logging
     const key = `${url.host}${url.pathname}`;
     const redirectUrl = await env.REDIRECT.get(key);
+
+    try {
+      await env.REDIRECT_ANALYTICS.writeDataPoint({
+        blobs: [url.host, url.pathname, redirectUrl ? 'found' : 'not_found'],
+        doubles: [1],
+        indexes: [key],
+      });
+    } catch (_analyticsError) {}
+
     if (!redirectUrl) {
       return new Response('Not found', { status: 404 });
     }

@@ -42,3 +42,7 @@ routes = [
 [[env.staging.kv_namespaces]]
 binding = "REDIRECT"
 id = "082a86f93ac54912af21bdf8ae170ade"
+
+[[env.staging.analytics_engine_datasets]]
+binding = "REDIRECT_ANALYTICS"
+dataset = "redirect_events_xyz"
