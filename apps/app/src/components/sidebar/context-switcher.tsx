@@ -1,6 +1,6 @@
 'use client';
-import { CreateProjectModal } from '@/components/project/create-project-modal';
 import { ProjectAvatar } from '@/components/project/project-avatar';
+import { CreateProjectModal } from '@/components/project/project-create-modal';
 import { UserAvatar } from '@/components/user/settings/user-avatar';
 import { useUser } from '@/hooks/use-user';
 import { $updateUserDefaultProject } from '@/lib/api';

@@ -151,6 +151,7 @@ export const $updateProjectAvatar = h(
 );
 // urls
 export const $getUrls = h(api.project[':projectId'].urls.$get);
+export const $createUrl = h(api.url['create-url'].$post);
 
 // ==================== Org ====================
 export const $getOrgs = h(api.org.all.$get);
