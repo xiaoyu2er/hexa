@@ -16,12 +16,12 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate:local": "wrangler d1 migrations apply hexa --local",
     "db:migrate:prod": "wrangler d1 migrations apply hexa --remote",
-    "db:migrate:staging": "wrangler d1 migrations apply hexa --remote --env staging",
+    "db:migrate:staging": "wrangler d1 migrations apply hexa-xyz --remote --env staging",
     "db:studio:local": "DB_LOCAL_PATH=$(find .wrangler/state/v3/d1/miniflare-D1DatabaseObject -type f -name '*.sqlite' -print -quit) drizzle-kit studio",
     "db:studio:prod": "NODE_ENV=production drizzle-kit studio --port 3456",
     "db:drop:local": "wrangler d1 drop hexa --local",
     "db:drop:prod": "wrangler d1 drop hexa --remote",
-    "db:drop:staging": "wrangler d1 drop hexa --remote --env staging"
+    "db:drop:staging": "wrangler d1 drop hexa-xyz --remote --env staging"
   },
   "dependencies": {
     "@ebay/nice-modal-react": "1.2.13",

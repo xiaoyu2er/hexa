@@ -20,34 +20,28 @@ assets = { directory = ".worker-next/assets", binding = "ASSETS" }
 enabled = true
 head_sampling_rate = 1
 
-[vars]
-hello = 'Hello World from Hexa!'
-
 [[d1_databases]]
 binding = "DB"
 database_name = "hexa"
-database_id = "d6805d74-fa8d-4abf-a6ac-18fd5489ea0b"
+database_id = "ce720dbc-f1ce-4d3b-9348-a7d1cb6bbe43"
 migrations_dir = "./drizzle/migrations"
 
 [[kv_namespaces]]
 binding = "REDIRECT"
 id = "1eed1bf2d8ae4aa9a112121be24ad5d7"
 
-[[env.staging.kv_namespaces]]
-binding = "REDIRECT"
-id = "082a86f93ac54912af21bdf8ae170ade"
-
+# =================== Staging ===================
 [env.staging]
 name="hexa-app-xyz"
 workers_dev = true
 routes = []
 
-[env.staging.vars]
-hello = 'Hello World from Hexa-XYZ!'
-
 [[env.staging.d1_databases]]
 binding = "DB"
-database_name = "hexa"
-database_id = "377c4340-6f41-4b65-82e6-a6b1e3e38b1d"
+database_name = "hexa-xyz"
+database_id = "8540e0e2-15ee-44f6-82ec-64584e8331a8"
 migrations_dir = "./drizzle/migrations"
 
+[[env.staging.kv_namespaces]]
+binding = "REDIRECT"
+id = "082a86f93ac54912af21bdf8ae170ade"
