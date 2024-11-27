@@ -13,6 +13,21 @@ import type { Context } from '@/server/route/route-types';
 import { Hono } from 'hono';
 
 const test = new Hono<Context>()
+  .get('/get-kv', async (c) => {
+    return c.json({
+      kv: JSON.parse(await c.env.REDIRECT.get('test')),
+    });
+  })
+  .get('/set-kv', async (c) => {
+    return c.json({
+      kv: await c.env.REDIRECT.put(
+        'test',
+        JSON.stringify({
+          value: new Date().toISOString(),
+        })
+      ),
+    });
+  })
   .get('/hello', (c) => {
     return c.text(c.env.hello);
   })
