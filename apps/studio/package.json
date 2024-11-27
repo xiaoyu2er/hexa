@@ -4,7 +4,5 @@
   "scripts": {
     "dev": "cd ../app && pnpm run db:studio:local"
   },
-  "devDependencies": {
-    "prisma": "5.22.0"
-  }
+  "devDependencies": {}
 }
