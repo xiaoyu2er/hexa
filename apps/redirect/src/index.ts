@@ -1,5 +1,7 @@
 export default {
   async fetch(request: Request, env: Env, _ctx): Promise<Response> {
+    // biome-ignore lint/suspicious/noConsole: <explanation>
+    console.log('fetch', request.url);
     const url = new URL(request.url);
 
     // Add stats endpoint to view collected data
@@ -27,6 +29,8 @@ export default {
       });
 
       if (response.status !== 200) {
+        // biome-ignore lint/suspicious/noConsole: <explanation>
+        console.error(await response.text());
         return new Response('Analytics query failed', { status: 500 });
       }
 
@@ -53,6 +57,8 @@ export default {
 
       return new Response('ok', { status: 200 });
     } catch (_error) {
+      // biome-ignore lint/suspicious/noConsole: <explanation>
+      console.error(_error);
       // @ts-ignore
       return new Response(_error?.message ?? 'Internal server error', {
         status: 500,
