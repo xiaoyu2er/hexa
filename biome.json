@@ -13,6 +13,10 @@
       "apps/www/.wrangler/**/*",
       "apps/www/drizzle/**/*",
       "apps/www/env.d.ts",
+      "apps/redirect/.wrangler/**/*",
+      "apps/redirect/drizzle/**/*",
+      "apps/redirect/env.d.ts",
+      "apps/redirect/worker-configuration.d.ts",
       "packages/email-templates/.react-email/**/*"
     ]
   },
