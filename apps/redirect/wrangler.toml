@@ -31,7 +31,8 @@ id = "1eed1bf2d8ae4aa9a112121be24ad5d7"
 name="hexa-redirect-xyz"
 workers_dev = true
 routes = [
-  { pattern = "redirect.xyz.hexa.im", custom_domain = true }
+  { pattern = "a.ml.kg", custom_domain = true },
+  { pattern = "b.ml.kg", custom_domain = true }
 ]
 
 [[env.staging.kv_namespaces]]
