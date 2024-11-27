@@ -6,7 +6,11 @@ export default {
     if (!redirectUrl) {
       return new Response('Not found', { status: 404 });
     }
-    const obj = JSON.parse(redirectUrl);
-    return Response.redirect(obj.destUrl);
+    try {
+      const obj = JSON.parse(redirectUrl);
+      return Response.redirect(obj.destUrl);
+    } catch (_error) {
+      return new Response('Internal server error', { status: 500 });
+    }
   },
 } satisfies ExportedHandler<Env>;
