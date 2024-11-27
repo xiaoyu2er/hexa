@@ -53,7 +53,10 @@ export default {
 
       return new Response('ok', { status: 200 });
     } catch (_error) {
-      return new Response('Internal server error', { status: 500 });
+      // @ts-ignore
+      return new Response(_error?.message ?? 'Internal server error', {
+        status: 500,
+      });
     }
   },
 } satisfies ExportedHandler<Env>;
