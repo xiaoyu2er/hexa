@@ -28,7 +28,7 @@ export default {
           blob1 as host,
           blob2 as pathname,
           blob3 as result,
-          count(*) as requests
+          COUNT() as requests
         FROM redirect_events
         WHERE timestamp > NOW() - INTERVAL '7' DAY
         GROUP BY host, pathname, result
