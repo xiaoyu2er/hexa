@@ -25,8 +25,8 @@ hello = 'Hello World from Hexa!'
 
 [env.staging]
 name="hexa-www-xyz"
-routes = [
-  { pattern = "www.xyz.hexa.im", custom_domain = true }
-]
+workers_dev = true
+routes = []
+
 [env.staging.vars]
 hello = 'Hello World from Hexa-XYZ!'

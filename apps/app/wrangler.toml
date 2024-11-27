@@ -31,9 +31,9 @@ migrations_dir = "./drizzle/migrations"
 
 [env.staging]
 name="hexa-app-xyz"
-routes = [
-  { pattern = "app.xyz.hexa.im", custom_domain = true }
-]
+workers_dev = true
+routes = []
+
 [env.staging.vars]
 hello = 'Hello World from Hexa-XYZ!'
 
