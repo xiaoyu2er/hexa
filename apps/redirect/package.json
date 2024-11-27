@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "deploy": "wrangler deploy",
+    "deploy:staging": "wrangler deploy --env staging",
     "dev": "wrangler dev --port 7001",
     "start": "wrangler dev",
     "test": "vitest",
