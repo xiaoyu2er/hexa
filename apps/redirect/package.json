@@ -5,7 +5,7 @@
   "scripts": {
     "deploy": "wrangler deploy",
     "deploy:staging": "wrangler deploy --env staging",
-    "dev": "wrangler dev --port 7001",
+    "dev": "wrangler dev --port 7001 --persist-to ../app/.wrangler/state",
     "start": "wrangler dev",
     "test": "vitest",
     "cf-typegen": "wrangler types"
