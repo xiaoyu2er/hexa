@@ -3,7 +3,7 @@
 import { invalidateProjectsQuery } from '@/lib/queries/project';
 import { useModal } from '@ebay/nice-modal-react';
 import { Button } from '@hexa/ui/button';
-import { CreateProjectModal } from './create-project-modal';
+import { CreateProjectModal } from './project-create-modal';
 
 export function CreateProject() {
   const modal = useModal(CreateProjectModal);

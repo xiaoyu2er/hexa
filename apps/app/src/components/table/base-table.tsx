@@ -31,6 +31,7 @@ import {
 import {
   type ComponentType,
   type ForwardedRef,
+  type ReactNode,
   forwardRef,
   useImperativeHandle,
   useState,
@@ -55,6 +56,7 @@ export interface BaseTableProps<T> {
   searchPlaceholder: string;
   filterConfigs: FilterConfig<T>[];
   sortOptions: SortOption<T>[];
+  actionSlot?: ReactNode;
 }
 
 // First define the function type that preserves generics
@@ -75,6 +77,7 @@ const InternalBaseTable = <T extends object>(
     searchPlaceholder,
     filterConfigs,
     sortOptions,
+    actionSlot,
   } = props;
   const { isMobile } = useScreenSize();
   const [pagination, setPagination] = useState<PaginationState>({
@@ -125,6 +128,7 @@ const InternalBaseTable = <T extends object>(
         filterConfigs={filterConfigs}
         sortOptions={sortOptions}
       >
+        {actionSlot}
         <TableViewOptions
           table={table}
           sortOptions={sortOptions}
