@@ -1,9 +1,9 @@
+import { APP_URL } from '@/lib/env';
 import { buttonVariants } from '@hexa/ui/button';
 import { ChevronRight } from '@hexa/ui/icons';
 import { Separator } from '@hexa/ui/separator';
 import { cn } from '@hexa/utils';
 import Link from 'next/link';
-
 export default function Hero() {
   const post = { href: null, title: 'Introducing Hexa' };
 
@@ -62,7 +62,7 @@ export default function Hero() {
 
       <div className="mx-0 flex w-full max-w-full flex-col gap-2 py-1 sm:max-w-lg sm:flex-row sm:gap-4">
         <Link
-          href="/components"
+          href={APP_URL}
           className={cn(
             buttonVariants({
               variant: 'default',

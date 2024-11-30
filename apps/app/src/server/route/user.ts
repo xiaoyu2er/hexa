@@ -7,7 +7,7 @@ import {
 } from '@/server/store/oauth';
 
 import { generateId, isHashValid } from '@/lib/crypto';
-import { PUBLIC_URL } from '@/lib/env';
+import { APP_URL } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
 import { invalidateUserSessions } from '@/lib/session';
 import { isStored, storage } from '@/lib/storage';
@@ -113,7 +113,7 @@ const user = new Hono<Context>()
         userId,
         email,
         type: 'ADD_EMAIL',
-        verifyUrlPrefex: `${PUBLIC_URL}/user/add-email/verify-token`,
+        verifyUrlPrefex: `${APP_URL}/user/add-email/verify-token`,
       });
 
       return c.json(data);
@@ -124,7 +124,7 @@ const user = new Hono<Context>()
     '/user/add-email/resend-passcode',
     zValidator('json', ResendPasscodeSchema),
     turnstileMiddleware(),
-    resendPasscodeMiddleware(`${PUBLIC_URL}/user/add-email/verify-token`)
+    resendPasscodeMiddleware(`${APP_URL}/user/add-email/verify-token`)
   )
   // Verify passcode
   .post(

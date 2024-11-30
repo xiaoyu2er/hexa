@@ -1,4 +1,4 @@
-import type { MainNavItem, SidebarNavItem } from '@/types';
+import type { MainNavItem, SidebarNavItem } from '@/types/www';
 
 interface DocsConfig {
   mainNav: MainNavItem[];

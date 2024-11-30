@@ -1,4 +1,4 @@
-import { PUBLIC_URL } from '@/lib/env';
+import { APP_URL } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
 import { invalidateUserSessions, setSession } from '@/lib/session';
 import {
@@ -39,7 +39,7 @@ const resetPassword = new Hono<Context>()
         email,
         userId: emailItem.userId,
         type: 'RESET_PASSWORD',
-        verifyUrlPrefex: `${PUBLIC_URL}/reset-password?token=`,
+        verifyUrlPrefex: `${APP_URL}/reset-password?token=`,
       });
       return c.json(data);
     }
@@ -49,7 +49,7 @@ const resetPassword = new Hono<Context>()
     '/reset-password/resend-passcode',
     zValidator('json', ResendPasscodeSchema),
     turnstileMiddleware(),
-    resendPasscodeMiddleware(`${PUBLIC_URL}/reset-password?token=`)
+    resendPasscodeMiddleware(`${APP_URL}/reset-password?token=`)
   )
   // Reset password verify passcode
   .post(

@@ -1,4 +1,7 @@
-export const PUBLIC_URL = process.env.NEXT_PUBLIC_URL;
+export const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? '';
+export const ADMIN_URL = process.env.NEXT_PUBLIC_ADMIN_URL ?? '';
+export const WWW_URL = process.env.NEXT_PUBLIC_WWW_URL ?? '';
+
 export const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 export const IS_XYZ =
   process.env.NODE_ENV === 'production' && process.env.IS_XYZ === 'true';

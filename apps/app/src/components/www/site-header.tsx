@@ -1,12 +1,13 @@
-import { MainNav } from '@/components/main-nav';
-import { MobileNav } from '@/components/mobile-nav';
-import { siteConfig } from '@/config/site';
 import { buttonVariants } from '@hexa/ui/button';
 import { GithubIcon, StarIcon, TwitterIcon } from '@hexa/ui/icons';
 import { ModeToggle } from '@hexa/ui/mode-toggle';
 import NumberTicker from '@hexa/ui/number-ticker';
 import { cn } from '@hexa/utils';
 import Link from 'next/link';
+
+import { siteConfig } from '@/config/www/site';
+import { MainNav } from './main-nav';
+import { MobileNav } from './mobile-nav';
 
 export async function SiteHeader() {
   let stars = 300; // Default value

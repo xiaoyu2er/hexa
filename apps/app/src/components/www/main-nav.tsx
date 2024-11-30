@@ -4,11 +4,12 @@ import { ExternalLinkIcon } from '@hexa/ui/icons';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { docsConfig } from '@/config/docs';
-import { siteConfig } from '@/config/site';
 import { Badge } from '@hexa/ui/badge';
 import { LogoIcon } from '@hexa/ui/icons';
 import { cn } from '@hexa/utils';
+
+import { docsConfig } from '@/config/www/docs';
+import { siteConfig } from '@/config/www/site';
 
 export function MainNav() {
   const pathname = usePathname();

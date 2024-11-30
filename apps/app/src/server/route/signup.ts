@@ -1,4 +1,4 @@
-import { PUBLIC_URL } from '@/lib/env';
+import { APP_URL } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
 import {} from '@/lib/session';
 import { creatUserFromTmpUserMiddleware } from '@/server/middleware/oauth';
@@ -59,7 +59,7 @@ const signup = new Hono<Context>()
         tmpUserId: tmpUser.id,
         email,
         type: 'SIGN_UP',
-        verifyUrlPrefex: `${PUBLIC_URL}/api/signup/verify-token/`,
+        verifyUrlPrefex: `${APP_URL}/api/signup/verify-token/`,
       });
 
       return c.json(data);
@@ -70,7 +70,7 @@ const signup = new Hono<Context>()
     '/signup/resend-passcode',
     zValidator('json', ResendPasscodeSchema),
     turnstileMiddleware(),
-    resendPasscodeMiddleware(`${PUBLIC_URL}/api/signup/verify-token/`)
+    resendPasscodeMiddleware(`${APP_URL}/api/signup/verify-token/`)
   )
   // Signup verify passcode
   .post(

@@ -1,5 +1,6 @@
 import { generateId } from '@/lib/crypto';
 import {
+  APP_URL,
   IS_DEVELOPMENT,
   IS_PRODUCTION,
   IS_XYZ,
@@ -8,7 +9,6 @@ import {
   NEXT_PUBLIC_STORAGE_BASE_URL,
   NEXT_PUBLIC_STORAGE_ENDPOINT,
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
-  PUBLIC_URL,
 } from '@/lib/env';
 import type { Context } from '@/server/route/route-types';
 import { addTmpUser, deleteTmpUser } from '@/server/store/tmp-user';
@@ -48,7 +48,7 @@ const test = new Hono<Context>()
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
       NEXT_PUBLIC_STORAGE_ENDPOINT,
       NEXT_PUBLIC_STORAGE_BASE_URL,
-      PUBLIC_URL,
+      APP_URL,
     });
   });
 

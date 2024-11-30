@@ -15,9 +15,14 @@ import { execSync } from 'node:child_process';
 
 const COMMENTS = ['# Hexa local development'];
 const HOSTS_ENTRIES = [
+  // for admin app
   '127.0.0.1 admin.hexa.local',
+  // for user app
   '127.0.0.1 app.hexa.local',
-  '127.0.0.1 www.hexa.local'
+  // for official website
+  '127.0.0.1 www.hexa.local',
+  // for redirect
+  '127.0.0.1 hexa.local'
 ];
 
 function getHostsPath(): string {
