@@ -1,3 +1,4 @@
+import { generateId } from '@/lib/crypto';
 import {
   IS_DEVELOPMENT,
   IS_PRODUCTION,
@@ -10,23 +11,19 @@ import {
   PUBLIC_URL,
 } from '@/lib/env';
 import type { Context } from '@/server/route/route-types';
+import { addTmpUser, deleteTmpUser } from '@/server/store/tmp-user';
 import { Hono } from 'hono';
 
 const test = new Hono<Context>()
-  .get('/get-kv', async (c) => {
-    return c.json({
-      kv: JSON.parse(await c.env.REDIRECT.get('test')),
+  .get('/check-health', async (c) => {
+    const db = c.get('db');
+    // create tmp user and delete it
+    const user = await addTmpUser(db, {
+      name: 'test',
+      email: `${generateId('tmpu')}@test.com`,
     });
-  })
-  .get('/set-kv', async (c) => {
-    return c.json({
-      kv: await c.env.REDIRECT.put(
-        'test',
-        JSON.stringify({
-          value: new Date().toISOString(),
-        })
-      ),
-    });
+    await deleteTmpUser(db, user.id);
+    return c.json({ success: true });
   })
   // Get environment variables
   .get('/env', async (c) => {

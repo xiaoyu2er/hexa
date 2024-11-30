@@ -18,7 +18,6 @@ import {
 } from '@/server/middleware/passcode';
 import authProject from '@/server/middleware/project';
 import { turnstileMiddleware } from '@/server/middleware/turnstile';
-import { assertAuthMiddleware } from '@/server/middleware/user';
 import type { Context } from '@/server/route/route-types';
 import {
   ResendPasscodeSchema,
@@ -53,7 +52,6 @@ import { Hono } from 'hono';
 import { DeleteEmailSchema } from '../schema/email';
 
 const user = new Hono<Context>()
-  .use('/user/*', assertAuthMiddleware)
   // Get user info
   .get('/user/info', async (c) => {
     const user = await getUserForClient(c.var.db, c.var.userId);

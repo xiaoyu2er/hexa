@@ -5,7 +5,6 @@ import { generateProjectSlug } from '@/lib/slug';
 import { isStored, storage } from '@/lib/storage';
 import authOrg from '@/server/middleware/org';
 import { authInvite } from '@/server/middleware/org-invite';
-import { assertAuthMiddleware } from '@/server/middleware/user';
 import type { Context } from '@/server/route/route-types';
 import {
   DeleteOrgSchema,
@@ -42,14 +41,12 @@ import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
 
 const org = new Hono<Context>()
-  .use('/org/*', assertAuthMiddleware)
   // Get user's organizations
   .get('/org/all', async (c) => {
     const { db, userId } = c.var;
     const orgs = await getUserOrgs(db, userId);
     return c.json(orgs);
   })
-
   // Create organization
   .post('/org', zValidator('json', InsertOrgSchema), async (c) => {
     const { db, userId } = c.var;

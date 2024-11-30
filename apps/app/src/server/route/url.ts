@@ -1,6 +1,5 @@
 import { ApiError } from '@/lib/error/error';
 import authProject from '@/server/middleware/project';
-import { assertAuthMiddleware } from '@/server/middleware/user';
 import type { Context } from '@/server/route/route-types';
 import { ProjectIdSchema } from '@/server/schema/project';
 import { UrlQuerySchema } from '@/server/schema/url';
@@ -10,7 +9,7 @@ import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
 
 const url = new Hono<Context>()
-  .use('/url', assertAuthMiddleware)
+
   .get(
     '/project/:projectId/urls',
     zValidator('param', ProjectIdSchema),
@@ -30,12 +29,15 @@ const url = new Hono<Context>()
     const url = await createUrl(db, {
       ...json,
     });
+
     if (!url) {
       throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create URL');
     }
+    const uid = url.id;
+    const value = await getUrlById(db, uid);
     // Store the URL in the KV store
     const key = `${url.domain}/${url.slug}`;
-    await c.env.REDIRECT.put(key, JSON.stringify(url));
+    await c.env.REDIRECT.put(key, JSON.stringify(value));
     return c.json(url);
   })
   .put('/url/update-url', zValidator('json', InsertUrlSchema), async (c) => {

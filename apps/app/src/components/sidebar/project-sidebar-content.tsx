@@ -1,6 +1,6 @@
 import { Collapsible } from '@hexa/ui/collapsible';
 
-import { Home, Inbox } from '@hexa/ui/icons';
+import { ChartBar, Home, Inbox } from '@hexa/ui/icons';
 
 import {
   SidebarContent,
@@ -22,6 +22,11 @@ export function ProjectSideBarContent({ slug }: { slug: string }) {
       title: 'Links',
       url: `/project/${slug}`,
       icon: Home,
+    },
+    {
+      title: 'Analytics',
+      url: `/project/${slug}/analytics`,
+      icon: ChartBar,
     },
     {
       title: 'Settings',

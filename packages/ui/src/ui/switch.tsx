@@ -1,8 +1,7 @@
 'use client';
 
-// biome-ignore lint/style/noNamespaceImport: <explanation>
 import * as SwitchPrimitives from '@radix-ui/react-switch';
-import React from 'react';
+import * as React from 'react';
 
 import { cn } from '@hexa/utils';
 

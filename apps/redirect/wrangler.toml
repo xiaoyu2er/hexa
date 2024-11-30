@@ -4,6 +4,7 @@ main = "src/index.ts"
 compatibility_date = "2024-11-12"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = false
+assets = { directory = "./public/", binding = "ASSETS", not_found_handling = "404-page" }
 
 [env.local]
 routes = [
@@ -45,4 +46,4 @@ id = "082a86f93ac54912af21bdf8ae170ade"
 
 [[env.staging.analytics_engine_datasets]]
 binding = "REDIRECT_ANALYTICS"
-dataset = "redirect_events_xyz"
+dataset = "redirect_events_xyz_v0"

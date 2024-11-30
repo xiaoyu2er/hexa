@@ -14,7 +14,7 @@ import type { DbType } from '../route/route-types';
 
 export const getDefaultDomains = async () => {
   const { env } = await getCloudflareContext();
-  return env.DEFAULT_DOMAINS?.split(',') ?? [];
+  return env.DEFAULT_DOMAINS?.split(',') ?? ['a.ml.kg', 'b.ml.kg'];
 };
 
 // Helper function to check project permissions

@@ -83,7 +83,6 @@ export async function getUrls(
 export async function createUrl(db: DbType, data: InsertUrlType) {
   // Create new URL
   const [url] = await db.insert(urlTable).values(data).returning();
-
   return url;
 }
 
@@ -92,11 +91,7 @@ export async function getUrlById(db: DbType, urlId: string) {
   const url = await db.query.urlTable.findFirst({
     where: eq(urlTable.id, urlId),
     with: {
-      project: {
-        with: {
-          org: true,
-        },
-      },
+      project: true,
     },
   });
 

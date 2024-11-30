@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "build:worker": "cloudflare",
-    "dev:worker": "wrangler dev --port 7002",
+    "dev:worker": "wrangler dev --port 7002 --remote --env staging",
     "preview:worker": "npm run dev:worker",
     "deploy:worker": "wrangler deploy",
     "deploy:worker:staging": "wrangler deploy --env staging",
@@ -57,7 +57,9 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-hook-form": "7.53.2",
+    "recharts": "^2.13.3",
     "resend": "3.3.0",
+    "ua-parser-js": "^2.0.0",
     "usehooks-ts": "3.1.0",
     "zod": "3.23.8"
   },
