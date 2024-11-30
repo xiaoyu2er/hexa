@@ -4,14 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: "Choose an environment to deploy to: <staging|prod>"
-        required: true
+        description: "Choose an environment to deploy to: <staging|production>"
         default: "staging"
   push:
     branches:
       - main
       - xyz
-      - f/xyz
 
 jobs:
   deploy:
@@ -72,7 +70,7 @@ jobs:
           preCommands: |
             pnpm run build:worker
           command: |
-            deploy --env ${{ env.DEPLOY_ENV }}
+            deploy ${{ env.DEPLOY_ENV != 'production' && format('--env {0}', env.DEPLOY_ENV) || '' }}
           secrets: |
             RESEND_API_KEY
             OAUTH_GITHUB_CLIENT_ID
@@ -88,7 +86,3 @@ jobs:
             REDIRECT_DATASET
             CF_WAE_API_TOKEN
             CF_WAE_ACCOUNT_ID
-      - name: print deployment-url
-        env:
-          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
-        run: echo $DEPLOYMENT_URL
