@@ -3,6 +3,7 @@
   "extends": ["ultracite"],
   "files": {
     "ignore": [
+      "scripts/**/*",
       "apps/app/.next/**/*",
       "apps/app/.worker-next/**/*",
       "apps/app/.wrangler/**/*",
