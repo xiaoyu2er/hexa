@@ -1,21 +1,22 @@
+# This file is for private environment variables that will be used in worker server 
 # email
 # https://resend.com/api-keys
 RESEND_API_KEY=
 # == oauth ==
 # Github
 # https://github.com/settings/developers
-GITHUB_CLIENT_ID=
-GITHUB_CLIENT_SECRET=
+OAUTH_GITHUB_CLIENT_ID=
+OAUTH_GITHUB_CLIENT_SECRET=
 # Google
 # https://console.cloud.google.com/apis/credentials
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
+OAUTH_GOOGLE_CLIENT_ID=
+OAUTH_GOOGLE_CLIENT_SECRET=
 # == Cloudflare ==
 # Secretkey	                            Description
 # 1x0000000000000000000000000000000AA	Always passes
 # 2x0000000000000000000000000000000AA	Always fails
 # 3x0000000000000000000000000000000AA	Yields a “token already spent” error
-CLOUDFLARE_TURNSTILE_SECRET_KEY=
+CF_TURNSTILE_SECRET_KEY=
 
 # R2
 STORAGE_ACCESS_KEY_ID=
@@ -31,5 +32,5 @@ STRIPE_WEBHOOK_SECRET=
 DEFAULT_DOMAINS=example.com
 REDIRECT_DATASET=
 
-API_TOKEN=
-ACCOUNT_ID=
+CF_WAE_API_TOKEN=
+CF_WAE_ACCOUNT_ID=

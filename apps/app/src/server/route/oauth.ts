@@ -13,6 +13,8 @@ import {} from '@/server/store/oauth';
 
 import { APP_URL, IS_PRODUCTION } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
+import { getGitHub } from '@/lib/github';
+import { getGoogle } from '@/lib/google';
 import {
   getPasscodeByTokenMiddleware,
   getPasscodeMiddleware,
@@ -31,22 +33,16 @@ import {} from '@/server/store/project';
 import { addTmpUser } from '@/server/store/tmp-user';
 import { getEmail } from '@/server/store/user';
 import { zValidator } from '@hono/zod-validator';
-import { GitHub, Google, generateState } from 'arctic';
+import { generateState } from 'arctic';
 import { generateCodeVerifier } from 'arctic';
 import { Hono } from 'hono';
 import { getCookie, setCookie } from 'hono/cookie';
-
 const oauth = new Hono<Context>()
   // ====== Github Oauth ======
   .get('/oauth/github', async (c) => {
     const state = generateState();
-    const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = c.env;
-    const github = new GitHub(
-      GITHUB_CLIENT_ID ?? '',
-      GITHUB_CLIENT_SECRET ?? ''
-    );
 
-    const url = await github.createAuthorizationURL(state, {
+    const url = await getGitHub(c.env).createAuthorizationURL(state, {
       scopes: ['user:email'],
     });
 
@@ -65,19 +61,13 @@ const oauth = new Hono<Context>()
     '/oauth/github/callback',
     getSessionMiddleware,
     async (c, next) => {
-      const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = c.env;
       const { code, state } = c.req.query();
       const cookieState = getCookie(c, 'github_oauth_state') ?? null;
       if (!code || !state || !cookieState || state !== cookieState) {
         throw new ApiError('FORBIDDEN', 'Invalid state');
       }
 
-      const github = new GitHub(
-        GITHUB_CLIENT_ID ?? '',
-        GITHUB_CLIENT_SECRET ?? ''
-      );
-
-      const tokens = await github.validateAuthorizationCode(code);
+      const tokens = await getGitHub(c.env).validateAuthorizationCode(code);
 
       const githubUserResponse = await fetch('https://api.github.com/user', {
         headers: {
@@ -110,18 +100,16 @@ const oauth = new Hono<Context>()
   )
   // ====== Google Oauth ======
   .get('/oauth/google', async (c) => {
-    const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = c.env;
     const state = generateState();
     const codeVerifier = generateCodeVerifier();
 
-    const google = new Google(
-      GOOGLE_CLIENT_ID ?? '',
-      GOOGLE_CLIENT_SECRET ?? '',
-      `${APP_URL}/api/oauth/google/callback`
+    const url = await getGoogle(c.env).createAuthorizationURL(
+      state,
+      codeVerifier,
+      {
+        scopes: ['profile', 'email'],
+      }
     );
-    const url = await google.createAuthorizationURL(state, codeVerifier, {
-      scopes: ['profile', 'email'],
-    });
 
     setCookie(c, 'google_oauth_state', state, {
       secure: true,
@@ -144,7 +132,6 @@ const oauth = new Hono<Context>()
     '/oauth/google/callback',
     getSessionMiddleware,
     async (c, next) => {
-      const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = c.env;
       const { code, state } = c.req.query();
       const storedState = getCookie(c, 'google_oauth_state');
       const codeVerifier = getCookie(c, 'google_code_verifier');
@@ -159,13 +146,10 @@ const oauth = new Hono<Context>()
         return c.json({ error: 'Invalid state' }, 400);
       }
 
-      const google = new Google(
-        GOOGLE_CLIENT_ID ?? '',
-        GOOGLE_CLIENT_SECRET ?? '',
-        `${APP_URL}/api/oauth/google/callback`
+      const tokens = await getGoogle(c.env).validateAuthorizationCode(
+        code,
+        codeVerifier
       );
-
-      const tokens = await google.validateAuthorizationCode(code, codeVerifier);
       const response = await fetch(
         'https://openidconnect.googleapis.com/v1/userinfo',
         {
