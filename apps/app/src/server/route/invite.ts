@@ -8,7 +8,7 @@ import { Hono } from 'hono';
 import { z } from 'zod';
 
 const invite = new Hono<Context>()
-  // Check if email is already taken
+  // Accept invite
   .get(
     '/invite/:token',
     getSessionMiddleware,

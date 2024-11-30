@@ -2,7 +2,10 @@
 
 interface Env {
 	REDIRECT: KVNamespace;
+	HOME_URL: string;
+	REDIRECT_DATASET: string;
 	API_TOKEN: string;
 	ACCOUNT_ID: string;
 	REDIRECT_ANALYTICS: AnalyticsEngineDataset;
+	ASSETS: Fetcher;
 }

@@ -29,3 +29,7 @@ STRIPE_WEBHOOK_SECRET=
 
 # default domains, comma separated
 DEFAULT_DOMAINS=example.com
+REDIRECT_DATASET=
+
+API_TOKEN=
+ACCOUNT_ID=

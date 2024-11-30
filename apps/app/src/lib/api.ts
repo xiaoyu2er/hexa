@@ -153,6 +153,10 @@ export const $updateProjectAvatar = h(
 export const $getUrls = h(api.project[':projectId'].urls.$get);
 export const $createUrl = h(api.url['create-url'].$post);
 
+// analytics
+export const $getAnalyticsLogs = h(api.analytics.logs[':type'].$get);
+export const $getAnalyticsTimeSeries = h(api.analytics.all.$get);
+
 // ==================== Org ====================
 export const $getOrgs = h(api.org.all.$get);
 export const $createOrg = h(api.org.$post);

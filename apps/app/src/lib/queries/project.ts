@@ -51,3 +51,9 @@ export const invalidateUrls = (projectId: string, query?: TableQuery) => {
       : ['project/', projectId, 'urls'],
   });
 };
+
+export const invalidateAnalytics = (projectId: string) => {
+  return getQueryClient().invalidateQueries({
+    queryKey: ['project', projectId, 'analytics'],
+  });
+};

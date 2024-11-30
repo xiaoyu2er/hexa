@@ -13,6 +13,9 @@ interface CloudflareEnv {
 	STRIPE_SECRET_KEY: string;
 	STRIPE_WEBHOOK_SECRET: string;
 	DEFAULT_DOMAINS: string;
+	REDIRECT_DATASET: string;
+	API_TOKEN: string;
+	ACCOUNT_ID: string;
 	DB: D1Database;
 	ASSETS: Fetcher;
 }

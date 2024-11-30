@@ -42,6 +42,7 @@ database_name = "hexa-xyz"
 database_id = "8540e0e2-15ee-44f6-82ec-64584e8331a8"
 migrations_dir = "./drizzle/migrations"
 
+
 [[env.staging.kv_namespaces]]
 binding = "REDIRECT"
 id = "082a86f93ac54912af21bdf8ae170ade"

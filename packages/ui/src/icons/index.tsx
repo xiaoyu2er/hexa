@@ -19,6 +19,23 @@ export { StarIcon } from '@heroicons/react/24/solid';
 export type { LucideIcon } from 'lucide-react';
 // https://lucide.dev/icons/
 export {
+  MonitorUpIcon,
+  AppleIcon,
+  // Browser icons
+  ChromeIcon,
+  GamepadIcon,
+  LaptopIcon,
+  MonitorIcon,
+  MonitorSmartphoneIcon,
+  SmartphoneIcon,
+  TabletIcon,
+  TvIcon,
+  // OS icons
+
+  TrendingUp,
+  Monitor,
+  Smartphone,
+  ChartBar,
   LayoutGrid,
   LayoutList,
   CopyIcon,

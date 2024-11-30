@@ -2,7 +2,6 @@ import { generateId } from '@/lib/crypto';
 import { ApiError } from '@/lib/error/error';
 import { isStored, storage } from '@/lib/storage';
 import authProject from '@/server/middleware/project';
-import { assertAuthMiddleware } from '@/server/middleware/user';
 import type { Context } from '@/server/route/route-types';
 import {
   DeleteProjectSchema,
@@ -27,7 +26,6 @@ import { Hono } from 'hono';
 
 const project = new Hono<Context>()
   // Get all projects
-  .use('/project/*', assertAuthMiddleware)
   .get('/project/all', async (c) => {
     const { db, userId } = c.var;
     const projects = await getUserAccessibleProjects(db, userId);
@@ -66,7 +64,6 @@ const project = new Hono<Context>()
       return c.json(project);
     }
   )
-
   // Delete project
   .delete(
     '/project/delete-project',
@@ -79,7 +76,6 @@ const project = new Hono<Context>()
       return c.json({});
     }
   )
-
   // Update project name
   .put(
     '/project/update-project-name',
