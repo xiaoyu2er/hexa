@@ -1,4 +1,4 @@
-import { LoginPassword } from '@/app/(auth)/login/login-password';
+import { LoginPassword } from './login-password';
 
 export const metadata = {
   title: 'Login',
