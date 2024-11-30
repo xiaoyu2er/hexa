@@ -1,4 +1,4 @@
-import { ADMIN_URL, WWW_URL } from '@/lib/env';
+import { ADMIN_URL, APP_URL, WWW_URL } from '@/lib/env';
 import { type NextRequest, NextResponse } from 'next/server';
 export const config = {
   matcher: [
@@ -15,12 +15,17 @@ export const config = {
 
 export function middleware(request: NextRequest) {
   const host = request.headers.get('host') as string;
+  const path = new URL(request.url).pathname;
+
   if (ADMIN_URL.includes(host)) {
-    return NextResponse.rewrite(new URL('/admin', request.url));
+    return NextResponse.rewrite(new URL(`/admin${path}`, request.url));
   }
   if (WWW_URL.includes(host)) {
-    return NextResponse.rewrite(new URL('/www', request.url));
+    return NextResponse.rewrite(new URL(`/www${path}`, request.url));
   }
-
+  if (APP_URL.includes(host)) {
+    return NextResponse.rewrite(new URL(`/app${path}`, request.url));
+    // return NextResponse.next();
+  }
   return NextResponse.next();
 }
