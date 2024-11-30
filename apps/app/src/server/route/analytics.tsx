@@ -9,11 +9,11 @@ import { z } from 'zod';
 
 // Helper function to query Analytics Engine
 async function queryAnalytics(env: Context['Bindings'], query: string) {
-  const API = `https://api.cloudflare.com/client/v4/accounts/${env.ACCOUNT_ID}/analytics_engine/sql`;
+  const API = `https://api.cloudflare.com/client/v4/accounts/${env.CF_WAE_ACCOUNT_ID}/analytics_engine/sql`;
   const res = await fetch(API, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${env.API_TOKEN}`,
+      Authorization: `Bearer ${env.CF_WAE_API_TOKEN}`,
     },
     body: query,
   });

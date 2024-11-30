@@ -1,11 +1,14 @@
 #:schema node_modules/wrangler/config-schema.json
 name = "hexa-app"
-main = ".worker-next/index.mjs"
+main = ".open-next/worker.ts"
 workers_dev = false
 routes = [
-  { pattern = "app.hexa.im", custom_domain = true }
+  { pattern = "app.hexa.im", custom_domain = true },
+  { pattern = "admin.hexa.im", custom_domain = true },
+  { pattern = "www.hexa.im", custom_domain = true },
+  { pattern = "hexa.im", custom_domain = true }
 ]
-upload_source_maps = true
+
 compatibility_date = "2024-09-26"
 compatibility_flags = ["nodejs_compat"]
 
@@ -13,7 +16,7 @@ compatibility_flags = ["nodejs_compat"]
 minify = true
 
 # Use the new Workers + Assets to host the static frontend files
-assets = { directory = ".worker-next/assets", binding = "ASSETS" }
+assets = { directory = ".open-next/assets", binding = "ASSETS" }
 
 # wrangler.toml (wrangler v3.79.0^)
 [observability]
@@ -29,6 +32,10 @@ migrations_dir = "./drizzle/migrations"
 [[kv_namespaces]]
 binding = "REDIRECT"
 id = "1eed1bf2d8ae4aa9a112121be24ad5d7"
+
+[[analytics_engine_datasets]]
+binding = "REDIRECT_ANALYTICS"
+dataset = "redirect_events"
 
 # =================== Staging ===================
 [env.staging]
@@ -51,3 +58,7 @@ migrations_dir = "./drizzle/migrations"
 [[env.staging.kv_namespaces]]
 binding = "REDIRECT"
 id = "082a86f93ac54912af21bdf8ae170ade"
+
+[[env.staging.analytics_engine_datasets]]
+binding = "REDIRECT_ANALYTICS"
+dataset = "redirect_events_xyz_v0"

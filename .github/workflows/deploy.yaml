@@ -1,21 +1,94 @@
 name: Deploy
 
 on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Choose an environment to deploy to: <staging|prod>"
+        required: true
+        default: "staging"
   push:
     branches:
       - main
       - xyz
+      - f/xyz
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Deploy
+    environment: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/main' && 'production' || 'staging') }}
+    env:
+      DEPLOY_ENV: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/main' && 'production' || 'staging') }}
     steps:
+      - name: Echo env
+        run: |
+          echo ${{ env.DEPLOY_ENV }}
       - uses: actions/checkout@v4
-      - name: Deploy
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - uses: actions/setup-node@v3
+        with:
+          cache: pnpm
+      - name: Install pnpm
+        run: |
+          pnpm install
+      - name: Create .env file
+        run: |
+          echo "NEXT_PUBLIC_APP_NAME=${{ vars.NEXT_PUBLIC_APP_NAME }}" > ./apps/app/.env
+          echo "NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY=${{ vars.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY }}" >> ./apps/app/.env
+          echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ vars.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}" >> ./apps/app/.env
+          echo "NEXT_PUBLIC_STORAGE_ENDPOINT=${{ vars.NEXT_PUBLIC_STORAGE_ENDPOINT }}" >> ./apps/app/.env
+          echo "NEXT_PUBLIC_STORAGE_BASE_URL=${{ vars.NEXT_PUBLIC_STORAGE_BASE_URL }}" >> ./apps/app/.env
+          echo "NEXT_PUBLIC_APP_URL=${{ vars.NEXT_PUBLIC_APP_URL }}" >> ./apps/app/.env
+          echo "NEXT_PUBLIC_ADMIN_URL=${{ vars.NEXT_PUBLIC_ADMIN_URL }}" >> ./apps/app/.env
+          echo "NEXT_PUBLIC_WWW_URL=${{ vars.NEXT_PUBLIC_WWW_URL }}" >> ./apps/app/.env
+          echo "NEXT_PUBLIC_REDIRECT_URL=${{ vars.NEXT_PUBLIC_REDIRECT_URL }}" >> ./apps/app/.env
+          cat ./apps/app/.env
+      - name: Build and Deploy
+        id: deploy
         uses: cloudflare/wrangler-action@v3
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OAUTH_GITHUB_CLIENT_ID: ${{ secrets.OAUTH_GITHUB_CLIENT_ID }}
+          OAUTH_GITHUB_CLIENT_SECRET: ${{ secrets.OAUTH_GITHUB_CLIENT_SECRET }}
+          OAUTH_GOOGLE_CLIENT_ID: ${{ secrets.OAUTH_GOOGLE_CLIENT_ID }}
+          OAUTH_GOOGLE_CLIENT_SECRET: ${{ secrets.OAUTH_GOOGLE_CLIENT_SECRET }}
+          CF_TURNSTILE_SECRET_KEY: ${{ secrets.CF_TURNSTILE_SECRET_KEY }}
+          STORAGE_ACCESS_KEY_ID: ${{ secrets.STORAGE_ACCESS_KEY_ID }}
+          STORAGE_SECRET_ACCESS_KEY: ${{ secrets.STORAGE_SECRET_ACCESS_KEY }}
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+          DEFAULT_DOMAINS: ${{ secrets.DEFAULT_DOMAINS }}
+          REDIRECT_DATASET: ${{ secrets.REDIRECT_DATASET }}
+          CF_WAE_API_TOKEN: ${{ secrets.CF_WAE_API_TOKEN }}
+          CF_WAE_ACCOUNT_ID: ${{ secrets.CF_WAE_ACCOUNT_ID }}
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          environment: staging
+          environment: ${{ env.DEPLOY_ENV }}
           workingDirectory: "apps/app"
-          command: whoami
+          packageManager: pnpm
+          preCommands: |
+            pnpm run build:worker
+          command: |
+            deploy --env ${{ env.DEPLOY_ENV }}
+          secrets: |
+            RESEND_API_KEY
+            OAUTH_GITHUB_CLIENT_ID
+            OAUTH_GITHUB_CLIENT_SECRET
+            OAUTH_GOOGLE_CLIENT_ID
+            OAUTH_GOOGLE_CLIENT_SECRET
+            CF_TURNSTILE_SECRET_KEY
+            STORAGE_ACCESS_KEY_ID
+            STORAGE_SECRET_ACCESS_KEY
+            STRIPE_SECRET_KEY
+            STRIPE_WEBHOOK_SECRET
+            DEFAULT_DOMAINS
+            REDIRECT_DATASET
+            CF_WAE_API_TOKEN
+            CF_WAE_ACCOUNT_ID
+      - name: print deployment-url
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+        run: echo $DEPLOYMENT_URL

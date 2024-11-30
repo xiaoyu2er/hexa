@@ -69,7 +69,8 @@ export function LoginPassword() {
         <CardHeader className="text-center">
           <CardTitle>Login</CardTitle>
           <CardDescription>
-            Log in to your account to access your dashboard
+            Log in to your {process.env.NEXT_PUBLIC_APP_NAME} account to access
+            your dashboard
           </CardDescription>
         </CardHeader>
         <CardContent>

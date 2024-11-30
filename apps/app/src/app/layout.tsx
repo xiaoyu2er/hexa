@@ -9,11 +9,12 @@ import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import { QueryClientProvider } from '@/components/providers/query-client-provider';
+import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import { ThemeProvider } from 'next-themes';
 import type { ReactNode } from 'react';
 
 export const metadata: Metadata = {
-  title: 'Hexa',
+  title: NEXT_PUBLIC_APP_NAME,
   description: 'Infinite Possibilities with a Single Link',
 };
 
