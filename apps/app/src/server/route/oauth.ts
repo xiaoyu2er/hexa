@@ -11,7 +11,7 @@ import {
 import { getOauthAccount } from '@/server/store/oauth';
 import {} from '@/server/store/oauth';
 
-import { IS_PRODUCTION, PUBLIC_URL } from '@/lib/env';
+import { APP_URL, IS_PRODUCTION } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
 import {
   getPasscodeByTokenMiddleware,
@@ -117,7 +117,7 @@ const oauth = new Hono<Context>()
     const google = new Google(
       GOOGLE_CLIENT_ID ?? '',
       GOOGLE_CLIENT_SECRET ?? '',
-      `${PUBLIC_URL}/api/oauth/google/callback`
+      `${APP_URL}/api/oauth/google/callback`
     );
     const url = await google.createAuthorizationURL(state, codeVerifier, {
       scopes: ['profile', 'email'],
@@ -162,7 +162,7 @@ const oauth = new Hono<Context>()
       const google = new Google(
         GOOGLE_CLIENT_ID ?? '',
         GOOGLE_CLIENT_SECRET ?? '',
-        `${PUBLIC_URL}/api/oauth/google/callback`
+        `${APP_URL}/api/oauth/google/callback`
       );
 
       const tokens = await google.validateAuthorizationCode(code, codeVerifier);
@@ -250,7 +250,7 @@ const oauth = new Hono<Context>()
         tmpUserId: tmpUser.id,
         email,
         type: 'OAUTH_SIGNUP',
-        verifyUrlPrefex: `${PUBLIC_URL}/api/oauth-signup/verify-token/`,
+        verifyUrlPrefex: `${APP_URL}/api/oauth-signup/verify-token/`,
       });
 
       return c.json(data);
@@ -262,7 +262,7 @@ const oauth = new Hono<Context>()
     '/oauth-signup/resend-passcode',
     zValidator('json', ResendPasscodeSchema),
     turnstileMiddleware(),
-    resendPasscodeMiddleware(`${PUBLIC_URL}/api/oauth-signup/verify-token/`)
+    resendPasscodeMiddleware(`${APP_URL}/api/oauth-signup/verify-token/`)
   )
   // Oauth signup verify passcode
   .post(

@@ -4,8 +4,8 @@ import Link, { type LinkProps } from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-import { docsConfig } from '@/config/docs';
-import { siteConfig } from '@/config/site';
+import { docsConfig } from '@/config/www/docs';
+import { siteConfig } from '@/config/www/site';
 import { Button } from '@hexa/ui/button';
 import { LogoIcon } from '@hexa/ui/icons';
 import { ScrollArea } from '@hexa/ui/scroll-area';

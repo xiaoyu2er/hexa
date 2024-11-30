@@ -1,7 +1,7 @@
-import { SiteBanner } from '@/components/site-banner';
-import { SiteFooter } from '@/components/site-footer';
-import { SiteHeader } from '@/components/site-header';
-import { siteConfig } from '@/config/site';
+import { SiteBanner } from '@/components/www/site-banner';
+import { SiteFooter } from '@/components/www/site-footer';
+import { SiteHeader } from '@/components/www/site-header';
+import { siteConfig } from '@/config/www/site';
 import type { ReactElement, ReactNode } from 'react';
 
 export default function HomeLayout({

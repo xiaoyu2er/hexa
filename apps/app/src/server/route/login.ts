@@ -1,5 +1,5 @@
 import { isHashValid } from '@/lib/crypto';
-import { PUBLIC_URL } from '@/lib/env';
+import { APP_URL } from '@/lib/env';
 import { ApiError } from '@/lib/error/error';
 import { setSession } from '@/lib/session';
 import { verifyLoginPasscodeMiddleware } from '@/server/middleware/login';
@@ -76,7 +76,7 @@ const login = new Hono<Context>()
         email,
         type: 'LOGIN',
         userId: existingUser.id,
-        verifyUrlPrefex: `${PUBLIC_URL}/api/login-token/`,
+        verifyUrlPrefex: `${APP_URL}/api/login-token/`,
       });
 
       return c.json(data);
@@ -87,7 +87,7 @@ const login = new Hono<Context>()
     '/login-passcode/resend-passcode',
     zValidator('json', ResendPasscodeSchema),
     turnstileMiddleware(),
-    resendPasscodeMiddleware(`${PUBLIC_URL}/api/login-token/`)
+    resendPasscodeMiddleware(`${APP_URL}/api/login-token/`)
   )
   // Login by passcode verify passcode
   .post(
