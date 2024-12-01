@@ -1,4 +1,5 @@
-import { Cog, Users } from '@hexa/ui/icons';
+import type { SidebarGroupItem } from '@/components/sidebar/type';
+import {} from '@hexa/ui/icons';
 
 import {
   SidebarContent,
@@ -10,42 +11,13 @@ import {
   SidebarMenuItem,
 } from '@hexa/ui/sidebar';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
-const getProjectSettingsSidebarItems = (slug: string) => {
-  return [
-    {
-      title: 'Project',
-      subItems: [
-        {
-          title: 'Settings',
-          url: `/project/${slug}/settings`,
-          icon: Cog,
-        },
-      ],
-    },
-    {
-      title: 'Organization',
-      subItems: [
-        {
-          title: 'Settings',
-          url: `/project/${slug}/org`,
-          icon: Cog,
-        },
-        {
-          title: 'Members',
-          url: `/project/${slug}/org/members`,
-          icon: Users,
-        },
-      ],
-    },
-  ];
-};
+interface AppSidebarContentProps {
+  items: SidebarGroupItem[];
+  pathname: string;
+}
 
-export function ProjectSettingsSidebarContent({ slug }: { slug: string }) {
-  const pathname = usePathname();
-  const items = getProjectSettingsSidebarItems(slug);
-
+export function AppSidebarContent({ items, pathname }: AppSidebarContentProps) {
   return (
     <SidebarContent>
       {items.map((item) => {

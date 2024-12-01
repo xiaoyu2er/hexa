@@ -1,11 +1,17 @@
 'use client';
 
+import { AppSidebarContent } from '@/components/sidebar/app-sidebar-content';
 import { AppSidebarFooter } from '@/components/sidebar/app-sidebar-footer';
 import { ContextSwitcher } from '@/components/sidebar/context-switcher';
-import { ProjectSettingsSidebarContent } from '@/components/sidebar/project-settings-sidebar-content';
-import { ProjectSideBarContent } from '@/components/sidebar/project-sidebar-content';
-import { UserSideBarContent } from '@/components/sidebar/user-sidebar-content';
+import type { SidebarGroupItem } from '@/components/sidebar/type';
+import {
+  getAdminSidebarItems,
+  getProjectSettingsSidebarItems,
+  getProjectSidebarItems,
+  getUserSidebarItems,
+} from '@/components/sidebar/util';
 import { ArrowLeft } from '@hexa/ui/icons';
+import {} from '@hexa/ui/icons';
 import {
   Sidebar,
   SidebarFooter,
@@ -14,59 +20,49 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@hexa/ui/sidebar';
-import {} from 'motion/react';
 import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 
 export function AppSidebar() {
   const { slug } = useParams() as { slug: string };
   const pathname = usePathname();
-  const isProjectSettingsSidebar = pathname.includes(`/project/${slug}/`);
+  const isProjectSettingsSidebar = pathname.startsWith(`/project/${slug}/`);
+  const isAdminSidebar = pathname.startsWith('/admin');
+
+  let sidebarItems: SidebarGroupItem[] = [];
+
+  if (isProjectSettingsSidebar) {
+    sidebarItems = getProjectSettingsSidebarItems(slug);
+  } else if (isAdminSidebar) {
+    sidebarItems = getAdminSidebarItems();
+  } else if (slug) {
+    sidebarItems = getProjectSidebarItems(slug);
+  } else {
+    sidebarItems = getUserSidebarItems();
+  }
 
   return (
     <Sidebar variant="floating" collapsible="icon">
-      {isProjectSettingsSidebar && (
-        <>
-          <SidebarHeader>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href={`/project/${slug}`}>
-                    <ArrowLeft />
-                    <span>Settings</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarHeader>
-
-          <ProjectSettingsSidebarContent slug={slug} />
-
-          <SidebarFooter>
-            <AppSidebarFooter />
-          </SidebarFooter>
-        </>
-      )}
-
-      {!isProjectSettingsSidebar && (
-        <>
-          <SidebarHeader>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <ContextSwitcher />
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarHeader>
-          {slug ? (
-            <ProjectSideBarContent slug={slug} />
-          ) : (
-            <UserSideBarContent />
-          )}
-          <SidebarFooter>
-            <AppSidebarFooter />
-          </SidebarFooter>
-        </>
-      )}
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            {isProjectSettingsSidebar || isAdminSidebar ? (
+              <SidebarMenuButton asChild>
+                <Link href="/">
+                  <ArrowLeft />
+                  <span>Settings</span>
+                </Link>
+              </SidebarMenuButton>
+            ) : (
+              <ContextSwitcher />
+            )}
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
+      <AppSidebarContent items={sidebarItems} pathname={pathname} />
+      <SidebarFooter>
+        <AppSidebarFooter />
+      </SidebarFooter>
     </Sidebar>
   );
 }
