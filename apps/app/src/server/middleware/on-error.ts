@@ -1,5 +1,4 @@
 import { inspect } from 'node:util';
-import { IS_DEVELOPMENT } from '@/lib/env';
 import { ERROR_CODE_TO_HTTP_STATUS } from '@/lib/error/error';
 import type { ErrorHandler } from 'hono';
 import { ZodError } from 'zod';
@@ -24,21 +23,12 @@ export const onError: ErrorHandler<Context> = (error, c) => {
     );
   }
 
-  if (IS_DEVELOPMENT) {
-    return c.json(
-      {
-        error: {
-          cause: inspect(error, { depth: null }),
-          message: error.message,
-        },
-      },
-      500
-    );
-  }
-
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.error(error);
   return c.json(
     {
       error: {
+        cause: inspect(error, { depth: null }),
         message: error.message,
       },
     },

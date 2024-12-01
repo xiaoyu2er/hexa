@@ -6,7 +6,11 @@ routes = [
   { pattern = "app.hexa.im", custom_domain = true },
   { pattern = "admin.hexa.im", custom_domain = true },
   { pattern = "www.hexa.im", custom_domain = true },
-  { pattern = "hexa.im", custom_domain = true }
+  { pattern = "hexa.im", custom_domain = true },
+  { pattern = "hexa.im/*", zone_name = "hexa.im" },
+  { pattern = "www.hexa.im/*", zone_name = "hexa.im" },
+  { pattern = "admin.hexa.im/*", zone_name = "hexa.im" },
+  { pattern = "app.hexa.im/*", zone_name = "hexa.im" }
 ]
 
 compatibility_date = "2024-09-26"
