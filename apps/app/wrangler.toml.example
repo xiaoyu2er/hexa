@@ -28,7 +28,7 @@ database_id = "{DB_ID}"
 migrations_dir = "./drizzle/migrations"
 
 [[kv_namespaces]]
-binding = "REDIRECT"
+binding = "APP_KV"
 id = "{REDIRECT_KV_ID}"
 
 [[analytics_engine_datasets]]

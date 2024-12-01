@@ -10,7 +10,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const slug = params.slug;
   const key = `${host}/${slug}`;
 
-  const link = (await env.REDIRECT.get(key, { type: 'json' })) as {
+  const link = (await env.APP_KV.get(key, { type: 'json' })) as {
     destUrl: string;
     domain: string;
     slug: string;

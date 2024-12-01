@@ -31,7 +31,7 @@ database_id = "ce720dbc-f1ce-4d3b-9348-a7d1cb6bbe43"
 migrations_dir = "./drizzle/migrations"
 
 [[kv_namespaces]]
-binding = "REDIRECT"
+binding = "APP_KV"
 id = "1eed1bf2d8ae4aa9a112121be24ad5d7"
 
 [[analytics_engine_datasets]]
@@ -54,7 +54,7 @@ migrations_dir = "./drizzle/migrations"
 
 
 [[env.staging.kv_namespaces]]
-binding = "REDIRECT"
+binding = "APP_KV"
 id = "082a86f93ac54912af21bdf8ae170ade"
 
 [[env.staging.analytics_engine_datasets]]
