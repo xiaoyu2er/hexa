@@ -26,7 +26,7 @@ async function getSHA256HashFromObject(obj: Record<string, string>) {
 }
 
 const randomChoice = <T>(arr: T[]): T =>
-  arr[Math.floor(Math.random() * arr.length)];
+  arr[Math.floor(Math.random() * arr.length)] as T;
 
 export const getRandomDataPoint = (): AnalyticsEngineDataPoint => {
   // Random data pools
@@ -122,7 +122,11 @@ export const getDataPoint = async (
       orgId: string;
     };
   },
-  request: Request
+  request: {
+    headers: Headers;
+    cf: IncomingRequestCfProperties | undefined;
+    url: string;
+  }
 ): Promise<AnalyticsEngineDataPoint> => {
   const headers = request.headers;
   const cf = (request.cf ?? {}) as IncomingRequestCfProperties;

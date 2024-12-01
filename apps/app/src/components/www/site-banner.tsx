@@ -4,10 +4,13 @@ import { ChevronRight } from '@hexa/ui/icons';
 import Link from 'next/link';
 
 interface SiteBannerProps {
-  href: string;
-  title: string;
+  href?: string;
+  title?: string;
 }
 export function SiteBanner({ href, title }: SiteBannerProps) {
+  if (!href || !title) {
+    return null;
+  }
   return (
     <div className="group relative top-0 bg-indigo-600 py-3 text-white transition-all duration-300 md:py-0">
       <div className="container flex flex-col items-center justify-center gap-4 md:h-12 md:flex-row">

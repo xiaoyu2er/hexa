@@ -7,7 +7,8 @@ const setEnv = createMiddleware(async (c, next) => {
   c.set('db', db);
   const { env, cf, ctx } = await getCloudflareContext();
   c.env = env;
-  c.req.cf = cf;
+  // @ts-ignore
+  c.req.cf = cf || {};
   c.ctx = ctx;
   return next();
 });

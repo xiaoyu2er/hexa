@@ -36,7 +36,7 @@ id = "1eed1bf2d8ae4aa9a112121be24ad5d7"
 
 [[analytics_engine_datasets]]
 binding = "REDIRECT_ANALYTICS"
-dataset = "redirect_events"
+dataset = "redirect_events_xyz_v0"
 
 # =================== Staging ===================
 [env.staging]
