@@ -10,6 +10,19 @@ import { orgMemberTable } from '@/server/table/org-member';
 import { userTable } from '@/server/table/user';
 import { and, asc, desc, eq, sql } from 'drizzle-orm';
 
+export const getOrgMember = async (
+  db: DbType,
+  orgId: string,
+  userId: string
+) => {
+  return db.query.orgMemberTable.findFirst({
+    where: and(
+      eq(orgMemberTable.orgId, orgId),
+      eq(orgMemberTable.userId, userId)
+    ),
+  });
+};
+
 // Get org members
 export const getOrgMembers = async (
   db: DbType,

@@ -37,8 +37,8 @@ const url = new Hono<Context>()
     const value = await getUrlById(db, uid);
     // Store the URL in the KV store
     const key = `${url.domain}/${url.slug}`;
-    await c.env.REDIRECT.put(key, JSON.stringify(value));
-    const _stored = await c.env.REDIRECT.get(key, { type: 'json' });
+    await c.env.APP_KV.put(key, JSON.stringify(value));
+    const _stored = await c.env.APP_KV.get(key, { type: 'json' });
     return c.json(url);
   })
   .put('/url/update-url', zValidator('json', InsertUrlSchema), async (c) => {
