@@ -48,7 +48,7 @@
     "date-fns": "3.6.0",
     "drizzle-orm": "0.36.4",
     "drizzle-zod": "0.5.1",
-    "hono": "4.6.9",
+    "hono": "4.6.12",
     "lodash": "4.17.21",
     "lucia": "3.2.0",
     "motion": "11.11.17",
