@@ -62,7 +62,7 @@ export default function Hero() {
 
       <div className="mx-0 flex w-full max-w-full flex-col gap-2 py-1 sm:max-w-lg sm:flex-row sm:gap-4">
         <Link
-          href={APP_URL}
+          href={`${APP_URL}/login`}
           className={cn(
             buttonVariants({
               variant: 'default',

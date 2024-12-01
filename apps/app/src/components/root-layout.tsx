@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   description: 'Infinite Possibilities with a Single Link',
 };
 
-export default function RootLayout({
+export function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;

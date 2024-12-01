@@ -2,7 +2,7 @@ import { AnimatedBeamMultipleOutputDemo } from '@/components/www/animated-beam-m
 import Hero from '@/components/www/hero';
 import type { ReactElement } from 'react';
 
-export default function Home(): ReactElement {
+export default function HomePage(): ReactElement {
   return (
     <>
       <Hero />
