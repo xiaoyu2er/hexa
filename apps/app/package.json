@@ -68,7 +68,7 @@
   "devDependencies": {
     "@dotenvx/dotenvx": "^1.26.0",
     "@hexa/typescript-config": "workspace:*",
-    "@opennextjs/cloudflare": "https://pkg.pr.new/@opennextjs/cloudflare@experimental",
+    "@opennextjs/cloudflare": "https://pkg.pr.new/@opennextjs/cloudflare@main",
     "@tanstack/react-query-devtools": "^5.50.1",
     "@types/lodash": "^4.17.5",
     "@types/node": "22.10.1",
