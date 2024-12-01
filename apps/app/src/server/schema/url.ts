@@ -8,7 +8,10 @@ import { z } from 'zod';
 
 export const zDomain = z.string().refine((val) => {
   // Allow localhost in development
-  if (IS_DEVELOPMENT && val.includes('localhost')) {
+  if (
+    IS_DEVELOPMENT &&
+    (val.includes('hexa.local') || val.includes('localhost'))
+  ) {
     return true;
   }
   if (/^[a-zA-Z0-9][a-zA-Z0-9-_.]*[a-zA-Z0-9]$/.test(val)) {
