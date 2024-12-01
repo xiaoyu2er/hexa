@@ -64,13 +64,13 @@ jobs:
           CF_WAE_ACCOUNT_ID: ${{ secrets.CF_WAE_ACCOUNT_ID }}
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          environment: ${{ env.DEPLOY_ENV }}
+          environment: ${{ env.DEPLOY_ENV != 'production' && 'staging' || '' }}
           workingDirectory: "apps/app"
           packageManager: pnpm
           preCommands: |
             pnpm run build:worker
           command: |
-            deploy ${{ env.DEPLOY_ENV != 'production' && format('--env {0}', env.DEPLOY_ENV) || '' }}
+            deploy
           secrets: |
             RESEND_API_KEY
             OAUTH_GITHUB_CLIENT_ID
