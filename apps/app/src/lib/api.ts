@@ -7,7 +7,11 @@ import {
 } from 'hono/client';
 import { ZodError } from 'zod';
 
-export const client = hc<AppType>('/');
+export const client = hc<AppType>('/', {
+  headers: {
+    'Accept-Encoding': 'gzip, deflate',
+  },
+});
 const api = client.api;
 
 // This is a helper function that wraps the API functions to handle errors
