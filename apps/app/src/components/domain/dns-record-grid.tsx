@@ -15,7 +15,9 @@ export function DNSRecordGrid({ columns }: DNSRecordGridProps) {
     <div
       className={cn(
         'scrollbar-hide grid items-end gap-x-10 gap-y-1 overflow-x-auto rounded-lg bg-gray-100/80 p-4 text-sm',
-        `grid-cols-[repeat(${columns.length},min-content)]`
+        columns.length < 4
+          ? 'grid-cols-[repeat(3,min-content)]'
+          : 'grid-cols-[repeat(4,min-content)]'
       )}
     >
       {/* Headers */}

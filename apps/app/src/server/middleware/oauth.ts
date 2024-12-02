@@ -33,7 +33,7 @@ export const afterOauthCallbackMiddleware = (provider: ProviderType) =>
       // If user is logged in, bind the account, even if it's already linked, update the account
       // it's possible that the user goes to /api/oauth/github or /api/oauth/google
       await createOauthAccount(db, user.id, provider, providerUser);
-      return c.redirect('/user/settings/account');
+      return c.redirect('/');
     }
 
     // Find existing oauthAccount

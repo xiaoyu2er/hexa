@@ -18,6 +18,7 @@ interface CloudflareEnv {
 	CF_WAE_ACCOUNT_ID: string;
 	CF_ZONE_ID: string;
 	CF_EDIT_CUSTOM_HOSTNAME_API_TOKEN: string;
+	DEFAULT_ADMIN_ORG_ID: string;
 	DB: D1Database;
 	REDIRECT_ANALYTICS: AnalyticsEngineDataset;
 	ASSETS: Fetcher;

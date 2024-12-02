@@ -1,5 +1,6 @@
 import setEnv from '@/server/middleware/env';
 import { onError } from '@/server/middleware/on-error';
+import { protectApi } from '@/server/middleware/protect-api';
 import { assertAuthMiddleware } from '@/server/middleware/user';
 import analytics from '@/server/route/analytics';
 import domain from '@/server/route/domain';
@@ -21,6 +22,7 @@ import type { Context } from '../server/route/route-types';
 
 export const app = new Hono<Context>()
   .basePath('/api')
+  .use(protectApi)
   .use(cors())
   .use(setEnv)
   // Authenticated routes

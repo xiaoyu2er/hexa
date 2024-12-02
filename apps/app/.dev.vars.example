@@ -30,9 +30,11 @@ STRIPE_WEBHOOK_SECRET=
 
 # default domains, comma separated
 DEFAULT_DOMAINS=example.com
+DEFAULT_ADMIN_ORG_ID=org_xx
 REDIRECT_DATASET=
 
 CF_WAE_API_TOKEN=
 CF_WAE_ACCOUNT_ID=
 
 CF_ZONE_ID=
+
