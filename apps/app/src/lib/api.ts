@@ -173,3 +173,6 @@ export const $leaveOrg = h(api.org['leave-org'].$post);
 export const $getOrgInvites = h(api.org[':orgId'].invites.$get);
 export const $createInvites = h(api.org['create-invites'].$post);
 export const $revokeInvite = h(api.org['revoke-invite'].$put);
+// domains
+export const $getDomains = h(api.org[':orgId'].domains.$get);
+export const $createDomain = h(api.org['create-domain'].$post);

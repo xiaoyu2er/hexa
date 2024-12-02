@@ -33,7 +33,7 @@ export function EditProjectSlug() {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex items-center">
-        <ReadOnly text={project.slug} />
+        <ReadOnly text={project.slug} className="md:max-w-md" />
       </CardContent>
       <CardFooter className="flex-row-reverse items-center justify-between border-t px-6 py-4">
         <Button

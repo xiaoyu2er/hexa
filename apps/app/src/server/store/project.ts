@@ -150,6 +150,7 @@ export async function getProjectWithRole(
           members: {
             where: eq(orgMemberTable.userId, userId),
           },
+          domains: true,
         },
       },
     },

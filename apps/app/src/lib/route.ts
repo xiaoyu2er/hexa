@@ -2,6 +2,7 @@ import setEnv from '@/server/middleware/env';
 import { onError } from '@/server/middleware/on-error';
 import { assertAuthMiddleware } from '@/server/middleware/user';
 import analytics from '@/server/route/analytics';
+import domain from '@/server/route/domain';
 import email from '@/server/route/email';
 import invite from '@/server/route/invite';
 import login from '@/server/route/login';
@@ -33,6 +34,7 @@ export const app = new Hono<Context>()
   .route('/', analytics)
   .route('/', project)
   .route('/', org)
+  .route('/', domain)
   // Not authenticated
   .route('/', test)
   .route('/', login)

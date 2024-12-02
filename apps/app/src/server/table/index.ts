@@ -1,3 +1,4 @@
+import { domainTable } from '@/server/table/domain';
 /**
  * This file is used to export all the tables and relations
  */
@@ -12,6 +13,7 @@ import { sessionTable } from '@/server/table/session';
 import { tmpUserTable } from '@/server/table/tmp-user';
 import { urlTable } from '@/server/table/url';
 import { userTable } from '@/server/table/user';
+
 export * from '@/server/table/relations';
 
 export {
@@ -26,6 +28,7 @@ export {
   projectTable,
   orgTable,
   orgMemberTable,
+  domainTable,
   // url
   urlTable,
   // invite

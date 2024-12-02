@@ -38,7 +38,7 @@ export function TableToolbarMobile<TData>({
           placeholder={searchPlaceholder}
           value={value}
           onChange={(event) => setValue(event.target.value)}
-          className="h-10"
+          className="h-8"
         />
         {children}
       </div>

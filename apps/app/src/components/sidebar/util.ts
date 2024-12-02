@@ -129,6 +129,11 @@ export const getProjectSettingsSidebarItems = (
           icon: Cog,
         },
         {
+          title: 'Domains',
+          url: `/project/${slug}/org/domains`,
+          icon: BuildingIcon,
+        },
+        {
           title: 'Members',
           url: `/project/${slug}/org/members`,
           icon: Users,

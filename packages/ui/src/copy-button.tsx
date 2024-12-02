@@ -19,15 +19,19 @@ export function CopyButton({
     <Button
       variant="ghost"
       size="icon"
-      onClick={(e) => {
+      onClick={async (e) => {
         e.stopPropagation();
-        setCopied(true);
-        navigator.clipboard.writeText(value).then(() => {
+
+        try {
+          await navigator.clipboard.writeText(value);
           toast.success('Copied to clipboard!');
-        });
-        setTimeout(() => setCopied(false), 3000);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 3000);
+        } catch (_error) {
+          toast.error('Failed to copy to clipboard!');
+        }
       }}
-      className={cn('h-7 w-7', className)}
+      className={cn('h-6 w-6', className)}
     >
       <span className="sr-only">Copy</span>
       <Comp className="h-4 w-4 text-gray-700 transition-all group-hover:text-blue-800" />
