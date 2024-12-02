@@ -10,6 +10,14 @@ export const createdAt = {
     .$default(() => sql`unixepoch()`),
 };
 
+export const updatedAt = {
+  updatedAt: integer('updated_at', { mode: 'timestamp' }),
+};
+
+export const lastCheckedAt = {
+  lastCheckedAt: integer('last_checked_at', { mode: 'timestamp' }),
+};
+
 // custom lower function
 export function lower(column: AnySQLiteColumn): SQL {
   return sql`lower(${column})`;

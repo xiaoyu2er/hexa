@@ -6,6 +6,7 @@ import type {
 } from '@/components/table/table-types';
 import { Button } from '@hexa/ui/button';
 import { Checkbox } from '@hexa/ui/checkbox';
+import { useScreenSize } from '@hexa/ui/hooks/use-screen-size';
 import {
   ArrowDown,
   ArrowUp,
@@ -34,7 +35,6 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@hexa/ui/tabs';
 import type { Table } from '@tanstack/react-table';
 import { useState } from 'react';
-import { useMediaQuery } from 'usehooks-ts';
 
 // Helper function to get column label
 function getColumnLabel<TData>(options: SortOption<TData>[], columnId: string) {
@@ -53,6 +53,7 @@ interface TableViewOptionsProps<TData> {
   filterConfigs?: FilterConfig<TData>[];
   view?: TableView;
   onViewChange?: (view: TableView) => void;
+  showViewChange?: boolean;
 }
 
 interface TableViewOptionsContentProps<TData> {
@@ -63,6 +64,7 @@ interface TableViewOptionsContentProps<TData> {
   onViewChange?: (view: TableView) => void;
   onClose?: () => void;
   isDesktop?: boolean;
+  showViewChange?: boolean;
 }
 
 // Shared content component
@@ -74,6 +76,7 @@ function TableViewOptionsContent<TData>({
   onViewChange,
   onClose,
   isDesktop,
+  showViewChange = true,
 }: TableViewOptionsContentProps<TData>) {
   const currentSort = table.getState().sorting[0];
 
@@ -81,7 +84,7 @@ function TableViewOptionsContent<TData>({
     <div className="flex h-full flex-col">
       <div className="flex-1">
         {/* View Toggle - Desktop Only */}
-        {isDesktop && (
+        {isDesktop && showViewChange && (
           <div className="border-b">
             <div className="p-3">
               <Tabs
@@ -309,8 +312,9 @@ export function TableViewOptions<TData>({
   filterConfigs,
   view,
   onViewChange,
+  showViewChange = true,
 }: TableViewOptionsProps<TData>) {
-  const isDesktop = useMediaQuery('(min-width: 1024px)');
+  const { isMobile } = useScreenSize();
   const [isOpen, setIsOpen] = useState(false);
 
   const hasFiltersOrSort =
@@ -318,14 +322,14 @@ export function TableViewOptions<TData>({
     table.getState().sorting.length > 0;
 
   // Separate desktop and mobile components
-  if (isDesktop) {
+  if (!isMobile) {
     return (
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             size="sm"
-            className="relative ml-auto flex h-8 items-center gap-2"
+            className="relative ml-auto flex items-center gap-2"
           >
             <Settings2 className="h-4 w-4" />
             <span>Display</span>
@@ -345,6 +349,7 @@ export function TableViewOptions<TData>({
                 table={table}
                 sortOptions={sortOptions}
                 filterConfigs={filterConfigs}
+                showViewChange={showViewChange}
                 view={view}
                 onViewChange={onViewChange}
                 onClose={() => setIsOpen(false)}
@@ -360,7 +365,11 @@ export function TableViewOptions<TData>({
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline" size="icon" className="relative h-10 w-10">
+        <Button
+          variant="outline"
+          size="icon"
+          className="relative h-8 w-8 shrink-0"
+        >
           <Settings2 className="h-4 w-4" />
           {hasFiltersOrSort && (
             <div className="-right-0.5 -top-0.5 absolute h-2 w-2 rounded-full bg-blue-500" />

@@ -1,3 +1,4 @@
+import { domainTable } from '@/server/table/domain';
 import { emailTable } from '@/server/table/email';
 import { oauthAccountTable } from '@/server/table/oauth';
 import { orgTable } from '@/server/table/org';
@@ -67,6 +68,7 @@ export const orgRelations = relations(orgTable, ({ many }) => ({
   members: many(orgMemberTable),
   projects: many(projectTable),
   invites: many(orgInviteTable),
+  domains: many(domainTable),
 }));
 
 // Organization member relations
@@ -107,5 +109,13 @@ export const shortUrlRelations = relations(urlTable, ({ one }) => ({
   project: one(projectTable, {
     fields: [urlTable.projectId],
     references: [projectTable.id],
+  }),
+}));
+
+// Domain relations
+export const domainRelations = relations(domainTable, ({ one }) => ({
+  org: one(orgTable, {
+    fields: [domainTable.orgId],
+    references: [orgTable.id],
   }),
 }));

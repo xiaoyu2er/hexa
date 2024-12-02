@@ -23,7 +23,7 @@ export function UserId() {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex items-center">
-        <ReadOnly text={user.id} />
+        <ReadOnly text={user.id} className="md:max-w-md" />
       </CardContent>
     </Card>
   );

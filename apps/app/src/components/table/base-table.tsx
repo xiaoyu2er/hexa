@@ -53,10 +53,14 @@ export interface BaseTableProps<T> {
   };
   Card: ComponentType<{ row: Row<T> }>;
   CardSkeleton: ComponentType;
+  CardNoResults?: ComponentType;
   searchPlaceholder: string;
   filterConfigs: FilterConfig<T>[];
   sortOptions: SortOption<T>[];
   actionSlot?: ReactNode;
+  showToolbar?: boolean;
+  defaultView?: TableView;
+  showViewChange?: boolean;
 }
 
 // First define the function type that preserves generics
@@ -74,11 +78,16 @@ const InternalBaseTable = <T extends object>(
     useData,
     Card,
     CardSkeleton,
+    CardNoResults,
     searchPlaceholder,
     filterConfigs,
     sortOptions,
     actionSlot,
+    showToolbar = true,
+    defaultView = 'rows',
+    showViewChange = true,
   } = props;
+
   const { isMobile } = useScreenSize();
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -87,7 +96,7 @@ const InternalBaseTable = <T extends object>(
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [view, setView] = useState<TableView>('rows');
+  const [view, setView] = useState<TableView>(defaultView);
   const {
     data: { data = [], rowCount = 0 } = {},
     isFetching,
@@ -122,32 +131,36 @@ const InternalBaseTable = <T extends object>(
 
   return (
     <div className="space-y-4">
-      <TableToolbar
-        table={table}
-        searchPlaceholder={searchPlaceholder}
-        filterConfigs={filterConfigs}
-        sortOptions={sortOptions}
-      >
-        {actionSlot}
-        <TableViewOptions
+      {showToolbar && (
+        <TableToolbar
           table={table}
-          sortOptions={sortOptions}
+          searchPlaceholder={searchPlaceholder}
           filterConfigs={filterConfigs}
-          view={view}
-          onViewChange={setView}
-        />
-      </TableToolbar>
+          sortOptions={sortOptions}
+        >
+          {actionSlot}
+          <TableViewOptions
+            table={table}
+            sortOptions={sortOptions}
+            filterConfigs={filterConfigs}
+            showViewChange={showViewChange}
+            view={view}
+            onViewChange={setView}
+          />
+        </TableToolbar>
+      )}
       {view === 'cards' || isMobile ? (
         <TableCard
           table={table}
           isFetching={isFetching}
           Card={Card}
           CardSkeleton={CardSkeleton}
+          CardNoResults={CardNoResults}
         />
       ) : (
         <TableRows table={table} isFetching={isFetching} />
       )}
-      <TablePagination table={table} />
+      {rowCount > 0 && <TablePagination table={table} />}
     </div>
   );
 };

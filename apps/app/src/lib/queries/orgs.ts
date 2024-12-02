@@ -1,5 +1,10 @@
 import { getQueryClient } from '@/components/providers/get-query-client';
-import { $getOrgInvites, $getOrgMembers, $getOrgs } from '@/lib/api';
+import {
+  $getDomains,
+  $getOrgInvites,
+  $getOrgMembers,
+  $getOrgs,
+} from '@/lib/api';
 import { type TableQuery, getTableQuery } from '@/lib/queries/table';
 import { queryOptions } from '@tanstack/react-query';
 
@@ -44,4 +49,20 @@ export const invalidateOrgInvites = (orgId: string, query?: TableQuery) => {
 export const invalidateOrg = () => {
   const { owner } = useParams() as { owner: string };
   return getQueryClient().invalidateQueries({ queryKey: [`org/${owner}`] });
+};
+
+export const queryDomainsOptions = (orgId: string, query: TableQuery) =>
+  queryOptions({
+    queryKey: ['orgs', orgId, 'domains', query],
+    queryFn: () =>
+      $getDomains({ param: { orgId }, query: getTableQuery(query) }),
+    staleTime: Number.POSITIVE_INFINITY,
+  });
+
+export const invalidateDomains = (orgId: string, query?: TableQuery) => {
+  return getQueryClient().invalidateQueries({
+    queryKey: query
+      ? ['orgs', orgId, 'domains', query]
+      : ['orgs', orgId, 'domains'],
+  });
 };

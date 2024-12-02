@@ -1,11 +1,18 @@
 import { CopyButton } from '@hexa/ui/copy-button';
 import { Input } from '@hexa/ui/input';
+import { cn } from '@hexa/utils/cn';
 
-export function ReadOnly({ text }: { text: string }) {
+export function ReadOnly({
+  text,
+  className,
+}: { text: string; className?: string }) {
   return (
-    <>
-      <Input type="text" readOnly value={text} className="w-full md:max-w-md" />
-      <CopyButton className="relative right-9" value={text} />
-    </>
+    <div className={cn('relative', className)}>
+      <Input type="text" readOnly value={text} />
+      <CopyButton
+        className="-translate-y-1/2 absolute top-1/2 right-2"
+        value={text}
+      />
+    </div>
   );
 }
