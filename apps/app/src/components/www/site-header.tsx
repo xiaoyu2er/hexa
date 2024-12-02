@@ -1,3 +1,5 @@
+'use client';
+
 import { buttonVariants } from '@hexa/ui/button';
 import { GithubIcon, StarIcon, TwitterIcon } from '@hexa/ui/icons';
 import { ModeToggle } from '@hexa/ui/mode-toggle';
@@ -6,37 +8,35 @@ import { cn } from '@hexa/utils';
 import Link from 'next/link';
 
 import { siteConfig } from '@/config/www/site';
+import { useEffect, useState } from 'react';
 import { MainNav } from './main-nav';
 import { MobileNav } from './mobile-nav';
 
 interface SiteHeaderProps {
   showStars?: boolean;
 }
-export async function SiteHeader({ showStars = true }: SiteHeaderProps) {
-  let stars = 300; // Default value
-  if (showStars) {
-    try {
-      const response = await fetch(
-        'https://api.github.com/repos/xiaoyu2er/hexa',
-        {
-          headers: process.env.GITHUB_OAUTH_TOKEN
-            ? {
-                Authorization: `Bearer ${process.env.GITHUB_OAUTH_TOKEN}`,
-                'Content-Type': 'application/json',
-              }
-            : {},
-          next: {
-            revalidate: 3600,
-          },
-        }
-      );
+export function SiteHeader({ showStars = true }: SiteHeaderProps) {
+  const [stars, setStars] = useState(300);
 
-      if (response.ok) {
-        const data = (await response.json()) as { stargazers_count: number };
-        stars = data.stargazers_count || stars; // Update stars if API response is valid
-      }
-    } catch (_error) {}
-  }
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (showStars) {
+      (async () => {
+        try {
+          const response = await fetch(
+            'https://api.github.com/repos/xiaoyu2er/hexa'
+          );
+
+          if (response.ok) {
+            const data = (await response.json()) as {
+              stargazers_count: number;
+            };
+            setStars(data.stargazers_count || stars); // Update stars if API response is valid
+          }
+        } catch (_error) {}
+      })();
+    }
+  }, [showStars]);
 
   return (
     <header

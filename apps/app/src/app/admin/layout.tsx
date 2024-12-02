@@ -27,12 +27,9 @@ export default async function AdminLayout({
   protectRoute();
   const { env } = await getCloudflareContext();
   const db = await getDb();
-  // set admin org id first
-  // npx wrangler kv key put --binding=APP_KV config:admin-org-id org_xx
-  // npx wrangler kv key put --binding=APP_KV config:admin-org-id org_xx --local
 
   if (!env.DEFAULT_ADMIN_ORG_ID) {
-    throw new Error('Admin org id not set');
+    throw new Error('Please set DEFAULT_ADMIN_ORG_ID first');
   }
 
   const { session, user } = await getSession();
@@ -41,7 +38,7 @@ export default async function AdminLayout({
   }
   const org = await getOrgMember(db, env.DEFAULT_ADMIN_ORG_ID, user.id);
   if (!org || (org.role !== 'ADMIN' && org.role !== 'OWNER')) {
-    return redirect('/');
+    throw new Error('You are not allowed to access this page');
   }
 
   return (

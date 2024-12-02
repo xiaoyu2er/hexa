@@ -1,3 +1,5 @@
+'use client';
+
 import { SiteBanner } from '@/components/www/site-banner';
 import { SiteFooter } from '@/components/www/site-footer';
 import { SiteHeader } from '@/components/www/site-header';
@@ -5,7 +7,13 @@ import { Button } from '@hexa/ui/button';
 import Link from 'next/link';
 import type { ReactElement } from 'react';
 
-export default function NotFound(): ReactElement {
+export default function GlobalError({
+  error,
+  reset,
+}: {
+  error: Error;
+  reset: () => void;
+}): ReactElement {
   return (
     <>
       <SiteBanner />
@@ -13,11 +21,9 @@ export default function NotFound(): ReactElement {
       <main className="flex-1">
         <div className="flex min-h-[calc(100vh-64px)] flex-col items-center justify-center px-4 text-center">
           <h1 className="mb-4 font-bold text-4xl text-gray-800">
-            404 - Page Not Found
+            500 - Internal Server Error
           </h1>
-          <p className="mb-6 text-gray-600">
-            Oops! The page you're looking for doesn't seem to exist.
-          </p>
+          <p className="mb-6 text-gray-600">{error.message}</p>
 
           <Button asChild>
             <Link href="/">Return Home</Link>

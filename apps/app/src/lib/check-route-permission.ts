@@ -7,8 +7,7 @@ export const isAppHost = (host: string) => {
 };
 
 /**
- * We only allow custom domains to access /[slug] routes.
- * This is to prevent unauthorized access to the app.
+ * We don't allow custom domains to access routes other than /[slug].
  */
 export function protectRoute() {
   const header = headers();
