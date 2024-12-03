@@ -17,6 +17,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@hexa/ui/sidebar';
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
@@ -31,6 +32,7 @@ const variants = {
 export function AppSidebar() {
   const { slug } = useParams() as { slug: string };
   const pathname = usePathname();
+  const { state } = useSidebar();
   const isProjectSettingsSidebar =
     pathname.startsWith(`/project/${slug}/settings`) ||
     pathname.startsWith('/user');
@@ -62,7 +64,7 @@ export function AppSidebar() {
                     variants={variants}
                     transition={{ duration: 0.2 }}
                   >
-                    <SidebarMenuButton asChild className="h-10">
+                    <SidebarMenuButton asChild>
                       <Link href={slug ? `/project/${slug}` : '/'}>
                         <ArrowLeft />
                         <span>Main Menu</span>

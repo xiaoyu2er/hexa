@@ -1,6 +1,4 @@
 import type { SidebarGroupItem } from '@/components/sidebar/type';
-import {} from '@hexa/ui/icons';
-
 import {
   SidebarContent,
   SidebarGroup,
@@ -9,7 +7,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@hexa/ui/sidebar';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@hexa/ui/tooltip';
 import Link from 'next/link';
 
 interface AppSidebarContentProps {
@@ -18,6 +18,7 @@ interface AppSidebarContentProps {
 }
 
 export function AppSidebarContent({ items, pathname }: AppSidebarContentProps) {
+  const { state } = useSidebar();
   return (
     <SidebarContent>
       {items.map((item, index) => {
@@ -26,8 +27,8 @@ export function AppSidebarContent({ items, pathname }: AppSidebarContentProps) {
             {item.title && <SidebarGroupLabel>{item.title}</SidebarGroupLabel>}
             <SidebarGroupContent>
               <SidebarMenu>
-                {item.subItems.map((subItem) => (
-                  <SidebarMenuItem key={subItem.title}>
+                {item.subItems.map((subItem) => {
+                  const button = (
                     <SidebarMenuButton
                       asChild
                       isActive={subItem.url === pathname}
@@ -38,8 +39,22 @@ export function AppSidebarContent({ items, pathname }: AppSidebarContentProps) {
                         <span>{subItem.title}</span>
                       </Link>
                     </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+                  );
+                  return (
+                    <SidebarMenuItem key={subItem.title}>
+                      {state === 'collapsed' ? (
+                        <Tooltip>
+                          <TooltipTrigger asChild>{button}</TooltipTrigger>
+                          <TooltipContent side="right" className="z-[100]">
+                            {subItem.title}
+                          </TooltipContent>
+                        </Tooltip>
+                      ) : (
+                        button
+                      )}
+                    </SidebarMenuItem>
+                  );
+                })}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
