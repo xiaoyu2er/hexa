@@ -12,6 +12,19 @@
       "to": "#07C983"
     }
   },
+  "primaryTab": {
+    "name": "Home",
+    "isDefaultHidden": true
+  },
+  "versions": [
+    {
+      "name": "English",
+      "default": true
+    },
+    {
+      "name": "简体中文"
+    }
+  ],
   "topbarLinks": [
     {
       "name": "Support",
@@ -24,53 +37,125 @@
   },
   "tabs": [
     {
+      "name": "Home",
+      "url": "/",
+      "version": "English"
+    },
+    {
       "name": "API Reference",
-      "url": "api-reference"
+      "url": "en/api-reference",
+      "version": "English"
+    },
+    {
+      "name": "文档",
+      "url": "zh-CN/",
+      "version": "简体中文"
+    },
+    {
+      "name": "API 参考",
+      "url": "zh-CN/api-reference",
+      "version": "简体中文"
     }
   ],
   "anchors": [
     {
       "name": "Documentation",
       "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
+      "url": "https://mintlify.com/docs",
+      "version": "English"
     },
     {
       "name": "Community",
       "icon": "slack",
-      "url": "https://mintlify.com/community"
+      "url": "https://mintlify.com/community",
+      "version": "English"
     },
     {
       "name": "Blog",
       "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
+      "url": "https://mintlify.com/blog",
+      "version": "English"
+    },
+    {
+      "name": "文档",
+      "icon": "book-open-cover",
+      "url": "https://mintlify.com/docs",
+      "version": "简体中文"
+    },
+    {
+      "name": "社区",
+      "icon": "slack",
+      "url": "https://mintlify.com/community",
+      "version": "简体中文"
+    },
+    {
+      "name": "博客",
+      "icon": "newspaper",
+      "url": "https://mintlify.com/blog",
+      "version": "简体中文"
     }
   ],
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["introduction", "quickstart", "development"]
+      "version": "English",
+      "pages": ["en/introduction", "en/quickstart", "en/development"]
     },
     {
       "group": "Essentials",
+      "version": "English",
       "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
+        "en/essentials/markdown",
+        "en/essentials/code",
+        "en/essentials/images",
+        "en/essentials/settings",
+        "en/essentials/navigation",
+        "en/essentials/reusable-snippets"
       ]
     },
     {
       "group": "API Documentation",
-      "pages": ["api-reference/introduction"]
+      "version": "English",
+      "pages": ["en/api-reference/introduction"]
     },
     {
       "group": "Endpoint Examples",
+      "version": "English",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "en/api-reference/endpoint/get",
+        "en/api-reference/endpoint/create",
+        "en/api-reference/endpoint/delete"
+      ]
+    },
+    {
+      "group": "入门",
+      "version": "简体中文",
+      "pages": ["zh-CN/introduction", "zh-CN/quickstart", "zh-CN/development"]
+    },
+    {
+      "group": "基础",
+      "version": "简体中文",
+      "pages": [
+        "zh-CN/essentials/markdown",
+        "zh-CN/essentials/code",
+        "zh-CN/essentials/images",
+        "zh-CN/essentials/settings",
+        "zh-CN/essentials/navigation",
+        "zh-CN/essentials/reusable-snippets"
+      ]
+    },
+    {
+      "group": "API 文档",
+      "version": "简体中文",
+      "pages": ["zh-CN/api-reference/introduction"]
+    },
+    {
+      "group": "API 示例",
+      "version": "简体中文",
+      "pages": [
+        "zh-CN/api-reference/endpoint/get",
+        "zh-CN/api-reference/endpoint/create",
+        "zh-CN/api-reference/endpoint/delete"
       ]
     }
   ],
