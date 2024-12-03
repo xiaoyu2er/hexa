@@ -1,15 +1,15 @@
 import { generateId } from '@/lib/crypto';
+import type { LinkRule } from '@/server/schema/link';
 import { createdAt } from '@/server/table/common';
 import { projectIdNotNull } from '@/server/table/project';
 import { index, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
-
 // URL table
-export const urlTable = sqliteTable(
-  'short_url',
+export const linkTable = sqliteTable(
+  'link',
   {
     id: text('id')
       .primaryKey()
-      .$default(() => generateId('url')),
+      .$default(() => generateId('link')),
     ...projectIdNotNull,
     ...createdAt,
     destUrl: text('dest_url').notNull(),
@@ -17,6 +17,7 @@ export const urlTable = sqliteTable(
     title: text('title'),
     desc: text('desc'),
     domain: text('domain').notNull(),
+    rules: text('rules', { mode: 'json' }).$type<LinkRule[]>(),
   },
   (t) => ({
     urlDomainSlugIndex: uniqueIndex('url_domain_slug_index').on(
@@ -26,7 +27,3 @@ export const urlTable = sqliteTable(
     projectIndex: index('url_project_index').on(t.projectId),
   })
 );
-
-export default {
-  urlTable,
-};

@@ -2,13 +2,12 @@
 
 import { TableColumnHeader } from '@/components/table/table-column-header';
 import type { FilterConfig } from '@/components/table/table-types';
-import { useUrls } from '@/hooks/use-urls';
-import {} from '@/server/schema/org-member';
+import { useLinks } from '@/hooks/use-links';
 import {
-  type SelectUrlType,
-  UrlColumnOptions,
-  UrlSortableColumnOptions,
-} from '@/server/schema/url';
+  LinkColumnOptions,
+  LinkSortableColumnOptions,
+  type SelectLinkType,
+} from '@/server/schema/link';
 import { Button } from '@hexa/ui/button';
 import {
   DropdownMenu,
@@ -22,10 +21,10 @@ import { capitalize } from 'lodash';
 
 // Helper function to get column label
 const getColumnLabel = (columnId: string) =>
-  UrlColumnOptions.find((option) => option.value === columnId)?.label ??
+  LinkColumnOptions.find((option) => option.value === columnId)?.label ??
   capitalize(columnId);
 
-export const columns: ColumnDef<SelectUrlType>[] = [
+export const columns: ColumnDef<SelectLinkType>[] = [
   { id: 'search' },
 
   {
@@ -84,8 +83,8 @@ export const columns: ColumnDef<SelectUrlType>[] = [
   },
 ];
 
-export const useData = useUrls;
-export const filterConfigs: FilterConfig<SelectUrlType>[] = [
+export const useData = useLinks;
+export const filterConfigs: FilterConfig<SelectLinkType>[] = [
   {
     columnId: 'domain',
     label: 'Domain',
@@ -97,4 +96,4 @@ export const filterConfigs: FilterConfig<SelectUrlType>[] = [
   },
 ];
 export const searchPlaceholder = 'Search url...';
-export const sortOptions = UrlSortableColumnOptions;
+export const sortOptions = LinkSortableColumnOptions;

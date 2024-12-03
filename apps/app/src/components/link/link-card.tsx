@@ -1,9 +1,9 @@
-import type { SelectUrlType } from '@/server/schema/url';
+import type { SelectLinkType } from '@/server/schema/link';
 import {} from '@hexa/ui/dropdown-menu';
 import { Skeleton } from '@hexa/ui/skeleton';
 import type { Row } from '@tanstack/react-table';
 
-export const UrlCardSkeleton = () => {
+export const LinkCardSkeleton = () => {
   return (
     <div className="flex items-center justify-between rounded-lg border p-4">
       <div className="flex items-center gap-3">
@@ -22,7 +22,7 @@ export const UrlCardSkeleton = () => {
   );
 };
 
-export const UrlCardWithActions = ({ row }: { row: Row<SelectUrlType> }) => {
-  const url = row.original;
-  return url.destUrl;
+export const LinkCardWithActions = ({ row }: { row: Row<SelectLinkType> }) => {
+  const link = row.original;
+  return link.destUrl;
 };

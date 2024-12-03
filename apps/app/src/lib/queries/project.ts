@@ -1,7 +1,7 @@
 'use client';
 
 import { getQueryClient } from '@/components/providers/get-query-client';
-import { $getAccessibleProjects, $getProject, $getUrls } from '@/lib/api';
+import { $getAccessibleProjects, $getLinks, $getProject } from '@/lib/api';
 import { type TableQuery, getTableQuery } from '@/lib/queries/table';
 import { queryOptions } from '@tanstack/react-query';
 
@@ -33,18 +33,21 @@ export const invalidateProject = (projectId: string) => {
   });
 };
 
-export const queryUrlsOptions = (projectId: string, query: TableQuery) =>
+export const queryLinksOptions = (projectId: string, query: TableQuery) =>
   queryOptions({
     queryKey: ['project/', projectId, 'urls', query],
     queryFn: () =>
-      $getUrls({
+      $getLinks({
         param: { projectId },
         query: getTableQuery(query),
       }),
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
-export const invalidateUrls = (projectId: string, query?: TableQuery) => {
+export const invalidateProjectLinks = (
+  projectId: string,
+  query?: TableQuery
+) => {
   return getQueryClient().invalidateQueries({
     queryKey: query
       ? ['project/', projectId, 'urls', query]

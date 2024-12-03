@@ -1,5 +1,6 @@
 import { domainTable } from '@/server/table/domain';
 import { emailTable } from '@/server/table/email';
+import { linkTable } from '@/server/table/link';
 import { oauthAccountTable } from '@/server/table/oauth';
 import { orgTable } from '@/server/table/org';
 import { orgInviteTable } from '@/server/table/org-invite';
@@ -7,7 +8,6 @@ import { orgMemberTable } from '@/server/table/org-member';
 import { passcodeTable } from '@/server/table/passcode';
 import { projectTable } from '@/server/table/project';
 import { tmpUserTable } from '@/server/table/tmp-user';
-import { urlTable } from '@/server/table/url';
 import { userTable } from '@/server/table/user';
 import { relations } from 'drizzle-orm';
 
@@ -101,13 +101,13 @@ export const projectRelations = relations(projectTable, ({ one, many }) => ({
     fields: [projectTable.orgId],
     references: [orgTable.id],
   }),
-  shortUrls: many(urlTable),
+  shortUrls: many(linkTable),
 }));
 
 // Short url relations
-export const shortUrlRelations = relations(urlTable, ({ one }) => ({
+export const shortUrlRelations = relations(linkTable, ({ one }) => ({
   project: one(projectTable, {
-    fields: [urlTable.projectId],
+    fields: [linkTable.projectId],
     references: [projectTable.id],
   }),
 }));

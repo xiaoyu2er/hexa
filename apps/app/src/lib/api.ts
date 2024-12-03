@@ -154,8 +154,8 @@ export const $updateProjectAvatar = h(
   api.project['update-project-avatar'].$put
 );
 // urls
-export const $getUrls = h(api.project[':projectId'].urls.$get);
-export const $createUrl = h(api.url['create-url'].$post);
+export const $getLinks = h(api.project[':projectId'].links.$get);
+export const $createLink = h(api.link['create-link'].$post);
 
 // analytics
 export const $getAnalyticsLogs = h(api.analytics.logs[':type'].$get);

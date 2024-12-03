@@ -1,34 +1,34 @@
 import { ApiError } from '@/lib/error/error';
 import type { DbType } from '@/server/route/route-types';
-import { transformSortParams } from '@/server/schema/url';
+import { transformSortParams } from '@/server/schema/link';
 import type {
-  InsertUrlType,
-  SelectUrlType,
-  UrlQueryType,
-} from '@/server/schema/url';
-import { urlTable } from '@/server/table/url';
+  InsertLinkType,
+  LinkQueryType,
+  SelectLinkType,
+} from '@/server/schema/link';
+import { linkTable } from '@/server/table/link';
 import { and, asc, desc, eq, sql } from 'drizzle-orm';
 
 // Get all URLs in a project
-export async function getUrls(
+export async function getLinks(
   db: DbType,
   projectId: string,
-  { filterDomain, search, pageIndex, pageSize, ...sorting }: UrlQueryType
-): Promise<{ rowCount: number; data: SelectUrlType[] }> {
+  { filterDomain, search, pageIndex, pageSize, ...sorting }: LinkQueryType
+): Promise<{ rowCount: number; data: SelectLinkType[] }> {
   // Start with base conditions
-  const conditions = [eq(urlTable.projectId, projectId)];
+  const conditions = [eq(linkTable.projectId, projectId)];
 
   if (filterDomain?.length) {
     // Add filter conditions
-    conditions.push(sql`${urlTable.domain} IN ${filterDomain}`);
+    conditions.push(sql`${linkTable.domain} IN ${filterDomain}`);
   }
 
   if (search) {
     conditions.push(
-      sql`(${urlTable.domain} LIKE ${`%${search}%`} OR 
-          ${urlTable.destUrl} LIKE ${`%${search}%`}) OR 
-          ${urlTable.slug} LIKE ${`%${search}%`} OR 
-          ${urlTable.title} LIKE ${`%${search}%`})`
+      sql`(${linkTable.domain} LIKE ${`%${search}%`} OR 
+          ${linkTable.destUrl} LIKE ${`%${search}%`}) OR 
+          ${linkTable.slug} LIKE ${`%${search}%`} OR 
+          ${linkTable.title} LIKE ${`%${search}%`})`
     );
   }
   const sortParams = transformSortParams(sorting);
@@ -37,15 +37,15 @@ export async function getUrls(
   const orderBy =
     sortParams.length > 0
       ? sortParams.map(({ column, sort }) =>
-          sort === 'desc' ? desc(urlTable[column]) : asc(urlTable[column])
+          sort === 'desc' ? desc(linkTable[column]) : asc(linkTable[column])
         )
-      : [desc(urlTable.createdAt)];
+      : [desc(linkTable.createdAt)];
 
   // Calculate offset
   const offset = pageIndex * pageSize;
 
   // Execute the paginated query with limit and offset
-  const data = await db.query.urlTable.findMany({
+  const data = await db.query.linkTable.findMany({
     // with: {
     //   project: true,
     // },
@@ -60,13 +60,13 @@ export async function getUrls(
     .select({
       count: sql`count(*)`,
     })
-    .from(urlTable)
+    .from(linkTable)
     .where(and(...conditions));
 
   const rowCount = Number(result?.count) ?? 0;
 
   // Transform the data as needed
-  const transformedData: SelectUrlType[] = data.map((url) => {
+  const transformedData: SelectLinkType[] = data.map((url) => {
     return {
       ...url,
       createdAt: url.createdAt as unknown as string,
@@ -80,16 +80,16 @@ export async function getUrls(
 }
 
 // Create a new short URL
-export async function createUrl(db: DbType, data: InsertUrlType) {
+export async function createLink(db: DbType, data: InsertLinkType) {
   // Create new URL
-  const [url] = await db.insert(urlTable).values(data).returning();
-  return url;
+  const [link] = await db.insert(linkTable).values(data).returning();
+  return link;
 }
 
 // Get URL by ID
 export async function getUrlById(db: DbType, urlId: string) {
-  const url = await db.query.urlTable.findFirst({
-    where: eq(urlTable.id, urlId),
+  const url = await db.query.linkTable.findFirst({
+    where: eq(linkTable.id, urlId),
     with: {
       project: true,
     },
@@ -101,12 +101,12 @@ export async function getUrlById(db: DbType, urlId: string) {
 // Update URL
 export async function updateUrl(
   db: DbType,
-  data: Partial<InsertUrlType> & { id: string }
+  data: Partial<InsertLinkType> & { id: string }
 ) {
   const [updated] = await db
-    .update(urlTable)
+    .update(linkTable)
     .set(data)
-    .where(eq(urlTable.id, data.id))
+    .where(eq(linkTable.id, data.id))
     .returning();
 
   if (!updated) {
@@ -119,8 +119,8 @@ export async function updateUrl(
 // Delete URL
 export async function deleteUrl(db: DbType, urlId: string) {
   const [deleted] = await db
-    .delete(urlTable)
-    .where(eq(urlTable.id, urlId))
+    .delete(linkTable)
+    .where(eq(linkTable.id, urlId))
     .returning();
 
   if (!deleted) {

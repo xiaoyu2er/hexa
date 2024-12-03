@@ -1,13 +1,54 @@
 import { PaginationSchema } from '@/server/schema/common';
 import { zSortEnum } from '@/server/schema/common';
 import { zDomain } from '@/server/schema/domain';
-import { urlTable } from '@/server/table/url';
+import { linkTable } from '@/server/table/link';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import type { Simplify } from 'type-fest';
 import { z } from 'zod';
 
-// Url schemas
-export const InsertUrlSchema = createInsertSchema(urlTable, {
+// https://developers.cloudflare.com/ruleset-engine/rules-language/operators/#comparison-operators
+// https://openflagr.github.io/flagr/api_docs/#operation/createFlag
+
+export const zLinkRuleOperatorEnum = z.enum([
+  'EQ',
+  'NEQ',
+  'LT',
+  'LE',
+  'GT',
+  'GE',
+  'CONTAINS',
+  'NOT_CONTAINS',
+  'REG',
+  'NREG',
+  'IN',
+  'NOT_IN',
+]);
+
+export type LinkRuleOperator = z.infer<typeof zLinkRuleOperatorEnum>;
+
+export const LinkRuleConditionSchema = z.object({
+  field: z.string(),
+  operator: zLinkRuleOperatorEnum,
+  value: z.union([
+    z.string(),
+    z.number(),
+    z.boolean(),
+    z.array(z.string()),
+    z.array(z.number()),
+  ]),
+});
+export type LinkRuleCondition = Simplify<
+  z.infer<typeof LinkRuleConditionSchema>
+>;
+
+export const LinkRuleSchema = z.object({
+  conditions: z.array(LinkRuleConditionSchema),
+  destUrl: z.string().url(),
+});
+export type LinkRule = Simplify<z.infer<typeof LinkRuleSchema>>;
+
+// Link schemas
+export const InsertLinkSchema = createInsertSchema(linkTable, {
   destUrl: z.string().url('Please enter a valid URL'),
   slug: z
     .string({ message: 'Slug is required' })
@@ -17,19 +58,21 @@ export const InsertUrlSchema = createInsertSchema(urlTable, {
   desc: z.string().optional(),
   projectId: z.string(),
   domain: zDomain,
+  rules: z.array(LinkRuleSchema).optional(),
 });
 
-export type InsertUrlType = Simplify<z.infer<typeof InsertUrlSchema>>;
+export type InsertLinkType = Simplify<z.infer<typeof InsertLinkSchema>>;
 
-export const SelectUrlSchema = createSelectSchema(urlTable, {
+export const SelectLinkSchema = createSelectSchema(linkTable, {
   destUrl: z.string().url(),
   slug: z.string(),
   createdAt: z.string().datetime(),
+  rules: z.array(LinkRuleSchema),
 });
 
-export type SelectUrlType = z.infer<typeof SelectUrlSchema>;
+export type SelectLinkType = Simplify<z.infer<typeof SelectLinkSchema>>;
 
-export const UrlColumnOptions = [
+export const LinkColumnOptions = [
   { label: 'Title', value: 'title' },
   { label: 'Destination URL', value: 'destUrl' },
   { label: 'Domain', value: 'domain' },
@@ -37,11 +80,11 @@ export const UrlColumnOptions = [
 ];
 
 // UI options matching sortable columns
-export const UrlSortableColumnOptions = [
+export const LinkSortableColumnOptions = [
   { label: 'Created Date', value: 'createdAt' },
 ] as const satisfies Array<{
   label: string;
-  value: keyof SelectUrlType;
+  value: keyof SelectLinkType;
 }>;
 // Add type for valid sort columns
 export const SortableColumns = [
@@ -73,15 +116,15 @@ export const zOrgInviteSortingItem = z
     }
   );
 
-export const UrlSortingSchema = z.object({
+export const LinkSortingSchema = z.object({
   // sortClicks: zSortEnum.optional(),
   sortCreatedAt: zSortEnum.optional(),
 });
 
-export type UrlSortingType = z.infer<typeof UrlSortingSchema>;
+export type LinkSortingType = z.infer<typeof LinkSortingSchema>;
 
 // Transform function to convert sort params
-export function transformSortParams(params: UrlSortingType) {
+export function transformSortParams(params: LinkSortingType) {
   return Object.entries(params)
     .filter(([field, sort]) => field.startsWith('sort') && sort !== undefined)
     .map(([field, sort]) => ({
@@ -95,7 +138,7 @@ export function transformSortParams(params: UrlSortingType) {
     );
 }
 
-export const UrlQueryFilterSchema = z.object({
+export const LinkQueryFilterSchema = z.object({
   filterDomain: z
     .union([z.array(zDomain), zDomain])
     .optional()
@@ -107,9 +150,12 @@ export const UrlQueryFilterSchema = z.object({
 
   search: z.string().optional(),
 });
-export type UrlQueryFilterType = Simplify<z.infer<typeof UrlQueryFilterSchema>>;
+export type LinkQueryFilterType = Simplify<
+  z.infer<typeof LinkQueryFilterSchema>
+>;
 
-export const UrlQuerySchema =
-  PaginationSchema.merge(UrlQueryFilterSchema).merge(UrlSortingSchema);
+export const LinkQuerySchema = PaginationSchema.merge(
+  LinkQueryFilterSchema
+).merge(LinkSortingSchema);
 
-export type UrlQueryType = Simplify<z.infer<typeof UrlQuerySchema>>;
+export type LinkQueryType = Simplify<z.infer<typeof LinkQuerySchema>>;

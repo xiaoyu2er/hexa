@@ -6,6 +6,7 @@ import analytics from '@/server/route/analytics';
 import domain from '@/server/route/domain';
 import email from '@/server/route/email';
 import invite from '@/server/route/invite';
+import link from '@/server/route/link';
 import login from '@/server/route/login';
 import logout from '@/server/route/logout';
 import oauth from '@/server/route/oauth';
@@ -14,7 +15,6 @@ import project from '@/server/route/project';
 import resetPassword from '@/server/route/reset-password';
 import signup from '@/server/route/signup';
 import test from '@/server/route/test';
-import url from '@/server/route/url';
 import user from '@/server/route/user';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
@@ -28,11 +28,11 @@ export const app = new Hono<Context>()
   // Authenticated routes
   .use('/project/*', assertAuthMiddleware)
   .use('/org/*', assertAuthMiddleware)
-  .use('/url/*', assertAuthMiddleware)
+  .use('/link/*', assertAuthMiddleware)
   .use('/user/*', assertAuthMiddleware)
   .use('/analytics/*', assertAuthMiddleware)
   .route('/', user)
-  .route('/', url)
+  .route('/', link)
   .route('/', analytics)
   .route('/', project)
   .route('/', org)
