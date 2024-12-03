@@ -1,28 +1,28 @@
 'use client';
 
-import { BaseTable, type TableRef } from '@/components/table/base-table';
+import { CreateLinkModal } from '@/components/link/create-link-modal';
 import {
-  UrlCardWithActions as Card,
-  UrlCardSkeleton as CardSkeleton,
-} from '@/components/url/url-card';
-import { CreateUrlModal } from '@/components/url/url-create-modal';
+  LinkCardWithActions as Card,
+  LinkCardSkeleton as CardSkeleton,
+} from '@/components/link/link-card';
 import {
   columns,
   filterConfigs,
   searchPlaceholder,
   sortOptions,
   useData,
-} from '@/components/url/url-table-data';
+} from '@/components/link/link-table-data';
+import { BaseTable, type TableRef } from '@/components/table/base-table';
 import { useProject } from '@/hooks/use-project';
-import { invalidateUrls } from '@/lib/queries/project';
-import type { SelectUrlType } from '@/server/schema/url';
+import { invalidateProjectLinks } from '@/lib/queries/project';
+import type { SelectLinkType } from '@/server/schema/link';
 import { useModal } from '@ebay/nice-modal-react';
 import { Button } from '@hexa/ui/button';
 import { useRef } from 'react';
 
 export default function () {
-  const ref = useRef<TableRef<SelectUrlType>>(null);
-  const modal = useModal(CreateUrlModal);
+  const ref = useRef<TableRef<SelectLinkType>>(null);
+  const modal = useModal(CreateLinkModal);
   const { project } = useProject();
   const create = (
     <Button
@@ -31,7 +31,7 @@ export default function () {
       onClick={() =>
         modal.show(project).then(() => {
           ref.current?.table.setPageIndex(0);
-          invalidateUrls(project.id);
+          invalidateProjectLinks(project.id);
         })
       }
     >
