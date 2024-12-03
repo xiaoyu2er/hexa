@@ -8,6 +8,6 @@ export interface SidebarNestedItem {
 }
 
 export interface SidebarGroupItem {
-  title: string;
+  title?: string;
   subItems: SidebarNestedItem[];
 }

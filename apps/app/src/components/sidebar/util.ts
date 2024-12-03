@@ -1,12 +1,16 @@
 import type { SidebarGroupItem } from '@/components/sidebar/type';
 import {
+  BookIcon,
   BuildingIcon,
   ChartBar,
   Cog,
-  Home,
-  Inbox,
+  GlobeIcon,
+  LifeBuoyIcon,
+  Link2Icon,
+  SendIcon,
   SettingsIcon,
-  UserIcon,
+  User2Icon,
+  UserCogIcon,
   Users,
 } from '@hexa/ui/icons';
 
@@ -45,7 +49,7 @@ export const getAdminSidebarItems = (): SidebarGroupItem[] => {
         {
           title: 'Users',
           url: '/admin/users',
-          icon: UserIcon,
+          icon: User2Icon,
         },
       ],
     },
@@ -62,7 +66,7 @@ export const getProjectSidebarItems = (slug: string): SidebarGroupItem[] => {
         {
           title: 'Links',
           url: `/project/${slug}`,
-          icon: Home,
+          icon: Link2Icon,
         },
         {
           title: 'Analytics',
@@ -71,51 +75,22 @@ export const getProjectSidebarItems = (slug: string): SidebarGroupItem[] => {
         },
         {
           title: 'Settings',
-          url: `/project/${slug}/settings`,
-          icon: Inbox,
+          url: `/project/${slug}/settings/project`,
+          icon: Cog,
         },
       ],
     },
   ];
 };
 
-export const getUserSidebarItems = (): SidebarGroupItem[] => {
-  const USER_NAVS = [
-    {
-      title: 'User',
-      subItems: [
-        {
-          title: 'Profile',
-          url: '/user/profile',
-          icon: UserIcon,
-        },
-        {
-          title: 'Account',
-          url: '/user/account',
-          icon: SettingsIcon,
-        },
-        {
-          title: 'Organizations',
-          url: '/user/orgs',
-          icon: BuildingIcon,
-        },
-      ],
-    },
-  ];
-
-  return USER_NAVS;
-};
-
-export const getProjectSettingsSidebarItems = (
-  slug: string
-): SidebarGroupItem[] => {
+export const getSettingsSidebarItems = (slug: string): SidebarGroupItem[] => {
   return [
     {
       title: 'Project',
       subItems: [
         {
           title: 'Settings',
-          url: `/project/${slug}/settings`,
+          url: `/project/${slug}/settings/project`,
           icon: Cog,
         },
       ],
@@ -125,18 +100,63 @@ export const getProjectSettingsSidebarItems = (
       subItems: [
         {
           title: 'Settings',
-          url: `/project/${slug}/org`,
-          icon: Cog,
-        },
-        {
-          title: 'Domains',
-          url: `/project/${slug}/org/domains`,
+          url: `/project/${slug}/settings/org`,
           icon: BuildingIcon,
         },
         {
+          title: 'Domains',
+          url: `/project/${slug}/settings/org/domains`,
+          icon: GlobeIcon,
+        },
+        {
           title: 'Members',
-          url: `/project/${slug}/org/members`,
+          url: `/project/${slug}/settings/org/members`,
           icon: Users,
+        },
+      ],
+    },
+    {
+      title: 'User',
+      subItems: [
+        {
+          title: 'Profile',
+          url: `/project/${slug}/settings/user/profile`,
+          icon: User2Icon,
+        },
+        {
+          title: 'Account',
+          url: `/project/${slug}/settings/user/account`,
+          icon: UserCogIcon,
+        },
+        {
+          title: 'Organizations',
+          url: `/project/${slug}/settings/user/orgs`,
+          icon: BuildingIcon,
+        },
+      ],
+    },
+  ];
+};
+
+export const getBottomSidebarItems = (): SidebarGroupItem[] => {
+  return [
+    {
+      title: '',
+      subItems: [
+        {
+          title: 'Documentation',
+          url: 'https://docs.hexa.im',
+          icon: BookIcon,
+        },
+        {
+          title: 'Support',
+          url: '#',
+          icon: LifeBuoyIcon,
+        },
+        {
+          title: 'Feedback',
+          url: '#',
+          icon: SendIcon,
         },
       ],
     },

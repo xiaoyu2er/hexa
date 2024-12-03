@@ -107,6 +107,9 @@ importers:
       drizzle-zod:
         specifier: 0.5.1
         version: 0.5.1(drizzle-orm@0.36.4(@cloudflare/workers-types@4.20241112.0)(@types/pg@8.11.6)(@types/react@18.3.12)(better-sqlite3@11.5.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1))(zod@3.23.8)
+      framer-motion:
+        specifier: 11.11.15
+        version: 11.11.15(@emotion/is-prop-valid@0.8.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       hono:
         specifier: 4.6.12
         version: 4.6.12

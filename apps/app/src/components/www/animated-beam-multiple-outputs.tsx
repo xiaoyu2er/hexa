@@ -10,7 +10,7 @@ import {
   LogoIcon,
   NotionIcon,
   OpenAIIcon,
-  UserIcon,
+  User2Icon,
   WhatsAppIcon,
 } from '@hexa/ui/icons';
 import { cn } from '@hexa/utils';
@@ -59,7 +59,7 @@ export function AnimatedBeamMultipleOutputDemo({
       <div className="flex size-full max-w-lg flex-row items-stretch justify-between gap-10">
         <div className="flex flex-col justify-center">
           <Circle ref={personRef}>
-            <UserIcon />
+            <User2Icon />
           </Circle>
         </div>
         <div className="flex flex-col justify-center">
