@@ -10,11 +10,11 @@ import { useModal } from '@ebay/nice-modal-react';
 import { Badge } from '@hexa/ui/badge';
 import { Button } from '@hexa/ui/button';
 import {} from '@hexa/ui/collapsible';
-import { useIsMobile } from '@hexa/ui/hooks/use-mobile';
+import { useScreenSize } from '@hexa/ui/hooks/use-screen-size';
 import { CaretSortIcon, CheckIcon, PlusCircledIcon } from '@hexa/ui/icons';
 import { Input } from '@hexa/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@hexa/ui/popover';
-import { useSidebar } from '@hexa/ui/sidebar';
+import { SidebarMenuButton, useSidebar } from '@hexa/ui/sidebar';
 import { Skeleton } from '@hexa/ui/skeleton';
 import { toast } from '@hexa/ui/sonner';
 import { cn } from '@hexa/utils';
@@ -26,7 +26,7 @@ import { useState } from 'react';
 import { useBoolean } from 'usehooks-ts';
 
 export function ContextSwitcher() {
-  const isMobile = useIsMobile();
+  const { isMobile } = useScreenSize();
 
   const { slug } = useParams() as { slug: string };
   const { state } = useSidebar();
@@ -91,53 +91,56 @@ export function ContextSwitcher() {
     );
   }
 
-  if (state === 'collapsed') {
-    return (
-      <div className="flex w-full items-center justify-center">
-        {selectedProject ? (
-          <>
-            <ProjectAvatar project={selectedProject} className="size-5" />
-          </>
-          // biome-ignore lint/nursery/noNestedTernary: <explanation>
-        ) : user ? (
-          <>
-            <UserAvatar className="size-5" user={user} />
-          </>
-        ) : null}
-      </div>
-    );
-  }
   return (
     <>
       <Popover open={isPopoverOpen} onOpenChange={setPopoverOpen}>
         <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            // role="combobox"
-            aria-expanded={isPopoverOpen}
-            aria-label="Select a team"
-            className={cn('h-10 w-full justify-between gap-3 border-0')}
-          >
-            {selectedProject ? (
-              <>
-                <ProjectAvatar project={selectedProject} className="h-6 w-6" />
-                <span className="w-2/3 overflow-hidden text-ellipsis text-nowrap text-left">
-                  {selectedProject.name}
-                </span>
-                <Badge className="!mt-0">Plan</Badge>
-              </>
-              // biome-ignore lint/nursery/noNestedTernary: <explanation>
-            ) : user ? (
-              <>
-                <UserAvatar className="h-8 w-8" user={user} />
-                <span className="w-2/3 overflow-hidden text-ellipsis text-nowrap text-left">
-                  {`${user.name}`}
-                </span>
-              </>
-            ) : null}
+          <SidebarMenuButton>
+            {state === 'collapsed' && !isMobile ? (
+              <div className="flex w-full items-center justify-center">
+                {selectedProject ? (
+                  <ProjectAvatar
+                    project={selectedProject}
+                    className="size-5 cursor-pointer"
+                  />
+                ) : // biome-ignore lint/nursery/noNestedTernary: <explanation>
+                user ? (
+                  <UserAvatar className="size-5 cursor-pointer" user={user} />
+                ) : null}
+              </div>
+            ) : (
+              <Button
+                variant="outline"
+                // role="combobox"
+                aria-expanded={isPopoverOpen}
+                aria-label="Select a team"
+                className={cn('h-10 w-full justify-between gap-3 border-0')}
+              >
+                {selectedProject ? (
+                  <>
+                    <ProjectAvatar
+                      project={selectedProject}
+                      className="h-6 w-6"
+                    />
+                    <span className="w-2/3 overflow-hidden text-ellipsis text-nowrap text-left">
+                      {selectedProject.name}
+                    </span>
+                    <Badge className="!mt-0">Plan</Badge>
+                  </>
+                ) : // biome-ignore lint/nursery/noNestedTernary: <explanation>
+                user ? (
+                  <>
+                    <UserAvatar className="h-8 w-8" user={user} />
+                    <span className="w-2/3 overflow-hidden text-ellipsis text-nowrap text-left">
+                      {`${user.name}`}
+                    </span>
+                  </>
+                ) : null}
 
-            <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
-          </Button>
+                <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            )}
+          </SidebarMenuButton>
         </PopoverTrigger>
         <PopoverContent
           className="w-72 p-0"
