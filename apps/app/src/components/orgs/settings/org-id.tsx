@@ -24,8 +24,8 @@ export function OrgId() {
           This is the unique organization identifier on {NEXT_PUBLIC_APP_NAME}.
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex items-center">
-        <ReadOnly text={org.id} className="md:max-w-md" />
+      <CardContent>
+        <ReadOnly text={org.id} className="max-w-md" />
       </CardContent>
       <CardFooter className="flex-row-reverse items-center justify-between border-t px-6 py-4" />
     </Card>

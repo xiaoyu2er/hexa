@@ -22,8 +22,8 @@ export function UserId() {
           This is your unique account identifier on {NEXT_PUBLIC_APP_NAME}.
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex items-center">
-        <ReadOnly text={user.id} className="md:max-w-md" />
+      <CardContent>
+        <ReadOnly text={user.id} className="max-w-md" />
       </CardContent>
     </Card>
   );
