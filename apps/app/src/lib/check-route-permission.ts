@@ -1,9 +1,10 @@
-import { APP_HOST } from '@/lib/env';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
+import { APP_HOST } from './env';
 
 export const isAppHost = (host: string) => {
   return host === APP_HOST;
+  // return true;
 };
 
 /**

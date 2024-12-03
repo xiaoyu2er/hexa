@@ -1,39 +1,21 @@
 'use client';
-
-import { UserAvatar } from '@/components/user/settings/user-avatar';
 import { useUser } from '@/hooks/use-user';
 import { $logout } from '@/lib/api';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@hexa/ui/dropdown-menu';
-import {
-  BadgeCheck,
-  Bell,
-  ChevronsUpDown,
-  CreditCard,
-  LogOut,
-  Sparkles,
-} from '@hexa/ui/icons';
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar,
-} from '@hexa/ui/sidebar';
+import { Button } from '@hexa/ui/button';
+import { LogOut, Monitor, Moon, Sun } from '@hexa/ui/icons';
+import { SidebarFooter, useSidebar } from '@hexa/ui/sidebar';
+import { cn } from '@hexa/utils/cn';
 import { useMutation } from '@tanstack/react-query';
-import Link from 'next/link';
+import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 
+const clsNames =
+  'p-1.5 rounded-lg text-zinc-400 dark:text-zinc-600 hover:text-zinc-600 dark:hover:text-zinc-400';
 export function AppSidebarFooter() {
   const { user } = useUser();
   const router = useRouter();
   const { isMobile } = useSidebar();
+  const { theme, setTheme } = useTheme();
 
   const { mutateAsync: execLogout, isPending } = useMutation({
     mutationFn: $logout,
@@ -43,72 +25,38 @@ export function AppSidebarFooter() {
   });
 
   return (
-    <SidebarMenu>
-      <SidebarMenuItem>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-            >
-              <UserAvatar user={user} />
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
-              </div>
-              <ChevronsUpDown className="ml-auto size-4" />
-            </SidebarMenuButton>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-            side={isMobile ? 'bottom' : 'right'}
-            align="end"
-            sideOffset={4}
-          >
-            <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <UserAvatar user={user} />
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
-                </div>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem asChild>
-                <Link href="/user/profile">
-                  <BadgeCheck />
-                  Account
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => execLogout({})}
-              disabled={isPending}
-            >
-              <LogOut />
-              Log out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </SidebarMenuItem>
-    </SidebarMenu>
+    <SidebarFooter className="flex flex-row items-center gap-1.5 p-2">
+      <Button
+        variant="ghost"
+        className={clsNames}
+        size="icon"
+        onClick={() => setTheme('system')}
+        aria-label="Toggle theme"
+      >
+        <Monitor className="h-4 w-4" />
+      </Button>
+      <Button
+        variant="ghost"
+        className={clsNames}
+        size="icon"
+        onClick={() => setTheme('light')}
+      >
+        <Sun className="h-4 w-4" />
+      </Button>
+      <Button
+        variant="ghost"
+        className={clsNames}
+        onClick={() => setTheme('dark')}
+      >
+        <Moon className="h-4 w-4" />
+      </Button>
+      <Button
+        variant="ghost"
+        className={cn(clsNames, 'ml-auto')}
+        onClick={() => execLogout({})}
+      >
+        <LogOut className="h-4 w-4" />
+      </Button>
+    </SidebarFooter>
   );
 }

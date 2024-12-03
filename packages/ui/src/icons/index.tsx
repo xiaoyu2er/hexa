@@ -12,13 +12,17 @@ export { WhatsAppIcon } from './whatsapp-icon';
 export { GoogleDocsIcon } from './google-docs-icon';
 export { ZapierIcon } from './zapier-icon';
 export { MessengerIcon } from './messenger-icon';
-export { UserIcon } from './user-icon';
+// export { UserIcon } from './user-icon';
 // https://www.npmjs.com/package/@heroicons/react
 export { StarIcon } from '@heroicons/react/24/solid';
 
 export type { LucideIcon } from 'lucide-react';
 // https://lucide.dev/icons/
 export {
+  UserCogIcon,
+  User2Icon,
+  LifeBuoyIcon,
+  SendIcon,
   InfoIcon,
   MoreVerticalIcon,
   PencilIcon,

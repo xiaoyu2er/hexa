@@ -14,16 +14,16 @@ import Link from 'next/link';
 
 interface AppSidebarContentProps {
   items: SidebarGroupItem[];
-  pathname: string;
+  pathname?: string;
 }
 
 export function AppSidebarContent({ items, pathname }: AppSidebarContentProps) {
   return (
     <SidebarContent>
-      {items.map((item) => {
+      {items.map((item, index) => {
         return (
-          <SidebarGroup key={item.title}>
-            <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
+          <SidebarGroup key={item.title ?? `${index}`}>
+            {item.title && <SidebarGroupLabel>{item.title}</SidebarGroupLabel>}
             <SidebarGroupContent>
               <SidebarMenu>
                 {item.subItems.map((subItem) => (
