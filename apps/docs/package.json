@@ -2,11 +2,15 @@
   "name": "@hexa/docs",
   "private": true,
   "scripts": {
-    "dev": "mintlify dev --port 7004",
-    "lint": "mintlify broken-links"
+    "dev:mintlify": "mintlify dev --port 7004",
+    "dev": "concurrently \"npm run dev:mintlify\" \"npm run watch-mint\"",
+    "lint": "mintlify broken-links",
+    "merge-mint": "node scripts/merge-mint.mjs",
+    "watch-mint": "node --watch-path=./config scripts/merge-mint.mjs"
   },
   "devDependencies": {
     "mintlify": "^4.0.286",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "concurrently": "^8.2.0"
   }
 }
