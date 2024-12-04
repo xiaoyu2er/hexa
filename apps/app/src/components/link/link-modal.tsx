@@ -106,7 +106,7 @@ export const LinkModal = NiceModal.create(
 
     return (
       <Dialog control={modal}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="max-w-[900px]">
           <DialogHeader>
             <DialogTitle>
               {mode === 'create' ? 'Create Link' : 'Edit Link'}
@@ -123,11 +123,10 @@ export const LinkModal = NiceModal.create(
               onSubmit={handleSubmit((json) =>
                 mode === 'create' ? createLink({ json }) : updateLink({ json })
               )}
-              method={mode === 'create' ? 'POST' : 'PUT'}
-              className="md:space-y-4"
+              className="space-y-4"
             >
-              <DialogBody className="space-y-4">
-                <div className="space-y-4">
+              <div className="grid grid-cols-1 gap-6 px-4 md:grid-cols-[2fr,1fr]">
+                <DialogBody className="space-y-4 p-0">
                   <InputField
                     form={form}
                     name="destUrl"
@@ -147,42 +146,45 @@ export const LinkModal = NiceModal.create(
                     />
                     <InputField form={form} name="slug" label="Slug" />
                   </div>
-                </div>
 
-                <div className="space-y-4">
                   <InputField form={form} name="title" label="Link Name" />
                   <InputField form={form} name="desc" label="Description" />
-                </div>
 
-                <QRCodeCanvas value={qrCodeUrl} />
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-medium">Routing Rules</h4>
-                    <p className="text-muted-foreground text-sm">
-                      {rules.length} rules configured
-                    </p>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium">Routing Rules</h4>
+                      <p className="text-muted-foreground text-sm">
+                        {rules.length} rules configured
+                      </p>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() =>
+                        rulesModal
+                          .show({ rules })
+                          .then((newRules) =>
+                            setValue('rules', newRules as LinkRule[])
+                          )
+                      }
+                    >
+                      Configure Rules
+                    </Button>
                   </div>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() =>
-                      rulesModal
-                        .show({ rules })
-                        .then((newRules) =>
-                          setValue('rules', newRules as LinkRule[])
-                        )
-                    }
-                  >
-                    Configure Rules
-                  </Button>
+
+                  <FormErrorMessage message={errors.root?.message} />
+                </DialogBody>
+
+                <div className="md:border-l md:pl-6">
+                  <h4 className="font-medium">QR Code</h4>
+                  <div className="mt-4 flex justify-center rounded-lg border bg-muted/50 p-4">
+                    <QRCodeCanvas value={qrCodeUrl} />
+                  </div>
                 </div>
+              </div>
 
-                <FormErrorMessage message={errors.root?.message} />
-              </DialogBody>
-
-              <DialogFooter>
-                <Button className="w-full" type="submit" loading={isSubmitting}>
+              <DialogFooter className="flex justify-end sm:justify-end">
+                <Button type="submit" loading={isSubmitting}>
                   {mode === 'create' ? 'Create Link' : 'Update Link'}
                 </Button>
               </DialogFooter>
