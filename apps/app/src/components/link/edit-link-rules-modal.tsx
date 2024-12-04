@@ -2,11 +2,26 @@
 
 import { Dialog } from '@/components/dialog';
 import { RuleCard } from '@/components/link/rule-card';
+import { SortableItem } from '@/components/sortable-item';
 import {
   type LinkRule,
   type RulesFormType,
   RulesSchema,
 } from '@/server/schema/link';
+import {
+  DndContext,
+  type DragEndEvent,
+  MouseSensor,
+  TouchSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  arrayMove,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { Button } from '@hexa/ui/button';
 import { Form } from '@hexa/ui/form';
@@ -40,10 +55,39 @@ export const EditLinkRulesModal = NiceModal.create(
       formState: { errors },
     } = form;
 
-    const { fields, append, remove } = useFieldArray({
+    const { fields, append, remove, replace } = useFieldArray({
       name: 'rules',
       control: form.control,
     });
+    // https://docs.dndkit.com/presets/sortable
+
+    const sensors = useSensors(
+      useSensor(MouseSensor, {
+        // Require the mouse to move by 10 pixels before activating
+        activationConstraint: {
+          distance: 10,
+        },
+      }),
+      useSensor(TouchSensor, {
+        // Press delay of 250ms, with tolerance of 5px of movement
+        activationConstraint: {
+          delay: 250,
+          tolerance: 5,
+        },
+      })
+    );
+
+    function handleDragEnd(event: DragEndEvent) {
+      const { active, over } = event;
+
+      if (over && active.id !== over.id) {
+        const oldIndex = fields.findIndex((field) => field.id === active.id);
+        const newIndex = fields.findIndex((field) => field.id === over.id);
+
+        const newFileds = arrayMove(fields, oldIndex, newIndex);
+        replace(newFileds);
+      }
+    }
 
     return (
       <Dialog control={modal}>
@@ -89,17 +133,29 @@ export const EditLinkRulesModal = NiceModal.create(
                     </Button>
                   </div>
 
-                  <ScrollArea className="h-[60vh]">
+                  <ScrollArea className="h-[60vh] pb-2">
                     <div className="space-y-4 pr-4">
-                      {fields.map((field, ruleIndex) => (
-                        <RuleCard
-                          key={field.id}
-                          field={field}
-                          ruleIndex={ruleIndex}
-                          form={form}
-                          onRemove={() => remove(ruleIndex)}
-                        />
-                      ))}
+                      <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleDragEnd}
+                      >
+                        <SortableContext
+                          items={fields}
+                          strategy={verticalListSortingStrategy}
+                        >
+                          {fields.map((field, ruleIndex) => (
+                            <SortableItem key={field.id} id={field.id}>
+                              <RuleCard
+                                field={field}
+                                ruleIndex={ruleIndex}
+                                form={form}
+                                onRemove={() => remove(ruleIndex)}
+                              />
+                            </SortableItem>
+                          ))}
+                        </SortableContext>
+                      </DndContext>
 
                       {fields.length === 0 && (
                         <p className="text-center text-muted-foreground text-sm">
