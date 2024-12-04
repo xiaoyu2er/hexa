@@ -1,10 +1,10 @@
 'use client';
 
-import { CreateLinkModal } from '@/components/link/create-link-modal';
 import {
   LinkCardWithActions as Card,
   LinkCardSkeleton as CardSkeleton,
 } from '@/components/link/link-card';
+import { LinkModal } from '@/components/link/link-modal';
 import {
   columns,
   filterConfigs,
@@ -22,14 +22,14 @@ import { useRef } from 'react';
 
 export default function () {
   const ref = useRef<TableRef<SelectLinkType>>(null);
-  const modal = useModal(CreateLinkModal);
+  const modal = useModal(LinkModal);
   const { project } = useProject();
   const create = (
     <Button
       className="mr-2"
       size="sm"
       onClick={() =>
-        modal.show(project).then(() => {
+        modal.show({ project, mode: 'create' }).then(() => {
           ref.current?.table.setPageIndex(0);
           invalidateProjectLinks(project.id);
         })

@@ -14,7 +14,12 @@ import { Button } from '@hexa/ui/button';
 import { Card } from '@hexa/ui/card';
 import { Form } from '@hexa/ui/form';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';
-import { PlusIcon, TrashIcon } from '@hexa/ui/icons';
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  PlusIcon,
+  TrashIcon,
+} from '@hexa/ui/icons';
 import {
   DialogBody,
   DialogContent,
@@ -23,8 +28,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@hexa/ui/responsive-dialog';
+import { ScrollArea } from '@hexa/ui/scroll-area';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { type FieldArrayWithId, useFieldArray, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 const RULE_OPERATORS: { label: string; value: LinkRuleOperator }[] = [
@@ -135,6 +142,64 @@ const RuleConditions = ({
   );
 };
 
+const RuleCard = ({
+  field,
+  ruleIndex,
+  form,
+  onRemove,
+}: {
+  field: FieldArrayWithId<RulesFormType, 'rules', 'id'>;
+  ruleIndex: number;
+  form: ReturnType<typeof useForm<RulesFormType>>;
+  onRemove: () => void;
+}) => {
+  const [isCollapsed, setIsCollapsed] = useState(true);
+
+  return (
+    <Card key={field.id} className="p-4">
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <h4 className="font-medium">Rule {ruleIndex + 1}</h4>
+            <Badge variant="secondary">
+              {field.conditions?.length || 0} conditions
+            </Badge>
+          </div>
+          <div className="flex items-center gap-1">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="h-auto p-0 hover:bg-transparent"
+              onClick={() => setIsCollapsed(!isCollapsed)}
+            >
+              {isCollapsed ? (
+                <ChevronDownIcon className="h-5 w-5" />
+              ) : (
+                <ChevronUpIcon className="h-5 w-5" />
+              )}
+            </Button>
+            <Button type="button" variant="ghost" size="sm" onClick={onRemove}>
+              <TrashIcon className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+
+        {!isCollapsed && (
+          <>
+            <InputField
+              form={form}
+              name={`rules.${ruleIndex}.destUrl`}
+              label="Destination URL"
+            />
+            <RuleConditions ruleIndex={ruleIndex} form={form} />
+          </>
+        )}
+      </div>
+    </Card>
+  );
+};
+
 export const EditLinkRulesModal = NiceModal.create(
   ({ rules = [] }: { rules: LinkRule[] }) => {
     const modal = useModal();
@@ -179,63 +244,46 @@ export const EditLinkRulesModal = NiceModal.create(
               })}
               className="space-y-4"
             >
-              <DialogBody className="space-y-4">
-                <div className="flex justify-end">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() =>
-                      append({
-                        conditions: [{ field: '', operator: 'EQ', value: '' }],
-                        destUrl: '',
-                      })
-                    }
-                  >
-                    <PlusIcon className="mr-2 h-4 w-4" />
-                    Add Rule
-                  </Button>
-                </div>
-
+              <DialogBody>
                 <div className="space-y-4">
-                  {fields.map((field, ruleIndex) => (
-                    <Card key={field.id} className="p-4">
-                      <div className="space-y-4">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <h4 className="font-medium">
-                              Rule {ruleIndex + 1}
-                            </h4>
-                            <Badge variant="secondary">
-                              {field.conditions?.length || 0} conditions
-                            </Badge>
-                          </div>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => remove(ruleIndex)}
-                          >
-                            <TrashIcon className="h-4 w-4" />
-                          </Button>
-                        </div>
+                  <div className="sticky top-0 z-10 flex justify-end bg-background pt-2 pb-3">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        append({
+                          conditions: [
+                            { field: '', operator: 'EQ', value: '' },
+                          ],
+                          destUrl: '',
+                        })
+                      }
+                    >
+                      <PlusIcon className="mr-2 h-4 w-4" />
+                      Add Rule
+                    </Button>
+                  </div>
 
-                        <InputField
+                  <ScrollArea className="h-[60vh]">
+                    <div className="space-y-4 pr-4">
+                      {fields.map((field, ruleIndex) => (
+                        <RuleCard
+                          key={field.id}
+                          field={field}
+                          ruleIndex={ruleIndex}
                           form={form}
-                          name={`rules.${ruleIndex}.destUrl`}
-                          label="Destination URL"
+                          onRemove={() => remove(ruleIndex)}
                         />
+                      ))}
 
-                        <RuleConditions ruleIndex={ruleIndex} form={form} />
-                      </div>
-                    </Card>
-                  ))}
-
-                  {fields.length === 0 && (
-                    <p className="text-center text-muted-foreground text-sm">
-                      No rules added yet
-                    </p>
-                  )}
+                      {fields.length === 0 && (
+                        <p className="text-center text-muted-foreground text-sm">
+                          No rules added yet
+                        </p>
+                      )}
+                    </div>
+                  </ScrollArea>
                 </div>
 
                 <FormErrorMessage message={errors.root?.message} />
