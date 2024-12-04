@@ -57,12 +57,12 @@ export const RuleCard = ({
 
         {!isCollapsed && (
           <>
+            <RuleConditions ruleIndex={ruleIndex} form={form} />
             <InputField
               form={form}
               name={`rules.${ruleIndex}.destUrl`}
               label="Destination URL"
             />
-            <RuleConditions ruleIndex={ruleIndex} form={form} />
           </>
         )}
       </div>

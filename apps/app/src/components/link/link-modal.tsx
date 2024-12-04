@@ -16,9 +16,11 @@ import {
 } from '@/server/schema/link';
 import type { SelectProjectType } from '@/server/schema/project';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
+import { Badge } from '@hexa/ui/badge';
 import { Button } from '@hexa/ui/button';
 import { Form } from '@hexa/ui/form';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';
+import { GlobeIcon } from '@hexa/ui/icons';
 import {
   DialogBody,
   DialogContent,
@@ -125,7 +127,7 @@ export const LinkModal = NiceModal.create(
               )}
               className="space-y-4"
             >
-              <div className="grid grid-cols-1 gap-6 px-4 md:grid-cols-[2fr,1fr]">
+              <div className="grid grid-cols-1 gap-6 px-4 md:grid-cols-[2fr,1fr] md:px-0">
                 <DialogBody className="space-y-4 p-0">
                   <InputField
                     form={form}
@@ -149,29 +151,6 @@ export const LinkModal = NiceModal.create(
 
                   <InputField form={form} name="title" label="Link Name" />
                   <InputField form={form} name="desc" label="Description" />
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Routing Rules</h4>
-                      <p className="text-muted-foreground text-sm">
-                        {rules.length} rules configured
-                      </p>
-                    </div>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() =>
-                        rulesModal
-                          .show({ rules })
-                          .then((newRules) =>
-                            setValue('rules', newRules as LinkRule[])
-                          )
-                      }
-                    >
-                      Configure Rules
-                    </Button>
-                  </div>
-
                   <FormErrorMessage message={errors.root?.message} />
                 </DialogBody>
 
@@ -183,7 +162,26 @@ export const LinkModal = NiceModal.create(
                 </div>
               </div>
 
-              <DialogFooter className="flex justify-end sm:justify-end">
+              <DialogFooter className="flex items-center justify-between sm:justify-between">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() =>
+                    rulesModal
+                      .show({ rules })
+                      .then((newRules) =>
+                        setValue('rules', newRules as LinkRule[])
+                      )
+                  }
+                >
+                  <GlobeIcon className="mr-2 h-4 w-4" />
+                  Configure Rules
+                  {rules.length > 0 && (
+                    <Badge variant="secondary" className="ml-2">
+                      {rules.length}
+                    </Badge>
+                  )}
+                </Button>
                 <Button type="submit" loading={isSubmitting}>
                   {mode === 'create' ? 'Create Link' : 'Update Link'}
                 </Button>
