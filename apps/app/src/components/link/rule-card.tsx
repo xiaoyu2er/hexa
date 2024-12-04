@@ -28,7 +28,7 @@ export const RuleCard = ({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <h4 className="font-medium">Rule {ruleIndex + 1}</h4>
+            <h4 className="font-medium"># {ruleIndex + 1}</h4>
             <Badge variant="secondary">
               {field.conditions?.length || 0} conditions
             </Badge>
@@ -39,7 +39,9 @@ export const RuleCard = ({
               variant="ghost"
               size="sm"
               className="h-auto p-0 hover:bg-transparent"
-              onClick={() => setIsCollapsed(!isCollapsed)}
+              onClick={() => {
+                setIsCollapsed((prev) => !prev);
+              }}
             >
               {isCollapsed ? (
                 <ChevronDownIcon className="h-5 w-5" />
