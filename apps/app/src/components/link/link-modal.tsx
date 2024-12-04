@@ -5,6 +5,7 @@ import { InputField } from '@/components/form/input-field';
 import { SelectField } from '@/components/form/select-field';
 import { $createLink, $updateLink } from '@/lib/api';
 import { setFormError } from '@/lib/form';
+
 import {
   InsertLinkSchema,
   type InsertLinkType,
@@ -29,6 +30,7 @@ import {
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { QRCodeCanvas } from 'qrcode.react';
 import { useForm } from 'react-hook-form';
 import { EditLinkRulesModal } from './edit-link-rules-modal';
 
@@ -74,6 +76,7 @@ export const LinkModal = NiceModal.create(
     } = form;
 
     const rules = watch('rules') || [];
+    const qrCodeUrl = `https://${watch('domain')}/${watch('slug')}?qr=1`;
 
     const { mutateAsync: createLink } = useMutation({
       mutationFn: $createLink,
@@ -125,11 +128,6 @@ export const LinkModal = NiceModal.create(
             >
               <DialogBody className="space-y-4">
                 <div className="space-y-4">
-                  <InputField form={form} name="title" label="Link Name" />
-                  <InputField form={form} name="desc" label="Description" />
-                </div>
-
-                <div className="space-y-4">
                   <InputField
                     form={form}
                     name="destUrl"
@@ -150,6 +148,13 @@ export const LinkModal = NiceModal.create(
                     <InputField form={form} name="slug" label="Slug" />
                   </div>
                 </div>
+
+                <div className="space-y-4">
+                  <InputField form={form} name="title" label="Link Name" />
+                  <InputField form={form} name="desc" label="Description" />
+                </div>
+
+                <QRCodeCanvas value={qrCodeUrl} />
 
                 <div className="flex items-center justify-between">
                   <div>
