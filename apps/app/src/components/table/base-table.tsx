@@ -61,6 +61,7 @@ export interface BaseTableProps<T> {
   showToolbar?: boolean;
   defaultView?: TableView;
   showViewChange?: boolean;
+  showHeader?: boolean;
 }
 
 // First define the function type that preserves generics
@@ -86,6 +87,7 @@ const InternalBaseTable = <T extends object>(
     showToolbar = true,
     defaultView = 'rows',
     showViewChange = true,
+    showHeader = true,
   } = props;
 
   const { isMobile } = useScreenSize();
@@ -158,7 +160,11 @@ const InternalBaseTable = <T extends object>(
           CardNoResults={CardNoResults}
         />
       ) : (
-        <TableRows table={table} isFetching={isFetching} />
+        <TableRows
+          table={table}
+          isFetching={isFetching}
+          showHeader={showHeader}
+        />
       )}
       {rowCount > 0 && <TablePagination table={table} />}
     </div>

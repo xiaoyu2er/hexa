@@ -2,7 +2,13 @@ import { generateId } from '@/lib/crypto';
 import type { LinkRule } from '@/server/schema/link';
 import { createdAt } from '@/server/table/common';
 import { projectIdNotNull } from '@/server/table/project';
-import { index, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
+import {
+  index,
+  integer,
+  sqliteTable,
+  text,
+  uniqueIndex,
+} from 'drizzle-orm/sqlite-core';
 // URL table
 export const linkTable = sqliteTable(
   'link',
@@ -18,6 +24,7 @@ export const linkTable = sqliteTable(
     desc: text('desc'),
     domain: text('domain').notNull(),
     rules: text('rules', { mode: 'json' }).$type<LinkRule[]>(),
+    clicks: integer('clicks').default(0),
   },
   (t) => ({
     urlDomainSlugIndex: uniqueIndex('url_domain_slug_index').on(
