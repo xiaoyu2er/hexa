@@ -91,7 +91,7 @@ export const EditLinkRulesModal = NiceModal.create(
 
     return (
       <Dialog control={modal}>
-        <DialogContent className="sm:max-w-[700px]">
+        <DialogContent className="max-w-[900px]">
           <DialogHeader>
             <DialogTitle>Configure Routing Rules</DialogTitle>
             <DialogDescription className="space-y-2">
