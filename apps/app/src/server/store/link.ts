@@ -87,7 +87,7 @@ export async function createLink(db: DbType, data: InsertLinkType) {
 }
 
 // Get URL by ID
-export async function getUrlById(db: DbType, urlId: string) {
+export async function getLinkById(db: DbType, urlId: string) {
   const url = await db.query.linkTable.findFirst({
     where: eq(linkTable.id, urlId),
     with: {

@@ -5,6 +5,8 @@ import { RuleCard } from '@/components/link/rule-card';
 import { SortableItem } from '@/components/sortable-item';
 import {
   type LinkRule,
+  type RuleField,
+  type RuleOperator,
   type RulesFormType,
   RulesSchema,
 } from '@/server/schema/link';
@@ -122,7 +124,11 @@ export const EditLinkRulesModal = NiceModal.create(
                       onClick={() =>
                         append({
                           conditions: [
-                            { field: '', operator: 'EQ', value: '' },
+                            {
+                              field: undefined as unknown as RuleField,
+                              operator: undefined as unknown as RuleOperator,
+                              value: undefined as unknown as string,
+                            },
                           ],
                           destUrl: '',
                         })

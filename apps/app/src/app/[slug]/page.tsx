@@ -1,4 +1,6 @@
 import { getDataPoint } from '@/lib/analytics';
+import { getDestUrl } from '@/lib/rule';
+import type { SelectLinkWithProjectType } from '@/server/schema/link';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { headers } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
@@ -10,16 +12,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const slug = params.slug;
   const key = `${host}/${slug}`;
 
-  const link = (await env.APP_KV.get(key, { type: 'json' })) as {
-    destUrl: string;
-    domain: string;
-    slug: string;
-    id: string;
-    projectId: string;
-    project: {
-      orgId: string;
-    };
-  };
+  const link = (await env.APP_KV.get(key, {
+    type: 'json',
+  })) as SelectLinkWithProjectType;
 
   // biome-ignore lint/suspicious/noConsole: <explanation>
   console.log('link', link);
@@ -27,9 +22,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
     return notFound();
   }
 
+  const destUrl = getDestUrl(link, cf ?? ({} as IncomingRequestCfProperties));
+
   ctx.waitUntil(
     (async () => {
-      const dataPoint = await getDataPoint(link, {
+      const dataPoint = await getDataPoint(link, destUrl, {
         headers: header,
         cf: cf,
         url: `${host}/${slug}`,
@@ -42,5 +39,5 @@ export default async function Page({ params }: { params: { slug: string } }) {
       // }
     })()
   );
-  return redirect(link.destUrl);
+  return redirect(destUrl);
 }
