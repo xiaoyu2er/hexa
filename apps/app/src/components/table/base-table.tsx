@@ -105,7 +105,7 @@ const InternalBaseTable = <T extends object>(
   } = useData({ pagination, sorting, filters: columnFilters });
 
   const table = useReactTable({
-    data,
+    data: data.slice(0, 1),
     rowCount,
     columns: columns,
     manualPagination: true,
