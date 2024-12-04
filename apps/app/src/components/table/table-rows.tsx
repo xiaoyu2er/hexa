@@ -20,6 +20,7 @@ interface TableRowsProps<TData> {
   isFetching: boolean;
   TableSkeleton?: ComponentType<{ rows: number }>;
   TableNoResults?: ComponentType<{ table: TableType<TData> }>;
+  showHeader?: boolean;
 }
 
 export const TableRows = <TData,>({
@@ -27,6 +28,7 @@ export const TableRows = <TData,>({
   isFetching,
   TableSkeleton = DefaultTableSkeleton,
   TableNoResults = DefaultTableNoResults,
+  showHeader = true,
 }: TableRowsProps<TData>) => {
   const loading = <TableSkeleton rows={5} />;
 
@@ -50,24 +52,26 @@ export const TableRows = <TData,>({
   return (
     <div className="rounded-md border">
       <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
+        {showHeader && (
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+        )}
 
         <TableBody>
           {isFetching
