@@ -1,6 +1,7 @@
 import { PaginationSchema } from '@/server/schema/common';
 import { zSortEnum } from '@/server/schema/common';
 import { zDomain } from '@/server/schema/domain';
+import type { SelectProjectType } from '@/server/schema/project';
 import { linkTable } from '@/server/table/link';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import type { Simplify } from 'type-fest';
@@ -24,10 +25,46 @@ export const zRuleOperatorEnum = z.enum([
   'NOT_IN',
 ]);
 
+export const zRuleFieldEnum = z.enum([
+  // ===== Request Headers =====
+  'REFERER',
+  'IP',
+  'SOURCE',
+  'LANGUAGE',
+  'QUERY',
+  'SOURCE',
+
+  // ====== User agent ======
+  'USER_AGENT',
+  // Browser
+  'BROWSER_NAME',
+  'BROWSER_VERSION',
+  'BROWSER_MAJOR',
+  'BROWSER_TYPE',
+  // Device
+  'DEVICE_TYPE',
+  'DEVICE_VENDOR',
+  'DEVICE_MODEL',
+  // OS
+  'OS_NAME',
+  'OS_VERSION',
+  // CPU
+  'CPU',
+  // ======== Location ========
+  'CONTINENT',
+  'COUNTRY',
+  'IS_EU_COUNTRY',
+  'REGION_CODE',
+  'LATITUDE',
+  'LONGITUDE',
+  'TIMEZONE',
+  'POSTAL_CODE',
+]);
+
 export type RuleOperator = z.infer<typeof zRuleOperatorEnum>;
 
 export const LinkRuleConditionSchema = z.object({
-  field: z.string(),
+  field: zRuleFieldEnum,
   operator: zRuleOperatorEnum,
   value: z.union([
     z.string(),
@@ -75,7 +112,9 @@ export const SelectLinkSchema = createSelectSchema(linkTable, {
 });
 
 export type SelectLinkType = Simplify<z.infer<typeof SelectLinkSchema>>;
-
+export type SelectLinkWithProjectType = SelectLinkType & {
+  project: SelectProjectType;
+};
 export const LinkColumnOptions = [
   { label: 'Title', value: 'title' },
   { label: 'Destination URL', value: 'destUrl' },
@@ -262,42 +301,6 @@ export const getContinentLabels = () => {
 export const RULE_OPERATORS: { label: string; value: RuleOperator }[] = [
   ...Object.values(RULE_OPERATOR_LABEL_MAP),
 ];
-
-export const zRuleFieldEnum = z.enum([
-  // ===== Request Headers =====
-  'REFERER',
-  'IP',
-  'SOURCE',
-  'LANGUAGE',
-  'QUERY',
-  'SOURCE',
-
-  // ====== User agent ======
-  'USER_AGENT',
-  // Browser
-  'BROWSER_NAME',
-  'BROWSER_VERSION',
-  'BROWSER_MAJOR',
-  'BROWSER_TYPE',
-  // Device
-  'DEVICE_TYPE',
-  'DEVICE_VENDOR',
-  'DEVICE_MODEL',
-  // OS
-  'OS_NAME',
-  'OS_VERSION',
-  // CPU
-  'CPU',
-  // ======== Location ========
-  'CONTINENT',
-  'COUNTRY',
-  'IS_EU_COUNTRY',
-  'REGION_CODE',
-  'LATITUDE',
-  'LONGITUDE',
-  'TIMEZONE',
-  'POSTAL_CODE',
-]);
 
 export type RuleField = z.infer<typeof zRuleFieldEnum>;
 

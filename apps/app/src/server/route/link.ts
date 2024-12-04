@@ -6,8 +6,8 @@ import { InsertLinkSchema } from '@/server/schema/link';
 import { ProjectIdSchema } from '@/server/schema/project';
 import {
   createLink,
+  getLinkById,
   getLinks,
-  getUrlById,
   updateLink,
 } from '@/server/store/link';
 import { zValidator } from '@hono/zod-validator';
@@ -42,7 +42,7 @@ const link = new Hono<Context>()
         throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create URL');
       }
       const uid = link.id;
-      const value = await getUrlById(db, uid);
+      const value = await getLinkById(db, uid);
       // Store the URL in the KV store
       const key = `${link.domain}/${link.slug}`;
       await c.env.APP_KV.put(key, JSON.stringify(value));
@@ -58,7 +58,7 @@ const link = new Hono<Context>()
       id: json.id ?? '',
     });
     // Store the URL in the KV store
-    const value = await getUrlById(db, link.id);
+    const value = await getLinkById(db, link.id);
     const key = `${link.domain}/${link.slug}`;
     await c.env.APP_KV.put(key, JSON.stringify(value));
     return c.json(link);
@@ -66,7 +66,7 @@ const link = new Hono<Context>()
   .get('/link/:linkId', async (c) => {
     const { db } = c.var;
     const linkId = c.req.param('linkId');
-    const url = await getUrlById(db, linkId);
+    const url = await getLinkById(db, linkId);
     return c.json(url);
   });
 

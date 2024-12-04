@@ -1,3 +1,4 @@
+import type { SelectLinkWithProjectType } from '@/server/schema/link';
 import { parseAcceptLanguage } from 'intl-parse-accept-language';
 import { UAParser } from 'ua-parser-js';
 import {
@@ -112,16 +113,8 @@ export const getRandomDataPoint = (): AnalyticsEngineDataPoint => {
 };
 
 export const getDataPoint = async (
-  link: {
-    destUrl: string;
-    domain: string;
-    slug: string;
-    id: string;
-    projectId: string;
-    project: {
-      orgId: string;
-    };
-  },
+  link: SelectLinkWithProjectType,
+  destUrl: string,
   request: {
     headers: Headers;
     cf: IncomingRequestCfProperties | undefined;
@@ -177,7 +170,7 @@ export const getDataPoint = async (
       // blob1: shortUrl
       shortUrl,
       // blob2: destUrl
-      link.destUrl,
+      destUrl,
       // blob3: projectId
       link.projectId,
       // blob4: orgId

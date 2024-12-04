@@ -43,7 +43,13 @@ export const RuleConditions = ({
           type="button"
           variant="outline"
           size="sm"
-          onClick={() => append({ field: '', operator: 'EQ', value: '' })}
+          onClick={() =>
+            append({
+              field: undefined as unknown as RuleField,
+              operator: undefined as unknown as RuleOperator,
+              value: undefined as unknown as string,
+            })
+          }
         >
           Add Condition
         </Button>
@@ -71,6 +77,9 @@ export const RuleConditions = ({
             operatorValue as RuleOperator | undefined
           );
 
+          const value = watch(
+            `rules.${ruleIndex}.conditions.${condIndex}.value`
+          );
           const input = (
             <InputField
               form={form}
@@ -92,6 +101,7 @@ export const RuleConditions = ({
               variant="default"
               maxCount={3}
               className="w-full"
+              defaultValue={Array.isArray(value) ? (value as string[]) : []}
             />
           );
           const select = (
