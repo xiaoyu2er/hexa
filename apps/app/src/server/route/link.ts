@@ -8,7 +8,7 @@ import {
   createLink,
   getLinks,
   getUrlById,
-  updateUrl,
+  updateLink,
 } from '@/server/store/link';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
@@ -34,31 +34,34 @@ const link = new Hono<Context>()
     async (c) => {
       const { db } = c.var;
       const json = c.req.valid('json');
-      const url = await createLink(db, {
+      const link = await createLink(db, {
         ...json,
       });
 
-      if (!url) {
+      if (!link) {
         throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create URL');
       }
-      const uid = url.id;
+      const uid = link.id;
       const value = await getUrlById(db, uid);
       // Store the URL in the KV store
-      const key = `${url.domain}/${url.slug}`;
+      const key = `${link.domain}/${link.slug}`;
       await c.env.APP_KV.put(key, JSON.stringify(value));
-      const _stored = await c.env.APP_KV.get(key, { type: 'json' });
-      return c.json(url);
+      return c.json(link);
     }
   )
   .put('/link/update-link', zValidator('json', InsertLinkSchema), async (c) => {
     const { db } = c.var;
 
     const json = c.req.valid('json');
-    const url = await updateUrl(db, {
+    const link = await updateLink(db, {
       ...json,
       id: json.id ?? '',
     });
-    return c.json(url);
+    // Store the URL in the KV store
+    const value = await getUrlById(db, link.id);
+    const key = `${link.domain}/${link.slug}`;
+    await c.env.APP_KV.put(key, JSON.stringify(value));
+    return c.json(link);
   })
   .get('/link/:linkId', async (c) => {
     const { db } = c.var;

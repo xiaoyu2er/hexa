@@ -99,7 +99,7 @@ export async function getUrlById(db: DbType, urlId: string) {
 }
 
 // Update URL
-export async function updateUrl(
+export async function updateLink(
   db: DbType,
   data: Partial<InsertLinkType> & { id: string }
 ) {

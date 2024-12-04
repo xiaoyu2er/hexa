@@ -1,13 +1,17 @@
 'use client';
 
+import { LinkModal } from '@/components/link/link-modal';
 import { TableColumnHeader } from '@/components/table/table-column-header';
 import type { FilterConfig } from '@/components/table/table-types';
 import { useLinks } from '@/hooks/use-links';
+import { useProject } from '@/hooks/use-project';
+import { invalidateProjectLinks } from '@/lib/queries/project';
 import {
   LinkColumnOptions,
   LinkSortableColumnOptions,
   type SelectLinkType,
 } from '@/server/schema/link';
+import { useModal } from '@ebay/nice-modal-react';
 import { Button } from '@hexa/ui/button';
 import {
   DropdownMenu,
@@ -63,7 +67,9 @@ export const columns: ColumnDef<SelectLinkType>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => {
+    cell: ({ row, table }) => {
+      const modal = useModal(LinkModal);
+      const { project } = useProject();
       return (
         <div className="flex justify-end">
           <DropdownMenu>
@@ -74,7 +80,24 @@ export const columns: ColumnDef<SelectLinkType>[] = [
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              (<DropdownMenuItem className="">Edit</DropdownMenuItem>)
+              <DropdownMenuItem
+                className=""
+                onClick={() =>
+                  modal
+                    .show({ project, mode: 'update', link: row.original })
+                    .then(() => {
+                      const state = table.getState();
+                      const query = {
+                        pagination: state.pagination,
+                        filters: state.columnFilters,
+                        sorting: state.sorting,
+                      };
+                      invalidateProjectLinks(project.id, query);
+                    })
+                }
+              >
+                Edit
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

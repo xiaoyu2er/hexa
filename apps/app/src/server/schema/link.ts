@@ -61,8 +61,12 @@ export const InsertLinkSchema = createInsertSchema(linkTable, {
   rules: z.array(LinkRuleSchema).optional(),
 });
 
-export type InsertLinkType = Simplify<z.infer<typeof InsertLinkSchema>>;
+export const UpdateLinkSchema = InsertLinkSchema.merge(
+  z.object({ id: z.string() })
+);
 
+export type InsertLinkType = Simplify<z.infer<typeof InsertLinkSchema>>;
+export type UpdateLinkType = Simplify<z.infer<typeof UpdateLinkSchema>>;
 export const SelectLinkSchema = createSelectSchema(linkTable, {
   destUrl: z.string().url(),
   slug: z.string(),
