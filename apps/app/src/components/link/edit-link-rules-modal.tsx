@@ -1,25 +1,17 @@
 'use client';
 
 import { Dialog } from '@/components/dialog';
-import { InputField } from '@/components/form/input-field';
-import { SelectField } from '@/components/form/select-field';
+import { RuleCard } from '@/components/link/rule-card';
 import {
   type LinkRule,
-  type LinkRuleOperator,
-  LinkRuleSchema,
+  type RulesFormType,
+  RulesSchema,
 } from '@/server/schema/link';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
-import { Badge } from '@hexa/ui/badge';
 import { Button } from '@hexa/ui/button';
-import { Card } from '@hexa/ui/card';
 import { Form } from '@hexa/ui/form';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';
-import {
-  ChevronDownIcon,
-  ChevronUpIcon,
-  PlusIcon,
-  TrashIcon,
-} from '@hexa/ui/icons';
+import { PlusIcon } from '@hexa/ui/icons';
 import {
   DialogBody,
   DialogContent,
@@ -30,175 +22,7 @@ import {
 } from '@hexa/ui/responsive-dialog';
 import { ScrollArea } from '@hexa/ui/scroll-area';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
-import { type FieldArrayWithId, useFieldArray, useForm } from 'react-hook-form';
-import { z } from 'zod';
-
-const RULE_OPERATORS: { label: string; value: LinkRuleOperator }[] = [
-  { label: 'Equals', value: 'EQ' },
-  { label: 'Not equals', value: 'NEQ' },
-  { label: 'Contains', value: 'CONTAINS' },
-  { label: 'Not contains', value: 'NOT_CONTAINS' },
-  { label: 'Matches regex', value: 'REG' },
-  { label: 'Not matches regex', value: 'NREG' },
-];
-
-const RULE_FIELDS = [
-  { label: 'Country', value: 'country' },
-  { label: 'Device', value: 'device' },
-  { label: 'Browser', value: 'browser' },
-  { label: 'Language', value: 'language' },
-  { label: 'Query param', value: 'query' },
-];
-
-const RulesSchema = z.object({
-  rules: z.array(LinkRuleSchema),
-});
-
-type RulesFormType = z.infer<typeof RulesSchema>;
-
-const RuleConditions = ({
-  ruleIndex,
-  form,
-}: {
-  ruleIndex: number;
-  form: ReturnType<typeof useForm<RulesFormType>>;
-}) => {
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: `rules.${ruleIndex}.conditions`,
-  });
-
-  return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <div className="space-y-1">
-          <h5 className="font-medium text-sm">Conditions</h5>
-          <p className="text-muted-foreground text-xs">
-            When all conditions below are met, the link will redirect to the
-            destination URL
-          </p>
-        </div>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={() => append({ field: '', operator: 'EQ', value: '' })}
-        >
-          Add Condition
-        </Button>
-      </div>
-
-      <div className="rounded-lg border p-3">
-        {fields.map((condition, condIndex) => (
-          <div key={condition.id}>
-            <div className="grid grid-cols-[1fr,1fr,1fr,auto] gap-2">
-              <SelectField
-                form={form}
-                name={`rules.${ruleIndex}.conditions.${condIndex}.field`}
-                options={RULE_FIELDS}
-                placeholder="Select field"
-              />
-              <SelectField
-                form={form}
-                name={`rules.${ruleIndex}.conditions.${condIndex}.operator`}
-                options={RULE_OPERATORS}
-                placeholder="Select operator"
-              />
-              <InputField
-                form={form}
-                name={`rules.${ruleIndex}.conditions.${condIndex}.value`}
-                placeholder="Enter value"
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                onClick={() => remove(condIndex)}
-              >
-                <TrashIcon className="h-4 w-4" />
-              </Button>
-            </div>
-
-            {condIndex < fields.length - 1 && (
-              <div className="my-2 flex items-center gap-2 px-2">
-                <div className="h-px flex-grow bg-border" />
-                <span className="font-medium text-muted-foreground text-xs">
-                  AND
-                </span>
-                <div className="h-px flex-grow bg-border" />
-              </div>
-            )}
-          </div>
-        ))}
-
-        {fields.length === 0 && (
-          <p className="text-center text-muted-foreground text-sm">
-            No conditions added yet
-          </p>
-        )}
-      </div>
-    </div>
-  );
-};
-
-const RuleCard = ({
-  field,
-  ruleIndex,
-  form,
-  onRemove,
-}: {
-  field: FieldArrayWithId<RulesFormType, 'rules', 'id'>;
-  ruleIndex: number;
-  form: ReturnType<typeof useForm<RulesFormType>>;
-  onRemove: () => void;
-}) => {
-  const [isCollapsed, setIsCollapsed] = useState(true);
-
-  return (
-    <Card key={field.id} className="p-4">
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <h4 className="font-medium">Rule {ruleIndex + 1}</h4>
-            <Badge variant="secondary">
-              {field.conditions?.length || 0} conditions
-            </Badge>
-          </div>
-          <div className="flex items-center gap-1">
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className="h-auto p-0 hover:bg-transparent"
-              onClick={() => setIsCollapsed(!isCollapsed)}
-            >
-              {isCollapsed ? (
-                <ChevronDownIcon className="h-5 w-5" />
-              ) : (
-                <ChevronUpIcon className="h-5 w-5" />
-              )}
-            </Button>
-            <Button type="button" variant="ghost" size="sm" onClick={onRemove}>
-              <TrashIcon className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-
-        {!isCollapsed && (
-          <>
-            <InputField
-              form={form}
-              name={`rules.${ruleIndex}.destUrl`}
-              label="Destination URL"
-            />
-            <RuleConditions ruleIndex={ruleIndex} form={form} />
-          </>
-        )}
-      </div>
-    </Card>
-  );
-};
+import { useFieldArray, useForm } from 'react-hook-form';
 
 export const EditLinkRulesModal = NiceModal.create(
   ({ rules = [] }: { rules: LinkRule[] }) => {

@@ -163,3 +163,26 @@ export const LinkQuerySchema = PaginationSchema.merge(
 ).merge(LinkSortingSchema);
 
 export type LinkQueryType = Simplify<z.infer<typeof LinkQuerySchema>>;
+
+export const RULE_OPERATORS: { label: string; value: LinkRuleOperator }[] = [
+  { label: 'Equals', value: 'EQ' },
+  { label: 'Not equals', value: 'NEQ' },
+  { label: 'Contains', value: 'CONTAINS' },
+  { label: 'Not contains', value: 'NOT_CONTAINS' },
+  { label: 'Matches regex', value: 'REG' },
+  { label: 'Not matches regex', value: 'NREG' },
+];
+
+export const RULE_FIELDS = [
+  { label: 'Country', value: 'country' },
+  { label: 'Device', value: 'device' },
+  { label: 'Browser', value: 'browser' },
+  { label: 'Language', value: 'language' },
+  { label: 'Query param', value: 'query' },
+];
+
+export const RulesSchema = z.object({
+  rules: z.array(LinkRuleSchema),
+});
+
+export type RulesFormType = z.infer<typeof RulesSchema>;
