@@ -278,7 +278,7 @@ export const getValueOptions = (field?: RuleField, operator?: RuleOperator) => {
       case 'NOT_IN':
       case 'EQ':
       case 'NEQ':
-        return getContinentLabels();
+        return ContinentOptions;
       default:
         return [];
     }
@@ -286,17 +286,19 @@ export const getValueOptions = (field?: RuleField, operator?: RuleOperator) => {
   return [];
 };
 
-export const getContinentLabels = () => {
-  return [
-    { label: 'North America', value: 'NA' },
-    { label: 'South America', value: 'SA' },
-    { label: 'Europe', value: 'EU' },
-    { label: 'Africa', value: 'AF' },
-    { label: 'Asia', value: 'AS' },
-    { label: 'Oceania', value: 'OC' },
-    { label: 'Antarctica', value: 'AN' },
-  ];
-};
+export const zContinent = z.enum(['NA', 'SA', 'EU', 'AF', 'AS', 'OC', 'AN']);
+
+export type Continent = z.infer<typeof zContinent>;
+
+export const ContinentOptions: { label: string; value: Continent }[] = [
+  { label: 'North America', value: 'NA' },
+  { label: 'South America', value: 'SA' },
+  { label: 'Europe', value: 'EU' },
+  { label: 'Africa', value: 'AF' },
+  { label: 'Asia', value: 'AS' },
+  { label: 'Oceania', value: 'OC' },
+  { label: 'Antarctica', value: 'AN' },
+];
 
 export const RULE_OPERATORS: { label: string; value: RuleOperator }[] = [
   ...Object.values(RULE_OPERATOR_LABEL_MAP),
