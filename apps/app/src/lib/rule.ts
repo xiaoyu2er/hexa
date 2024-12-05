@@ -7,12 +7,13 @@ export const getDestUrl = (
 ) => {
   const rule = link.rules?.find((rule) => {
     return rule.conditions.every((condition) => {
-      const continent = cf.continent ?? '';
+      // request value
+      const value = cf.continent ?? '';
 
       if (
         condition.field === 'CONTINENT' &&
         condition.operator === 'EQ' &&
-        condition.value === continent
+        condition.value === value
       ) {
         return true;
       }
@@ -20,7 +21,7 @@ export const getDestUrl = (
       if (
         condition.field === 'CONTINENT' &&
         condition.operator === 'NEQ' &&
-        condition.value !== continent
+        condition.value !== value
       ) {
         return true;
       }
@@ -28,7 +29,7 @@ export const getDestUrl = (
       if (
         condition.field === 'CONTINENT' &&
         condition.operator === 'IN' &&
-        (condition.value as string[]).includes(continent)
+        (condition.value as string[]).includes(value)
       ) {
         return true;
       }
@@ -36,7 +37,7 @@ export const getDestUrl = (
       if (
         condition.field === 'CONTINENT' &&
         condition.operator === 'NOT_IN' &&
-        !(condition.value as string[]).includes(continent)
+        !(condition.value as string[]).includes(value)
       ) {
         return true;
       }
