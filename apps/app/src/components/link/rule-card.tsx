@@ -6,8 +6,15 @@ import { Badge } from '@hexa/ui/badge';
 import { Button } from '@hexa/ui/button';
 import { Card } from '@hexa/ui/card';
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@hexa/ui/dropdown-menu';
+import {
   ChevronDownIcon,
   ChevronUpIcon,
+  EllipsisVerticalIcon,
   GripVerticalIcon,
   TrashIcon,
 } from '@hexa/ui/icons';
@@ -86,9 +93,23 @@ export function RuleCard({
                 <ChevronUpIcon className="h-5 w-5" />
               )}
             </Button>
-            <Button type="button" variant="ghost" size="sm" onClick={onRemove}>
-              <TrashIcon className="h-4 w-4" />
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <EllipsisVerticalIcon className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem
+                  onClick={onRemove}
+                  className="text-destructive"
+                >
+                  <TrashIcon className="mr-2 h-4 w-4" />
+                  Delete rule
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
