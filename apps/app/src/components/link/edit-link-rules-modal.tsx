@@ -51,6 +51,7 @@ export const EditLinkRulesModal = NiceModal.create(
     });
 
     const {
+      watch,
       handleSubmit,
       formState: { errors },
     } = form;

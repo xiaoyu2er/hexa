@@ -38,27 +38,33 @@ export const MultiSelectField = <T extends FieldValues = FieldValues>({
     <FormField
       control={form.control}
       name={name}
-      render={({ field }) => (
-        <FormItem className={formItemClassName}>
-          {label && <FormLabel>{label}</FormLabel>}
-          <FormControl>
-            <MultiSelect
-              options={options}
-              onValueChange={(values) => {
-                field.onChange(values.length ? values : []);
-              }}
-              placeholder={placeholder}
-              variant="default"
-              maxCount={3}
-              className={cn('w-full', className)}
-              defaultValue={
-                Array.isArray(field.value) ? (field.value as string[]) : []
-              }
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
+      render={({ field, fieldState, formState }) => {
+        return (
+          <FormItem className={formItemClassName}>
+            {label && <FormLabel>{label}</FormLabel>}
+            <FormControl>
+              <MultiSelect
+                options={options}
+                onValueChange={(values) => {
+                  field.onChange(values.length ? values : []);
+                }}
+                placeholder={placeholder}
+                variant="default"
+                maxCount={3}
+                className={cn(
+                  'w-full',
+                  fieldState.error ? 'border-destructive' : '',
+                  className
+                )}
+                defaultValue={
+                  Array.isArray(field.value) ? (field.value as string[]) : []
+                }
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        );
+      }}
     />
   );
 };

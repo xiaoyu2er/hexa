@@ -137,7 +137,6 @@ export const RULE_FIELD_SELECT_OPTIONS = [
       { label: RULE_FIELDS.SOURCE, value: 'SOURCE' },
       { label: RULE_FIELDS.ACCEPT_LANGUAGE, value: 'ACCEPT_LANGUAGE' },
       { label: RULE_FIELDS.QUERY, value: 'QUERY' },
-      { label: RULE_FIELDS.SOURCE, value: 'SOURCE' },
     ],
   },
   {
@@ -282,17 +281,41 @@ export const FIELD_OPERATOR_CONFIGS: Record<
   },
 };
 
-export const LinkRuleConditionSchema = z.object({
-  field: zRuleFieldEnum,
-  operator: zRuleOperatorEnum,
-  value: z.union([
-    z.string(),
-    z.number(),
-    z.boolean(),
-    z.array(z.string()),
-    z.array(z.number()),
-  ]),
-});
+export const LinkRuleConditionSchema = z
+  .object({
+    field: zRuleFieldEnum,
+    operator: zRuleOperatorEnum,
+    value: z.union([
+      z.string(),
+      z.number(),
+      z.boolean(),
+      z.array(z.string()),
+      z.array(z.number()),
+    ]),
+  })
+  .superRefine((data, ctx) => {
+    if (
+      (data.operator === 'IN' || data.operator === 'NOT_IN') &&
+      !Array.isArray(data.value)
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Value must be an array',
+        path: ['value'],
+      });
+    }
+
+    if (
+      (data.operator === 'EQ' || data.operator === 'NEQ') &&
+      typeof data.value !== 'string'
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Value must be a string',
+        path: ['value'],
+      });
+    }
+  });
 export type LinkRuleCondition = Simplify<
   z.infer<typeof LinkRuleConditionSchema>
 >;
