@@ -4,13 +4,6 @@ import { Dialog } from '@/components/dialog';
 import { RuleCard } from '@/components/link/rule-card';
 import { SortableItem } from '@/components/sortable-item';
 import {
-  type LinkRule,
-  type RuleField,
-  type RuleOperator,
-  type RulesFormType,
-  RulesSchema,
-} from '@/server/schema/link';
-import {
   DndContext,
   type DragEndEvent,
   MouseSensor,
@@ -25,6 +18,13 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
+import {
+  type LinkRule,
+  type RuleField,
+  type RuleOperator,
+  type RulesFormType,
+  RulesSchema,
+} from '@hexa/const/rule';
 import { Button } from '@hexa/ui/button';
 import { Form } from '@hexa/ui/form';
 import { FormErrorMessage } from '@hexa/ui/form-error-message';

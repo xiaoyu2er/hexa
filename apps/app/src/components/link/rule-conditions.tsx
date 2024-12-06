@@ -1,19 +1,20 @@
 'use client';
 
 import { InputField } from '@/components/form/input-field';
+import { MultiSelectField } from '@/components/form/multi-select-field';
 import { SelectField } from '@/components/form/select-field';
+import { TimeField } from '@/components/form/time-field';
 import {
-  RULE_FIELDS,
+  RULE_FIELD_SELECT_OPTIONS,
   type RuleField,
   type RuleOperator,
   type RulesFormType,
-  getFieldOperatorLabels,
+  getOperatorSelectOptions,
   getValueInputType,
   getValueOptions,
-} from '@/server/schema/link';
+} from '@hexa/const/rule';
 import { Button } from '@hexa/ui/button';
 import { TrashIcon } from '@hexa/ui/icons';
-import { MultiSelect } from '@hexa/ui/multi-select';
 import { type Path, useFieldArray, type useForm } from 'react-hook-form';
 
 export const RuleConditions = ({
@@ -24,7 +25,11 @@ export const RuleConditions = ({
   form: ReturnType<typeof useForm<RulesFormType>>;
 }) => {
   const { watch } = form;
-  const { fields, append, remove } = useFieldArray({
+  const {
+    fields: conditions,
+    append,
+    remove,
+  } = useFieldArray({
     control: form.control,
     name: `rules.${ruleIndex}.conditions`,
   });
@@ -56,16 +61,17 @@ export const RuleConditions = ({
       </div>
 
       <div className="rounded-lg border p-3">
-        {fields.map((condition, condIndex) => {
-          const conditionFieldName =
+        {conditions.map((condition, condIndex) => {
+          const filedKey =
             `rules.${ruleIndex}.conditions.${condIndex}.field` as Path<RulesFormType>;
-          const fieldValue = watch(conditionFieldName);
-          const conditionFieldOperatorLabels = getFieldOperatorLabels(
+          const fieldValue = watch(filedKey);
+
+          const operatorSelectOptions = getOperatorSelectOptions(
             fieldValue as RuleField | undefined
           );
-          const conditionOperatorName =
+          const operatorKey =
             `rules.${ruleIndex}.conditions.${condIndex}.operator` as Path<RulesFormType>;
-          const operatorValue = watch(conditionOperatorName);
+          const operatorValue = watch(operatorKey);
 
           const valueInputType = getValueInputType(
             fieldValue as RuleField | undefined,
@@ -74,65 +80,57 @@ export const RuleConditions = ({
 
           const valueOptions = getValueOptions(
             fieldValue as RuleField | undefined,
-            operatorValue as RuleOperator | undefined
+            operatorValue as RuleOperator | undefined,
+            conditions
           );
 
-          const value = watch(
+          const _value = watch(
             `rules.${ruleIndex}.conditions.${condIndex}.value`
           );
-          const input = (
+
+          const valueName =
+            `rules.${ruleIndex}.conditions.${condIndex}.value` as Path<RulesFormType>;
+          let valueInput = (
             <InputField
               form={form}
-              name={`rules.${ruleIndex}.conditions.${condIndex}.value`}
+              name={valueName}
               placeholder="Enter value"
             />
           );
-
-          const multiSelect = (
-            <MultiSelect
-              options={valueOptions}
-              onValueChange={(values) => {
-                form.setValue(
-                  `rules.${ruleIndex}.conditions.${condIndex}.value`,
-                  values.length ? values : []
-                );
-              }}
-              placeholder="Select options..."
-              variant="default"
-              maxCount={3}
-              className="w-full"
-              defaultValue={Array.isArray(value) ? (value as string[]) : []}
-            />
-          );
-          const select = (
-            <SelectField
-              form={form}
-              name={`rules.${ruleIndex}.conditions.${condIndex}.value`}
-              options={valueOptions}
-              placeholder="Select value"
-            />
-          );
-
-          const valueInput =
-            valueInputType === 'text'
-              ? input
-              : // biome-ignore lint/nursery/noNestedTernary: <explanation>
-                valueInputType === 'multi-select'
-                ? multiSelect
-                : select;
+          if (valueInputType === 'time') {
+            valueInput = <TimeField form={form} name={valueName} />;
+          } else if (valueInputType === 'multi-select') {
+            valueInput = (
+              <MultiSelectField
+                form={form}
+                name={valueName}
+                options={valueOptions}
+                placeholder="Select options..."
+              />
+            );
+          } else if (valueInputType === 'select') {
+            valueInput = (
+              <SelectField
+                form={form}
+                name={valueName}
+                options={valueOptions}
+                placeholder="Select value"
+              />
+            );
+          }
           return (
             <div key={condition.id}>
               <div className="grid grid-cols-[1fr,1fr,1fr,auto] gap-2">
                 <SelectField
                   form={form}
                   name={`rules.${ruleIndex}.conditions.${condIndex}.field`}
-                  options={RULE_FIELDS}
+                  options={RULE_FIELD_SELECT_OPTIONS}
                   placeholder="Select field"
                 />
                 <SelectField
                   form={form}
-                  name={conditionOperatorName}
-                  options={conditionFieldOperatorLabels}
+                  name={operatorKey}
+                  options={operatorSelectOptions}
                   placeholder="Select operator"
                 />
                 {valueInput}
@@ -146,7 +144,7 @@ export const RuleConditions = ({
                 </Button>
               </div>
 
-              {condIndex < fields.length - 1 && (
+              {condIndex < conditions.length - 1 && (
                 <div className="my-2 flex items-center gap-2 px-2">
                   <div className="h-px flex-grow bg-border" />
                   <span className="font-medium text-muted-foreground text-xs">
@@ -159,7 +157,7 @@ export const RuleConditions = ({
           );
         })}
 
-        {fields.length === 0 && (
+        {conditions.length === 0 && (
           <p className="text-center text-muted-foreground text-sm">
             No conditions added yet
           </p>

@@ -1,11 +1,5 @@
 {
-  "compilerOptions": {
-    "paths": {
-      "@hexa/ui": ["./src/ui"],
-      "@hexa/ui/*": ["./src/ui/*", "./src/*"]
-    }
-  },
   "exclude": ["node_modules", "dist"],
-  "extends": "@hexa/typescript-config/react-library.json",
+  "extends": "@hexa/typescript-config/base.json",
   "include": ["src"]
 }

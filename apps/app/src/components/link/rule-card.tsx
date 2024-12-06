@@ -2,7 +2,7 @@
 
 import { InputField } from '@/components/form/input-field';
 import { RuleConditions } from '@/components/link/rule-conditions';
-import type { RulesFormType } from '@/server/schema/link';
+import type { RulesFormType } from '@hexa/const/rule';
 import { Badge } from '@hexa/ui/badge';
 import { Button } from '@hexa/ui/button';
 import { Card } from '@hexa/ui/card';
