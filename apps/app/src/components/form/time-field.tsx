@@ -29,6 +29,7 @@ export const TimeField = <T extends FieldValues = FieldValues>({
             <DateTimePicker
               {...field}
               className={cn(
+                'w-[280px]',
                 fieldState.error ? 'border-destructive' : '',
                 className
               )}

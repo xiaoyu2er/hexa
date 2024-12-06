@@ -1,5 +1,5 @@
-import { RegionSelectOptions as USRegionSelectOptions } from './cn';
-import { RegionSelectOptions as CNRegionSelectOptions } from './us';
+import { RegionSelectOptions as CNRegionSelectOptions } from './cn';
+import { RegionSelectOptions as USRegionSelectOptions } from './us';
 
 export const RegionSelectOptionsMap = {
   US: USRegionSelectOptions,

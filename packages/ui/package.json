@@ -152,8 +152,8 @@
   },
   "dependencies": {
     "@heroicons/react": "2.1.5",
-    "@hexa/utils": "workspace:*",
     "@hexa/const": "workspace:*",
+    "@hexa/utils": "workspace:*",
     "@hookform/resolvers": "3.6.0",
     "@radix-ui/react-accordion": "1.2.0",
     "@radix-ui/react-alert-dialog": "1.1.1",
@@ -201,7 +201,7 @@
     "next-themes": "0.3.0",
     "nuqs": "2.0.0",
     "react": "18.3.1",
-    "react-day-picker": "8.10.1",
+    "react-day-picker": "9.4.1",
     "react-dom": "18.3.1",
     "react-hook-form": "7.53.2",
     "react-resizable-panels": "2.0.19",
