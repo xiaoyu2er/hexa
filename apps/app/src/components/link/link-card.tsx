@@ -16,10 +16,10 @@ export function LinkCard({ row }: { row: Row<SelectLinkType> }) {
   const { project } = useProject();
 
   return (
-    <div className="group flex items-center justify-between rounded-lg border border-gray-100 bg-white p-4 hover:border-gray-200">
+    <div className="group flex items-center justify-between rounded-lg border border-gray-100 bg-white p-4 hover:border-gray-200 dark:border-gray-800 dark:bg-gray-900 dark:hover:border-gray-700">
       <LinkInfo link={link} showClicks={false} showDate={false} />
       <div className="flex items-center gap-3">
-        <div className="flex items-center gap-1 rounded-md bg-gray-50 px-2 py-1 text-gray-600 text-sm">
+        <div className="flex items-center gap-1 rounded-md bg-gray-50 px-2 py-1 text-gray-600 text-sm dark:bg-gray-800 dark:text-gray-400">
           <SparklesIcon className="h-3.5 w-3.5" />
           {link.clicks || 0}
         </div>
@@ -31,7 +31,7 @@ export function LinkCard({ row }: { row: Row<SelectLinkType> }) {
 
 export function LinkCardSkeleton() {
   return (
-    <div className="flex items-center justify-between rounded-lg border border-gray-100 bg-white p-4">
+    <div className="flex items-center justify-between rounded-lg border border-gray-100 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
       <div className="flex min-w-0 flex-1">
         <div className="flex w-full items-start gap-3">
           {/* Icon skeleton */}

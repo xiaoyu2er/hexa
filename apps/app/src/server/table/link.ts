@@ -1,7 +1,7 @@
 import { generateId } from '@/lib/crypto';
-import type { LinkRule } from '@/server/schema/link';
 import { createdAt } from '@/server/table/common';
 import { projectIdNotNull } from '@/server/table/project';
+import type { LinkRule } from '@hexa/const/rule';
 import {
   index,
   integer,

@@ -32,6 +32,7 @@
     "@ebay/nice-modal-react": "1.2.13",
     "@hexa/email-templates": "workspace:*",
     "@hexa/tailwind-config": "workspace:*",
+    "@hexa/const": "workspace:*",
     "@hexa/ui": "workspace:*",
     "@hexa/utils": "workspace:*",
     "@hono/zod-validator": "0.4.1",

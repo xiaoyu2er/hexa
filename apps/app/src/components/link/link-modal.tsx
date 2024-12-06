@@ -9,13 +9,13 @@ import { setFormError } from '@/lib/form';
 import {
   InsertLinkSchema,
   type InsertLinkType,
-  type LinkRule,
   type SelectLinkType,
   UpdateLinkSchema,
   type UpdateLinkType,
 } from '@/server/schema/link';
 import type { SelectProjectType } from '@/server/schema/project';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
+import type { LinkRule } from '@hexa/const/rule';
 import { Badge } from '@hexa/ui/badge';
 import { Button } from '@hexa/ui/button';
 import { Form } from '@hexa/ui/form';

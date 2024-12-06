@@ -43,6 +43,7 @@
     "./date-input": "./src/ui/date-input.tsx",
     "./date-range-picker.stories": "./src/ui/date-range-picker.stories.tsx",
     "./date-range-picker": "./src/ui/date-range-picker.tsx",
+    "./date-time-picker": "./src/ui/date-time-picker.tsx",
     "./dialog": "./src/ui/dialog.tsx",
     "./dock": "./src/ui/dock.tsx",
     "./docker.stories": "./src/ui/docker.stories.tsx",
@@ -152,6 +153,7 @@
   "dependencies": {
     "@heroicons/react": "2.1.5",
     "@hexa/utils": "workspace:*",
+    "@hexa/const": "workspace:*",
     "@hookform/resolvers": "3.6.0",
     "@radix-ui/react-accordion": "1.2.0",
     "@radix-ui/react-alert-dialog": "1.1.1",
