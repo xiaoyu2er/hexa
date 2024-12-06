@@ -22,7 +22,6 @@ import type { Path, useForm } from 'react-hook-form';
 export const RuleCondition = ({
   formKey,
   form,
-  condition,
   conditions,
   onRemove,
   onUpdate,
@@ -35,7 +34,9 @@ export const RuleCondition = ({
   onUpdate: (value: LinkRuleCondition) => void;
 }) => {
   const filedKey = `${formKey}.field` as Path<RulesFormType>;
-  const fieldValue = form.watch(filedKey);
+
+  const fieldValue = form.watch(filedKey) as RuleField;
+  const prevFieldValue = usePrevious(fieldValue);
   const fieldConfig = FIELD_OPERATOR_CONFIGS[fieldValue as RuleField] ?? {
     operators: [],
     valueType: () => 'INPUT',
@@ -53,22 +54,35 @@ export const RuleCondition = ({
   const prevOperatorValue = usePrevious(operatorValue);
   const valueName = `${formKey}.value` as Path<RulesFormType>;
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (prevOperatorValue && operatorValue !== prevOperatorValue) {
-      // form.resetField(valueName);
+      let newDefaultValue: undefined | string | string[] = '';
+      if (operatorValue === 'IN' || operatorValue === 'NOT_IN') {
+        newDefaultValue = [];
+      }
+
       onUpdate({
         field: fieldValue as RuleField,
         operator: operatorValue,
-        value: undefined as unknown as
-          | string
-          | number
-          | boolean
-          | string[]
-          | number[],
+        value: newDefaultValue,
       } as LinkRuleCondition);
     }
-  }, [operatorValue]);
+  }, [prevOperatorValue, operatorValue, onUpdate, fieldValue]);
+
+  // useEffect(() => {
+  if (prevFieldValue && fieldValue !== prevFieldValue) {
+    let newDefaultValue: undefined | string | string[] = '';
+    if (operatorValue === 'IN' || operatorValue === 'NOT_IN') {
+      newDefaultValue = [];
+    }
+
+    onUpdate({
+      field: fieldValue as RuleField,
+      operator: '' as unknown as RuleOperator,
+      value: newDefaultValue,
+    } as LinkRuleCondition);
+  }
+  // }, [prevFieldValue, fieldValue, operatorValue, onUpdate]);
 
   const valueInputType = fieldConfig.valueType(
     operatorValue as RuleOperator,
@@ -81,7 +95,7 @@ export const RuleCondition = ({
     <InputField form={form} name={valueName} placeholder="Enter value" />
   );
   if (valueInputType === 'TIME') {
-    valueInput = <TimeField form={form} name={valueName} />;
+    valueInput = <TimeField key="time" form={form} name={valueName} />;
   } else if (valueInputType === 'MULTI_SELECT') {
     valueInput = (
       <MultiSelectField

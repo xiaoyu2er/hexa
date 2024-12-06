@@ -285,10 +285,12 @@ export const LinkRuleConditionSchema = z
   .object({
     field: zRuleFieldEnum,
     operator: zRuleOperatorEnum,
+    // value: z.string().datetime({ offset: true }),
     value: z.union([
       z.string(),
-      z.number(),
-      z.boolean(),
+      z.string().datetime({ offset: true }),
+      // z.number(),
+      // z.boolean(),
       z.array(z.string()),
       z.array(z.number()),
     ]),

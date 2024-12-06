@@ -68,9 +68,9 @@ export const RuleConditions = ({
           size="sm"
           onClick={() =>
             append({
-              field: undefined as unknown as RuleField,
-              operator: undefined as unknown as RuleOperator,
-              value: undefined as unknown as string,
+              field: '' as unknown as RuleField,
+              operator: '' as unknown as RuleOperator,
+              value: '' as unknown as string,
             })
           }
           className="w-full"

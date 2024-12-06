@@ -22,23 +22,35 @@ export const TimeField = <T extends FieldValues = FieldValues>({
     <FormField
       control={form.control}
       name={name}
-      render={({ field, fieldState }) => (
-        <FormItem className={formItemClassName}>
-          {label && <FormLabel>{label}</FormLabel>}
-          <FormControl>
-            <DateTimePicker
-              {...field}
-              className={cn(
-                'w-[280px]',
-                fieldState.error ? 'border-destructive' : '',
-                className
-              )}
-              {...props}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
+      render={({ field, fieldState }) => {
+        let value: Date | undefined = new Date(field.value);
+        if (value.toString() === 'Invalid Date') {
+          value = undefined;
+        }
+
+        return (
+          <FormItem className={formItemClassName}>
+            {label && <FormLabel>{label}</FormLabel>}
+            <FormControl>
+              <DateTimePicker
+                {...field}
+                value={value}
+                onChange={(value) => {
+                  const dateStr = new Date(value || '').toISOString();
+                  field.onChange(dateStr);
+                }}
+                className={cn(
+                  'w-[280px]',
+                  fieldState.error ? 'border-destructive' : '',
+                  className
+                )}
+                {...props}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        );
+      }}
     />
   );
 };
