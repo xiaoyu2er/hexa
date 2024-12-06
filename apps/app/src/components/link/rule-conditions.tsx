@@ -5,13 +5,12 @@ import { MultiSelectField } from '@/components/form/multi-select-field';
 import { SelectField } from '@/components/form/select-field';
 import { TimeField } from '@/components/form/time-field';
 import {
+  FIELD_OPERATOR_CONFIGS,
   RULE_FIELD_SELECT_OPTIONS,
+  RULE_OPERATORS,
   type RuleField,
   type RuleOperator,
   type RulesFormType,
-  getOperatorSelectOptions,
-  getValueInputType,
-  getValueOptions,
 } from '@hexa/const/rule';
 import { Button } from '@hexa/ui/button';
 import { PlusIcon, TrashIcon } from '@hexa/ui/icons';
@@ -50,23 +49,32 @@ export const RuleConditions = ({
             `rules.${ruleIndex}.conditions.${condIndex}.field` as Path<RulesFormType>;
           const fieldValue = watch(filedKey);
 
-          const operatorSelectOptions = getOperatorSelectOptions(
-            fieldValue as RuleField | undefined
+          const fieldConfig = FIELD_OPERATOR_CONFIGS[
+            fieldValue as RuleField
+          ] ?? {
+            operators: [],
+            valueType: () => 'INPUT',
+            valueOptions: () => [],
+          };
+
+          const operatorSelectOptions = fieldConfig.operators.map(
+            (operator) => {
+              return {
+                label: RULE_OPERATORS[operator],
+                value: operator,
+              };
+            }
           );
           const operatorKey =
             `rules.${ruleIndex}.conditions.${condIndex}.operator` as Path<RulesFormType>;
           const operatorValue = watch(operatorKey);
 
-          const valueInputType = getValueInputType(
-            fieldValue as RuleField | undefined,
-            operatorValue as RuleOperator | undefined
-          );
-
-          const valueOptions = getValueOptions(
-            fieldValue as RuleField | undefined,
-            operatorValue as RuleOperator | undefined,
+          const valueInputType = fieldConfig.valueType(
+            operatorValue as RuleOperator,
             conditions
           );
+
+          const valueOptions = fieldConfig.valueOptions?.(conditions) ?? [];
 
           const _value = watch(
             `rules.${ruleIndex}.conditions.${condIndex}.value`
@@ -81,9 +89,9 @@ export const RuleConditions = ({
               placeholder="Enter value"
             />
           );
-          if (valueInputType === 'time') {
+          if (valueInputType === 'TIME') {
             valueInput = <TimeField form={form} name={valueName} />;
-          } else if (valueInputType === 'multi-select') {
+          } else if (valueInputType === 'MULTI_SELECT') {
             valueInput = (
               <MultiSelectField
                 form={form}
@@ -92,7 +100,7 @@ export const RuleConditions = ({
                 placeholder="Select options..."
               />
             );
-          } else if (valueInputType === 'select') {
+          } else if (valueInputType === 'SELECT') {
             valueInput = (
               <SelectField
                 form={form}

@@ -1,17 +1,16 @@
-// @ts-nocheck
 import { Button, buttonVariants } from '@hexa/ui/button';
 import type { CalendarProps } from '@hexa/ui/calendar';
+import {
+  Calendar as CalendarIcon,
+  ChevronLeft,
+  ChevronRight,
+} from '@hexa/ui/icons';
+import { Clock } from '@hexa/ui/icons';
 import { Input } from '@hexa/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@hexa/ui/popover';
 import { cn } from '@hexa/utils';
 import { add, format } from 'date-fns';
 import { type Locale, enUS } from 'date-fns/locale';
-import {
-  Calendar as CalendarIcon,
-  ChevronLeft,
-  ChevronRight,
-} from 'lucide-react';
-import { Clock } from 'lucide-react';
 import * as React from 'react';
 import { useImperativeHandle, useRef } from 'react';
 
@@ -325,7 +324,6 @@ function Calendar({
         months:
           'flex flex-col sm:flex-row space-y-4  sm:space-y-0 justify-center',
         month: 'flex flex-col items-center space-y-4',
-        // @ts-ignore
         month_caption: 'flex justify-center pt-1 relative items-center',
         caption_label: 'text-sm font-medium',
         nav: 'space-x-1 flex items-center ',
