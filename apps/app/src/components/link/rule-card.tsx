@@ -19,6 +19,7 @@ import {
   TrashIcon,
 } from '@hexa/ui/icons';
 import { cn } from '@hexa/utils/cn';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import type { useForm } from 'react-hook-form';
 import type { FieldArrayWithId } from 'react-hook-form';
@@ -59,7 +60,10 @@ export function RuleCard({
     <Card
       ref={setNodeRef}
       style={style}
-      className={cn('p-4', isDragging && 'shadow-lg ring-2 ring-primary/50')}
+      className={cn(
+        'group overflow-hidden p-4',
+        isDragging && 'shadow-lg ring-2 ring-primary/50'
+      )}
     >
       <div className="space-y-4">
         <div className="flex items-center justify-between">
@@ -113,16 +117,28 @@ export function RuleCard({
           </div>
         </div>
 
-        {!isCollapsed && (
-          <>
-            <RuleConditions ruleIndex={ruleIndex} form={form} />
-            <InputField
-              form={form}
-              name={`rules.${ruleIndex}.destUrl`}
-              label="Destination URL"
-            />
-          </>
-        )}
+        <AnimatePresence initial={false}>
+          {!isCollapsed && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{
+                duration: 0.2,
+                ease: 'easeInOut',
+              }}
+            >
+              <div className="space-y-4">
+                <RuleConditions ruleIndex={ruleIndex} form={form} />
+                <InputField
+                  form={form}
+                  name={`rules.${ruleIndex}.destUrl`}
+                  label="Destination URL"
+                />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </Card>
   );
