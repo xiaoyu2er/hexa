@@ -19,6 +19,7 @@ export { StarIcon } from '@heroicons/react/24/solid';
 export type { LucideIcon } from 'lucide-react';
 // https://lucide.dev/icons/
 export {
+  GripVerticalIcon,
   HelpCircleIcon,
   XIcon,
   SparklesIcon,

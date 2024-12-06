@@ -2,7 +2,6 @@
 
 import { Dialog } from '@/components/dialog';
 import { RuleCard } from '@/components/link/rule-card';
-import { SortableItem } from '@/components/sortable-item';
 import {
   DndContext,
   type DragEndEvent,
@@ -14,7 +13,6 @@ import {
 } from '@dnd-kit/core';
 import {
   SortableContext,
-  arrayMove,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
@@ -57,7 +55,7 @@ export const EditLinkRulesModal = NiceModal.create(
       formState: { errors },
     } = form;
 
-    const { fields, append, remove, replace } = useFieldArray({
+    const { fields, append, remove, swap } = useFieldArray({
       name: 'rules',
       control: form.control,
     });
@@ -86,11 +84,12 @@ export const EditLinkRulesModal = NiceModal.create(
         const oldIndex = fields.findIndex((field) => field.id === active.id);
         const newIndex = fields.findIndex((field) => field.id === over.id);
 
-        const newFileds = arrayMove(fields, oldIndex, newIndex);
-        replace(newFileds);
+        // const newFileds = arrayMove(fields, oldIndex, newIndex);
+        // console.log(newFileds.map((field) => field.id));
+        swap(oldIndex, newIndex);
       }
     }
-
+    // console.log(fields.map((field) => field.id));
     return (
       <Dialog control={modal}>
         <DialogContent className="max-w-[900px]">
@@ -140,7 +139,7 @@ export const EditLinkRulesModal = NiceModal.create(
                   </div>
 
                   <ScrollArea className="h-[60vh] pb-2">
-                    <div className="space-y-4 pr-4">
+                    <div className="space-y-4">
                       <DndContext
                         sensors={sensors}
                         collisionDetection={closestCenter}
@@ -151,14 +150,14 @@ export const EditLinkRulesModal = NiceModal.create(
                           strategy={verticalListSortingStrategy}
                         >
                           {fields.map((field, ruleIndex) => (
-                            <SortableItem key={field.id} id={field.id}>
-                              <RuleCard
-                                field={field}
-                                ruleIndex={ruleIndex}
-                                form={form}
-                                onRemove={() => remove(ruleIndex)}
-                              />
-                            </SortableItem>
+                            <RuleCard
+                              key={field.id}
+                              id={field.id}
+                              field={field}
+                              ruleIndex={ruleIndex}
+                              form={form}
+                              onRemove={() => remove(ruleIndex)}
+                            />
                           ))}
                         </SortableContext>
                       </DndContext>

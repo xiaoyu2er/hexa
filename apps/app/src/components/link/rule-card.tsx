@@ -1,33 +1,72 @@
-'use client';
-
 import { InputField } from '@/components/form/input-field';
-import { RuleConditions } from '@/components/link/rule-conditions';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import type { RulesFormType } from '@hexa/const/rule';
 import { Badge } from '@hexa/ui/badge';
 import { Button } from '@hexa/ui/button';
 import { Card } from '@hexa/ui/card';
-import { ChevronDownIcon, ChevronUpIcon, TrashIcon } from '@hexa/ui/icons';
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  GripVerticalIcon,
+  TrashIcon,
+} from '@hexa/ui/icons';
+import { cn } from '@hexa/utils/cn';
 import { useState } from 'react';
-import type { FieldArrayWithId, useForm } from 'react-hook-form';
+import type { useForm } from 'react-hook-form';
+import type { FieldArrayWithId } from 'react-hook-form';
+import { RuleConditions } from './rule-conditions';
 
-export const RuleCard = ({
-  field,
-  ruleIndex,
-  form,
-  onRemove,
-}: {
+interface RuleCardProps {
+  id: string;
   field: FieldArrayWithId<RulesFormType, 'rules', 'id'>;
   ruleIndex: number;
   form: ReturnType<typeof useForm<RulesFormType>>;
   onRemove: () => void;
-}) => {
+}
+
+export function RuleCard({
+  id,
+  field,
+  ruleIndex,
+  form,
+  onRemove,
+}: RuleCardProps) {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    transition,
+  };
+
   return (
-    <Card key={field.id} className="p-4">
+    <Card
+      ref={setNodeRef}
+      style={style}
+      className={cn('p-4', isDragging && 'shadow-lg ring-2 ring-primary/50')}
+    >
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
+            <Button
+              type="button"
+              {...listeners}
+              {...attributes}
+              variant="ghost"
+              size="sm"
+              className="cursor-grab p-1 hover:bg-muted"
+            >
+              <GripVerticalIcon className="h-4 w-4" />
+            </Button>
             <h4 className="font-medium"># {ruleIndex + 1}</h4>
             <Badge variant="secondary">
               {field.conditions?.length || 0} conditions
@@ -39,9 +78,7 @@ export const RuleCard = ({
               variant="ghost"
               size="sm"
               className="h-auto p-0 hover:bg-transparent"
-              onClick={() => {
-                setIsCollapsed((prev) => !prev);
-              }}
+              onClick={() => setIsCollapsed(!isCollapsed)}
             >
               {isCollapsed ? (
                 <ChevronDownIcon className="h-5 w-5" />
@@ -68,4 +105,4 @@ export const RuleCard = ({
       </div>
     </Card>
   );
-};
+}
