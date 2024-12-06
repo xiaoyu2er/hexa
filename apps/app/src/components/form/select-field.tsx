@@ -21,7 +21,6 @@ import {
 } from '@hexa/ui/select';
 import { Select } from '@hexa/ui/select';
 import { cn } from '@hexa/utils/cn';
-import { get } from 'lodash';
 import type { ComponentProps } from 'react';
 import { useState } from 'react';
 import type { FieldValues } from 'react-hook-form';
@@ -71,11 +70,12 @@ export const SelectField = <T extends FieldValues = FieldValues>({
       .filter(Boolean) as SelectOptions;
   };
 
+  // const watchValue = form.watch(name);
   return (
     <FormField
       control={form.control}
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState }) => (
         <FormItem className={formItemClassName}>
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
@@ -87,7 +87,7 @@ export const SelectField = <T extends FieldValues = FieldValues>({
             >
               <SelectTrigger
                 className={cn(
-                  get(form.formState.errors, name) ? 'border-destructive' : '',
+                  fieldState.error ? 'border-destructive' : '',
                   className
                 )}
               >

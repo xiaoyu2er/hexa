@@ -1,20 +1,10 @@
 'use client';
-
-import { InputField } from '@/components/form/input-field';
-import { MultiSelectField } from '@/components/form/multi-select-field';
-import { SelectField } from '@/components/form/select-field';
-import { TimeField } from '@/components/form/time-field';
-import {
-  FIELD_OPERATOR_CONFIGS,
-  RULE_FIELD_SELECT_OPTIONS,
-  RULE_OPERATORS,
-  type RuleField,
-  type RuleOperator,
-  type RulesFormType,
-} from '@hexa/const/rule';
+import { RuleCondition } from '@/components/link/rule-condition';
+import type { RuleField, RuleOperator, RulesFormType } from '@hexa/const/rule';
 import { Button } from '@hexa/ui/button';
-import { PlusIcon, TrashIcon } from '@hexa/ui/icons';
-import { type Path, useFieldArray, type useForm } from 'react-hook-form';
+import { PlusIcon } from '@hexa/ui/icons';
+import React from 'react';
+import { useFieldArray, type useForm } from 'react-hook-form';
 
 export const RuleConditions = ({
   ruleIndex,
@@ -23,11 +13,11 @@ export const RuleConditions = ({
   ruleIndex: number;
   form: ReturnType<typeof useForm<RulesFormType>>;
 }) => {
-  const { watch } = form;
   const {
     fields: conditions,
     append,
     remove,
+    update,
   } = useFieldArray({
     control: form.control,
     name: `rules.${ruleIndex}.conditions`,
@@ -44,115 +34,23 @@ export const RuleConditions = ({
       </div>
 
       <div className="space-y-3 rounded-lg border p-3">
+        {conditions.length === 0 ? (
+          <p className="text-center text-muted-foreground text-sm">
+            No conditions added yet
+          </p>
+        ) : null}
         {conditions.map((condition, condIndex) => {
-          const filedKey =
-            `rules.${ruleIndex}.conditions.${condIndex}.field` as Path<RulesFormType>;
-          const fieldValue = watch(filedKey);
-
-          const fieldConfig = FIELD_OPERATOR_CONFIGS[
-            fieldValue as RuleField
-          ] ?? {
-            operators: [],
-            valueType: () => 'INPUT',
-            valueOptions: () => [],
-          };
-
-          const operatorSelectOptions = fieldConfig.operators.map(
-            (operator) => {
-              return {
-                label: RULE_OPERATORS[operator],
-                value: operator,
-              };
-            }
-          );
-          const operatorKey =
-            `rules.${ruleIndex}.conditions.${condIndex}.operator` as Path<RulesFormType>;
-          const operatorValue = watch(operatorKey);
-
-          const valueInputType = fieldConfig.valueType(
-            operatorValue as RuleOperator,
-            conditions
-          );
-
-          const valueOptions = fieldConfig.valueOptions?.(conditions) ?? [];
-
-          const _value = watch(
-            `rules.${ruleIndex}.conditions.${condIndex}.value`
-          );
-
-          const valueName =
-            `rules.${ruleIndex}.conditions.${condIndex}.value` as Path<RulesFormType>;
-          let valueInput = (
-            <InputField
-              form={form}
-              name={valueName}
-              placeholder="Enter value"
-            />
-          );
-          if (valueInputType === 'TIME') {
-            valueInput = <TimeField form={form} name={valueName} />;
-          } else if (valueInputType === 'MULTI_SELECT') {
-            valueInput = (
-              <MultiSelectField
-                form={form}
-                name={valueName}
-                options={valueOptions}
-                placeholder="Select options..."
-              />
-            );
-          } else if (valueInputType === 'SELECT') {
-            valueInput = (
-              <SelectField
-                form={form}
-                name={valueName}
-                options={valueOptions}
-                placeholder="Select value"
-              />
-            );
-          }
           return (
-            <div key={condition.id}>
-              <div className="space-y-2 sm:grid sm:grid-cols-[180px,180px,1fr,auto] sm:gap-2 sm:space-y-0">
-                <div className="flex gap-2">
-                  <div className="flex-1">
-                    <SelectField
-                      form={form}
-                      name={`rules.${ruleIndex}.conditions.${condIndex}.field`}
-                      options={RULE_FIELD_SELECT_OPTIONS}
-                      placeholder="Select field"
-                    />
-                  </div>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => remove(condIndex)}
-                    className="h-10 w-10 shrink-0 sm:hidden"
-                  >
-                    <TrashIcon className="h-4 w-4" />
-                  </Button>
-                </div>
-
-                <SelectField
-                  form={form}
-                  name={operatorKey}
-                  options={operatorSelectOptions}
-                  placeholder="Select operator"
-                />
-                <div className="min-w-0">{valueInput}</div>
-
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => remove(condIndex)}
-                  className="hidden h-10 w-10 shrink-0 sm:flex"
-                >
-                  <TrashIcon className="h-4 w-4" />
-                </Button>
-              </div>
-
-              {condIndex < conditions.length - 1 && (
+            <React.Fragment key={condition.id}>
+              <RuleCondition
+                formKey={`rules.${ruleIndex}.conditions.${condIndex}`}
+                form={form}
+                condition={condition}
+                onRemove={() => remove(condIndex)}
+                conditions={conditions}
+                onUpdate={(value) => update(condIndex, value)}
+              />
+              {condIndex !== conditions.length - 1 && (
                 <div className="my-3 flex items-center gap-2 px-2 sm:my-2">
                   <div className="h-px flex-grow bg-border" />
                   <span className="font-medium text-muted-foreground text-xs">
@@ -161,16 +59,9 @@ export const RuleConditions = ({
                   <div className="h-px flex-grow bg-border" />
                 </div>
               )}
-            </div>
+            </React.Fragment>
           );
         })}
-
-        {conditions.length === 0 ? (
-          <p className="text-center text-muted-foreground text-sm">
-            No conditions added yet
-          </p>
-        ) : null}
-
         <Button
           type="button"
           variant="outline"
