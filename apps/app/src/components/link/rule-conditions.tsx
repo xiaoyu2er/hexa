@@ -14,7 +14,7 @@ import {
   getValueOptions,
 } from '@hexa/const/rule';
 import { Button } from '@hexa/ui/button';
-import { TrashIcon } from '@hexa/ui/icons';
+import { PlusIcon, TrashIcon } from '@hexa/ui/icons';
 import { type Path, useFieldArray, type useForm } from 'react-hook-form';
 
 export const RuleConditions = ({
@@ -36,31 +36,15 @@ export const RuleConditions = ({
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <div className="space-y-1">
-          <h5 className="font-medium text-sm">Conditions</h5>
-          <p className="text-muted-foreground text-xs">
-            When all conditions below are met, the link will redirect to the
-            destination URL
-          </p>
-        </div>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={() =>
-            append({
-              field: undefined as unknown as RuleField,
-              operator: undefined as unknown as RuleOperator,
-              value: undefined as unknown as string,
-            })
-          }
-        >
-          Add Condition
-        </Button>
+      <div className="space-y-1">
+        <h5 className="font-medium text-sm">Conditions</h5>
+        <p className="text-muted-foreground text-xs">
+          When all conditions below are met, the link will redirect to the
+          destination URL
+        </p>
       </div>
 
-      <div className="rounded-lg border p-3">
+      <div className="space-y-3 rounded-lg border p-3">
         {conditions.map((condition, condIndex) => {
           const filedKey =
             `rules.${ruleIndex}.conditions.${condIndex}.field` as Path<RulesFormType>;
@@ -120,32 +104,48 @@ export const RuleConditions = ({
           }
           return (
             <div key={condition.id}>
-              <div className="grid grid-cols-[1fr,1fr,1fr,auto] gap-2">
-                <SelectField
-                  form={form}
-                  name={`rules.${ruleIndex}.conditions.${condIndex}.field`}
-                  options={RULE_FIELD_SELECT_OPTIONS}
-                  placeholder="Select field"
-                />
+              <div className="space-y-2 sm:grid sm:grid-cols-[180px,180px,1fr,auto] sm:gap-2 sm:space-y-0">
+                <div className="flex gap-2">
+                  <div className="flex-1">
+                    <SelectField
+                      form={form}
+                      name={`rules.${ruleIndex}.conditions.${condIndex}.field`}
+                      options={RULE_FIELD_SELECT_OPTIONS}
+                      placeholder="Select field"
+                    />
+                  </div>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => remove(condIndex)}
+                    className="h-10 w-10 shrink-0 sm:hidden"
+                  >
+                    <TrashIcon className="h-4 w-4" />
+                  </Button>
+                </div>
+
                 <SelectField
                   form={form}
                   name={operatorKey}
                   options={operatorSelectOptions}
                   placeholder="Select operator"
                 />
-                {valueInput}
+                <div className="min-w-0">{valueInput}</div>
+
                 <Button
                   type="button"
                   variant="ghost"
                   size="icon"
                   onClick={() => remove(condIndex)}
+                  className="hidden h-10 w-10 shrink-0 sm:flex"
                 >
                   <TrashIcon className="h-4 w-4" />
                 </Button>
               </div>
 
               {condIndex < conditions.length - 1 && (
-                <div className="my-2 flex items-center gap-2 px-2">
+                <div className="my-3 flex items-center gap-2 px-2 sm:my-2">
                   <div className="h-px flex-grow bg-border" />
                   <span className="font-medium text-muted-foreground text-xs">
                     AND
@@ -157,11 +157,28 @@ export const RuleConditions = ({
           );
         })}
 
-        {conditions.length === 0 && (
+        {conditions.length === 0 ? (
           <p className="text-center text-muted-foreground text-sm">
             No conditions added yet
           </p>
-        )}
+        ) : null}
+
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() =>
+            append({
+              field: undefined as unknown as RuleField,
+              operator: undefined as unknown as RuleOperator,
+              value: undefined as unknown as string,
+            })
+          }
+          className="w-full"
+        >
+          <PlusIcon className="mr-2 h-4 w-4" />
+          Add Condition
+        </Button>
       </div>
     </div>
   );
