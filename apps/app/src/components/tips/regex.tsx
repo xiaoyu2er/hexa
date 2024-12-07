@@ -35,9 +35,9 @@ export const RegexExpressionTips = () => {
             </p>
             <p className="text-sm text-muted-foreground">
               Note: This is a pattern string, not a regex literal. Do not
-              include <code className="bg-muted px-1 rounded">//</code> at the
-              beginning and end. Remember to escape backslashes. Example: use{' '}
-              <code className="bg-muted px-1 rounded">\\d+</code> not{' '}
+              include <code className="bg-muted px-1 rounded">{'//'}</code> at
+              the beginning and end. Remember to escape backslashes. Example:
+              use <code className="bg-muted px-1 rounded">\\d+</code> not{' '}
               <code className="bg-muted px-1 rounded">/\d+/</code>
             </p>
           </div>
