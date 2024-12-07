@@ -1,6 +1,6 @@
 'use client';
 import { RuleCondition } from '@/components/link/rule-condition';
-import type { RuleField, RuleOperator, RulesFormType } from '@hexa/const/rule';
+import type { LinkRuleCondition, RulesFormType } from '@hexa/const/rule';
 import { Button } from '@hexa/ui/button';
 import { PlusIcon } from '@hexa/ui/icons';
 import React from 'react';
@@ -68,10 +68,10 @@ export const RuleConditions = ({
           size="sm"
           onClick={() =>
             append({
-              field: '' as unknown as RuleField,
-              operator: '' as unknown as RuleOperator,
-              value: '' as unknown as string,
-            })
+              field: '',
+              operator: '',
+              value: '',
+            } as unknown as LinkRuleCondition)
           }
           className="w-full"
         >
