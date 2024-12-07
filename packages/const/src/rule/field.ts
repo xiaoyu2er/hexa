@@ -13,20 +13,8 @@ export const RULE_FIELD_CODES = [
   'COOKIE',
   // ====== User agent ======
   'USER_AGENT',
-  // Browser
-  // 'BROWSER_NAME',
-  // 'BROWSER_VERSION',
-  // 'BROWSER_MAJOR',
-  // 'BROWSER_TYPE',
   // Device
   'DEVICE_TYPE',
-  // 'DEVICE_VENDOR',
-  // 'DEVICE_MODEL',
-  // OS
-  // 'OS_NAME',
-  // 'OS_VERSION',
-  // CPU
-  // 'CPU',
   // ======== Location ========
   'CONTINENT',
   'COUNTRY',
@@ -34,7 +22,6 @@ export const RULE_FIELD_CODES = [
   'REGION_CODE',
   'LATITUDE',
   'LONGITUDE',
-  // 'TIMEZONE',
   'POSTAL_CODE',
 ] as const;
 
@@ -52,23 +39,13 @@ export const RULE_FIELDS: Record<RuleField, string> = {
   QUERY: 'Query',
   USER_AGENT: 'User agent',
   COOKIE: 'Cookie',
-  // BROWSER_NAME: 'Browser name',
-  // BROWSER_VERSION: 'Browser version',
-  // BROWSER_MAJOR: 'Browser major',
-  // BROWSER_TYPE: 'Browser type',
   DEVICE_TYPE: 'Device type',
-  // DEVICE_VENDOR: 'Device vendor',
-  // DEVICE_MODEL: 'Device model',
-  // OS_NAME: 'OS name',
-  // OS_VERSION: 'OS version',
-  // CPU: 'CPU',
   CONTINENT: 'Continent',
   COUNTRY: 'Country',
   IS_EU_COUNTRY: 'Is EU country',
   REGION_CODE: 'Region',
   LATITUDE: 'Latitude',
   LONGITUDE: 'Longitude',
-  // TIMEZONE: 'Timezone',
   POSTAL_CODE: 'Postal code',
 } as const;
 
@@ -97,6 +74,7 @@ export const RULE_FIELD_SELECT_OPTIONS = [
       { label: RULE_FIELDS.SOURCE, value: 'SOURCE' },
       { label: RULE_FIELDS.ACCEPT_LANGUAGE, value: 'ACCEPT_LANGUAGE' },
       { label: RULE_FIELDS.QUERY, value: 'QUERY' },
+      { label: RULE_FIELDS.COOKIE, value: 'COOKIE' },
     ],
   },
   {

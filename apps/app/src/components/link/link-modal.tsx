@@ -123,7 +123,11 @@ export const LinkModal = NiceModal.create(
           <Form {...form}>
             <form
               onSubmit={handleSubmit((json) =>
-                mode === 'create' ? createLink({ json }) : updateLink({ json })
+                mode === 'create'
+                  ? // @ts-ignore
+                    createLink({ json })
+                  : // @ts-ignore
+                    updateLink({ json })
               )}
               className="space-y-4"
             >

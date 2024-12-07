@@ -1,7 +1,7 @@
 import { ApiError } from '@/lib/error/error';
 import authProject from '@/server/middleware/project';
 import type { Context } from '@/server/route/route-types';
-import { LinkQuerySchema } from '@/server/schema/link';
+import { LinkQuerySchema, UpdateLinkSchema } from '@/server/schema/link';
 import { InsertLinkSchema } from '@/server/schema/link';
 import { ProjectIdSchema } from '@/server/schema/project';
 import {
@@ -49,7 +49,7 @@ const link = new Hono<Context>()
       return c.json(link);
     }
   )
-  .put('/link/update-link', zValidator('json', InsertLinkSchema), async (c) => {
+  .put('/link/update-link', zValidator('json', UpdateLinkSchema), async (c) => {
     const { db } = c.var;
 
     const json = c.req.valid('json');

@@ -18,8 +18,7 @@ import {
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import {
   type LinkRule,
-  type RuleField,
-  type RuleOperator,
+  type LinkRuleCondition,
   type RulesFormType,
   RulesSchema,
 } from '@hexa/const/rule';
@@ -124,10 +123,10 @@ export const EditLinkRulesModal = NiceModal.create(
                         append({
                           conditions: [
                             {
-                              field: undefined as unknown as RuleField,
-                              operator: undefined as unknown as RuleOperator,
-                              value: undefined as unknown as string,
-                            },
+                              field: undefined,
+                              operator: undefined,
+                              value: undefined,
+                            } as unknown as LinkRuleCondition,
                           ],
                           destUrl: '',
                         })

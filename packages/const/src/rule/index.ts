@@ -7,7 +7,7 @@ import { IsEUCountrySelectOptions } from '../is-eu-country';
 import { RegionSelectOptionsMap } from '../region';
 import type { RuleValueTypeCode } from '../rule-value-type';
 import { SourceSelectOptions } from '../source';
-import { type RuleField, zRuleFieldEnum } from './field';
+import type { RuleField } from './field';
 import {
   LINK_RULE_ACCEPT_LANGUAGE_OPERATORS,
   LinkRuleAcceptLanguageConditionSchema,
@@ -67,7 +67,7 @@ import {
   LINK_RULE_USER_AGENT_OPERATORS,
   LinkRuleUserAgentConditionSchema,
 } from './field/user-agent';
-import { type RuleOperator, zRuleOperatorEnum } from './operator';
+import type { RuleOperator } from './operator';
 // https://developers.cloudflare.com/ruleset-engine/rules-language/operators/#comparison-operators
 // https://openflagr.github.io/flagr/api_docs/#operation/createFlag
 
@@ -214,14 +214,13 @@ export const LinkRuleConditionValueSchemaMap: Record<
   RuleField,
   z.ZodType<unknown>
 > = {
-  COOKIE: LinkRuleCookieConditionSchema,
-  TIME: LinkRuleTimeConditionSchema,
-  CONTINENT: LinkRuleContinentConditionSchema,
   ACCEPT_LANGUAGE: LinkRuleAcceptLanguageConditionSchema,
+  CONTINENT: LinkRuleContinentConditionSchema,
+  COOKIE: LinkRuleCookieConditionSchema,
   COUNTRY: LinkRuleCountryConditionSchema,
   DEVICE_TYPE: LinkRuleDeviceTypeConditionSchema,
-  IS_EU_COUNTRY: LinkRuleIsEuCountryConditionSchema,
   IP: LinkRuleIpConditionSchema,
+  IS_EU_COUNTRY: LinkRuleIsEuCountryConditionSchema,
   LATITUDE: LinkRuleLatitudeConditionSchema,
   LONGITUDE: LinkRuleLongitudeConditionSchema,
   POSTAL_CODE: LinkRulePostalCodeConditionSchema,
@@ -229,59 +228,60 @@ export const LinkRuleConditionValueSchemaMap: Record<
   REFERER: LinkRuleRefererConditionSchema,
   REGION_CODE: LinkRuleRegionCodeConditionSchema,
   SOURCE: LinkRuleSourceConditionSchema,
+  TIME: LinkRuleTimeConditionSchema,
   USER_AGENT: LinkRuleUserAgentConditionSchema,
 };
-export const LinkRuleConditionSchema2 = z
-  .object({
-    field: zRuleFieldEnum,
-    operator: zRuleOperatorEnum,
-    value: z.union([z.string().min(1), z.array(z.string().min(1)).min(1)]),
-  })
-  .superRefine((data, ctx) => {
-    if (
-      (data.operator === 'IN' || data.operator === 'NOT_IN') &&
-      !Array.isArray(data.value)
-    ) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Value must be an array',
-        path: ['value'],
-      });
-    }
+// export const LinkRuleConditionSchema2 = z
+//   .object({
+//     field: zRuleFieldEnum,
+//     operator: zRuleOperatorEnum,
+//     value: z.union([z.string().min(1), z.array(z.string().min(1)).min(1)]),
+//   })
+//   .superRefine((data, ctx) => {
+//     if (
+//       (data.operator === 'IN' || data.operator === 'NOT_IN') &&
+//       !Array.isArray(data.value)
+//     ) {
+//       ctx.addIssue({
+//         code: z.ZodIssueCode.custom,
+//         message: 'Value must be an array',
+//         path: ['value'],
+//       });
+//     }
 
-    if (
-      data.operator !== 'IN' &&
-      data.operator !== 'NOT_IN' &&
-      Array.isArray(data.value)
-    ) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Value must not be an array',
-        path: ['value'],
-      });
-    }
+//     if (
+//       data.operator !== 'IN' &&
+//       data.operator !== 'NOT_IN' &&
+//       Array.isArray(data.value)
+//     ) {
+//       ctx.addIssue({
+//         code: z.ZodIssueCode.custom,
+//         message: 'Value must not be an array',
+//         path: ['value'],
+//       });
+//     }
 
-    const schema = LinkRuleConditionValueSchemaMap[data.field];
+//     const schema = LinkRuleConditionValueSchemaMap[data.field];
 
-    if (schema) {
-      const result = schema.safeParse(data);
-      if (result.error) {
-        for (const issue of result.error.issues) {
-          ctx.addIssue(issue);
-        }
-      }
-    }
-  });
+//     if (schema) {
+//       const result = schema.safeParse(data);
+//       if (result.error) {
+//         for (const issue of result.error.issues) {
+//           ctx.addIssue(issue);
+//         }
+//       }
+//     }
+//   });
 
 export const LinkRuleConditionSchema = z
   .discriminatedUnion('field', [
-    LinkRuleTimeConditionSchema,
-    LinkRuleContinentConditionSchema,
     LinkRuleAcceptLanguageConditionSchema,
+    LinkRuleContinentConditionSchema,
+    LinkRuleCookieConditionSchema,
     LinkRuleCountryConditionSchema,
     LinkRuleDeviceTypeConditionSchema,
-    LinkRuleIsEuCountryConditionSchema,
     LinkRuleIpConditionSchema,
+    LinkRuleIsEuCountryConditionSchema,
     LinkRuleLatitudeConditionSchema,
     LinkRuleLongitudeConditionSchema,
     LinkRulePostalCodeConditionSchema,
@@ -289,6 +289,7 @@ export const LinkRuleConditionSchema = z
     LinkRuleRefererConditionSchema,
     LinkRuleRegionCodeConditionSchema,
     LinkRuleSourceConditionSchema,
+    LinkRuleTimeConditionSchema,
     LinkRuleUserAgentConditionSchema,
   ])
   .superRefine((data, ctx) => {
