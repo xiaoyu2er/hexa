@@ -2,10 +2,11 @@
 
 import { InputField } from '@/components/form/input-field';
 import { MultiSelectField } from '@/components/form/multi-select-field';
+import { RegexField } from '@/components/form/regex-field';
 import { SelectField } from '@/components/form/select-field';
 import { TimeField } from '@/components/form/time-field';
 import {
-  FIELD_OPERATOR_CONFIGS,
+  FIELD_CONFIGS,
   type LinkRuleCondition,
   RULE_FIELD_SELECT_OPTIONS,
   RULE_OPERATORS,
@@ -13,6 +14,7 @@ import {
   type RuleOperator,
   type RulesFormType,
 } from '@hexa/const/rule';
+import type { SelectOptions } from '@hexa/const/select-option';
 import { Button } from '@hexa/ui/button';
 import { TrashIcon } from '@hexa/ui/icons';
 import { usePrevious } from '@uidotdev/usehooks';
@@ -34,13 +36,11 @@ export const RuleCondition = ({
   onUpdate: (value: LinkRuleCondition) => void;
 }) => {
   const filedKey = `${formKey}.field` as Path<RulesFormType>;
-
   const fieldValue = form.watch(filedKey) as RuleField;
   const prevFieldValue = usePrevious(fieldValue);
-  const fieldConfig = FIELD_OPERATOR_CONFIGS[fieldValue as RuleField] ?? {
+  const fieldConfig = FIELD_CONFIGS[fieldValue as RuleField] ?? {
     operators: [],
-    valueType: () => 'INPUT',
-    valueOptions: () => [],
+    valueType: () => ({ type: 'INPUT' }),
   };
 
   const operatorSelectOptions = fieldConfig.operators.map((operator) => {
@@ -57,7 +57,12 @@ export const RuleCondition = ({
   useEffect(() => {
     if (prevOperatorValue && operatorValue !== prevOperatorValue) {
       let newDefaultValue: undefined | string | string[] = '';
-      if (operatorValue === 'IN' || operatorValue === 'NOT_IN') {
+      if (
+        operatorValue === 'IN' ||
+        operatorValue === 'NOT_IN' ||
+        operatorValue === 'REG' ||
+        operatorValue === 'NREG'
+      ) {
         newDefaultValue = [];
       }
 
@@ -72,7 +77,12 @@ export const RuleCondition = ({
   // useEffect(() => {
   if (prevFieldValue && fieldValue !== prevFieldValue) {
     let newDefaultValue: undefined | string | string[] = '';
-    if (operatorValue === 'IN' || operatorValue === 'NOT_IN') {
+    if (
+      operatorValue === 'IN' ||
+      operatorValue === 'NOT_IN' ||
+      operatorValue === 'REG' ||
+      operatorValue === 'NREG'
+    ) {
       newDefaultValue = [];
     }
 
@@ -84,25 +94,39 @@ export const RuleCondition = ({
   }
   // }, [prevFieldValue, fieldValue, operatorValue, onUpdate]);
 
-  const valueInputType = fieldConfig.valueType(
-    operatorValue as RuleOperator,
-    conditions
-  );
-
-  const valueOptions = fieldConfig.valueOptions?.(conditions) ?? [];
+  const { type: valueInputType, props: valueInputProps } =
+    fieldConfig.valueType(operatorValue as RuleOperator, conditions);
 
   let valueInput = (
-    <InputField form={form} name={valueName} placeholder="Enter value" />
+    <InputField
+      form={form}
+      name={valueName}
+      placeholder="Enter value"
+      hideErrorMessageCodes={['too_small']}
+      {...valueInputProps}
+    />
   );
-  if (valueInputType === 'TIME') {
-    valueInput = <TimeField key="time" form={form} name={valueName} />;
+
+  if (valueInputType === 'REGEX') {
+    valueInput = (
+      <RegexField form={form} name={valueName} {...valueInputProps} />
+    );
+  } else if (valueInputType === 'TIME') {
+    valueInput = (
+      <TimeField
+        form={form}
+        name={valueName}
+        hideErrorMessageCodes={['too_small']}
+      />
+    );
   } else if (valueInputType === 'MULTI_SELECT') {
     valueInput = (
       <MultiSelectField
         form={form}
         name={valueName}
-        options={valueOptions}
-        placeholder="Select options..."
+        {...(valueInputProps as { options: SelectOptions<string> })}
+        placeholder="Select options"
+        hideErrorMessageCodes={['invalid_enum_value', 'too_small']}
       />
     );
   } else if (valueInputType === 'SELECT') {
@@ -110,8 +134,9 @@ export const RuleCondition = ({
       <SelectField
         form={form}
         name={valueName}
-        options={valueOptions}
-        placeholder="Select value"
+        {...(valueInputProps as { options: SelectOptions<string> })}
+        placeholder="Select option"
+        hideErrorMessageCodes={['invalid_enum_value', 'too_small']}
       />
     );
   }
@@ -124,6 +149,7 @@ export const RuleCondition = ({
             name={filedKey}
             options={RULE_FIELD_SELECT_OPTIONS}
             placeholder="Select field"
+            hideErrorMessageCodes={['invalid_union_discriminator']}
           />
         </div>
         <Button
@@ -142,6 +168,7 @@ export const RuleCondition = ({
         name={operatorKey}
         options={operatorSelectOptions}
         placeholder="Select operator"
+        hideErrorMessageCodes={['invalid_enum_value']}
       />
       <div className="min-w-0">{valueInput}</div>
 

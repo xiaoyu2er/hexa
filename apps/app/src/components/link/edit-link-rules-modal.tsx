@@ -45,17 +45,16 @@ export const EditLinkRulesModal = NiceModal.create(
 
     const form = useForm<RulesFormType>({
       resolver: zodResolver(RulesSchema),
+      shouldFocusError: false,
       defaultValues: {
         rules,
       },
     });
 
     const {
-      watch,
       handleSubmit,
       formState: { errors },
     } = form;
-
     const { fields, append, remove, swap } = useFieldArray({
       name: 'rules',
       control: form.control,
@@ -90,7 +89,7 @@ export const EditLinkRulesModal = NiceModal.create(
         swap(oldIndex, newIndex);
       }
     }
-    // console.log(fields.map((field) => field.id));
+
     return (
       <Dialog control={modal}>
         <DialogContent className="max-w-[900px]">

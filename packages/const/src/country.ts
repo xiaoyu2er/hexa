@@ -519,8 +519,3 @@ export const CountrySelectOptions = Object.entries(COUNTRIES).map(
     value: code as CountryCode,
   })
 ) satisfies SelectOptions<CountryCode>;
-
-export const IsEUCountrySelectOptions = [
-  { label: 'Is EU Country', value: '1' },
-  { label: 'Is Not EU Country', value: '0' },
-] satisfies SelectOptions<string>;
