@@ -24,7 +24,14 @@ export const CONTINENTS: { [key in ContinentCode]: string } = {
   AN: 'Antarctica',
 } as const;
 
-export const zContinentCode = z.enum(CONTINENT_CODES);
+export const zContinentCode = z.enum(CONTINENT_CODES, {
+  message: 'Please select a continent',
+});
+export const zContinentCodeArray = z
+  .array(zContinentCode)
+  .refine((value) => value.length > 0, {
+    message: 'Please select at least one continent',
+  });
 export type { ContinentCode };
 
 export const ContinentSelectOptions = Object.entries(CONTINENTS).map(

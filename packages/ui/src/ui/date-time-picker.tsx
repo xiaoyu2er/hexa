@@ -841,6 +841,7 @@ const DateTimePicker = React.forwardRef<
       () => ({
         ...buttonRef.current,
         value: displayDate,
+        focus: () => buttonRef.current?.focus(),
       }),
       [displayDate]
     );

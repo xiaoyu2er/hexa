@@ -29,6 +29,7 @@ export const InputField = <T extends FieldValues = FieldValues>({
   type,
   formItemClassName,
   className,
+  hideErrorMessageCodes,
   ...props
 }: InputFieldProps<T>) => {
   const otherProps = InputProps[type as keyof typeof InputProps] ?? {};
@@ -37,7 +38,7 @@ export const InputField = <T extends FieldValues = FieldValues>({
     <FormField
       control={form.control}
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState }) => (
         <FormItem className={formItemClassName}>
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
@@ -52,7 +53,10 @@ export const InputField = <T extends FieldValues = FieldValues>({
               {...props}
             />
           </FormControl>
-          <FormMessage />
+          {fieldState.error &&
+            !hideErrorMessageCodes?.includes(fieldState.error.type) && (
+              <FormMessage />
+            )}
         </FormItem>
       )}
     />

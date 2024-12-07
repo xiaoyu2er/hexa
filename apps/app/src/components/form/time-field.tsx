@@ -6,6 +6,7 @@ import {
 import { FormControl, FormLabel, FormMessage } from '@hexa/ui/form';
 import { FormField, FormItem } from '@hexa/ui/form';
 import { cn } from '@hexa/utils/cn';
+import { get } from 'lodash';
 import type { FieldValues } from 'react-hook-form';
 export type TimeFieldProps<T extends FieldValues> = BaseFieldProps<T> &
   DateTimePickerProps;
@@ -16,6 +17,7 @@ export const TimeField = <T extends FieldValues = FieldValues>({
   label,
   formItemClassName,
   className,
+  hideErrorMessageCodes,
   ...props
 }: TimeFieldProps<T>) => {
   return (
@@ -40,14 +42,16 @@ export const TimeField = <T extends FieldValues = FieldValues>({
                   field.onChange(dateStr);
                 }}
                 className={cn(
-                  'w-[280px]',
-                  fieldState.error ? 'border-destructive' : '',
+                  get(form.formState.errors, name) ? 'border-destructive' : '',
                   className
                 )}
                 {...props}
               />
             </FormControl>
-            <FormMessage />
+            {fieldState.error &&
+              !hideErrorMessageCodes?.includes(fieldState.error.type) && (
+                <FormMessage />
+              )}
           </FormItem>
         );
       }}

@@ -43,6 +43,7 @@ export const SelectField = <T extends FieldValues = FieldValues>({
   placeholder,
   formItemClassName,
   className,
+  hideErrorMessageCodes,
   ...props
 }: SelectFieldProps<T>) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -142,7 +143,10 @@ export const SelectField = <T extends FieldValues = FieldValues>({
               </SelectContent>
             </Select>
           </FormControl>
-          <FormMessage />
+          {fieldState.error &&
+            !hideErrorMessageCodes?.includes(fieldState.error.type) && (
+              <FormMessage />
+            )}
         </FormItem>
       )}
     />
