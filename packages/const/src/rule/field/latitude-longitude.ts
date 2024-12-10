@@ -18,8 +18,8 @@ export const LINK_RULE_LATITUDE_OPERATOR_CONFIGS: RuleOperatorConfigs = [
   { operator: 'LE', defaultValue: 0 },
   { operator: 'GT', defaultValue: 0 },
   { operator: 'GE', defaultValue: 0 },
-  { operator: 'BETWEEN', defaultValue: [] },
-  { operator: 'NOT_BETWEEN', defaultValue: [] },
+  { operator: 'BETWEEN', defaultValue: [0, 0] },
+  { operator: 'NOT_BETWEEN', defaultValue: [0, 0] },
 ];
 
 export const zLinkRuleLatitudeOperator = z.enum(LINK_RULE_LATITUDE_OPERATORS);
@@ -30,14 +30,44 @@ export type LinkRuleLatitudeOperator = z.infer<
 export const LinkRuleLatitudeConditionSchema = z.object({
   field: z.literal(LINK_RULE_LATITUDE_FIELD),
   operator: zLinkRuleLatitudeOperator,
-  value: z.number().superRefine((value, ctx) => {
-    if (value < -90 || value > 90) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Latitude must be between -90 and 90',
-      });
-    }
-  }),
+  value: z.union([
+    z.tuple([z.number(), z.number()]).superRefine((value, ctx) => {
+      if (value[0] < -90 || value[0] > 90) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Latitude must be between -90 and 90',
+          path: ['0'],
+        });
+      }
+      if (value[1] < -90 || value[1] > 90) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Latitude must be between -90 and 90',
+          path: ['1'],
+        });
+      }
+      if (value[0] > value[1]) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Min value must be less than max value',
+          path: ['0'],
+        });
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Min value must be less than max value',
+          path: ['1'],
+        });
+      }
+    }),
+    z.number().superRefine((value, ctx) => {
+      if (value < -90 || value > 90) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Latitude must be between -90 and 90',
+        });
+      }
+    }),
+  ]),
 });
 
 export type LinkRuleLatitudeCondition = z.infer<
