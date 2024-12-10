@@ -8,22 +8,33 @@ import { queryProjectsOptions } from '@/lib/queries/project';
 import type { SelectProjectType } from '@/server/schema/project';
 import { useModal } from '@ebay/nice-modal-react';
 import { Badge } from '@hexa/ui/badge';
-import { Button } from '@hexa/ui/button';
-import {} from '@hexa/ui/collapsible';
 import { useScreenSize } from '@hexa/ui/hooks/use-screen-size';
-import { CaretSortIcon, CheckIcon, PlusCircledIcon } from '@hexa/ui/icons';
-import { Input } from '@hexa/ui/input';
-import { Popover, PopoverContent, PopoverTrigger } from '@hexa/ui/popover';
-import { SidebarMenuButton, useSidebar } from '@hexa/ui/sidebar';
+import { CaretSortIcon, PlusCircledIcon } from '@hexa/ui/icons';
+import { useSidebar } from '@hexa/ui/sidebar';
 import { Skeleton } from '@hexa/ui/skeleton';
 import { toast } from '@hexa/ui/sonner';
 import { cn } from '@hexa/utils';
+import {
+  Button,
+  Input,
+  Listbox,
+  ListboxItem,
+  ListboxSection,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@nextui-org/react';
 import { useQuery } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
-import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { useBoolean } from 'usehooks-ts';
+
+export const ListboxWrapper = ({ children }: { children: ReactNode }) => (
+  <div className="w-full max-w-[260px] rounded-small border-default-200 border-small px-1 py-2 dark:border-default-100">
+    {children}
+  </div>
+);
 
 export function ContextSwitcher() {
   const { isMobile } = useScreenSize();
@@ -93,122 +104,110 @@ export function ContextSwitcher() {
 
   return (
     <>
-      <Popover open={isPopoverOpen} onOpenChange={setPopoverOpen}>
-        <PopoverTrigger asChild>
-          <SidebarMenuButton>
-            {state === 'collapsed' && !isMobile ? (
-              <div className="flex w-full items-center justify-center">
-                {selectedProject ? (
+      <Popover
+        isOpen={isPopoverOpen}
+        onOpenChange={setPopoverOpen}
+        placement={isMobile ? 'bottom' : 'right'}
+        radius="sm"
+      >
+        <PopoverTrigger>
+          {state === 'collapsed' && !isMobile ? (
+            <div className="flex w-full items-center justify-center">
+              {selectedProject ? (
+                <ProjectAvatar
+                  project={selectedProject}
+                  className="size-5 cursor-pointer"
+                />
+              ) : // biome-ignore lint/nursery/noNestedTernary: <explanation>
+              user ? (
+                <UserAvatar className="size-5 cursor-pointer" user={user} />
+              ) : null}
+            </div>
+          ) : (
+            <Button
+              variant="flat"
+              radius="sm"
+              aria-expanded={isPopoverOpen}
+              aria-label="Select a team"
+              className={cn('w-full justify-between')}
+            >
+              {selectedProject ? (
+                <>
                   <ProjectAvatar
                     project={selectedProject}
-                    className="size-5 cursor-pointer"
+                    className="h-6 w-6"
                   />
-                ) : // biome-ignore lint/nursery/noNestedTernary: <explanation>
-                user ? (
-                  <UserAvatar className="size-5 cursor-pointer" user={user} />
-                ) : null}
-              </div>
-            ) : (
-              <Button
-                variant="outline"
-                // role="combobox"
-                aria-expanded={isPopoverOpen}
-                aria-label="Select a team"
-                className={cn('h-10 w-full justify-between gap-3 border-0')}
-              >
-                {selectedProject ? (
-                  <>
-                    <ProjectAvatar
-                      project={selectedProject}
-                      className="h-6 w-6"
-                    />
-                    <span className="w-2/3 overflow-hidden text-ellipsis text-nowrap text-left">
-                      {selectedProject.name}
-                    </span>
-                    <Badge className="!mt-0">Plan</Badge>
-                  </>
-                ) : // biome-ignore lint/nursery/noNestedTernary: <explanation>
-                user ? (
-                  <>
-                    <UserAvatar className="h-8 w-8" user={user} />
-                    <span className="w-2/3 overflow-hidden text-ellipsis text-nowrap text-left">
-                      {`${user.name}`}
-                    </span>
-                  </>
-                ) : null}
+                  <span className="w-2/3 overflow-hidden text-ellipsis text-nowrap text-left">
+                    {selectedProject.name}
+                  </span>
+                  <Badge className="!mt-0">Plan</Badge>
+                </>
+              ) : // biome-ignore lint/nursery/noNestedTernary: <explanation>
+              user ? (
+                <>
+                  <UserAvatar className="h-8 w-8" user={user} />
+                  <span className="w-2/3 overflow-hidden text-ellipsis text-nowrap text-left">
+                    {`${user.name}`}
+                  </span>
+                </>
+              ) : null}
 
-                <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
-              </Button>
-            )}
-          </SidebarMenuButton>
+              <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
+            </Button>
+          )}
         </PopoverTrigger>
-        <PopoverContent
-          className="w-72 p-0"
-          align="start"
-          side={isMobile ? 'bottom' : 'right'}
-        >
-          <div className="px-4 py-2">
-            <Input
-              type="search"
-              placeholder="Search projects..."
-              className="h-8"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-
-          {Object.entries(projectsByOrg).map(([orgId, org]) => (
-            <div key={orgId}>
-              <div className="px-4 py-2">
-                <p className="font-medium text-muted-foreground text-sm">
-                  {org.name}
-                </p>
-              </div>
-
-              {org.projects.map((project) => (
-                <Button
-                  key={project.id}
-                  variant="ghost"
-                  className="h-11 w-full justify-start"
-                  asChild
-                >
-                  <Link
-                    href={`/project/${project.slug}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setUserDefaultProject({
-                        json: { projectId: project.id },
+        <PopoverContent className="w-72 px-1 pt-2 pb-0">
+          <Listbox
+            selectionMode="single"
+            defaultSelectedKeys={selectedProject ? [selectedProject.id] : []}
+            topContent={
+              <Input
+                type="search"
+                placeholder="Search projects..."
+                value={searchQuery}
+                size="sm"
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            }
+          >
+            {Object.entries(projectsByOrg).map(([orgId, org]) => (
+              <ListboxSection key={orgId} title={org.name}>
+                <>
+                  {org.projects.map((project) => (
+                    <ListboxItem
+                      key={project.id}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setUserDefaultProject({
+                          json: { projectId: project.id },
+                        });
+                      }}
+                      startContent={
+                        <ProjectAvatar
+                          project={project}
+                          className="mr-2 h-5 w-5 "
+                        />
+                      }
+                    >
+                      {project.name}
+                    </ListboxItem>
+                  ))}
+                  <ListboxItem
+                    key="create-project"
+                    startContent={<PlusCircledIcon className="h-5 w-5" />}
+                    onClick={() => {
+                      closePopover();
+                      modal.show().then(() => {
+                        refetch();
                       });
                     }}
                   >
-                    <ProjectAvatar
-                      project={project}
-                      className="mr-2 h-5 w-5 "
-                    />
-                    <span className="w-full shrink overflow-hidden text-ellipsis text-nowrap text-left">
-                      {project.name}
-                    </span>
-                    {project === selectedProject ? (
-                      <CheckIcon className={cn('ml-2 h-6 w-6')} />
-                    ) : null}
-                  </Link>
-                </Button>
-              ))}
-            </div>
-          ))}
-          <Button
-            variant="ghost"
-            className="h-11 w-full"
-            onClick={() => {
-              closePopover();
-              modal.show().then(() => {
-                refetch();
-              });
-            }}
-          >
-            <PlusCircledIcon className="mr-2 h-6 w-6" />
-            <span className="grow text-left">Create project</span>
-          </Button>
+                    Create project
+                  </ListboxItem>
+                </>
+              </ListboxSection>
+            ))}
+          </Listbox>
         </PopoverContent>
       </Popover>
     </>

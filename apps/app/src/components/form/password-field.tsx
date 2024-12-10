@@ -19,6 +19,7 @@ export const PasswordField = <T extends FieldValues = FieldValues>({
       form={form}
       name={name}
       type="password"
+      aria-label={name}
       endContent={
         <button type="button" onClick={toggleVisibility}>
           {isVisible ? (

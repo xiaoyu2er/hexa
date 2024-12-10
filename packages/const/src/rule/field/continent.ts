@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { zContinentCode, zContinentCodeArray } from '../../continent';
+import { zContinentCode } from '../../continent';
 import type { RuleField } from '../field';
 import type { RuleOperator, RuleOperatorConfigs } from '../operator';
 
@@ -28,9 +28,8 @@ export type LinkRuleContinentOperator = z.infer<
 export const LinkRuleContinentConditionSchema = z.object({
   field: z.literal(LINK_RULE_CONTINENT_FIELD),
   operator: zLinkRuleContinentOperator,
-  value: z.union([zContinentCode, zContinentCodeArray]),
+  value: z.union([zContinentCode, z.array(zContinentCode)]),
 });
-// .superRefine(refineOperator);
 
 export type LinkRuleContinentCondition = z.infer<
   typeof LinkRuleContinentConditionSchema

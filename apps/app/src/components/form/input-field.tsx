@@ -24,6 +24,7 @@ export const InputField = <T extends FieldValues = FieldValues>({
       {...field}
       variant="bordered"
       isInvalid={!!error}
+      aria-label={name}
       errorMessage={
         error?.type &&
         error?.message &&

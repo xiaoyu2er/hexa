@@ -4,13 +4,12 @@ import {
   type SelectOptions,
   isSelectOptionGroup,
 } from '@hexa/const/select-option';
-import { FormField } from '@hexa/ui/form';
 import { Icon } from '@iconify/react';
 
 import { Select, SelectItem, SelectSection } from '@nextui-org/react';
 import type { SelectProps } from '@nextui-org/react';
 import { type ReactNode, useState } from 'react';
-import type { FieldValues } from 'react-hook-form';
+import { type FieldValues, useController } from 'react-hook-form';
 
 type BaseSelectFieldProps = {
   placeholder?: string;
@@ -22,7 +21,9 @@ type BaseSelectFieldProps = {
 
 export type SelectFieldProps<T extends FieldValues> = BaseFieldProps<T> &
   BaseSelectFieldProps &
-  Omit<SelectProps, keyof BaseFieldProps<T> | 'children'>;
+  Omit<SelectProps, keyof BaseFieldProps<T> | 'children'> & {
+    onChange?: (value: string) => void;
+  };
 
 export const SelectField = <T extends FieldValues = FieldValues>({
   form,
@@ -31,10 +32,19 @@ export const SelectField = <T extends FieldValues = FieldValues>({
   selectionMode,
   options,
   selectItemStartContent,
+  onChange,
   showClear,
   hideErrorMessageCodes = ['invalid_type'],
   ...props
 }: SelectFieldProps<T>) => {
+  const {
+    field,
+    fieldState: { error },
+  } = useController({
+    control: form.control,
+    name,
+  });
+
   const [searchTerm, _setSearchTerm] = useState('');
 
   const filterOptions = (options: SelectOptions) => {
@@ -60,84 +70,80 @@ export const SelectField = <T extends FieldValues = FieldValues>({
       .filter(Boolean) as SelectOptions;
   };
 
-  // const watchValue = form.watch(name);
   return (
-    <FormField
-      control={form.control}
-      name={name}
-      render={({ field, fieldState: { error } }) => (
-        <Select
-          endContent={
-            showClear &&
-            (selectionMode === 'multiple'
-              ? field.value.length
-              : field.value) ? (
-              <Icon
-                icon="material-symbols-light:close-small"
-                height="20"
-                width="20"
-                onClick={() => {
-                  field.onChange(selectionMode === 'multiple' ? [] : '');
-                }}
-              />
-            ) : undefined
+    <Select
+      aria-label={field.name}
+      endContent={
+        showClear &&
+        (selectionMode === 'multiple' ? field.value.length : field.value) ? (
+          <Icon
+            icon="material-symbols-light:close-small"
+            height="20"
+            width="20"
+            onClick={() => {
+              field.onChange(selectionMode === 'multiple' ? [] : '');
+            }}
+          />
+        ) : undefined
+      }
+      isInvalid={!!error}
+      selectionMode={selectionMode}
+      errorMessage={
+        error?.type &&
+        error?.message &&
+        !hideErrorMessageCodes?.includes(error.type)
+          ? error.message
+          : undefined
+      }
+      selectedKeys={
+        field.value
+          ? // biome-ignore lint/nursery/noNestedTernary: <explanation>
+            selectionMode === 'multiple'
+            ? new Set(field.value)
+            : new Set([field.value])
+          : new Set()
+      }
+      variant="bordered"
+      onSelectionChange={(value) => {
+        if (selectionMode === 'multiple') {
+          field.onChange([...value]);
+        } else {
+          const val = [...value][0];
+          if (val) {
+            field.onChange(val);
           }
-          isInvalid={!!error}
-          selectionMode={selectionMode}
-          errorMessage={
-            error?.type &&
-            error?.message &&
-            !hideErrorMessageCodes?.includes(error.type)
-              ? error.message
-              : undefined
-          }
-          selectedKeys={
-            field.value
-              ? // biome-ignore lint/nursery/noNestedTernary: <explanation>
-                selectionMode === 'multiple'
-                ? new Set(field.value)
-                : new Set([field.value])
-              : new Set()
-          }
-          variant="bordered"
-          onSelectionChange={(value) => {
-            return field.onChange(
-              selectionMode === 'multiple' ? [...value] : [...value][0]
-            );
-          }}
-          {...props}
-        >
-          {filterOptions(options).map((option) => {
-            if (isSelectOptionGroup(option)) {
-              return (
-                <SelectSection showDivider title={option.label}>
-                  {option.options.map((groupOption) => (
-                    <SelectItem
-                      key={groupOption.value}
-                      startContent={selectItemStartContent?.(groupOption)}
-                    >
-                      {/* {groupOption.icon && (
-                        <groupOption.icon className="mr-2 h-4 w-4" />
-                      )} */}
-                      {groupOption.label}
-                    </SelectItem>
-                  ))}
-                </SelectSection>
-              );
-            }
+        }
+        onChange?.(field.value);
+      }}
+      {...props}
+    >
+      {filterOptions(options).map((option) => {
+        if (isSelectOptionGroup(option)) {
+          return (
+            <SelectSection showDivider title={option.label} key={option.label}>
+              {option.options.map((groupOption) => (
+                <SelectItem
+                  key={groupOption.value}
+                  startContent={selectItemStartContent?.(groupOption)}
+                  aria-label={groupOption.label}
+                >
+                  {groupOption.label}
+                </SelectItem>
+              ))}
+            </SelectSection>
+          );
+        }
 
-            return (
-              <SelectItem
-                key={option.value}
-                startContent={selectItemStartContent?.(option)}
-              >
-                {/* {option.icon && <option.icon className="mr-2 h-4 w-4" />} */}
-                {option.label}
-              </SelectItem>
-            );
-          })}
-        </Select>
-      )}
-    />
+        return (
+          <SelectItem
+            key={option.value}
+            startContent={selectItemStartContent?.(option)}
+            aria-label={option.label}
+          >
+            {option.label}
+          </SelectItem>
+        );
+      })}
+    </Select>
   );
 };

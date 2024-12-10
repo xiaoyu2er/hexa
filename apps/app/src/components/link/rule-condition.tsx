@@ -6,21 +6,21 @@ import { InputField } from '@/components/form/input-field';
 import { RegexField } from '@/components/form/regex-field';
 import { SelectField } from '@/components/form/select-field';
 import { TimeField } from '@/components/form/time-field';
+import { TimeRangeField } from '@/components/form/time-range-field';
 import {
   FIELD_CONFIGS,
   type LinkRuleCondition,
-  RULE_FIELD_SELECT_OPTIONS,
   RULE_OPERATORS,
   type RuleField,
   type RuleOperator,
   type RulesFormType,
+  getRuleFieldSelectOptions,
 } from '@hexa/const/rule';
 import type { SelectOptions } from '@hexa/const/select-option';
 import { Button } from '@hexa/ui/button';
 import { TrashIcon } from '@hexa/ui/icons';
 import { Avatar } from '@nextui-org/react';
 import { usePrevious } from '@uidotdev/usehooks';
-import { useEffect } from 'react';
 import type { FieldArrayWithId, Path, useForm } from 'react-hook-form';
 
 export const RuleCondition = ({
@@ -56,35 +56,41 @@ export const RuleCondition = ({
   const operatorValue = form.watch(operatorKey) as RuleOperator;
   const prevOperatorValue = usePrevious(operatorValue);
   const valueName = `${formKey}.value` as Path<RulesFormType>;
+  const _valueValue = form.watch(valueName) as
+    | string
+    | string[]
+    | number
+    | number[]
+    | undefined;
 
   // update operator and value when field change
-  useEffect(() => {
-    if (prevFieldValue && fieldValue !== prevFieldValue) {
-      onUpdate({
-        field: fieldValue as RuleField,
-        operator: fieldConfig.operators[0]?.operator,
-        value: fieldConfig.operators[0]?.defaultValue,
-      } as LinkRuleCondition);
-    }
-  }, [fieldConfig, prevFieldValue, fieldValue, onUpdate]);
+  // useEffect(() => {
+  if (prevFieldValue && fieldValue !== prevFieldValue) {
+    onUpdate({
+      field: fieldValue as RuleField,
+      operator: fieldConfig.operators[0]?.operator,
+      value: fieldConfig.operators[0]?.defaultValue,
+    } as LinkRuleCondition);
+  }
+  // }, [fieldConfig, prevFieldValue, fieldValue, onUpdate]);
 
   // update value when operator change
-  useEffect(() => {
-    if (prevOperatorValue && operatorValue !== prevOperatorValue) {
-      const operatorConfig = fieldConfig.operators.find(
-        ({ operator }) => operator === operatorValue
-      );
-      if (!operatorConfig) {
-        return;
-      }
-
-      onUpdate({
-        field: fieldValue as RuleField,
-        operator: operatorConfig.operator,
-        value: operatorConfig.defaultValue,
-      } as LinkRuleCondition);
+  // useEffect(() => {
+  if (prevOperatorValue && operatorValue !== prevOperatorValue) {
+    const operatorConfig = fieldConfig.operators.find(
+      ({ operator }) => operator === operatorValue
+    );
+    if (!operatorConfig) {
+      return;
     }
-  }, [prevOperatorValue, operatorValue, onUpdate, fieldValue, fieldConfig]);
+
+    onUpdate({
+      field: fieldValue as RuleField,
+      operator: operatorConfig.operator,
+      value: operatorConfig.defaultValue,
+    } as LinkRuleCondition);
+  }
+  // }, [prevOperatorValue, operatorValue, onUpdate, fieldValue, fieldConfig]);
 
   const { type: valueInputType, props: valueInputProps } =
     fieldConfig.valueType(operatorValue as RuleOperator, conditions);
@@ -124,6 +130,8 @@ export const RuleCondition = ({
         hideErrorMessageCodes={['invalid_string']}
       />
     );
+  } else if (valueInputType === 'TIME_BETWEEN') {
+    valueInput = <TimeRangeField form={form} name={valueName} />;
   } else if (valueInputType === 'SELECT' || valueInputType === 'MULTI_SELECT') {
     valueInput = (
       <SelectField
@@ -158,17 +166,17 @@ export const RuleCondition = ({
     );
   }
   return (
-    <div className="flex items-start space-y-2 sm:grid sm:grid-cols-[180px,180px,1fr,auto] sm:gap-2 sm:space-y-0">
-      <div className="flex gap-2">
-        <div className="flex-1">
-          <SelectField
-            form={form}
-            name={filedKey}
-            options={RULE_FIELD_SELECT_OPTIONS}
-            placeholder="Select field"
-            hideErrorMessageCodes={['invalid_union_discriminator']}
-          />
-        </div>
+    <div className="flex w-full flex-col gap-2 sm:grid sm:grid-cols-[180px,180px,1fr,auto] sm:items-start">
+      <div className="flex items-center gap-2">
+        <SelectField
+          form={form}
+          name={filedKey}
+          options={getRuleFieldSelectOptions(conditions, fieldValue)}
+          placeholder="Select field"
+          hideErrorMessageCodes={['invalid_union_discriminator']}
+          className="min-w-[120px] flex-1"
+        />
+
         <Button
           type="button"
           variant="ghost"
@@ -186,8 +194,19 @@ export const RuleCondition = ({
         options={operatorSelectOptions}
         placeholder="Select operator"
         hideErrorMessageCodes={['invalid_enum_value']}
+        className="min-w-[120px]"
+        onChange={() => {
+          // if (
+          //   (Array.isArray(valueValue) && valueValue.length) ||
+          //   (typeof valueValue === 'string' && valueValue.length) ||
+          //   typeof valueValue === 'number'
+          // ) {
+          //   form.trigger(formKey as Path<RulesFormType>);
+          // }
+        }}
       />
-      <div className="min-w-0">{valueInput}</div>
+
+      <div className="w-full min-w-0">{valueInput}</div>
 
       <Button
         type="button"

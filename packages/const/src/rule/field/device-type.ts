@@ -29,7 +29,7 @@ export type LinkRuleDeviceTypeOperator = z.infer<
 export const LinkRuleDeviceTypeConditionSchema = z.object({
   field: z.literal(LINK_RULE_DEVICE_TYPE_FIELD),
   operator: zLinkRuleDeviceTypeOperator,
-  value: zDeviceTypeCode,
+  value: z.union([zDeviceTypeCode, z.array(zDeviceTypeCode)]),
 });
 
 export type LinkRuleDeviceTypeCondition = z.infer<

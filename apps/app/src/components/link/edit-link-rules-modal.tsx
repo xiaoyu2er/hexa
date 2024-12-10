@@ -21,13 +21,14 @@ import {
   type RulesFormType,
   RulesSchema,
 } from '@hexa/const/rule';
-import { Button } from '@hexa/ui/button';
+
 import { Form } from '@hexa/ui/form';
 import { PlusIcon } from '@hexa/ui/icons';
 import {} from '@hexa/ui/responsive-dialog';
 import { ScrollArea } from '@hexa/ui/scroll-area';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  Button,
   Modal,
   ModalBody,
   ModalContent,
@@ -100,7 +101,7 @@ export const EditLinkRulesModal = NiceModal.create(
             modal.remove();
           }
         }}
-        size="4xl"
+        size="5xl"
       >
         <ModalContent>
           <ModalHeader className="flex flex-col gap-1">
@@ -128,7 +129,9 @@ export const EditLinkRulesModal = NiceModal.create(
                   <div className="sticky top-0 z-10 flex justify-end bg-background pt-2 pb-3">
                     <Button
                       type="button"
-                      variant="outline"
+                      color="primary"
+                      startContent={<PlusIcon className="h-4 w-4" />}
+                      aria-label="Add rule"
                       size="sm"
                       onClick={() =>
                         append({
@@ -143,7 +146,6 @@ export const EditLinkRulesModal = NiceModal.create(
                         })
                       }
                     >
-                      <PlusIcon className="mr-2 h-4 w-4" />
                       Add Rule
                     </Button>
                   </div>
@@ -185,7 +187,9 @@ export const EditLinkRulesModal = NiceModal.create(
               </ModalBody>
 
               <ModalFooter>
-                <Button type="submit">Save Rules</Button>
+                <Button type="submit" color="primary">
+                  Save Rules
+                </Button>
               </ModalFooter>
             </form>
           </Form>

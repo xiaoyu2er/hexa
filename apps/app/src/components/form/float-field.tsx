@@ -26,6 +26,7 @@ export const FloatField = <T extends FieldValues = FieldValues>({
     <Input
       {...field}
       type="number"
+      aria-label={name}
       value={field.value}
       onChange={(e) => {
         const value = Number.parseFloat(e.target.value);

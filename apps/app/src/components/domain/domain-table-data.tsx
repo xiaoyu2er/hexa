@@ -7,9 +7,9 @@ import type { ColumnDef } from '@tanstack/react-table';
 
 export const columns: ColumnDef<QueryDomainType>[] = [
   { id: 'search' },
-  {
-    id: 'domain',
-  },
+  // {
+  //   id: 'domain',
+  // },
   {
     accessorKey: 'status',
   },

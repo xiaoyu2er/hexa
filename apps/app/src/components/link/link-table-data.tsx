@@ -56,15 +56,15 @@ export const columns: ColumnDef<SelectLinkType>[] = [
 export const searchPlaceholder = 'Search links...';
 
 export const filterConfigs: FilterConfig<SelectLinkType>[] = [
-  {
-    columnId: 'domain',
-    label: 'Domain',
-    options: [
-      { label: 'All', value: '' },
-      { label: 'Hexa', value: 'hexa.im' },
-      { label: 'Google', value: 'google.com' },
-    ],
-  },
+  // {
+  //   columnId: 'domain',
+  //   label: 'Domain',
+  //   options: [
+  //     { label: 'All', value: '' },
+  //     { label: 'Hexa', value: 'hexa.im' },
+  //     { label: 'Google', value: 'google.com' },
+  //   ],
+  // },
 ];
 
 export const sortOptions = LinkSortableColumnOptions.map((option) => ({

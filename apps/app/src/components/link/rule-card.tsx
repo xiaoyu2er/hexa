@@ -3,14 +3,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import type { RulesFormType } from '@hexa/const/rule';
 import { Badge } from '@hexa/ui/badge';
-import { Button } from '@hexa/ui/button';
 import { Card } from '@hexa/ui/card';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@hexa/ui/dropdown-menu';
 import {
   ChevronDownIcon,
   ChevronUpIcon,
@@ -19,6 +12,13 @@ import {
   TrashIcon,
 } from '@hexa/ui/icons';
 import { cn } from '@hexa/utils/cn';
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from '@nextui-org/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import type { useForm } from 'react-hook-form';
@@ -68,16 +68,15 @@ export function RuleCard({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Button
+            <button
               type="button"
               {...listeners}
               {...attributes}
-              variant="ghost"
-              size="sm"
+              aria-label="Drag rule"
               className="cursor-grab p-1 hover:bg-muted"
             >
               <GripVerticalIcon className="h-4 w-4" />
-            </Button>
+            </button>
             <h4 className="font-medium"># {ruleIndex + 1}</h4>
             <Badge variant="secondary">
               {field.conditions?.length || 0} conditions
@@ -86,9 +85,11 @@ export function RuleCard({
           <div className="flex items-center gap-1">
             <Button
               type="button"
-              variant="ghost"
+              variant="light"
               size="sm"
-              className="h-auto p-0 hover:bg-transparent"
+              isIconOnly
+              aria-label="Toggle rule details"
+              className="w-8"
               onClick={() => setIsCollapsed(!isCollapsed)}
             >
               {isCollapsed ? (
@@ -97,23 +98,32 @@ export function RuleCard({
                 <ChevronUpIcon className="h-5 w-5" />
               )}
             </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
+            <Dropdown
+              classNames={{
+                content: 'min-w-[140px]',
+              }}
+            >
+              <DropdownTrigger>
+                <Button
+                  variant="light"
+                  size="sm"
+                  className="h-8 w-8 p-0"
+                  isIconOnly
+                  aria-label="Open menu"
+                >
                   <EllipsisVerticalIcon className="h-4 w-4" />
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Actions">
+                <DropdownItem
                   onClick={onRemove}
                   className="text-destructive"
+                  startContent={<TrashIcon className="mr-2 h-4 w-4" />}
                 >
-                  <TrashIcon className="mr-2 h-4 w-4" />
                   Delete rule
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
           </div>
         </div>
 

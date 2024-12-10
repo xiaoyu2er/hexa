@@ -5,9 +5,8 @@ import { type CountryCode, CountrySelectOptions } from '../country';
 import { DeviceTypeSelectOptions } from '../device-type';
 import { IsEUCountrySelectOptions } from '../is-eu-country';
 import { RegionSelectOptionsMap } from '../region';
-import type { RuleValueTypeCode } from '../rule-value-type';
 import { SourceSelectOptions } from '../source';
-import type { RuleField } from './field';
+import type { FieldConfig, RuleField } from './field';
 import {
   LINK_RULE_ACCEPT_LANGUAGE_OPERATOR_CONFIGS,
   LinkRuleAcceptLanguageConditionSchema,
@@ -73,8 +72,6 @@ import {
 import {
   ARRAY_OPERATORS,
   ONE_VALUE_OPERATORS,
-  type RuleOperator,
-  type RuleOperatorConfigs,
   TWO_VALUE_OPERATORS,
 } from './operator';
 // https://developers.cloudflare.com/ruleset-engine/rules-language/operators/#comparison-operators
@@ -83,16 +80,7 @@ import {
 export * from './field';
 export * from './operator';
 
-export const FIELD_CONFIGS: Record<
-  RuleField,
-  {
-    operators: RuleOperatorConfigs;
-    valueType: (
-      operator: RuleOperator,
-      conditions: LinkRuleCondition[]
-    ) => { props?: Record<string, unknown>; type: RuleValueTypeCode };
-  }
-> = {
+export const FIELD_CONFIGS: Record<RuleField, FieldConfig> = {
   COOKIE: {
     operators: LINK_RULE_COOKIE_OPERATOR_CONFIGS,
     valueType: (operator) =>
@@ -102,7 +90,10 @@ export const FIELD_CONFIGS: Record<
   },
   TIME: {
     operators: LINK_RULE_TIME_OPERATOR_CONFIGS,
-    valueType: () => ({ type: 'TIME' }),
+    valueType: (operator) =>
+      operator === 'BETWEEN' || operator === 'NOT_BETWEEN'
+        ? { type: 'TIME_BETWEEN' }
+        : { type: 'TIME' },
   },
   REFERER: {
     operators: LINK_RULE_REFERER_OPERATOR_CONFIGS,
@@ -252,47 +243,6 @@ export const LinkRuleConditionValueSchemaMap: Record<
   TIME: LinkRuleTimeConditionSchema,
   USER_AGENT: LinkRuleUserAgentConditionSchema,
 };
-// export const LinkRuleConditionSchema2 = z
-//   .object({
-//     field: zRuleFieldEnum,
-//     operator: zRuleOperatorEnum,
-//     value: z.union([z.string().min(1), z.array(z.string().min(1)).min(1)]),
-//   })
-//   .superRefine((data, ctx) => {
-//     if (
-//       (data.operator === 'IN' || data.operator === 'NOT_IN') &&
-//       !Array.isArray(data.value)
-//     ) {
-//       ctx.addIssue({
-//         code: z.ZodIssueCode.custom,
-//         message: 'Value must be an array',
-//         path: ['value'],
-//       });
-//     }
-
-//     if (
-//       data.operator !== 'IN' &&
-//       data.operator !== 'NOT_IN' &&
-//       Array.isArray(data.value)
-//     ) {
-//       ctx.addIssue({
-//         code: z.ZodIssueCode.custom,
-//         message: 'Value must not be an array',
-//         path: ['value'],
-//       });
-//     }
-
-//     const schema = LinkRuleConditionValueSchemaMap[data.field];
-
-//     if (schema) {
-//       const result = schema.safeParse(data);
-//       if (result.error) {
-//         for (const issue of result.error.issues) {
-//           ctx.addIssue(issue);
-//         }
-//       }
-//     }
-//   });
 
 export const LinkRuleConditionSchema = z
   .discriminatedUnion('field', [
@@ -315,8 +265,7 @@ export const LinkRuleConditionSchema = z
   ])
   .superRefine((data, ctx) => {
     if (
-      !ARRAY_OPERATORS.includes(data.operator) &&
-      !TWO_VALUE_OPERATORS.includes(data.operator) &&
+      ONE_VALUE_OPERATORS.includes(data.operator) &&
       Array.isArray(data.value)
     ) {
       ctx.addIssue({
@@ -337,10 +286,7 @@ export const LinkRuleConditionSchema = z
       });
     }
 
-    if (
-      ONE_VALUE_OPERATORS.includes(data.operator) &&
-      !Array.isArray(data.value)
-    ) {
+    if (ARRAY_OPERATORS.includes(data.operator) && !Array.isArray(data.value)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'Value must be an array',
