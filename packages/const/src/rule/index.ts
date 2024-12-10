@@ -9,65 +9,68 @@ import type { RuleValueTypeCode } from '../rule-value-type';
 import { SourceSelectOptions } from '../source';
 import type { RuleField } from './field';
 import {
-  LINK_RULE_ACCEPT_LANGUAGE_OPERATORS,
+  LINK_RULE_ACCEPT_LANGUAGE_OPERATOR_CONFIGS,
   LinkRuleAcceptLanguageConditionSchema,
 } from './field/accept-language';
 import {
-  LINK_RULE_CONTINENT_OPERATORS,
+  LINK_RULE_CONTINENT_OPERATOR_CONFIGS,
   LinkRuleContinentConditionSchema,
 } from './field/continent';
 import {
-  LINK_RULE_COOKIE_OPERATORS,
+  LINK_RULE_COOKIE_OPERATOR_CONFIGS,
   LinkRuleCookieConditionSchema,
 } from './field/cookie';
 import {
-  LINK_RULE_COUNTRY_OPERATORS,
+  LINK_RULE_COUNTRY_OPERATOR_CONFIGS,
   LinkRuleCountryConditionSchema,
 } from './field/country';
 import {
-  LINK_RULE_DEVICE_TYPE_OPERATORS,
+  LINK_RULE_DEVICE_TYPE_OPERATOR_CONFIGS,
   LinkRuleDeviceTypeConditionSchema,
 } from './field/device-type';
-import { LINK_RULE_IP_OPERATORS, LinkRuleIpConditionSchema } from './field/ip';
 import {
-  LINK_RULE_IS_EU_COUNTRY_OPERATORS,
+  LINK_RULE_IP_OPERATOR_CONFIGS,
+  LinkRuleIpConditionSchema,
+} from './field/ip';
+import {
+  LINK_RULE_IS_EU_COUNTRY_OPERATOR_CONFIGS,
   LinkRuleIsEuCountryConditionSchema,
 } from './field/is-eu-country';
 import {
-  LINK_RULE_LATITUDE_OPERATORS,
-  LINK_RULE_LONGITUDE_OPERATORS,
+  LINK_RULE_LATITUDE_OPERATOR_CONFIGS,
+  LINK_RULE_LONGITUDE_OPERATOR_CONFIGS,
   LinkRuleLatitudeConditionSchema,
   LinkRuleLongitudeConditionSchema,
 } from './field/latitude-longitude';
 import {
-  LINK_RULE_POSTAL_CODE_OPERATORS,
+  LINK_RULE_POSTAL_CODE_OPERATOR_CONFIGS,
   LinkRulePostalCodeConditionSchema,
 } from './field/postal-code';
 import {
-  LINK_RULE_QUERY_OPERATORS,
+  LINK_RULE_QUERY_OPERATOR_CONFIGS,
   LinkRuleQueryConditionSchema,
 } from './field/query';
 import {
-  LINK_RULE_REFERER_OPERATORS,
+  LINK_RULE_REFERER_OPERATOR_CONFIGS,
   LinkRuleRefererConditionSchema,
 } from './field/referer';
 import {
-  LINK_RULE_REGION_CODE_OPERATORS,
+  LINK_RULE_REGION_CODE_OPERATOR_CONFIGS,
   LinkRuleRegionCodeConditionSchema,
 } from './field/region';
 import {
-  LINK_RULE_SOURCE_OPERATORS,
+  LINK_RULE_SOURCE_OPERATOR_CONFIGS,
   LinkRuleSourceConditionSchema,
 } from './field/source';
 import {
-  LINK_RULE_TIME_OPERATORS,
+  LINK_RULE_TIME_OPERATOR_CONFIGS,
   LinkRuleTimeConditionSchema,
 } from './field/time';
 import {
-  LINK_RULE_USER_AGENT_OPERATORS,
+  LINK_RULE_USER_AGENT_OPERATOR_CONFIGS,
   LinkRuleUserAgentConditionSchema,
 } from './field/user-agent';
-import type { RuleOperator } from './operator';
+import type { RuleOperator, RuleOperatorConfigs } from './operator';
 // https://developers.cloudflare.com/ruleset-engine/rules-language/operators/#comparison-operators
 // https://openflagr.github.io/flagr/api_docs/#operation/createFlag
 
@@ -77,7 +80,7 @@ export * from './operator';
 export const FIELD_CONFIGS: Record<
   RuleField,
   {
-    operators: RuleOperator[];
+    operators: RuleOperatorConfigs;
     valueType: (
       operator: RuleOperator,
       conditions: LinkRuleCondition[]
@@ -85,30 +88,30 @@ export const FIELD_CONFIGS: Record<
   }
 > = {
   COOKIE: {
-    operators: LINK_RULE_COOKIE_OPERATORS,
+    operators: LINK_RULE_COOKIE_OPERATOR_CONFIGS,
     valueType: (operator) =>
       operator === 'REG' || operator === 'NREG'
         ? { type: 'REGEX' }
         : { type: 'INPUT' },
   },
   TIME: {
-    operators: LINK_RULE_TIME_OPERATORS,
+    operators: LINK_RULE_TIME_OPERATOR_CONFIGS,
     valueType: () => ({ type: 'TIME' }),
   },
   REFERER: {
-    operators: LINK_RULE_REFERER_OPERATORS,
+    operators: LINK_RULE_REFERER_OPERATOR_CONFIGS,
     valueType: (operator) =>
       operator === 'REG' || operator === 'NREG'
         ? { type: 'REGEX' }
         : { type: 'INPUT' },
   },
   IP: {
-    operators: LINK_RULE_IP_OPERATORS,
+    operators: LINK_RULE_IP_OPERATOR_CONFIGS,
     valueType: () => ({ type: 'INPUT' }),
   },
 
   SOURCE: {
-    operators: LINK_RULE_SOURCE_OPERATORS,
+    operators: LINK_RULE_SOURCE_OPERATOR_CONFIGS,
     valueType: () => ({
       type: 'SELECT',
       props: { options: SourceSelectOptions },
@@ -116,20 +119,20 @@ export const FIELD_CONFIGS: Record<
   },
 
   ACCEPT_LANGUAGE: {
-    operators: LINK_RULE_ACCEPT_LANGUAGE_OPERATORS,
+    operators: LINK_RULE_ACCEPT_LANGUAGE_OPERATOR_CONFIGS,
     valueType: () => ({ type: 'INPUT' }),
   },
   QUERY: {
-    operators: LINK_RULE_QUERY_OPERATORS,
+    operators: LINK_RULE_QUERY_OPERATOR_CONFIGS,
     valueType: () => ({ type: 'INPUT' }),
   },
   USER_AGENT: {
-    operators: LINK_RULE_USER_AGENT_OPERATORS,
+    operators: LINK_RULE_USER_AGENT_OPERATOR_CONFIGS,
     valueType: () => ({ type: 'INPUT' }),
   },
 
   DEVICE_TYPE: {
-    operators: LINK_RULE_DEVICE_TYPE_OPERATORS,
+    operators: LINK_RULE_DEVICE_TYPE_OPERATOR_CONFIGS,
     valueType: (operator) =>
       operator === 'EQ' || operator === 'NEQ'
         ? { type: 'SELECT', props: { options: DeviceTypeSelectOptions } }
@@ -137,28 +140,28 @@ export const FIELD_CONFIGS: Record<
   },
 
   CONTINENT: {
-    operators: LINK_RULE_CONTINENT_OPERATORS,
+    operators: LINK_RULE_CONTINENT_OPERATOR_CONFIGS,
     valueType: (operator) =>
       operator === 'EQ' || operator === 'NEQ'
         ? { type: 'SELECT', props: { options: ContinentSelectOptions } }
         : { type: 'MULTI_SELECT', props: { options: ContinentSelectOptions } },
   },
   COUNTRY: {
-    operators: LINK_RULE_COUNTRY_OPERATORS,
+    operators: LINK_RULE_COUNTRY_OPERATOR_CONFIGS,
     valueType: (operator) =>
       operator === 'EQ' || operator === 'NEQ'
         ? { type: 'SELECT', props: { options: CountrySelectOptions } }
         : { type: 'MULTI_SELECT', props: { options: CountrySelectOptions } },
   },
   IS_EU_COUNTRY: {
-    operators: LINK_RULE_IS_EU_COUNTRY_OPERATORS,
+    operators: LINK_RULE_IS_EU_COUNTRY_OPERATOR_CONFIGS,
     valueType: () => ({
       type: 'SELECT',
       props: { options: IsEUCountrySelectOptions },
     }),
   },
   REGION_CODE: {
-    operators: LINK_RULE_REGION_CODE_OPERATORS,
+    operators: LINK_RULE_REGION_CODE_OPERATOR_CONFIGS,
     valueType: (operator, conditions) => {
       const country = conditions?.find(
         (c) => c.field === 'COUNTRY' && c.operator === 'EQ'
@@ -191,21 +194,21 @@ export const FIELD_CONFIGS: Record<
     },
   },
   LATITUDE: {
-    operators: LINK_RULE_LATITUDE_OPERATORS,
+    operators: LINK_RULE_LATITUDE_OPERATOR_CONFIGS,
     valueType: () => ({
       type: 'FLOAT',
       props: { min: -90, max: 90, type: 'number' },
     }),
   },
   LONGITUDE: {
-    operators: LINK_RULE_LONGITUDE_OPERATORS,
+    operators: LINK_RULE_LONGITUDE_OPERATOR_CONFIGS,
     valueType: () => ({
       type: 'FLOAT',
       props: { min: -180, max: 180, type: 'number' },
     }),
   },
   POSTAL_CODE: {
-    operators: LINK_RULE_POSTAL_CODE_OPERATORS,
+    operators: LINK_RULE_POSTAL_CODE_OPERATOR_CONFIGS,
     valueType: () => ({ type: 'INPUT' }),
   },
 };

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { RuleField } from '../field';
-import type { RuleOperator } from '../operator';
+import type { RuleOperator, RuleOperatorConfigs } from '../operator';
 
 export const LINK_RULE_IP_FIELD = 'IP' as const satisfies RuleField;
 export const LINK_RULE_IP_OPERATORS = [
@@ -11,6 +11,16 @@ export const LINK_RULE_IP_OPERATORS = [
   'IN',
   'NOT_IN',
 ] as const satisfies RuleOperator[];
+
+export const LINK_RULE_IP_OPERATOR_CONFIGS: RuleOperatorConfigs = [
+  { operator: 'EQ', defaultValue: '' },
+  { operator: 'NEQ', defaultValue: '' },
+  { operator: 'REG', defaultValue: [] },
+  { operator: 'NREG', defaultValue: [] },
+  { operator: 'IN', defaultValue: [] },
+  { operator: 'NOT_IN', defaultValue: [] },
+];
+
 export const zLinkRuleIpOperator = z.enum(LINK_RULE_IP_OPERATORS);
 export type LinkRuleIpOperator = z.infer<typeof zLinkRuleIpOperator>;
 

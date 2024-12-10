@@ -7,6 +7,8 @@ export const RULE_OPERATOR_CODES = [
   'LE',
   'GT',
   'GE',
+  'BETWEEN',
+  'NOT_BETWEEN',
   'CONTAINS',
   'NOT_CONTAINS',
   'REG',
@@ -22,6 +24,8 @@ export const RULE_OPERATORS = {
   LE: 'Less than or equal',
   GT: 'Greater than',
   GE: 'Greater than or equal',
+  BETWEEN: 'Between',
+  NOT_BETWEEN: 'Not between',
   CONTAINS: 'Contains',
   NOT_CONTAINS: 'Not contains',
   REG: 'Matches regex',
@@ -51,6 +55,13 @@ export const zRuleNonArrayOperatorEnum = z.enum(
     message: 'Please select an operator',
   }
 );
+
+export type RuleOperatorConfig = {
+  operator: RuleOperator;
+  defaultValue: unknown;
+};
+
+export type RuleOperatorConfigs = RuleOperatorConfig[];
 
 export const zRuleOperatorEnum = z.enum(RULE_OPERATOR_CODES, {
   message: 'Please select an operator',

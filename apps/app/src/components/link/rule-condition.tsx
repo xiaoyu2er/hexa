@@ -1,5 +1,6 @@
 'use client';
 
+import { FloatField } from '@/components/form/float-field';
 import { InputField } from '@/components/form/input-field';
 import { RegexField } from '@/components/form/regex-field';
 import { SelectField } from '@/components/form/select-field';
@@ -43,7 +44,7 @@ export const RuleCondition = ({
     valueType: () => ({ type: 'INPUT' }),
   };
 
-  const operatorSelectOptions = fieldConfig.operators.map((operator) => {
+  const operatorSelectOptions = fieldConfig.operators.map(({ operator }) => {
     return {
       label: RULE_OPERATORS[operator],
       value: operator,
@@ -54,45 +55,46 @@ export const RuleCondition = ({
   const prevOperatorValue = usePrevious(operatorValue);
   const valueName = `${formKey}.value` as Path<RulesFormType>;
 
+  // update operator and value when field change
   useEffect(() => {
-    if (prevOperatorValue && operatorValue !== prevOperatorValue) {
-      let newDefaultValue: undefined | string | string[] = '';
-      if (
-        operatorValue === 'IN' ||
-        operatorValue === 'NOT_IN' ||
-        operatorValue === 'REG' ||
-        operatorValue === 'NREG'
-      ) {
-        newDefaultValue = [];
+    if (prevFieldValue && fieldValue !== prevFieldValue) {
+      const operatorConfig = fieldConfig.operators.find(
+        ({ operator }) => operator === operatorValue
+      );
+      if (!operatorConfig) {
+        onUpdate({
+          field: fieldValue as RuleField,
+          operator: fieldConfig.operators[0]?.operator,
+          value: fieldConfig.operators[0]?.defaultValue,
+        } as LinkRuleCondition);
+        return;
       }
 
       onUpdate({
         field: fieldValue as RuleField,
-        operator: operatorValue,
-        value: newDefaultValue,
+        operator: operatorConfig.operator,
+        value: operatorConfig.defaultValue,
       } as LinkRuleCondition);
     }
-  }, [prevOperatorValue, operatorValue, onUpdate, fieldValue]);
+  }, [fieldConfig, prevFieldValue, fieldValue, operatorValue, onUpdate]);
 
-  // useEffect(() => {
-  if (prevFieldValue && fieldValue !== prevFieldValue) {
-    let newDefaultValue: undefined | string | string[] = '';
-    if (
-      operatorValue === 'IN' ||
-      operatorValue === 'NOT_IN' ||
-      operatorValue === 'REG' ||
-      operatorValue === 'NREG'
-    ) {
-      newDefaultValue = [];
+  // update value when operator change
+  useEffect(() => {
+    if (prevOperatorValue && operatorValue !== prevOperatorValue) {
+      const operatorConfig = fieldConfig.operators.find(
+        ({ operator }) => operator === operatorValue
+      );
+      if (!operatorConfig) {
+        return;
+      }
+
+      onUpdate({
+        field: fieldValue as RuleField,
+        operator: operatorConfig.operator,
+        value: operatorConfig.defaultValue,
+      } as LinkRuleCondition);
     }
-
-    onUpdate({
-      field: fieldValue as RuleField,
-      operator: '' as unknown as RuleOperator,
-      value: newDefaultValue,
-    } as LinkRuleCondition);
-  }
-  // }, [prevFieldValue, fieldValue, operatorValue, onUpdate]);
+  }, [prevOperatorValue, operatorValue, onUpdate, fieldValue, fieldConfig]);
 
   const { type: valueInputType, props: valueInputProps } =
     fieldConfig.valueType(operatorValue as RuleOperator, conditions);
@@ -107,7 +109,11 @@ export const RuleCondition = ({
     />
   );
 
-  if (valueInputType === 'REGEX') {
+  if (valueInputType === 'FLOAT') {
+    valueInput = (
+      <FloatField form={form} name={valueName} {...valueInputProps} />
+    );
+  } else if (valueInputType === 'REGEX') {
     valueInput = (
       <RegexField form={form} name={valueName} {...valueInputProps} />
     );

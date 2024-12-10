@@ -1,12 +1,17 @@
 import { z } from 'zod';
 import { zSourceCode } from '../../source';
 import type { RuleField } from '../field';
-import type { RuleOperator } from '../operator';
+import type { RuleOperator, RuleOperatorConfigs } from '../operator';
 
 export const LINK_RULE_SOURCE_FIELD = 'SOURCE' as const satisfies RuleField;
 export const LINK_RULE_SOURCE_OPERATORS = [
   'EQ',
 ] as const satisfies RuleOperator[];
+
+export const LINK_RULE_SOURCE_OPERATOR_CONFIGS: RuleOperatorConfigs = [
+  { operator: 'EQ', defaultValue: '' },
+];
+
 export const zLinkRuleSourceOperator = z.enum(LINK_RULE_SOURCE_OPERATORS);
 export type LinkRuleSourceOperator = z.infer<typeof zLinkRuleSourceOperator>;
 

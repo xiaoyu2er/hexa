@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { RuleField } from '../field';
-import type { RuleOperator } from '../operator';
+import type { RuleOperator, RuleOperatorConfigs } from '../operator';
 
 export const LINK_RULE_POSTAL_CODE_FIELD =
   'POSTAL_CODE' as const satisfies RuleField;
@@ -13,6 +13,15 @@ export const LINK_RULE_POSTAL_CODE_OPERATORS = [
   'CONTAINS',
   'NOT_CONTAINS',
 ] as const satisfies RuleOperator[];
+
+export const LINK_RULE_POSTAL_CODE_OPERATOR_CONFIGS: RuleOperatorConfigs = [
+  { operator: 'EQ', defaultValue: '' },
+  { operator: 'NEQ', defaultValue: '' },
+  { operator: 'IN', defaultValue: [] },
+  { operator: 'NOT_IN', defaultValue: [] },
+  { operator: 'CONTAINS', defaultValue: '' },
+  { operator: 'NOT_CONTAINS', defaultValue: '' },
+];
 
 export const zLinkRulePostalCodeOperator = z.enum(
   LINK_RULE_POSTAL_CODE_OPERATORS

@@ -2,13 +2,18 @@
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { RuleCard } from '@/components/link/rule-card';
 import {
+  DndContext,
   type DragEndEvent,
   MouseSensor,
   TouchSensor,
+  closestCenter,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
-import {} from '@dnd-kit/sortable';
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import {
   type LinkRule,
@@ -53,7 +58,7 @@ export const EditLinkRulesModal = NiceModal.create(
     });
     // https://docs.dndkit.com/presets/sortable
 
-    const _sensors = useSensors(
+    const sensors = useSensors(
       useSensor(MouseSensor, {
         // Require the mouse to move by 10 pixels before activating
         activationConstraint: {
@@ -81,6 +86,9 @@ export const EditLinkRulesModal = NiceModal.create(
         swap(oldIndex, newIndex);
       }
     }
+
+    // biome-ignore lint/suspicious/noConsole: <explanation>
+    console.log('~errors', errors);
 
     return (
       <Modal
@@ -140,7 +148,7 @@ export const EditLinkRulesModal = NiceModal.create(
 
                   <ScrollArea className="h-[60vh] pb-2">
                     <div className="space-y-4">
-                      {/* <DndContext
+                      <DndContext
                         sensors={sensors}
                         collisionDetection={closestCenter}
                         onDragEnd={handleDragEnd}
@@ -148,19 +156,19 @@ export const EditLinkRulesModal = NiceModal.create(
                         <SortableContext
                           items={fields}
                           strategy={verticalListSortingStrategy}
-                        > */}
-                      {fields.map((field, ruleIndex) => (
-                        <RuleCard
-                          key={field.id}
-                          id={field.id}
-                          field={field}
-                          ruleIndex={ruleIndex}
-                          form={form}
-                          onRemove={() => remove(ruleIndex)}
-                        />
-                      ))}
-                      {/* </SortableContext>
-                      </DndContext> */}
+                        >
+                          {fields.map((field, ruleIndex) => (
+                            <RuleCard
+                              key={field.id}
+                              id={field.id}
+                              field={field}
+                              ruleIndex={ruleIndex}
+                              form={form}
+                              onRemove={() => remove(ruleIndex)}
+                            />
+                          ))}
+                        </SortableContext>
+                      </DndContext>
 
                       {fields.length === 0 && (
                         <p className="text-center text-muted-foreground text-sm">
