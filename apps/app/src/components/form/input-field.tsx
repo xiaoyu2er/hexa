@@ -1,63 +1,35 @@
 import type { BaseFieldProps } from '@/components/form/form-type';
-import { FormControl, FormLabel, FormMessage } from '@hexa/ui/form';
-import { FormField, FormItem } from '@hexa/ui/form';
-import { Input } from '@hexa/ui/input';
-import { cn } from '@hexa/utils/cn';
-import { get } from 'lodash';
-import type { ComponentProps } from 'react';
+import { FormField } from '@hexa/ui/form';
+import { Input, type InputProps } from '@nextui-org/react';
 import type { FieldValues } from 'react-hook-form';
 
 export type InputFieldProps<T extends FieldValues> = BaseFieldProps<T> &
-  Omit<ComponentProps<'input'>, keyof BaseFieldProps<T>>;
-
-const InputProps = {
-  email: {
-    placeholder: 'email@example.com',
-    autoComplete: 'email',
-    type: 'email',
-  },
-  password: {
-    placeholder: '********',
-    autoComplete: 'current-password',
-  },
-} as const;
+  Omit<InputProps, keyof BaseFieldProps<T>>;
 
 export const InputField = <T extends FieldValues = FieldValues>({
   form,
   name,
-  label,
-  type,
-  formItemClassName,
-  className,
-  hideErrorMessageCodes,
+  hideErrorMessageCodes = ['invalid_type'],
   ...props
 }: InputFieldProps<T>) => {
-  const otherProps = InputProps[type as keyof typeof InputProps] ?? {};
-
   return (
     <FormField
       control={form.control}
       name={name}
-      render={({ field, fieldState }) => (
-        <FormItem className={formItemClassName}>
-          {label && <FormLabel>{label}</FormLabel>}
-          <FormControl>
-            <Input
-              {...field}
-              type={type}
-              {...otherProps}
-              className={cn(
-                get(form.formState.errors, name) ? 'border-destructive' : '',
-                className
-              )}
-              {...props}
-            />
-          </FormControl>
-          {fieldState.error &&
-            !hideErrorMessageCodes?.includes(fieldState.error.type) && (
-              <FormMessage />
-            )}
-        </FormItem>
+      render={({ field, fieldState: { error } }) => (
+        <Input
+          {...field}
+          variant="bordered"
+          isInvalid={!!error}
+          errorMessage={
+            error?.type &&
+            error?.message &&
+            !hideErrorMessageCodes?.includes(error.type)
+              ? error.message
+              : undefined
+          }
+          {...props}
+        />
       )}
     />
   );

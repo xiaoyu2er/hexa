@@ -18,8 +18,8 @@ import { Form } from '@hexa/ui/form';
 import { toast } from '@hexa/ui/sonner';
 
 import { Dialog } from '@/components/dialog';
+import { FormErrorMessage } from '@/components/form/form-error-message';
 import { InsertOrgSchema, type InsertOrgType } from '@/server/schema/org';
-import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';

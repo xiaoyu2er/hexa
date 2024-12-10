@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from '@hexa/ui/card';
 
+import { FormErrorMessage } from '@/components/form/form-error-message';
 import { InputField } from '@/components/form/input-field';
 import { $deleteProject } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
@@ -20,7 +21,6 @@ import {
 } from '@/server/schema/project';
 import { Button } from '@hexa/ui/button';
 import { Form } from '@hexa/ui/form';
-import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import {
   Dialog,
   DialogContent,

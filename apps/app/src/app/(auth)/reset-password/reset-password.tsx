@@ -1,13 +1,14 @@
 'use client';
 
-import { InputField } from '@/components/form/input-field';
+import { AuthLink } from '@/components/auth/auth-link';
+import { FormErrorMessage } from '@/components/form/form-error-message';
+import { PasswordField } from '@/components/form/password-field';
 import { $resetPassword } from '@/lib/api';
 import { setFormError } from '@/lib/form';
 import {
   ResetPasswordSchema,
   type ResetPasswordType,
 } from '@/server/schema/reset-password';
-import { Button } from '@hexa/ui/button';
 import {
   Card,
   CardContent,
@@ -16,10 +17,9 @@ import {
   CardTitle,
 } from '@hexa/ui/card';
 import { Form } from '@hexa/ui/form';
-import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
-import Link from 'next/link';
 import { type FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -37,8 +37,6 @@ export const ResetPassword: FC<ResetParsswordCardProps> = ({
   const form = useForm<ResetPasswordType>({
     resolver: zodResolver(ResetPasswordSchema),
     defaultValues: {
-      password: '',
-      confirmPassword: '',
       token,
     },
   });
@@ -78,27 +76,30 @@ export const ResetPassword: FC<ResetParsswordCardProps> = ({
             method="POST"
             className="space-y-2"
           >
-            <InputField
+            <PasswordField
               form={form}
               name="password"
               label="Password"
-              type="password"
+              placeholder="Enter your password"
             />
-            <InputField
+            <PasswordField
               form={form}
               name="confirmPassword"
               label="Confirm Password"
-              type="password"
+              placeholder="Enter your password again"
             />
             <FormErrorMessage message={errors.root?.message} />
 
-            <Button variant="link" size="sm" className="p-0" asChild>
-              <Link href="/signup">Not signed up? Sign up now.</Link>
-            </Button>
-            <Button className="w-full" type="submit" loading={isSubmitting}>
+            <AuthLink href="/signup">Not signed up? Sign up now.</AuthLink>
+            <Button
+              color="primary"
+              className="w-full"
+              type="submit"
+              isLoading={isSubmitting}
+            >
               Reset Password
             </Button>
-            <Button variant="outline" className="w-full" onClick={onCancel}>
+            <Button variant="ghost" className="w-full" onClick={onCancel}>
               Cancel
             </Button>
           </form>

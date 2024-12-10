@@ -1,11 +1,10 @@
 'use client';
-
-import { Dialog } from '@/components/dialog';
 import { InputField } from '@/components/form/input-field';
 import { SelectField } from '@/components/form/select-field';
 import { $createLink, $updateLink } from '@/lib/api';
 import { setFormError } from '@/lib/form';
 
+import { FormErrorMessage } from '@/components/form/form-error-message';
 import {
   InsertLinkSchema,
   type InsertLinkType,
@@ -19,18 +18,16 @@ import type { LinkRule } from '@hexa/const/rule';
 import { Badge } from '@hexa/ui/badge';
 import { Button } from '@hexa/ui/button';
 import { Form } from '@hexa/ui/form';
-import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { GlobeIcon } from '@hexa/ui/icons';
-import {
-  DialogBody,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@hexa/ui/responsive-dialog';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { QRCodeCanvas } from 'qrcode.react';
 import { useForm } from 'react-hook-form';
@@ -107,18 +104,26 @@ export const LinkModal = NiceModal.create(
     });
 
     return (
-      <Dialog control={modal}>
-        <DialogContent className="max-w-[900px]">
-          <DialogHeader>
-            <DialogTitle>
+      <Modal
+        isOpen={modal.visible}
+        onOpenChange={(v) => {
+          if (!v) {
+            modal.remove();
+          }
+        }}
+        size="4xl"
+      >
+        <ModalContent>
+          <ModalHeader className="flex flex-col gap-1">
+            <p className="font-medium text-lg">
               {mode === 'create' ? 'Create Link' : 'Edit Link'}
-            </DialogTitle>
-            <DialogDescription>
+            </p>
+            <p className="text-muted-foreground text-sm">
               {mode === 'create'
                 ? 'Create a new link'
                 : 'Update the existing link'}
-            </DialogDescription>
-          </DialogHeader>
+            </p>
+          </ModalHeader>
 
           <Form {...form}>
             <form
@@ -131,8 +136,8 @@ export const LinkModal = NiceModal.create(
               )}
               className="space-y-4"
             >
-              <div className="grid grid-cols-1 gap-6 px-4 md:grid-cols-[2fr,1fr] md:px-0">
-                <DialogBody className="space-y-4 p-0">
+              <ModalBody className="space-y-4 ">
+                <div className="grid grid-cols-1 gap-6 px-4 md:grid-cols-[2fr,1fr] md:px-0">
                   <InputField
                     form={form}
                     name="destUrl"
@@ -156,17 +161,17 @@ export const LinkModal = NiceModal.create(
                   <InputField form={form} name="title" label="Link Name" />
                   <InputField form={form} name="desc" label="Description" />
                   <FormErrorMessage message={errors.root?.message} />
-                </DialogBody>
 
-                <div className="md:border-l md:pl-6">
-                  <h4 className="font-medium">QR Code</h4>
-                  <div className="mt-4 flex justify-center rounded-lg border bg-muted/50 p-4">
-                    <QRCodeCanvas value={qrCodeUrl} />
+                  <div className="md:border-l md:pl-6">
+                    <h4 className="font-medium">QR Code</h4>
+                    <div className="mt-4 flex justify-center rounded-lg border bg-muted/50 p-4">
+                      <QRCodeCanvas value={qrCodeUrl} />
+                    </div>
                   </div>
                 </div>
-              </div>
+              </ModalBody>
 
-              <DialogFooter className="flex items-center justify-between sm:justify-between">
+              <ModalFooter className="flex items-center justify-between sm:justify-between">
                 <Button
                   type="button"
                   variant="outline"
@@ -189,11 +194,11 @@ export const LinkModal = NiceModal.create(
                 <Button type="submit" loading={isSubmitting}>
                   {mode === 'create' ? 'Create Link' : 'Update Link'}
                 </Button>
-              </DialogFooter>
+              </ModalFooter>
             </form>
           </Form>
-        </DialogContent>
-      </Dialog>
+        </ModalContent>
+      </Modal>
     );
   }
 );

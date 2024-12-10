@@ -3,11 +3,12 @@ import type { Metadata } from 'next';
 
 import { Toaster } from '@hexa/ui/sonner';
 import { cn } from '@hexa/utils';
-import '@hexa/ui/globals.css';
+import '@hexa/tailwind-config/globals.css';
 import { Provider as NiceModalProvider } from '@/components/modal';
 import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
+import { NextUIProvider } from '@/components/providers/nextui-provider';
 import { QueryClientProvider } from '@/components/providers/query-client-provider';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import { ThemeProvider } from 'next-themes';
@@ -39,7 +40,7 @@ export function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              {children}
+              <NextUIProvider>{children}</NextUIProvider>
               <Toaster richColors position="top-center" />
               <TailwindIndicator />
               <ReactQueryDevtools initialIsOpen={false} />

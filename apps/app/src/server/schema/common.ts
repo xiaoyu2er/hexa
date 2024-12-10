@@ -40,9 +40,8 @@ export type CodeType = z.infer<typeof CodeSchema>;
 
 // Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen.
 export const zNameString = z
-  .string({
-    message: 'Please enter your name',
-  })
+  .string()
+  .min(1, 'Please enter your name')
   .max(32, 'Name must be less than 32 characters');
 
 const RESERVERD_SLUGS = ['new'];

@@ -1,9 +1,10 @@
 'use client';
 
-import { Button } from '@hexa/ui/button';
+import { FormErrorMessage } from '@/components/form/form-error-message';
+import { Button } from '@nextui-org/react';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@hexa/ui/card';
 import { Form } from '@hexa/ui/form';
-import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { type FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -18,7 +19,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
 interface SignupProps {
-  email: string;
+  email?: string;
   password?: string;
   onSuccess: (data: InferApiResponseType<typeof $signupSendPasscode>) => void;
   onCancel?: () => void;
@@ -89,10 +90,11 @@ export const SignupUserInfo: FC<SignupProps> = ({
             <FormErrorMessage message={errors.root?.message} />
             {turnstile}
             <Button
+              color="primary"
               className="w-full"
               type="submit"
-              loading={isSubmitting}
-              disabled={disableNext}
+              isLoading={isSubmitting}
+              isDisabled={disableNext}
             >
               Create account
             </Button>

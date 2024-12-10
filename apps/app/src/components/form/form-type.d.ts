@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react';
 import type {
   FieldValues,
   LiteralUnion,
@@ -10,7 +9,5 @@ import type {
 export type BaseFieldProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
   name: Path<T>;
-  label?: ReactNode;
-  formItemClassName?: string;
   hideErrorMessageCodes?: LiteralUnion<keyof RegisterOptions, string>[];
 };
