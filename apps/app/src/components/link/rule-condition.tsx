@@ -1,7 +1,6 @@
 'use client';
 
 import { InputField } from '@/components/form/input-field';
-import { MultiSelectField } from '@/components/form/multi-select-field';
 import { RegexField } from '@/components/form/regex-field';
 import { SelectField } from '@/components/form/select-field';
 import { TimeField } from '@/components/form/time-field';
@@ -17,6 +16,7 @@ import {
 import type { SelectOptions } from '@hexa/const/select-option';
 import { Button } from '@hexa/ui/button';
 import { TrashIcon } from '@hexa/ui/icons';
+import { Avatar } from '@nextui-org/react';
 import { usePrevious } from '@uidotdev/usehooks';
 import { useEffect } from 'react';
 import type { Path, useForm } from 'react-hook-form';
@@ -116,32 +116,44 @@ export const RuleCondition = ({
       <TimeField
         form={form}
         name={valueName}
-        hideErrorMessageCodes={['too_small']}
+        hideErrorMessageCodes={['invalid_string']}
       />
     );
-  } else if (valueInputType === 'MULTI_SELECT') {
-    valueInput = (
-      <MultiSelectField
-        form={form}
-        name={valueName}
-        {...(valueInputProps as { options: SelectOptions<string> })}
-        placeholder="Select options"
-        hideErrorMessageCodes={['invalid_enum_value', 'too_small']}
-      />
-    );
-  } else if (valueInputType === 'SELECT') {
+  } else if (valueInputType === 'SELECT' || valueInputType === 'MULTI_SELECT') {
     valueInput = (
       <SelectField
         form={form}
         name={valueName}
+        showClear={valueInputType === 'MULTI_SELECT'}
+        selectionMode={
+          valueInputType === 'MULTI_SELECT' ? 'multiple' : 'single'
+        }
         {...(valueInputProps as { options: SelectOptions<string> })}
-        placeholder="Select option"
-        hideErrorMessageCodes={['invalid_enum_value', 'too_small']}
+        placeholder={
+          valueInputType === 'MULTI_SELECT' ? 'Select options' : 'Select option'
+        }
+        isVirtualized
+        selectItemStartContent={
+          fieldValue === 'COUNTRY'
+            ? (option) => (
+                <Avatar
+                  alt={option.label}
+                  className="h-6 w-6"
+                  src={`https://flagcdn.com/${option.value.toLowerCase()}.svg`}
+                />
+              )
+            : undefined
+        }
+        hideErrorMessageCodes={[
+          'invalid_enum_value',
+          'too_small',
+          'invalid_type',
+        ]}
       />
     );
   }
   return (
-    <div className="space-y-2 sm:grid sm:grid-cols-[180px,180px,1fr,auto] sm:gap-2 sm:space-y-0">
+    <div className="flex items-start space-y-2 sm:grid sm:grid-cols-[180px,180px,1fr,auto] sm:gap-2 sm:space-y-0">
       <div className="flex gap-2">
         <div className="flex-1">
           <SelectField

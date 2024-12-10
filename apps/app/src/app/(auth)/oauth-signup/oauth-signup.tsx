@@ -1,6 +1,7 @@
 'use client';
 
 import { TermsPrivacy } from '@/components/auth/terms-privacy';
+import { FormErrorMessage } from '@/components/form/form-error-message';
 import { InputField } from '@/components/form/input-field';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import { $oauthSignup, type InferApiResponseType } from '@/lib/api';
@@ -10,12 +11,10 @@ import {
   type OauthSignupType,
   type SelectOauthAccountType,
 } from '@/server/schema/oauth';
-import {} from '@/server/schema/signup';
-import { Button } from '@hexa/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@hexa/ui/card';
 import { Form } from '@hexa/ui/form';
-import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { type FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -35,7 +34,7 @@ export const OauthSignup: FC<OauthSignupProps> = ({
     defaultValues: {
       oauthAccountId: oauthAccount.id,
       name: oauthAccount.name ?? '',
-      email: oauthAccount.email,
+      email: oauthAccount.email ?? '',
       orgName: null,
     },
   });
@@ -73,7 +72,7 @@ export const OauthSignup: FC<OauthSignupProps> = ({
             method="POST"
             className="space-y-4"
           >
-            <InputField form={form} disabled name="email" label="Email" />
+            <InputField form={form} readOnly name="email" label="Email" />
             <InputField
               form={form}
               name="name"
@@ -89,16 +88,14 @@ export const OauthSignup: FC<OauthSignupProps> = ({
             <FormErrorMessage message={errors.root?.message} />
             {turnstile}
             <Button
+              color="primary"
               className="w-full"
               type="submit"
-              loading={isSubmitting}
-              disabled={disableNext}
+              isLoading={isSubmitting}
+              isDisabled={disableNext}
             >
               Create account
             </Button>
-            {/* <Button variant="outline" className="w-full" onClick={onCancel}>
-              Go back
-            </Button> */}
             <TermsPrivacy />
           </form>
         </Form>

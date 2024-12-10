@@ -1,4 +1,6 @@
 import { REGEX_FLAGS } from '@hexa/const/regex';
+import { Popover, PopoverContent, PopoverTrigger } from '@nextui-org/react';
+
 import { Button } from '@hexa/ui/button';
 import {
   ChevronDown,
@@ -6,14 +8,13 @@ import {
   CircleHelpIcon,
   ExternalLinkIcon,
 } from '@hexa/ui/icons';
-import { Popover, PopoverContent, PopoverTrigger } from '@hexa/ui/popover';
 import { useState } from 'react';
 
 export const RegexExpressionTips = () => {
   const [showCheatsheet, setShowCheatsheet] = useState(false);
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger>
         <Button
           variant="ghost"
           size="sm"
@@ -25,8 +26,8 @@ export const RegexExpressionTips = () => {
           />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80">
-        <div className="space-y-4">
+      <PopoverContent className="w-[400px]">
+        <div className="space-y-4 p-4">
           <div className="space-y-2">
             <h4 className="font-medium leading-none">Regular Expression</h4>
             <p className="text-sm text-muted-foreground">
@@ -118,7 +119,7 @@ export const RegexExpressionTips = () => {
 export const RegexFlagsTips = () => {
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger>
         <Button
           variant="ghost"
           size="sm"
@@ -130,8 +131,8 @@ export const RegexFlagsTips = () => {
           />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80">
-        <div className="space-y-4">
+      <PopoverContent className="w-[380px]">
+        <div className="space-y-4 p-4">
           <div className="space-y-2">
             <h4 className="font-medium leading-none">Regex Flags</h4>
             <p className="text-sm text-muted-foreground">

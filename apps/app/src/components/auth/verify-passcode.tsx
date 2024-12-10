@@ -1,5 +1,7 @@
 'use client';
 
+import { AuthLink } from '@/components/auth/auth-link';
+import { FormErrorMessage } from '@/components/form/form-error-message';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import { RESEND_VERIFY_CODE_TIME_SPAN, VERIFY_CODE_LENGTH } from '@/lib/const';
 import { setFormError } from '@/lib/form';
@@ -10,7 +12,6 @@ import {
   type VerifyPasscodeType,
 } from '@/server/schema/passcode';
 import { TurnstileSchema, type TurnstileType } from '@/server/schema/turnstile';
-import { Button } from '@hexa/ui/button';
 import {
   Card,
   CardContent,
@@ -20,19 +21,19 @@ import {
   CardTitle,
 } from '@hexa/ui/card';
 import { Form, FormControl, FormField, FormItem } from '@hexa/ui/form';
-import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { PencilLine } from '@hexa/ui/icons';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@hexa/ui/input-otp';
 import { cn } from '@hexa/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { type FC, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useCountdown } from 'usehooks-ts';
 
 export interface VerifyPasscodeProps {
-  email: string;
-  passcodeId: string;
+  email?: string;
+  passcodeId?: string;
   showEmail?: boolean;
   onSuccess?: (data: unknown) => void;
   onCancel?: () => void;
@@ -166,7 +167,7 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
                               index={index}
                               className={
                                 errors.code || errors.root
-                                  ? 'border-destructive'
+                                  ? 'border-danger'
                                   : ''
                               }
                             />
@@ -181,14 +182,12 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
 
             <FormErrorMessage message={errors.root?.message} />
             {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
-            <p
-              className={cn(
-                'mt-2 text-center font-medium text-primary text-sm hover:cursor-pointer hover:underline hover:underline-offset-4',
-                {
-                  'opacity-70': count > 0 || showResendChange,
-                  'hover:cursor-not-allowed': count > 0 || showResendChange,
-                }
-              )}
+            <AuthLink
+              href="#"
+              className={cn('block text-center text-sm', {
+                'opacity-70': count > 0 || showResendChange,
+                'hover:cursor-not-allowed': count > 0 || showResendChange,
+              })}
               onClick={resed}
             >
               Didn't receive a code? Resend
@@ -198,16 +197,21 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
                   isRensedPending
                   ? '...'
                   : ''}
-            </p>
+            </AuthLink>
             {showResendChange ? turnstile : null}
           </form>
         </Form>
       </CardContent>
       <CardFooter className={cn('flex gap-2', 'flex-col')}>
-        <Button className="w-full" loading={isSubmitting} type="submit">
+        <Button
+          color="primary"
+          className="w-full"
+          isLoading={isSubmitting}
+          type="submit"
+        >
           Verify
         </Button>
-        <Button variant="outline" className="w-full" onClick={onCancel}>
+        <Button variant="ghost" className="w-full" onClick={onCancel}>
           Cancel
         </Button>
       </CardFooter>

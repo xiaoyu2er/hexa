@@ -1,20 +1,14 @@
 'use client';
-
-import { Dialog } from '@/components/dialog';
+import { FormErrorMessage } from '@/components/form/form-error-message';
 import { RuleCard } from '@/components/link/rule-card';
 import {
-  DndContext,
   type DragEndEvent,
   MouseSensor,
   TouchSensor,
-  closestCenter,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
+import {} from '@dnd-kit/sortable';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import {
   type LinkRule,
@@ -24,18 +18,17 @@ import {
 } from '@hexa/const/rule';
 import { Button } from '@hexa/ui/button';
 import { Form } from '@hexa/ui/form';
-import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { PlusIcon } from '@hexa/ui/icons';
-import {
-  DialogBody,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@hexa/ui/responsive-dialog';
+import {} from '@hexa/ui/responsive-dialog';
 import { ScrollArea } from '@hexa/ui/scroll-area';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from '@nextui-org/react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
 export const EditLinkRulesModal = NiceModal.create(
@@ -60,7 +53,7 @@ export const EditLinkRulesModal = NiceModal.create(
     });
     // https://docs.dndkit.com/presets/sortable
 
-    const sensors = useSensors(
+    const _sensors = useSensors(
       useSensor(MouseSensor, {
         // Require the mouse to move by 10 pixels before activating
         activationConstraint: {
@@ -90,19 +83,27 @@ export const EditLinkRulesModal = NiceModal.create(
     }
 
     return (
-      <Dialog control={modal}>
-        <DialogContent className="max-w-[900px]">
-          <DialogHeader>
-            <DialogTitle>Configure Routing Rules</DialogTitle>
-            <DialogDescription className="space-y-2">
+      <Modal
+        isOpen={modal.visible}
+        onOpenChange={(v) => {
+          if (!v) {
+            modal.remove();
+          }
+        }}
+        size="4xl"
+      >
+        <ModalContent>
+          <ModalHeader className="flex flex-col gap-1">
+            <p className="font-medium text-lg">Configure Routing Rules</p>
+            <p className="text-muted-foreground text-sm">
               <p>Add rules to route visitors to different destinations</p>
               <p className="text-xs">
                 Rules are evaluated in order. The first matching rule will be
                 used. If no rules match, the default destination URL will be
                 used.
               </p>
-            </DialogDescription>
-          </DialogHeader>
+            </p>
+          </ModalHeader>
 
           <Form {...form}>
             <form
@@ -112,7 +113,7 @@ export const EditLinkRulesModal = NiceModal.create(
               })}
               className="space-y-4"
             >
-              <DialogBody>
+              <ModalBody>
                 <div className="space-y-4">
                   <div className="sticky top-0 z-10 flex justify-end bg-background pt-2 pb-3">
                     <Button
@@ -139,7 +140,7 @@ export const EditLinkRulesModal = NiceModal.create(
 
                   <ScrollArea className="h-[60vh] pb-2">
                     <div className="space-y-4">
-                      <DndContext
+                      {/* <DndContext
                         sensors={sensors}
                         collisionDetection={closestCenter}
                         onDragEnd={handleDragEnd}
@@ -147,19 +148,19 @@ export const EditLinkRulesModal = NiceModal.create(
                         <SortableContext
                           items={fields}
                           strategy={verticalListSortingStrategy}
-                        >
-                          {fields.map((field, ruleIndex) => (
-                            <RuleCard
-                              key={field.id}
-                              id={field.id}
-                              field={field}
-                              ruleIndex={ruleIndex}
-                              form={form}
-                              onRemove={() => remove(ruleIndex)}
-                            />
-                          ))}
-                        </SortableContext>
-                      </DndContext>
+                        > */}
+                      {fields.map((field, ruleIndex) => (
+                        <RuleCard
+                          key={field.id}
+                          id={field.id}
+                          field={field}
+                          ruleIndex={ruleIndex}
+                          form={form}
+                          onRemove={() => remove(ruleIndex)}
+                        />
+                      ))}
+                      {/* </SortableContext>
+                      </DndContext> */}
 
                       {fields.length === 0 && (
                         <p className="text-center text-muted-foreground text-sm">
@@ -171,15 +172,15 @@ export const EditLinkRulesModal = NiceModal.create(
                 </div>
 
                 <FormErrorMessage message={errors.root?.message} />
-              </DialogBody>
+              </ModalBody>
 
-              <DialogFooter>
+              <ModalFooter>
                 <Button type="submit">Save Rules</Button>
-              </DialogFooter>
+              </ModalFooter>
             </form>
           </Form>
-        </DialogContent>
-      </Dialog>
+        </ModalContent>
+      </Modal>
     );
   }
 );

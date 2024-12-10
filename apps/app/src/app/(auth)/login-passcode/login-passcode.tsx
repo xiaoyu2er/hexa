@@ -1,5 +1,6 @@
 'use client';
 
+import { FormErrorMessage } from '@/components/form/form-error-message';
 import { InputField } from '@/components/form/input-field';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import {
@@ -11,7 +12,6 @@ import {
   SendPasscodeSchema,
   type SendPasscodeType,
 } from '@/server/schema/passcode';
-import { Button } from '@hexa/ui/button';
 import {
   Card,
   CardContent,
@@ -20,10 +20,10 @@ import {
   CardTitle,
 } from '@hexa/ui/card';
 import { Form } from '@hexa/ui/form';
-import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import Link from 'next/link';
+
+import { Button, Link } from '@nextui-org/react';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -80,23 +80,34 @@ export function LoginPasscode({ onSuccess }: LoginPasscodeProps) {
               )}
               className="space-y-2"
             >
-              <InputField form={form} name="email" label="Email" type="email" />
+              <InputField
+                form={form}
+                name="email"
+                label="Email"
+                type="email"
+                placeholder="Enter your email"
+              />
               <FormErrorMessage message={errors.root?.message} />
               {turnstile}
               <Button
+                color="primary"
                 type="submit"
                 className="!mt-4 w-full"
-                loading={isSubmitting}
-                disabled={disableNext}
+                isLoading={isSubmitting}
+                isDisabled={disableNext}
                 key="login"
               >
                 Login
               </Button>
 
-              <Button variant="ghost" className="w-full" key="cancel" asChild>
-                <Link href="/login" replace>
-                  Back
-                </Link>
+              <Button
+                variant="ghost"
+                className="w-full"
+                key="cancel"
+                as={Link}
+                href="/login"
+              >
+                Back
               </Button>
             </form>
           </Form>
