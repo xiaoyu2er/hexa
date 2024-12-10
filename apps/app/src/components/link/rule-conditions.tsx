@@ -1,8 +1,8 @@
 'use client';
 import { RuleCondition } from '@/components/link/rule-condition';
 import type { LinkRuleCondition, RulesFormType } from '@hexa/const/rule';
-import { Button } from '@hexa/ui/button';
 import { PlusIcon } from '@hexa/ui/icons';
+import { Button } from '@nextui-org/react';
 import React from 'react';
 import { useFieldArray, type useForm } from 'react-hook-form';
 
@@ -71,7 +71,7 @@ export const RuleConditions = ({
         })}
         <Button
           type="button"
-          variant="outline"
+          variant="bordered"
           size="sm"
           onClick={() =>
             append({

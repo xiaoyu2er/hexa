@@ -17,9 +17,8 @@ import {
   getRuleFieldSelectOptions,
 } from '@hexa/const/rule';
 import type { SelectOptions } from '@hexa/const/select-option';
-import { Button } from '@hexa/ui/button';
 import { TrashIcon } from '@hexa/ui/icons';
-import { Avatar } from '@nextui-org/react';
+import { Avatar, Button } from '@nextui-org/react';
 import { usePrevious } from '@uidotdev/usehooks';
 import type { FieldArrayWithId, Path, useForm } from 'react-hook-form';
 
@@ -179,10 +178,12 @@ export const RuleCondition = ({
 
         <Button
           type="button"
-          variant="ghost"
-          size="icon"
+          variant="light"
+          isIconOnly
+          size="sm"
+          aria-label="Remove condition"
           onClick={() => onRemove()}
-          className="h-10 w-10 shrink-0 sm:hidden"
+          className="shrink-0 p-0 sm:hidden"
         >
           <TrashIcon className="h-4 w-4" />
         </Button>
@@ -210,10 +211,12 @@ export const RuleCondition = ({
 
       <Button
         type="button"
-        variant="ghost"
-        size="icon"
+        variant="light"
+        isIconOnly
+        size="sm"
+        aria-label="Remove condition"
         onClick={() => onRemove()}
-        className="hidden h-10 w-10 shrink-0 sm:flex"
+        className="hidden h-10 w-10 shrink-0 p-0 sm:flex"
       >
         <TrashIcon className="h-4 w-4" />
       </Button>

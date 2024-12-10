@@ -114,14 +114,25 @@ const config: Config = {
       layout: {}, // common layout tokens (applied to all themes)
       themes: {
         light: {
-          layout: {}, // light theme layout tokens
-          colors: {}, // light theme colors
+          layout: {
+            borderWidth: {
+              small: '1px',
+              medium: '1px',
+              large: '2px',
+            },
+          },
+          colors: {},
         },
         dark: {
-          layout: {}, // dark theme layout tokens
+          layout: {
+            borderWidth: {
+              small: '1px',
+              medium: '1px',
+              large: '2px',
+            },
+          },
           colors: {}, // dark theme colors
         },
-        // ... custom themes
       },
     }),
   ],
