@@ -1,6 +1,7 @@
 import { z } from 'zod';
-import type { SelectOptions } from '../select-option';
-import type { CheckObjectValuesContainAll } from '../type-check';
+import type { LinkRuleCondition } from '.';
+import type { RuleValueTypeCode } from '../rule-value-type';
+import type { RuleOperator, RuleOperatorConfigs } from './operator';
 
 export const RULE_FIELD_CODES = [
   'TIME',
@@ -49,46 +50,87 @@ export const RULE_FIELDS: Record<RuleField, string> = {
   POSTAL_CODE: 'Postal code',
 } as const;
 
-export const RULE_FIELD_SELECT_OPTIONS = [
-  {
-    label: 'Time',
-    options: [{ label: RULE_FIELDS.TIME, value: 'TIME' }],
-  },
-  {
-    label: 'Location',
-    options: [
-      { label: RULE_FIELDS.CONTINENT, value: 'CONTINENT' },
-      { label: RULE_FIELDS.COUNTRY, value: 'COUNTRY' },
-      { label: RULE_FIELDS.IS_EU_COUNTRY, value: 'IS_EU_COUNTRY' },
-      { label: RULE_FIELDS.REGION_CODE, value: 'REGION_CODE' },
-      { label: RULE_FIELDS.POSTAL_CODE, value: 'POSTAL_CODE' },
-      { label: RULE_FIELDS.LATITUDE, value: 'LATITUDE' },
-      { label: RULE_FIELDS.LONGITUDE, value: 'LONGITUDE' },
-    ],
-  },
-  {
-    label: 'Request headers',
-    options: [
-      { label: RULE_FIELDS.REFERER, value: 'REFERER' },
-      { label: RULE_FIELDS.IP, value: 'IP' },
-      { label: RULE_FIELDS.SOURCE, value: 'SOURCE' },
-      { label: RULE_FIELDS.ACCEPT_LANGUAGE, value: 'ACCEPT_LANGUAGE' },
-      { label: RULE_FIELDS.QUERY, value: 'QUERY' },
-      { label: RULE_FIELDS.COOKIE, value: 'COOKIE' },
-    ],
-  },
-  {
-    label: 'User agent',
-    options: [
-      { label: RULE_FIELDS.USER_AGENT, value: 'USER_AGENT' },
-      { label: RULE_FIELDS.DEVICE_TYPE, value: 'DEVICE_TYPE' },
-    ],
-  },
-] as const satisfies SelectOptions<RuleField>;
+// Fields that can appear multiple times in AND conditions
+const MULTI_USE_FIELDS: RuleField[] = ['QUERY', 'COOKIE'] as const;
 
-// For checking objects with value property (like select options)
-type _ensureNoMissingFields = CheckObjectValuesContainAll<
-  (typeof RULE_FIELD_CODES)[number],
-  typeof RULE_FIELD_SELECT_OPTIONS
->;
-const _checkMissingFields: _ensureNoMissingFields = true;
+export const getRuleFieldSelectOptions = (
+  conditions: LinkRuleCondition[],
+  currentField?: RuleField
+) => {
+  // Track single-use fields that are already in conditions
+  // Excludes multi-use fields (QUERY, COOKIE) and the current field being edited
+  const shouldHideMap = conditions.reduce(
+    (acc, condition) => {
+      if (
+        !MULTI_USE_FIELDS.includes(condition.field) &&
+        condition.field !== currentField
+      ) {
+        acc[condition.field] = true;
+      }
+      return acc;
+    },
+    {} as Record<RuleField, boolean>
+  );
+
+  // Find if there's a country condition with equals operator
+  const hasCountry = conditions.some(
+    (condition) =>
+      condition.field === 'COUNTRY' &&
+      condition.operator === 'EQ' &&
+      condition.value?.length === 2
+  );
+
+  // If no country equals condition exists, mark REGION_CODE as used
+  if (hasCountry && currentField !== 'REGION_CODE') {
+    shouldHideMap.REGION_CODE = false;
+  } else {
+    shouldHideMap.REGION_CODE = true;
+  }
+
+  return [
+    {
+      label: 'Time',
+      options: [{ label: RULE_FIELDS.TIME, value: 'TIME' }].filter(
+        (option) => !shouldHideMap[option.value as RuleField]
+      ),
+    },
+    {
+      label: 'Location',
+      options: [
+        { label: RULE_FIELDS.CONTINENT, value: 'CONTINENT' },
+        { label: RULE_FIELDS.COUNTRY, value: 'COUNTRY' },
+        { label: RULE_FIELDS.IS_EU_COUNTRY, value: 'IS_EU_COUNTRY' },
+        { label: RULE_FIELDS.REGION_CODE, value: 'REGION_CODE' },
+        { label: RULE_FIELDS.POSTAL_CODE, value: 'POSTAL_CODE' },
+        { label: RULE_FIELDS.LATITUDE, value: 'LATITUDE' },
+        { label: RULE_FIELDS.LONGITUDE, value: 'LONGITUDE' },
+      ].filter((option) => !shouldHideMap[option.value as RuleField]),
+    },
+    {
+      label: 'Request headers',
+      options: [
+        { label: RULE_FIELDS.REFERER, value: 'REFERER' },
+        { label: RULE_FIELDS.IP, value: 'IP' },
+        { label: RULE_FIELDS.SOURCE, value: 'SOURCE' },
+        { label: RULE_FIELDS.ACCEPT_LANGUAGE, value: 'ACCEPT_LANGUAGE' },
+        { label: RULE_FIELDS.QUERY, value: 'QUERY' },
+        { label: RULE_FIELDS.COOKIE, value: 'COOKIE' },
+      ].filter((option) => !shouldHideMap[option.value as RuleField]),
+    },
+    {
+      label: 'User agent',
+      options: [
+        { label: RULE_FIELDS.USER_AGENT, value: 'USER_AGENT' },
+        { label: RULE_FIELDS.DEVICE_TYPE, value: 'DEVICE_TYPE' },
+      ].filter((option) => !shouldHideMap[option.value as RuleField]),
+    },
+  ].filter((group) => group.options.length > 0); // Remove groups with no options
+};
+
+export type FieldConfig = {
+  operators: RuleOperatorConfigs;
+  valueType: (
+    operator: RuleOperator,
+    conditions: LinkRuleCondition[]
+  ) => { props?: Record<string, unknown>; type: RuleValueTypeCode };
+};
