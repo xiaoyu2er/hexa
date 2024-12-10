@@ -1,5 +1,6 @@
 'use client';
 
+import { FloatBetweenField } from '@/components/form/float-between-field';
 import { FloatField } from '@/components/form/float-field';
 import { InputField } from '@/components/form/input-field';
 import { RegexField } from '@/components/form/regex-field';
@@ -20,7 +21,7 @@ import { TrashIcon } from '@hexa/ui/icons';
 import { Avatar } from '@nextui-org/react';
 import { usePrevious } from '@uidotdev/usehooks';
 import { useEffect } from 'react';
-import type { Path, useForm } from 'react-hook-form';
+import type { FieldArrayWithId, Path, useForm } from 'react-hook-form';
 
 export const RuleCondition = ({
   formKey,
@@ -28,9 +29,10 @@ export const RuleCondition = ({
   conditions,
   onRemove,
   onUpdate,
+  condition,
 }: {
   conditions: LinkRuleCondition[];
-  condition: LinkRuleCondition;
+  condition: FieldArrayWithId<LinkRuleCondition>;
   formKey: string;
   form: ReturnType<typeof useForm<RulesFormType>>;
   onRemove: () => void;
@@ -58,25 +60,13 @@ export const RuleCondition = ({
   // update operator and value when field change
   useEffect(() => {
     if (prevFieldValue && fieldValue !== prevFieldValue) {
-      const operatorConfig = fieldConfig.operators.find(
-        ({ operator }) => operator === operatorValue
-      );
-      if (!operatorConfig) {
-        onUpdate({
-          field: fieldValue as RuleField,
-          operator: fieldConfig.operators[0]?.operator,
-          value: fieldConfig.operators[0]?.defaultValue,
-        } as LinkRuleCondition);
-        return;
-      }
-
       onUpdate({
         field: fieldValue as RuleField,
-        operator: operatorConfig.operator,
-        value: operatorConfig.defaultValue,
+        operator: fieldConfig.operators[0]?.operator,
+        value: fieldConfig.operators[0]?.defaultValue,
       } as LinkRuleCondition);
     }
-  }, [fieldConfig, prevFieldValue, fieldValue, operatorValue, onUpdate]);
+  }, [fieldConfig, prevFieldValue, fieldValue, onUpdate]);
 
   // update value when operator change
   useEffect(() => {
@@ -109,7 +99,16 @@ export const RuleCondition = ({
     />
   );
 
-  if (valueInputType === 'FLOAT') {
+  if (valueInputType === 'FLOAT_BETWEEN') {
+    valueInput = (
+      <FloatBetweenField
+        key={`${condition.id}-${valueInputType}`}
+        form={form}
+        name={valueName}
+        {...valueInputProps}
+      />
+    );
+  } else if (valueInputType === 'FLOAT') {
     valueInput = (
       <FloatField form={form} name={valueName} {...valueInputProps} />
     );

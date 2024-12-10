@@ -22,6 +22,13 @@ export const RuleConditions = ({
     control: form.control,
     name: `rules.${ruleIndex}.conditions`,
   });
+
+  const onRemove = (index: number) => {
+    remove(index);
+    if (conditions.length === 1) {
+      form.unregister(`rules.${ruleIndex}.conditions`);
+    }
+  };
   return (
     <div className="space-y-3">
       <div className="space-y-1">
@@ -44,8 +51,9 @@ export const RuleConditions = ({
               <RuleCondition
                 formKey={`rules.${ruleIndex}.conditions.${condIndex}`}
                 form={form}
+                key={condition.id}
                 condition={condition}
-                onRemove={() => remove(condIndex)}
+                onRemove={() => onRemove(condIndex)}
                 conditions={conditions}
                 onUpdate={(value) => update(condIndex, value)}
               />

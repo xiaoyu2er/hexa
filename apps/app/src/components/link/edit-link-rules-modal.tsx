@@ -88,6 +88,8 @@ export const EditLinkRulesModal = NiceModal.create(
     }
 
     // biome-ignore lint/suspicious/noConsole: <explanation>
+    console.log('~data', form.getValues());
+    // biome-ignore lint/suspicious/noConsole: <explanation>
     console.log('~errors', errors);
 
     return (

@@ -70,7 +70,13 @@ import {
   LINK_RULE_USER_AGENT_OPERATOR_CONFIGS,
   LinkRuleUserAgentConditionSchema,
 } from './field/user-agent';
-import type { RuleOperator, RuleOperatorConfigs } from './operator';
+import {
+  ARRAY_OPERATORS,
+  ONE_VALUE_OPERATORS,
+  type RuleOperator,
+  type RuleOperatorConfigs,
+  TWO_VALUE_OPERATORS,
+} from './operator';
 // https://developers.cloudflare.com/ruleset-engine/rules-language/operators/#comparison-operators
 // https://openflagr.github.io/flagr/api_docs/#operation/createFlag
 
@@ -195,17 +201,29 @@ export const FIELD_CONFIGS: Record<
   },
   LATITUDE: {
     operators: LINK_RULE_LATITUDE_OPERATOR_CONFIGS,
-    valueType: () => ({
-      type: 'FLOAT',
-      props: { min: -90, max: 90, type: 'number' },
-    }),
+    valueType: (operator) =>
+      operator === 'BETWEEN' || operator === 'NOT_BETWEEN'
+        ? {
+            type: 'FLOAT_BETWEEN',
+            props: { min: -90, max: 90, type: 'number' },
+          }
+        : {
+            type: 'FLOAT',
+            props: { min: -90, max: 90, type: 'number' },
+          },
   },
   LONGITUDE: {
     operators: LINK_RULE_LONGITUDE_OPERATOR_CONFIGS,
-    valueType: () => ({
-      type: 'FLOAT',
-      props: { min: -180, max: 180, type: 'number' },
-    }),
+    valueType: (operator) =>
+      operator === 'BETWEEN' || operator === 'NOT_BETWEEN'
+        ? {
+            type: 'FLOAT_BETWEEN',
+            props: { min: -180, max: 180, type: 'number' },
+          }
+        : {
+            type: 'FLOAT',
+            props: { min: -180, max: 180, type: 'number' },
+          },
   },
   POSTAL_CODE: {
     operators: LINK_RULE_POSTAL_CODE_OPERATOR_CONFIGS,
@@ -297,29 +315,35 @@ export const LinkRuleConditionSchema = z
   ])
   .superRefine((data, ctx) => {
     if (
-      (data.operator === 'IN' ||
-        data.operator === 'NOT_IN' ||
-        data.operator === 'REG' ||
-        data.operator === 'NREG') &&
-      !Array.isArray(data.value)
-    ) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Value must be an array',
-        path: ['value'],
-      });
-    }
-
-    if (
-      data.operator !== 'IN' &&
-      data.operator !== 'NOT_IN' &&
-      data.operator !== 'REG' &&
-      data.operator !== 'NREG' &&
+      !ARRAY_OPERATORS.includes(data.operator) &&
+      !TWO_VALUE_OPERATORS.includes(data.operator) &&
       Array.isArray(data.value)
     ) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'Value must not be an array',
+        path: ['value'],
+      });
+    }
+
+    if (
+      TWO_VALUE_OPERATORS.includes(data.operator) &&
+      (!Array.isArray(data.value) || data.value.length !== 2)
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Value must be an array with 2 elements',
+        path: ['value'],
+      });
+    }
+
+    if (
+      ONE_VALUE_OPERATORS.includes(data.operator) &&
+      !Array.isArray(data.value)
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Value must be an array',
         path: ['value'],
       });
     }

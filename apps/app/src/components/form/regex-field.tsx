@@ -12,10 +12,7 @@ export type RegexFieldProps<T extends FieldValues> = BaseFieldProps<T> &
 export const RegexField = <T extends FieldValues = FieldValues>({
   form,
   name,
-  type,
-  className,
   hideErrorMessageCodes,
-  ...props
 }: RegexFieldProps<T>) => {
   return (
     <div className="flex gap-2">
@@ -24,6 +21,7 @@ export const RegexField = <T extends FieldValues = FieldValues>({
           form={form}
           name={`${name}.0` as Path<T>}
           placeholder="Regex expression"
+          hideErrorMessageCodes={hideErrorMessageCodes}
         />
         <RegexExpressionTips />
       </div>
@@ -33,6 +31,7 @@ export const RegexField = <T extends FieldValues = FieldValues>({
           form={form}
           name={`${name}.1` as Path<T>}
           placeholder="Flags"
+          hideErrorMessageCodes={hideErrorMessageCodes}
         />
         <RegexFlagsTips />
       </div>
