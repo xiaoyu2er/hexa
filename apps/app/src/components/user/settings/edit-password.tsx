@@ -1,4 +1,5 @@
 'use client';
+import { FormErrorMessage } from '@/components/form/form-error-message';
 import { InputField } from '@/components/form/input-field';
 import { useUser } from '@/hooks/use-user';
 import { $updateUserPassword } from '@/lib/api';
@@ -16,7 +17,6 @@ import {
   CardTitle,
 } from '@hexa/ui/card';
 import { Form, useForm } from '@hexa/ui/form';
-import { FormErrorMessage } from '@hexa/ui/form-error-message';
 import { Input } from '@hexa/ui/input';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';

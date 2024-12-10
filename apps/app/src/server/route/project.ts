@@ -1,6 +1,7 @@
 import { generateId } from '@/lib/crypto';
 import { ApiError } from '@/lib/error/error';
 import { isStored, storage } from '@/lib/storage';
+import authOrg from '@/server/middleware/org';
 import authProject from '@/server/middleware/project';
 import type { Context } from '@/server/route/route-types';
 import {
@@ -36,7 +37,7 @@ const project = new Hono<Context>()
   .post(
     '/project/create-project',
     zValidator('json', InsertProjectSchema),
-    authProject('json', ['OWNER', 'ADMIN']),
+    authOrg('json', ['OWNER', 'ADMIN']),
     async (c) => {
       const { db } = c.var;
       const { name, orgId, desc, slug } = c.req.valid('json');

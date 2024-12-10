@@ -10,9 +10,9 @@ import { SignupEmailPassword } from './signup-email-password';
 import { SignupUserInfo } from './signup-user-info';
 
 export const SignupPage: FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passcodeId, setPasscodeId] = useState('');
+  const [email, setEmail] = useState<string | undefined>();
+  const [password, setPassword] = useState<string | undefined>();
+  const [passcodeId, setPasscodeId] = useState<string | undefined>();
   const router = useRouter();
   const [currentStep, { goToNextStep, reset }] = useStep(3);
 

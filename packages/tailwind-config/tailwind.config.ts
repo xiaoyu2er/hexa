@@ -1,11 +1,11 @@
-import forms from '@tailwindcss/forms';
 import typography from '@tailwindcss/typography';
 // @ts-ignore - this package is not typed
 import scrollbarHide from 'tailwind-scrollbar-hide';
-import type { Config } from 'tailwindcss';
 import animate from 'tailwindcss-animate';
 import radix from 'tailwindcss-radix';
 
+import { nextui } from '@nextui-org/react';
+import type { Config } from 'tailwindcss';
 const config: Config = {
   content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   darkMode: ['class'],
@@ -99,7 +99,32 @@ const config: Config = {
       },
     },
   },
-  plugins: [forms, typography, scrollbarHide, radix, animate],
+  plugins: [
+    // forms,
+    typography,
+    scrollbarHide,
+    radix,
+    animate,
+    // //
+    nextui({
+      prefix: 'nextui', // prefix for themes variables
+      addCommonColors: false, // override common colors (e.g. "blue", "green", "pink").
+      defaultTheme: 'light', // default theme from the themes object
+      defaultExtendTheme: 'light', // default theme to extend on custom themes
+      layout: {}, // common layout tokens (applied to all themes)
+      themes: {
+        light: {
+          layout: {}, // light theme layout tokens
+          colors: {}, // light theme colors
+        },
+        dark: {
+          layout: {}, // dark theme layout tokens
+          colors: {}, // dark theme colors
+        },
+        // ... custom themes
+      },
+    }),
+  ],
 };
 
 export default config;

@@ -1,58 +1,55 @@
 import type { BaseFieldProps } from '@/components/form/form-type';
-import {
-  DateTimePicker,
-  type DateTimePickerProps,
-} from '@hexa/ui/date-time-picker';
-import { FormControl, FormLabel, FormMessage } from '@hexa/ui/form';
-import { FormField, FormItem } from '@hexa/ui/form';
-import { cn } from '@hexa/utils/cn';
-import { get } from 'lodash';
+
+import { FormField } from '@hexa/ui/form';
+import { DatePicker, type DatePickerProps } from '@nextui-org/react';
+import {} from 'lodash';
 import type { FieldValues } from 'react-hook-form';
+
 export type TimeFieldProps<T extends FieldValues> = BaseFieldProps<T> &
-  DateTimePickerProps;
+  Omit<DatePickerProps, keyof BaseFieldProps<T>>;
+import {
+  type ZonedDateTime,
+  fromDate,
+  getLocalTimeZone,
+} from '@internationalized/date';
 
 export const TimeField = <T extends FieldValues = FieldValues>({
   form,
   name,
-  label,
-  formItemClassName,
   className,
-  hideErrorMessageCodes,
+  hideErrorMessageCodes = ['invalid_date'],
   ...props
 }: TimeFieldProps<T>) => {
   return (
     <FormField
       control={form.control}
       name={name}
-      render={({ field, fieldState }) => {
-        let value: Date | undefined = new Date(field.value);
-        if (value.toString() === 'Invalid Date') {
-          value = undefined;
-        }
-
+      render={({ field, fieldState: { error } }) => {
+        const fieldValue: string | undefined = field.value;
         return (
-          <FormItem className={formItemClassName}>
-            {label && <FormLabel>{label}</FormLabel>}
-            <FormControl>
-              <DateTimePicker
-                {...field}
-                value={value}
-                onChange={(value) => {
-                  const dateStr = new Date(value || '').toISOString();
-                  field.onChange(dateStr);
-                }}
-                className={cn(
-                  get(form.formState.errors, name) ? 'border-destructive' : '',
-                  className
-                )}
-                {...props}
-              />
-            </FormControl>
-            {fieldState.error &&
-              !hideErrorMessageCodes?.includes(fieldState.error.type) && (
-                <FormMessage />
-              )}
-          </FormItem>
+          <DatePicker
+            hideTimeZone
+            showMonthAndYearPickers
+            isInvalid={!!error}
+            errorMessage={
+              error?.type &&
+              error?.message &&
+              !hideErrorMessageCodes?.includes(error.type)
+                ? error.message
+                : undefined
+            }
+            onChange={(value: ZonedDateTime) => {
+              field.onChange(value.toDate().toISOString());
+            }}
+            // @ts-ignore
+            value={
+              fieldValue
+                ? fromDate(new Date(fieldValue), getLocalTimeZone())
+                : null
+            }
+            variant="bordered"
+            {...props}
+          />
         );
       }}
     />

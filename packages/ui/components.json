@@ -11,9 +11,9 @@
   "style": "new-york",
   "tailwind": {
     "config": "tailwind.config.ts",
-    "css": "src/globals.css",
+    "css": "../../tailwind-config/globals.css",
     "baseColor": "slate",
-    "cssVariables": true,
+    "cssVariables": false,
     "prefix": ""
   },
   "tsx": true
