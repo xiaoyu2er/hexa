@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { zContinentCode, zContinentCodeArray } from '../../continent';
 import type { RuleField } from '../field';
-import type { RuleOperator } from '../operator';
+import type { RuleOperator, RuleOperatorConfigs } from '../operator';
 
 export const LINK_RULE_CONTINENT_FIELD =
   'CONTINENT' as const satisfies RuleField;
@@ -12,6 +12,13 @@ export const LINK_RULE_CONTINENT_OPERATORS = [
   'EQ',
   'NEQ',
 ] as const satisfies RuleOperator[];
+
+export const LINK_RULE_CONTINENT_OPERATOR_CONFIGS: RuleOperatorConfigs = [
+  { operator: 'IN', defaultValue: [] },
+  { operator: 'NOT_IN', defaultValue: [] },
+  { operator: 'EQ', defaultValue: '' },
+  { operator: 'NEQ', defaultValue: '' },
+];
 
 export const zLinkRuleContinentOperator = z.enum(LINK_RULE_CONTINENT_OPERATORS);
 export type LinkRuleContinentOperator = z.infer<
