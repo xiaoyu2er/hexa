@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { zRegex } from '../../regex';
 import type { FieldConfig, RuleField } from '../field';
-import type { RuleOperator, RuleOperatorConfigs } from '../operator';
+import type { RuleOperator } from '../operator';
 
 export const LINK_RULE_REFERER_FIELD = 'REFERER' as const satisfies RuleField;
 export const LINK_RULE_REFERER_OPERATORS = [
@@ -9,19 +9,19 @@ export const LINK_RULE_REFERER_OPERATORS = [
   'NOT_CONTAINS',
   'REG',
   'NREG',
+  'IN',
+  'NOT_IN',
 ] as const satisfies RuleOperator[];
 
-export const LINK_RULE_REFERER_OPERATOR_CONFIGS: RuleOperatorConfigs = [
-  { operator: 'CONTAINS', defaultValue: '' },
-  { operator: 'NOT_CONTAINS', defaultValue: '' },
-  { operator: 'REG', defaultValue: [] },
-  { operator: 'NREG', defaultValue: [] },
-  { operator: 'IN', defaultValue: [''] },
-  { operator: 'NOT_IN', defaultValue: [''] },
-];
-
 export const LINK_RULE_REFERER_FIELD_CONFIG: FieldConfig = {
-  operators: LINK_RULE_REFERER_OPERATOR_CONFIGS,
+  operators: [
+    { operator: 'CONTAINS', defaultValue: '' },
+    { operator: 'NOT_CONTAINS', defaultValue: '' },
+    { operator: 'REG', defaultValue: [] },
+    { operator: 'NREG', defaultValue: [] },
+    { operator: 'IN', defaultValue: [''] },
+    { operator: 'NOT_IN', defaultValue: [''] },
+  ],
   valueType: (operator) => {
     if (operator === 'REG' || operator === 'NREG') {
       return { type: 'REGEX' };

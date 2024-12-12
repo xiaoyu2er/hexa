@@ -127,10 +127,16 @@ export const getRuleFieldSelectOptions = (
   ].filter((group) => group.options.length > 0); // Remove groups with no options
 };
 
+export type ValueType = {
+  props?: Record<string, unknown>;
+  type: RuleValueTypeCode;
+};
+
 export type FieldConfig = {
+  subField?: ValueType;
   operators: RuleOperatorConfigs;
   valueType: (
     operator: RuleOperator,
     conditions: LinkRuleCondition[]
-  ) => { props?: Record<string, unknown>; type: RuleValueTypeCode };
+  ) => ValueType;
 };
