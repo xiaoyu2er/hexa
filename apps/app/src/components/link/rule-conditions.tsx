@@ -25,9 +25,6 @@ export const RuleConditions = ({
 
   const onRemove = (index: number) => {
     remove(index);
-    if (conditions.length === 1) {
-      form.unregister(`rules.${ruleIndex}.conditions`);
-    }
   };
   return (
     <div className="space-y-3">

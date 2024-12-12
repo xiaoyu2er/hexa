@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { zCountryCode } from '../../country';
-import type { RuleField } from '../field';
-import type { RuleOperator, RuleOperatorConfigs } from '../operator';
+import { CountrySelectOptions, zCountryCode } from '../../country';
+import type { FieldConfig, RuleField } from '../field';
+import type { RuleOperator } from '../operator';
 
 export const LINK_RULE_COUNTRY_FIELD = 'COUNTRY' as const satisfies RuleField;
 
@@ -12,12 +12,18 @@ export const LINK_RULE_COUNTRY_OPERATORS = [
   'NEQ',
 ] as const satisfies RuleOperator[];
 
-export const LINK_RULE_COUNTRY_OPERATOR_CONFIGS: RuleOperatorConfigs = [
-  { operator: 'IN', defaultValue: [] },
-  { operator: 'NOT_IN', defaultValue: [] },
-  { operator: 'EQ', defaultValue: '' },
-  { operator: 'NEQ', defaultValue: '' },
-];
+export const LINK_RULE_COUNTRY_FIELD_CONFIG: FieldConfig = {
+  operators: [
+    { operator: 'IN', defaultValue: [] },
+    { operator: 'NOT_IN', defaultValue: [] },
+    { operator: 'EQ', defaultValue: '' },
+    { operator: 'NEQ', defaultValue: '' },
+  ],
+  valueType: (operator) =>
+    operator === 'EQ' || operator === 'NEQ'
+      ? { type: 'SELECT', props: { options: CountrySelectOptions } }
+      : { type: 'MULTI_SELECT', props: { options: CountrySelectOptions } },
+};
 
 export const zLinkRuleCountryOperator = z.enum(LINK_RULE_COUNTRY_OPERATORS);
 export type LinkRuleCountryOperator = z.infer<typeof zLinkRuleCountryOperator>;

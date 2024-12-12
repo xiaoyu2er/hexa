@@ -1,72 +1,67 @@
 import type { Simplify } from 'type-fest';
 import { z } from 'zod';
-import { ContinentSelectOptions } from '../continent';
-import { type CountryCode, CountrySelectOptions } from '../country';
-import { DeviceTypeSelectOptions } from '../device-type';
-import { IsEUCountrySelectOptions } from '../is-eu-country';
-import { RegionSelectOptionsMap } from '../region';
-import { SourceSelectOptions } from '../source';
+import {} from '../country';
 import type { FieldConfig, RuleField } from './field';
 import {
-  LINK_RULE_ACCEPT_LANGUAGE_OPERATOR_CONFIGS,
+  LINK_RULE_ACCEPT_LANGUAGE_FIELD_CONFIG,
   LinkRuleAcceptLanguageConditionSchema,
 } from './field/accept-language';
 import {
-  LINK_RULE_CONTINENT_OPERATOR_CONFIGS,
+  LINK_RULE_CONTINENT_FIELD_CONFIG,
   LinkRuleContinentConditionSchema,
 } from './field/continent';
 import {
-  LINK_RULE_COOKIE_OPERATOR_CONFIGS,
+  LINK_RULE_COOKIE_FIELD_CONFIG,
   LinkRuleCookieConditionSchema,
 } from './field/cookie';
 import {
-  LINK_RULE_COUNTRY_OPERATOR_CONFIGS,
+  LINK_RULE_COUNTRY_FIELD_CONFIG,
   LinkRuleCountryConditionSchema,
 } from './field/country';
 import {
-  LINK_RULE_DEVICE_TYPE_OPERATOR_CONFIGS,
+  LINK_RULE_DEVICE_TYPE_FIELD_CONFIG,
   LinkRuleDeviceTypeConditionSchema,
 } from './field/device-type';
 import {
-  LINK_RULE_IP_OPERATOR_CONFIGS,
+  LINK_RULE_IP_FIELD_CONFIG,
   LinkRuleIpConditionSchema,
 } from './field/ip';
 import {
-  LINK_RULE_IS_EU_COUNTRY_OPERATOR_CONFIGS,
+  LINK_RULE_IS_EU_COUNTRY_FIELD_CONFIG,
   LinkRuleIsEuCountryConditionSchema,
 } from './field/is-eu-country';
 import {
-  LINK_RULE_LATITUDE_OPERATOR_CONFIGS,
-  LINK_RULE_LONGITUDE_OPERATOR_CONFIGS,
+  LINK_RULE_LATITUDE_FIELD_CONFIG,
+  LINK_RULE_LONGITUDE_FIELD_CONFIG,
   LinkRuleLatitudeConditionSchema,
   LinkRuleLongitudeConditionSchema,
 } from './field/latitude-longitude';
 import {
-  LINK_RULE_POSTAL_CODE_OPERATOR_CONFIGS,
+  LINK_RULE_POSTAL_CODE_FIELD_CONFIG,
   LinkRulePostalCodeConditionSchema,
 } from './field/postal-code';
 import {
-  LINK_RULE_QUERY_OPERATOR_CONFIGS,
+  LINK_RULE_QUERY_FIELD_CONFIG,
   LinkRuleQueryConditionSchema,
 } from './field/query';
 import {
-  LINK_RULE_REFERER_OPERATOR_CONFIGS,
+  LINK_RULE_REFERER_FIELD_CONFIG,
   LinkRuleRefererConditionSchema,
 } from './field/referer';
 import {
-  LINK_RULE_REGION_CODE_OPERATOR_CONFIGS,
+  LINK_RULE_REGION_CODE_FIELD_CONFIG,
   LinkRuleRegionCodeConditionSchema,
 } from './field/region';
 import {
-  LINK_RULE_SOURCE_OPERATOR_CONFIGS,
+  LINK_RULE_SOURCE_FIELD_CONFIG,
   LinkRuleSourceConditionSchema,
 } from './field/source';
 import {
-  LINK_RULE_TIME_OPERATOR_CONFIGS,
+  LINK_RULE_TIME_FIELD_CONFIG,
   LinkRuleTimeConditionSchema,
 } from './field/time';
 import {
-  LINK_RULE_USER_AGENT_OPERATOR_CONFIGS,
+  LINK_RULE_USER_AGENT_FIELD_CONFIG,
   LinkRuleUserAgentConditionSchema,
 } from './field/user-agent';
 import {
@@ -81,145 +76,22 @@ export * from './field';
 export * from './operator';
 
 export const FIELD_CONFIGS: Record<RuleField, FieldConfig> = {
-  COOKIE: {
-    operators: LINK_RULE_COOKIE_OPERATOR_CONFIGS,
-    valueType: (operator) =>
-      operator === 'REG' || operator === 'NREG'
-        ? { type: 'REGEX' }
-        : { type: 'INPUT' },
-  },
-  TIME: {
-    operators: LINK_RULE_TIME_OPERATOR_CONFIGS,
-    valueType: (operator) =>
-      operator === 'BETWEEN' || operator === 'NOT_BETWEEN'
-        ? { type: 'TIME_BETWEEN' }
-        : { type: 'TIME' },
-  },
-  REFERER: {
-    operators: LINK_RULE_REFERER_OPERATOR_CONFIGS,
-    valueType: (operator) =>
-      operator === 'REG' || operator === 'NREG'
-        ? { type: 'REGEX' }
-        : { type: 'INPUT' },
-  },
-  IP: {
-    operators: LINK_RULE_IP_OPERATOR_CONFIGS,
-    valueType: () => ({ type: 'INPUT' }),
-  },
-
-  SOURCE: {
-    operators: LINK_RULE_SOURCE_OPERATOR_CONFIGS,
-    valueType: () => ({
-      type: 'SELECT',
-      props: { options: SourceSelectOptions },
-    }),
-  },
-
-  ACCEPT_LANGUAGE: {
-    operators: LINK_RULE_ACCEPT_LANGUAGE_OPERATOR_CONFIGS,
-    valueType: () => ({ type: 'INPUT' }),
-  },
-  QUERY: {
-    operators: LINK_RULE_QUERY_OPERATOR_CONFIGS,
-    valueType: () => ({ type: 'INPUT' }),
-  },
-  USER_AGENT: {
-    operators: LINK_RULE_USER_AGENT_OPERATOR_CONFIGS,
-    valueType: () => ({ type: 'INPUT' }),
-  },
-
-  DEVICE_TYPE: {
-    operators: LINK_RULE_DEVICE_TYPE_OPERATOR_CONFIGS,
-    valueType: (operator) =>
-      operator === 'EQ' || operator === 'NEQ'
-        ? { type: 'SELECT', props: { options: DeviceTypeSelectOptions } }
-        : { type: 'MULTI_SELECT', props: { options: DeviceTypeSelectOptions } },
-  },
-
-  CONTINENT: {
-    operators: LINK_RULE_CONTINENT_OPERATOR_CONFIGS,
-    valueType: (operator) =>
-      operator === 'EQ' || operator === 'NEQ'
-        ? { type: 'SELECT', props: { options: ContinentSelectOptions } }
-        : { type: 'MULTI_SELECT', props: { options: ContinentSelectOptions } },
-  },
-  COUNTRY: {
-    operators: LINK_RULE_COUNTRY_OPERATOR_CONFIGS,
-    valueType: (operator) =>
-      operator === 'EQ' || operator === 'NEQ'
-        ? { type: 'SELECT', props: { options: CountrySelectOptions } }
-        : { type: 'MULTI_SELECT', props: { options: CountrySelectOptions } },
-  },
-  IS_EU_COUNTRY: {
-    operators: LINK_RULE_IS_EU_COUNTRY_OPERATOR_CONFIGS,
-    valueType: () => ({
-      type: 'SELECT',
-      props: { options: IsEUCountrySelectOptions },
-    }),
-  },
-  REGION_CODE: {
-    operators: LINK_RULE_REGION_CODE_OPERATOR_CONFIGS,
-    valueType: (operator, conditions) => {
-      const country = conditions?.find(
-        (c) => c.field === 'COUNTRY' && c.operator === 'EQ'
-      );
-      if (
-        country?.value &&
-        (country.value as CountryCode) in RegionSelectOptionsMap
-      ) {
-        return operator === 'EQ' || operator === 'NEQ'
-          ? {
-              type: 'SELECT',
-              props: {
-                options:
-                  RegionSelectOptionsMap[
-                    country.value as keyof typeof RegionSelectOptionsMap
-                  ],
-              },
-            }
-          : {
-              type: 'MULTI_SELECT',
-              props: {
-                options:
-                  RegionSelectOptionsMap[
-                    country.value as keyof typeof RegionSelectOptionsMap
-                  ],
-              },
-            };
-      }
-      return { type: 'INPUT' };
-    },
-  },
-  LATITUDE: {
-    operators: LINK_RULE_LATITUDE_OPERATOR_CONFIGS,
-    valueType: (operator) =>
-      operator === 'BETWEEN' || operator === 'NOT_BETWEEN'
-        ? {
-            type: 'FLOAT_BETWEEN',
-            props: { min: -90, max: 90, type: 'number' },
-          }
-        : {
-            type: 'FLOAT',
-            props: { min: -90, max: 90, type: 'number' },
-          },
-  },
-  LONGITUDE: {
-    operators: LINK_RULE_LONGITUDE_OPERATOR_CONFIGS,
-    valueType: (operator) =>
-      operator === 'BETWEEN' || operator === 'NOT_BETWEEN'
-        ? {
-            type: 'FLOAT_BETWEEN',
-            props: { min: -180, max: 180, type: 'number' },
-          }
-        : {
-            type: 'FLOAT',
-            props: { min: -180, max: 180, type: 'number' },
-          },
-  },
-  POSTAL_CODE: {
-    operators: LINK_RULE_POSTAL_CODE_OPERATOR_CONFIGS,
-    valueType: () => ({ type: 'INPUT' }),
-  },
+  ACCEPT_LANGUAGE: LINK_RULE_ACCEPT_LANGUAGE_FIELD_CONFIG,
+  CONTINENT: LINK_RULE_CONTINENT_FIELD_CONFIG,
+  COOKIE: LINK_RULE_COOKIE_FIELD_CONFIG,
+  COUNTRY: LINK_RULE_COUNTRY_FIELD_CONFIG,
+  DEVICE_TYPE: LINK_RULE_DEVICE_TYPE_FIELD_CONFIG,
+  IP: LINK_RULE_IP_FIELD_CONFIG,
+  IS_EU_COUNTRY: LINK_RULE_IS_EU_COUNTRY_FIELD_CONFIG,
+  LATITUDE: LINK_RULE_LATITUDE_FIELD_CONFIG,
+  LONGITUDE: LINK_RULE_LONGITUDE_FIELD_CONFIG,
+  POSTAL_CODE: LINK_RULE_POSTAL_CODE_FIELD_CONFIG,
+  QUERY: LINK_RULE_QUERY_FIELD_CONFIG,
+  REFERER: LINK_RULE_REFERER_FIELD_CONFIG,
+  REGION_CODE: LINK_RULE_REGION_CODE_FIELD_CONFIG,
+  SOURCE: LINK_RULE_SOURCE_FIELD_CONFIG,
+  TIME: LINK_RULE_TIME_FIELD_CONFIG,
+  USER_AGENT: LINK_RULE_USER_AGENT_FIELD_CONFIG,
 };
 
 export const LinkRuleConditionValueSchemaMap: Record<

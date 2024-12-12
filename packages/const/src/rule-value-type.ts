@@ -2,6 +2,7 @@ import z from 'zod';
 
 export const RULE_VALUE_TYPE_CODES = [
   'INPUT',
+  'MULTI_INPUT',
   'FLOAT',
   'INTEGER',
   'REGEX',

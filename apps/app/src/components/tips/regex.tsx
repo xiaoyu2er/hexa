@@ -1,30 +1,16 @@
 import { REGEX_FLAGS } from '@hexa/const/regex';
 import { Popover, PopoverContent, PopoverTrigger } from '@nextui-org/react';
 
-import { Button } from '@hexa/ui/button';
-import {
-  ChevronDown,
-  ChevronUp,
-  CircleHelpIcon,
-  ExternalLinkIcon,
-} from '@hexa/ui/icons';
+import { TipButton } from '@/components/tips/tip-button';
+import { ChevronDown, ChevronUp, ExternalLinkIcon } from '@hexa/ui/icons';
 import { useState } from 'react';
 
-export const RegexExpressionTips = () => {
+export const RegexExpressionTips = ({ className }: { className?: string }) => {
   const [showCheatsheet, setShowCheatsheet] = useState(false);
   return (
-    <Popover>
+    <Popover placement="right" showArrow>
       <PopoverTrigger>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-        >
-          <CircleHelpIcon
-            className="h-4 w-4 text-muted-foreground"
-            aria-label="About regular expressions"
-          />
-        </Button>
+        <TipButton className={className} aria-label="About regex" />
       </PopoverTrigger>
       <PopoverContent className="w-[400px]">
         <div className="space-y-4 p-4">
@@ -116,20 +102,11 @@ export const RegexExpressionTips = () => {
   );
 };
 
-export const RegexFlagsTips = () => {
+export const RegexFlagsTips = ({ className }: { className?: string }) => {
   return (
     <Popover>
       <PopoverTrigger>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-        >
-          <CircleHelpIcon
-            className="h-4 w-4 text-muted-foreground"
-            aria-label="About regex flags"
-          />
-        </Button>
+        <TipButton className={className} aria-label="About regex flags" />
       </PopoverTrigger>
       <PopoverContent className="w-[380px]">
         <div className="space-y-4 p-4">

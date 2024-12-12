@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { RuleField } from '../field';
+import type { FieldConfig, RuleField } from '../field';
 import type { RuleOperator, RuleOperatorConfigs } from '../operator';
 
 export const LINK_RULE_TIME_FIELD = 'TIME' as const satisfies RuleField;
@@ -20,6 +20,14 @@ export const LINK_RULE_TIME_OPERATOR_CONFIGS: RuleOperatorConfigs = [
   { operator: 'BETWEEN', defaultValue: [] },
   { operator: 'NOT_BETWEEN', defaultValue: [] },
 ];
+
+export const LINK_RULE_TIME_FIELD_CONFIG: FieldConfig = {
+  operators: LINK_RULE_TIME_OPERATOR_CONFIGS,
+  valueType: (operator) =>
+    operator === 'BETWEEN' || operator === 'NOT_BETWEEN'
+      ? { type: 'TIME_BETWEEN' }
+      : { type: 'TIME' },
+};
 
 export const zLinkRuleTimeOperator = z.enum(LINK_RULE_TIME_OPERATORS);
 export type LinkRuleTimeOperator = z.infer<typeof zLinkRuleTimeOperator>;
