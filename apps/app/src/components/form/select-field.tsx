@@ -22,7 +22,7 @@ type BaseSelectFieldProps = {
 export type SelectFieldProps<T extends FieldValues> = BaseFieldProps<T> &
   BaseSelectFieldProps &
   Omit<SelectProps, keyof BaseFieldProps<T> | 'children'> & {
-    onChange?: (value: string) => void;
+    onChange?: (value: string | string[]) => void;
   };
 
 export const SelectField = <T extends FieldValues = FieldValues>({
@@ -106,14 +106,16 @@ export const SelectField = <T extends FieldValues = FieldValues>({
       variant="bordered"
       onSelectionChange={(value) => {
         if (selectionMode === 'multiple') {
-          field.onChange([...value]);
+          const valueArray = [...value];
+          field.onChange(valueArray);
+          onChange?.(valueArray);
         } else {
           const val = [...value][0];
           if (val) {
             field.onChange(val);
+            onChange?.(val);
           }
         }
-        onChange?.(field.value);
       }}
       {...props}
     >

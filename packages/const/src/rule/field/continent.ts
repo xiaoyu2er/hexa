@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { zContinentCode } from '../../continent';
-import type { RuleField } from '../field';
-import type { RuleOperator, RuleOperatorConfigs } from '../operator';
+import { ContinentSelectOptions, zContinentCode } from '../../continent';
+import type { FieldConfig, RuleField } from '../field';
+import type { RuleOperator } from '../operator';
 
 export const LINK_RULE_CONTINENT_FIELD =
   'CONTINENT' as const satisfies RuleField;
@@ -13,12 +13,18 @@ export const LINK_RULE_CONTINENT_OPERATORS = [
   'NEQ',
 ] as const satisfies RuleOperator[];
 
-export const LINK_RULE_CONTINENT_OPERATOR_CONFIGS: RuleOperatorConfigs = [
-  { operator: 'IN', defaultValue: [] },
-  { operator: 'NOT_IN', defaultValue: [] },
-  { operator: 'EQ', defaultValue: '' },
-  { operator: 'NEQ', defaultValue: '' },
-];
+export const LINK_RULE_CONTINENT_FIELD_CONFIG: FieldConfig = {
+  operators: [
+    { operator: 'IN', defaultValue: [] },
+    { operator: 'NOT_IN', defaultValue: [] },
+    { operator: 'EQ', defaultValue: '' },
+    { operator: 'NEQ', defaultValue: '' },
+  ],
+  valueType: (operator) =>
+    operator === 'EQ' || operator === 'NEQ'
+      ? { type: 'SELECT', props: { options: ContinentSelectOptions } }
+      : { type: 'MULTI_SELECT', props: { options: ContinentSelectOptions } },
+};
 
 export const zLinkRuleContinentOperator = z.enum(LINK_RULE_CONTINENT_OPERATORS);
 export type LinkRuleContinentOperator = z.infer<

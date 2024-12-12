@@ -2,7 +2,7 @@ import { FloatField } from '@/components/form/float-field';
 import type { BaseFieldProps } from '@/components/form/form-type';
 import {} from '@hexa/ui/form';
 import {} from '@hexa/ui/popover';
-import type { ComponentProps } from 'react';
+import { type ComponentProps, useEffect } from 'react';
 import type { FieldValues, Path } from 'react-hook-form';
 
 export type FloatBetweenFieldProps<T extends FieldValues> = BaseFieldProps<T> &
@@ -16,6 +16,14 @@ export const FloatBetweenField = <T extends FieldValues = FieldValues>({
   const triggerValidation = () => {
     form.trigger(name);
   };
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    return () => {
+      form.unregister(`${name}.0` as Path<T>);
+      form.unregister(`${name}.1` as Path<T>);
+    };
+  }, []);
 
   return (
     <div className="flex gap-2">
