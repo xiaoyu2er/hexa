@@ -64,11 +64,7 @@ import {
   LINK_RULE_USER_AGENT_FIELD_CONFIG,
   LinkRuleUserAgentConditionSchema,
 } from './field/user-agent';
-import {
-  ARRAY_OPERATORS,
-  ONE_VALUE_OPERATORS,
-  TWO_VALUE_OPERATORS,
-} from './operator';
+import {} from './operator';
 // https://developers.cloudflare.com/ruleset-engine/rules-language/operators/#comparison-operators
 // https://openflagr.github.io/flagr/api_docs/#operation/createFlag
 
@@ -116,56 +112,24 @@ export const LinkRuleConditionValueSchemaMap: Record<
   USER_AGENT: LinkRuleUserAgentConditionSchema,
 };
 
-export const LinkRuleConditionSchema = z
-  .discriminatedUnion('field', [
-    LinkRuleAcceptLanguageConditionSchema,
-    LinkRuleContinentConditionSchema,
-    LinkRuleCookieConditionSchema,
-    LinkRuleCountryConditionSchema,
-    LinkRuleDeviceTypeConditionSchema,
-    LinkRuleIpConditionSchema,
-    LinkRuleIsEuCountryConditionSchema,
-    LinkRuleLatitudeConditionSchema,
-    LinkRuleLongitudeConditionSchema,
-    LinkRulePostalCodeConditionSchema,
-    LinkRuleQueryConditionSchema,
-    LinkRuleRefererConditionSchema,
-    LinkRuleRegionCodeConditionSchema,
-    LinkRuleSourceConditionSchema,
-    LinkRuleTimeConditionSchema,
-    LinkRuleUserAgentConditionSchema,
-  ])
-  .superRefine((data, ctx) => {
-    if (
-      ONE_VALUE_OPERATORS.includes(data.operator) &&
-      Array.isArray(data.value)
-    ) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Value must not be an array',
-        path: ['value'],
-      });
-    }
-
-    if (
-      TWO_VALUE_OPERATORS.includes(data.operator) &&
-      (!Array.isArray(data.value) || data.value.length !== 2)
-    ) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Value must be an array with 2 elements',
-        path: ['value'],
-      });
-    }
-
-    if (ARRAY_OPERATORS.includes(data.operator) && !Array.isArray(data.value)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Value must be an array',
-        path: ['value'],
-      });
-    }
-  });
+export const LinkRuleConditionSchema = z.discriminatedUnion('field', [
+  LinkRuleAcceptLanguageConditionSchema,
+  LinkRuleContinentConditionSchema,
+  LinkRuleCookieConditionSchema,
+  LinkRuleCountryConditionSchema,
+  LinkRuleDeviceTypeConditionSchema,
+  LinkRuleIpConditionSchema,
+  LinkRuleIsEuCountryConditionSchema,
+  LinkRuleLatitudeConditionSchema,
+  LinkRuleLongitudeConditionSchema,
+  LinkRulePostalCodeConditionSchema,
+  LinkRuleQueryConditionSchema,
+  LinkRuleRefererConditionSchema,
+  LinkRuleRegionCodeConditionSchema,
+  LinkRuleSourceConditionSchema,
+  LinkRuleTimeConditionSchema,
+  LinkRuleUserAgentConditionSchema,
+]);
 
 export type LinkRuleCondition = Simplify<
   z.infer<typeof LinkRuleConditionSchema>

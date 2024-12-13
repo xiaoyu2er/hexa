@@ -14,6 +14,7 @@ import {
   getRuleFieldSelectOptions,
 } from '@hexa/const/rule';
 import { TrashIcon } from '@hexa/ui/icons';
+import { cn } from '@hexa/utils';
 import { Button } from '@nextui-org/react';
 import type { Path, useForm } from 'react-hook-form';
 
@@ -32,12 +33,15 @@ export const RuleCondition = ({
   onUpdate: (value: LinkRuleCondition) => void;
 }) => {
   const filedKey = `${formKey}.field` as Path<RulesFormType>;
+  const subFieldKey = `${formKey}.subField` as Path<RulesFormType>;
   const operatorKey = `${formKey}.operator` as Path<RulesFormType>;
   const valueKey = `${formKey}.value` as Path<RulesFormType>;
   const fieldValue = form.watch(filedKey) as RuleField;
+  const subFieldValue = form.watch(subFieldKey) as RuleField;
   const operatorValue = form.watch(operatorKey) as RuleOperator;
   const fieldOptions = getRuleFieldSelectOptions(conditions, fieldValue);
   const fieldConfig = FIELD_CONFIGS[fieldValue as RuleField] ?? {
+    subField: null,
     operators: [],
     valueType: () => ({ type: 'INPUT' }),
   };
@@ -52,16 +56,48 @@ export const RuleCondition = ({
   const { type: valueInputType, props: valueInputProps } =
     fieldConfig.valueType(operatorValue as RuleOperator, conditions);
 
+  const subFieldInput = fieldConfig.subField ? (
+    <RuleValueInput
+      inputType={fieldConfig.subField.type}
+      inputProps={fieldConfig.subField.props}
+      inputValue={subFieldValue}
+      inputName={subFieldKey}
+      form={form}
+    />
+  ) : null;
+
+  const valueInput = operatorValue ? (
+    <div className="relative overflow-x-auto">
+      <RuleValueInput
+        inputType={valueInputType}
+        inputProps={valueInputProps}
+        inputValue={fieldValue}
+        inputName={valueKey}
+        form={form}
+      />
+    </div>
+  ) : (
+    <RuleValueInputPlaceholder />
+  );
+
   return (
-    <div className="flex w-full flex-col gap-2 sm:grid sm:grid-cols-[180px,180px,1fr,auto] sm:items-start">
+    <div
+      className={cn(
+        'flex w-full flex-col gap-2 sm:grid sm:items-start',
+        // Adjust grid columns based on whether subField exists
+        fieldConfig.subField
+          ? 'sm:grid-cols-[180px,180px,180px,1fr,40px]'
+          : 'sm:grid-cols-[180px,180px,1fr,40px]'
+      )}
+    >
       <div className="flex items-center gap-2">
         <SelectField
           form={form}
           name={filedKey}
           options={fieldOptions}
           placeholder="Select field"
+          className="min-w-[180px]"
           hideErrorMessageCodes={['invalid_union_discriminator']}
-          className="min-w-[120px] flex-1"
           maxListboxHeight={308}
           onChange={(fieldValue) => {
             onUpdate({
@@ -85,6 +121,10 @@ export const RuleCondition = ({
         </Button>
       </div>
 
+      {fieldConfig.subField && (
+        <div className="min-w-[180px]">{subFieldInput}</div>
+      )}
+
       <SelectField
         form={form}
         name={operatorKey}
@@ -92,7 +132,7 @@ export const RuleCondition = ({
         options={operatorOptions}
         placeholder="Select operator"
         hideErrorMessageCodes={['invalid_enum_value']}
-        className="min-w-[120px]"
+        className="min-w-[180px]"
         onChange={(operatorValue) => {
           const operatorConfig = fieldConfig.operators.find(
             ({ operator }) => operator === operatorValue
@@ -103,25 +143,14 @@ export const RuleCondition = ({
           }
           onUpdate({
             field: fieldValue as RuleField,
+            subField: subFieldValue,
             operator: operatorValue as RuleOperator,
             value: operatorConfig?.defaultValue as LinkRuleCondition['value'],
           } as unknown as LinkRuleCondition);
         }}
       />
 
-      <div className="w-full">
-        {operatorValue ? (
-          <RuleValueInput
-            inputType={valueInputType}
-            inputProps={valueInputProps}
-            inputValue={fieldValue}
-            inputName={valueKey}
-            form={form}
-          />
-        ) : (
-          <RuleValueInputPlaceholder />
-        )}
-      </div>
+      <div className="w-full">{valueInput}</div>
 
       <Button
         type="button"

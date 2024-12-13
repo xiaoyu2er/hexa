@@ -20,8 +20,8 @@ export const FloatBetweenField = <T extends FieldValues = FieldValues>({
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     return () => {
-      form.unregister(`${name}.0` as Path<T>);
-      form.unregister(`${name}.1` as Path<T>);
+      form.unregister(`${name}.min` as Path<T>);
+      form.unregister(`${name}.max` as Path<T>);
     };
   }, []);
 
@@ -29,7 +29,7 @@ export const FloatBetweenField = <T extends FieldValues = FieldValues>({
     <div className="flex gap-2">
       <FloatField
         form={form}
-        name={`${name}.0` as Path<T>}
+        name={`${name}.min` as Path<T>}
         placeholder="Min value"
         hideErrorMessageCodes={hideErrorMessageCodes}
         onChange={triggerValidation}
@@ -37,7 +37,7 @@ export const FloatBetweenField = <T extends FieldValues = FieldValues>({
 
       <FloatField
         form={form}
-        name={`${name}.1` as Path<T>}
+        name={`${name}.max` as Path<T>}
         placeholder="Max value"
         hideErrorMessageCodes={hideErrorMessageCodes}
         onChange={triggerValidation}

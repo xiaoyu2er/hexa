@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { defaultRegex, zRegex } from '../../regex';
 import type { FieldConfig, RuleField } from '../field';
 import type { RuleOperator } from '../operator';
 
@@ -21,8 +22,8 @@ export const LINK_RULE_ACCEPT_LANGUAGE_FIELD_CONFIG = {
     { operator: 'NEQ', defaultValue: '' },
     { operator: 'CONTAINS', defaultValue: '' },
     { operator: 'NOT_CONTAINS', defaultValue: '' },
-    { operator: 'REG', defaultValue: [] },
-    { operator: 'NREG', defaultValue: [] },
+    { operator: 'REG', defaultValue: defaultRegex },
+    { operator: 'NREG', defaultValue: defaultRegex },
     { operator: 'IN', defaultValue: [''] },
     { operator: 'NOT_IN', defaultValue: [''] },
   ],
@@ -50,20 +51,8 @@ export const zAcceptLanguageValues = z.array(zAcceptLanguageValue).min(1);
 export const LinkRuleAcceptLanguageConditionSchema = z.object({
   field: z.literal(LINK_RULE_ACCEPT_LANGUAGE_FIELD),
   operator: zLinkRuleAcceptLanguageOperator,
-  value: z.union([zAcceptLanguageValue, zAcceptLanguageValues]),
+  value: z.union([zAcceptLanguageValue, zAcceptLanguageValues, zRegex]),
 });
-// .superRefine((data, ctx) => {
-//   if (data.operator === 'REG' || data.operator === 'NREG') {
-//     try {
-//       new RegExp(data.value);
-//     } catch (e) {
-//       ctx.addIssue({
-//         code: z.ZodIssueCode.custom,
-//         message: 'Invalid regular expression',
-//       });
-//     }
-//   }
-// });
 
 export type LinkRuleAcceptLanguageCondition = z.infer<
   typeof LinkRuleAcceptLanguageConditionSchema

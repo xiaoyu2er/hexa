@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { defaultRegex, zRegex } from '../../regex';
 import type { FieldConfig, RuleField } from '../field';
 import type { RuleOperator } from '../operator';
 
@@ -12,12 +13,16 @@ export const LINK_RULE_POSTAL_CODE_OPERATORS = [
   'NOT_IN',
   'CONTAINS',
   'NOT_CONTAINS',
+  'REG',
+  'NREG',
 ] as const satisfies RuleOperator[];
 
 export const LINK_RULE_POSTAL_CODE_FIELD_CONFIG: FieldConfig = {
   operators: [
     { operator: 'EQ', defaultValue: '' },
     { operator: 'NEQ', defaultValue: '' },
+    { operator: 'REG', defaultValue: defaultRegex },
+    { operator: 'NREG', defaultValue: defaultRegex },
     { operator: 'IN', defaultValue: [''] },
     { operator: 'NOT_IN', defaultValue: [''] },
     { operator: 'CONTAINS', defaultValue: '' },
@@ -44,7 +49,11 @@ export type LinkRulePostalCodeOperator = z.infer<
 export const LinkRulePostalCodeConditionSchema = z.object({
   field: z.literal(LINK_RULE_POSTAL_CODE_FIELD),
   operator: zLinkRulePostalCodeOperator,
-  value: z.union([z.string().min(1), z.array(z.string().min(1)).min(1)]),
+  value: z.union([
+    z.string().min(1),
+    z.array(z.string().min(1)).min(1),
+    zRegex,
+  ]),
 });
 
 export type LinkRulePostalCodeCondition = z.infer<

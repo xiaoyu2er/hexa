@@ -19,8 +19,8 @@ export const LINK_RULE_LATITUDE_FIELD_CONFIG: FieldConfig = {
     { operator: 'LE', defaultValue: '' },
     { operator: 'GT', defaultValue: '' },
     { operator: 'GE', defaultValue: '' },
-    { operator: 'BETWEEN', defaultValue: ['', ''] },
-    { operator: 'NOT_BETWEEN', defaultValue: ['', ''] },
+    { operator: 'BETWEEN', defaultValue: { min: '', max: '' } },
+    { operator: 'NOT_BETWEEN', defaultValue: { min: '', max: '' } },
   ],
   valueType: (operator) =>
     operator === 'BETWEEN' || operator === 'NOT_BETWEEN'
@@ -43,31 +43,31 @@ export const LinkRuleLatitudeConditionSchema = z.object({
   field: z.literal(LINK_RULE_LATITUDE_FIELD),
   operator: zLinkRuleLatitudeOperator,
   value: z.union([
-    z.tuple([z.number(), z.number()]).superRefine((value, ctx) => {
-      if (value[0] < -90 || value[0] > 90) {
+    z.object({ min: z.number(), max: z.number() }).superRefine((value, ctx) => {
+      if (value.min < -90 || value.min > 90) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Latitude must be between -90 and 90',
-          path: ['0'],
+          path: ['min'],
         });
       }
-      if (value[1] < -90 || value[1] > 90) {
+      if (value.max < -90 || value.max > 90) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Latitude must be between -90 and 90',
-          path: ['1'],
+          path: ['max'],
         });
       }
-      if (value[0] >= value[1]) {
+      if (value.min >= value.max) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Min value must be less than max value',
-          path: ['0'],
+          path: ['min'],
         });
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Min value must be less than max value',
-          path: ['1'],
+          path: ['max'],
         });
       }
     }),
@@ -104,8 +104,8 @@ export const LINK_RULE_LONGITUDE_FIELD_CONFIG: FieldConfig = {
     { operator: 'LE', defaultValue: '' },
     { operator: 'GT', defaultValue: '' },
     { operator: 'GE', defaultValue: '' },
-    { operator: 'BETWEEN', defaultValue: ['', ''] },
-    { operator: 'NOT_BETWEEN', defaultValue: ['', ''] },
+    { operator: 'BETWEEN', defaultValue: { min: '', max: '' } },
+    { operator: 'NOT_BETWEEN', defaultValue: { min: '', max: '' } },
   ],
   valueType: (operator) =>
     operator === 'BETWEEN' || operator === 'NOT_BETWEEN'
@@ -128,31 +128,31 @@ export const LinkRuleLongitudeConditionSchema = z.object({
   field: z.literal(LINK_RULE_LONGITUDE_FIELD),
   operator: zLinkRuleLongitudeOperator,
   value: z.union([
-    z.tuple([z.number(), z.number()]).superRefine((value, ctx) => {
-      if (value[0] < -180 || value[0] > 180) {
+    z.object({ min: z.number(), max: z.number() }).superRefine((value, ctx) => {
+      if (value.min < -180 || value.min > 180) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Longitude must be between -180 and 180',
-          path: ['0'],
+          path: ['min'],
         });
       }
-      if (value[1] < -180 || value[1] > 180) {
+      if (value.max < -180 || value.max > 180) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Longitude must be between -180 and 180',
-          path: ['1'],
+          path: ['max'],
         });
       }
-      if (value[0] >= value[1]) {
+      if (value.min >= value.max) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Min value must be less than max value',
-          path: ['0'],
+          path: ['min'],
         });
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Min value must be less than max value',
-          path: ['1'],
+          path: ['max'],
         });
       }
     }),

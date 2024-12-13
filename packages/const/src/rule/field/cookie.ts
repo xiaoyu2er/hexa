@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { defaultRegex, zRegex } from '../../regex';
 import type { FieldConfig, RuleField } from '../field';
 import type { RuleOperator } from '../operator';
 
@@ -7,6 +8,12 @@ export const LINK_RULE_COOKIE_FIELD = 'COOKIE' as const satisfies RuleField;
 export const LINK_RULE_COOKIE_OPERATORS = [
   'EQ',
   'NEQ',
+  'REG',
+  'NREG',
+  'IN',
+  'NOT_IN',
+  'CONTAINS',
+  'NOT_CONTAINS',
 ] as const satisfies RuleOperator[];
 
 export const LINK_RULE_COOKIE_FIELD_CONFIG: FieldConfig = {
@@ -24,6 +31,30 @@ export const LINK_RULE_COOKIE_FIELD_CONFIG: FieldConfig = {
     {
       operator: 'NEQ',
       defaultValue: '',
+    },
+    {
+      operator: 'CONTAINS',
+      defaultValue: '',
+    },
+    {
+      operator: 'NOT_CONTAINS',
+      defaultValue: '',
+    },
+    {
+      operator: 'REG',
+      defaultValue: defaultRegex,
+    },
+    {
+      operator: 'NREG',
+      defaultValue: defaultRegex,
+    },
+    {
+      operator: 'IN',
+      defaultValue: [''],
+    },
+    {
+      operator: 'NOT_IN',
+      defaultValue: [''],
     },
   ],
   valueType: (operator) => {
@@ -44,5 +75,5 @@ export const LinkRuleCookieConditionSchema = z.object({
   field: z.literal(LINK_RULE_COOKIE_FIELD),
   subField: z.string().min(1).max(255),
   operator: zLinkRuleCookieOperator,
-  value: z.string().min(1),
+  value: z.union([z.string().min(1), zRegex, z.array(z.string().min(1))]),
 });

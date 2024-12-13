@@ -34,8 +34,6 @@ export const RULE_OPERATORS = {
   NOT_IN: 'Not in',
 } as const;
 
-export const TWO_VALUE_OPERATORS = ['BETWEEN', 'NOT_BETWEEN', 'REG', 'NREG'];
-
 export const ARRAY_OPERATORS = ['IN', 'NOT_IN'];
 
 export const ONE_VALUE_OPERATORS = [
