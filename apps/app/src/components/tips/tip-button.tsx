@@ -16,7 +16,7 @@ export const TipButton = forwardRef<
       variant="light"
       isIconOnly
       size="sm"
-      className={cn('h-6 w-6 min-w-6', className)}
+      className={cn('h-4 w-4 min-w-4', className)}
       {...props}
     >
       <CircleHelpIcon

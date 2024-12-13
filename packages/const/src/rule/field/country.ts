@@ -14,10 +14,10 @@ export const LINK_RULE_COUNTRY_OPERATORS = [
 
 export const LINK_RULE_COUNTRY_FIELD_CONFIG: FieldConfig = {
   operators: [
-    { operator: 'IN', defaultValue: [] },
-    { operator: 'NOT_IN', defaultValue: [] },
     { operator: 'EQ', defaultValue: '' },
     { operator: 'NEQ', defaultValue: '' },
+    { operator: 'IN', defaultValue: [] },
+    { operator: 'NOT_IN', defaultValue: [] },
   ],
   valueType: (operator) =>
     operator === 'EQ' || operator === 'NEQ'

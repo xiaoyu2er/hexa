@@ -21,10 +21,10 @@ export const LINK_RULE_USER_AGENT_FIELD_CONFIG: FieldConfig = {
     { operator: 'NEQ', defaultValue: '' },
     { operator: 'CONTAINS', defaultValue: '' },
     { operator: 'NOT_CONTAINS', defaultValue: '' },
-    { operator: 'IN', defaultValue: [''] },
-    { operator: 'NOT_IN', defaultValue: [''] },
     { operator: 'REG', defaultValue: [] },
     { operator: 'NREG', defaultValue: [] },
+    { operator: 'IN', defaultValue: [''] },
+    { operator: 'NOT_IN', defaultValue: [''] },
   ],
   valueType: (operator) => {
     if (operator === 'REG' || operator === 'NREG') {

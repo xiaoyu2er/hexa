@@ -21,12 +21,12 @@ export const LINK_RULE_POSTAL_CODE_FIELD_CONFIG: FieldConfig = {
   operators: [
     { operator: 'EQ', defaultValue: '' },
     { operator: 'NEQ', defaultValue: '' },
+    { operator: 'CONTAINS', defaultValue: '' },
+    { operator: 'NOT_CONTAINS', defaultValue: '' },
     { operator: 'REG', defaultValue: defaultRegex },
     { operator: 'NREG', defaultValue: defaultRegex },
     { operator: 'IN', defaultValue: [''] },
     { operator: 'NOT_IN', defaultValue: [''] },
-    { operator: 'CONTAINS', defaultValue: '' },
-    { operator: 'NOT_CONTAINS', defaultValue: '' },
   ],
   valueType: (operator) => {
     if (operator === 'REG' || operator === 'NREG') {

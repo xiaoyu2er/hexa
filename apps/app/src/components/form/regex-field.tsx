@@ -1,6 +1,9 @@
 import type { BaseFieldProps } from '@/components/form/form-type';
 import { InputField } from '@/components/form/input-field';
-import { RegexExpressionTips, RegexFlagsTips } from '@/components/tips/regex';
+import {
+  RegexExpressionTips,
+  RegexFlagsTips,
+} from '@/components/tips/regex-tips';
 import {} from '@hexa/ui/form';
 import { useDebounce } from '@hexa/ui/hooks/use-debounce';
 import {} from '@hexa/ui/popover';
@@ -49,8 +52,8 @@ export const RegexField = <T extends FieldValues = FieldValues>({
             name={`${name}.expression` as Path<T>}
             placeholder="Regex expression"
             hideErrorMessageCodes={hideErrorMessageCodes}
+            endContent={<RegexExpressionTips />}
           />
-          <RegexExpressionTips className="-translate-y-1/2 absolute top-1/2 right-1" />
         </div>
 
         <div className="relative w-[100px]">
@@ -59,8 +62,8 @@ export const RegexField = <T extends FieldValues = FieldValues>({
             name={`${name}.flags` as Path<T>}
             placeholder="Flags"
             hideErrorMessageCodes={hideErrorMessageCodes}
+            endContent={<RegexFlagsTips />}
           />
-          <RegexFlagsTips className="-translate-y-1/2 absolute top-1/2 right-1" />
         </div>
       </div>
 
