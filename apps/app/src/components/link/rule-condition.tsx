@@ -4,6 +4,7 @@ import {
   RuleValueInput,
   RuleValueInputPlaceholder,
 } from '@/components/link/rule-value-input';
+import { RuleValueTips } from '@/components/link/rule-value-tips';
 import {
   FIELD_CONFIGS,
   type LinkRuleCondition,
@@ -63,18 +64,33 @@ export const RuleCondition = ({
       inputValue={subFieldValue}
       inputName={subFieldKey}
       form={form}
+      hideErrorMessageCodes={[
+        'too_small',
+        'invalid_type',
+        'invalid_enum_value',
+        'invalid_union_discriminator',
+      ]}
     />
   ) : null;
 
   const valueInput = operatorValue ? (
-    <div className="relative overflow-x-auto">
-      <RuleValueInput
-        inputType={valueInputType}
-        inputProps={valueInputProps}
-        inputValue={fieldValue}
-        inputName={valueKey}
-        form={form}
-      />
+    /* 
+      The min-w-0 is crucial here to allow proper text truncation in grid/flex layouts.
+      By default, grid/flex items have min-width: auto, which prevents shrinking below content size.
+      Setting min-w-0 allows the container to shrink below its content width,
+      enabling text-overflow: ellipsis to work properly.
+    */
+    <div className="flex min-w-0 items-center gap-2">
+      <div className="flex-1">
+        <RuleValueInput
+          inputType={valueInputType}
+          inputProps={valueInputProps}
+          inputValue={fieldValue}
+          inputName={valueKey}
+          form={form}
+        />
+      </div>
+      <RuleValueTips fieldType={fieldValue} />
     </div>
   ) : (
     <RuleValueInputPlaceholder />
@@ -101,7 +117,7 @@ export const RuleCondition = ({
           maxListboxHeight={308}
           onChange={(fieldValue) => {
             onUpdate({
-              field: fieldValue as RuleField,
+              field: fieldValue,
               operator: '',
               value: '',
             } as unknown as LinkRuleCondition);
@@ -150,8 +166,7 @@ export const RuleCondition = ({
         }}
       />
 
-      <div className="w-full">{valueInput}</div>
-
+      {valueInput}
       <Button
         type="button"
         variant="light"

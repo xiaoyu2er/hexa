@@ -17,14 +17,14 @@ export const zDeviceTypeCode = z.enum(DEVICE_TYPE_CODES);
 export type DeviceTypeCode = z.infer<typeof zDeviceTypeCode>;
 
 export const DEVICE_TYPES = {
+  DESKTOP: 'Desktop',
+  MOBILE: 'Mobile',
   CONSOLE: 'Console',
   EMBEDDED: 'Embedded',
-  MOBILE: 'Mobile',
   SMARTTV: 'SmartTV',
   TABLET: 'Tablet',
   WEARABLE: 'Wearable',
   XR: 'XR',
-  DESKTOP: 'Desktop',
 } as const;
 
 export const DeviceTypeSelectOptions = Object.entries(DEVICE_TYPES).map(

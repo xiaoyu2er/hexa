@@ -21,6 +21,7 @@ interface RuleinputProps {
   inputValue: RuleField;
   inputName: Path<RulesFormType>;
   form: ReturnType<typeof useForm<RulesFormType>>;
+  hideErrorMessageCodes?: string[];
 }
 
 export const RuleValueInputPlaceholder = () => {
@@ -33,6 +34,7 @@ export const RuleValueInput = ({
   inputValue,
   inputName,
   form,
+  hideErrorMessageCodes = ['invalid_type'],
 }: RuleinputProps) => {
   let valueInput: ReactNode;
 
@@ -43,7 +45,7 @@ export const RuleValueInput = ({
           form={form}
           name={inputName}
           placeholder="Enter value"
-          hideErrorMessageCodes={['too_small']}
+          hideErrorMessageCodes={hideErrorMessageCodes}
           {...inputProps}
         />
       );
@@ -56,23 +58,42 @@ export const RuleValueInput = ({
           form={form}
           name={inputName}
           {...inputProps}
-          hideErrorMessageCodes={['invalid_type', 'too_small']}
+          hideErrorMessageCodes={hideErrorMessageCodes}
         />
       );
       break;
     }
     case 'FLOAT_BETWEEN': {
       valueInput = (
-        <FloatBetweenField form={form} name={inputName} {...inputProps} />
+        <FloatBetweenField
+          form={form}
+          name={inputName}
+          {...inputProps}
+          hideErrorMessageCodes={hideErrorMessageCodes}
+        />
       );
       break;
     }
     case 'FLOAT': {
-      valueInput = <FloatField form={form} name={inputName} {...inputProps} />;
+      valueInput = (
+        <FloatField
+          form={form}
+          name={inputName}
+          {...inputProps}
+          hideErrorMessageCodes={hideErrorMessageCodes}
+        />
+      );
       break;
     }
     case 'REGEX': {
-      valueInput = <RegexField form={form} name={inputName} {...inputProps} />;
+      valueInput = (
+        <RegexField
+          form={form}
+          name={inputName}
+          {...inputProps}
+          hideErrorMessageCodes={hideErrorMessageCodes}
+        />
+      );
       break;
     }
     case 'TIME': {
@@ -80,7 +101,7 @@ export const RuleValueInput = ({
         <TimeField
           form={form}
           name={inputName}
-          hideErrorMessageCodes={['invalid_string', 'invalid_type']}
+          hideErrorMessageCodes={hideErrorMessageCodes}
         />
       );
       break;
@@ -90,7 +111,7 @@ export const RuleValueInput = ({
         <TimeRangeField
           form={form}
           name={inputName}
-          hideErrorMessageCodes={['invalid_type']}
+          hideErrorMessageCodes={hideErrorMessageCodes}
         />
       );
       break;
@@ -122,11 +143,7 @@ export const RuleValueInput = ({
                 )
               : undefined
           }
-          hideErrorMessageCodes={[
-            'invalid_enum_value',
-            'too_small',
-            'invalid_type',
-          ]}
+          hideErrorMessageCodes={hideErrorMessageCodes}
         />
       );
       break;

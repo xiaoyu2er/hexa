@@ -5,6 +5,8 @@ import type { RuleOperator } from '../operator';
 
 export const LINK_RULE_REFERER_FIELD = 'REFERER' as const satisfies RuleField;
 export const LINK_RULE_REFERER_OPERATORS = [
+  'EQ',
+  'NEQ',
   'CONTAINS',
   'NOT_CONTAINS',
   'REG',
@@ -15,6 +17,8 @@ export const LINK_RULE_REFERER_OPERATORS = [
 
 export const LINK_RULE_REFERER_FIELD_CONFIG: FieldConfig = {
   operators: [
+    { operator: 'EQ', defaultValue: '' },
+    { operator: 'NEQ', defaultValue: '' },
     { operator: 'CONTAINS', defaultValue: '' },
     { operator: 'NOT_CONTAINS', defaultValue: '' },
     { operator: 'REG', defaultValue: [] },
