@@ -70,7 +70,7 @@ export const CountryTips = ({ className }: { className?: string }) => {
   }
 
   return (
-    <Popover placement="left-start">
+    <Popover placement="right" showArrow>
       <PopoverTrigger>
         <TipButton className={className} aria-label="About country codes" />
       </PopoverTrigger>

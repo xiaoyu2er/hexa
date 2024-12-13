@@ -93,7 +93,12 @@ export const RuleCondition = ({
       <RuleValueTips fieldType={fieldValue} />
     </div>
   ) : (
-    <RuleValueInputPlaceholder />
+    <div className="flex min-w-0 items-center gap-2">
+      <div className="flex-1">
+        <RuleValueInputPlaceholder />
+      </div>
+      <RuleValueTips fieldType={fieldValue} />
+    </div>
   );
 
   return (

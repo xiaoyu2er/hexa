@@ -145,7 +145,7 @@ export const DeviceTypeTips = ({ className }: { className?: string }) => {
   }
 
   return (
-    <Popover placement="left-start">
+    <Popover placement="right" showArrow>
       <PopoverTrigger>
         <TipButton className={className} aria-label="About device types" />
       </PopoverTrigger>

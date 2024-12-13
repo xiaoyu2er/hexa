@@ -14,41 +14,44 @@ import { useState } from 'react';
 
 const examples = [
   {
-    value: 'en-US,en;q=0.9',
-    description: 'US English preferred, followed by any English variant',
+    name: 'user_id',
+    value: '12345',
+    description: 'Simple key-value cookie',
   },
   {
-    value: 'fr-CH,fr;q=0.9,en;q=0.8',
-    description: 'Swiss French preferred, then French, then English',
-  },
-  {
-    value: '*',
-    description: 'Any language is acceptable',
-  },
-  {
-    value: 'de',
-    description: 'German language only',
+    name: 'session',
+    value: 'eyJhbGciOiJIUzI1NiJ9...',
+    description: 'JWT token cookie',
   },
 ];
 
-const AcceptLanguageContent = () => (
+const CookieContent = () => (
   <div className="space-y-3">
     <div>
-      <h4 className="font-medium text-sm">Accept-Language Header</h4>
+      <h4 className="font-medium text-sm">Cookie Detection</h4>
       <p className="text-default-500 text-xs">
-        The Accept-Language header indicates the natural languages that the
-        client prefers. It can include language tags with quality values (q) to
-        indicate preference order.
+        Reads cookies from requests to custom domains. This platform does not
+        set cookies - it only reads existing cookies set by your domain.
       </p>
     </div>
 
     <div className="space-y-2">
-      <h5 className="font-medium text-xs">Format Examples:</h5>
+      <h5 className="font-medium text-xs">Important Notes:</h5>
+      <ul className="list-inside list-disc space-y-1 text-default-500 text-xs">
+        <li>Only works with custom domain URLs</li>
+        <li>Cookies must be set by your domain</li>
+        <li>Cookie names are case-sensitive</li>
+        {/* <li>Values are automatically URL decoded</li> */}
+      </ul>
+    </div>
+
+    <div className="space-y-2">
+      <h5 className="font-medium text-xs">Example Cookies:</h5>
       <div className="space-y-2">
         {examples.map((example) => (
-          <div key={example.value} className="space-y-1">
+          <div key={example.name} className="space-y-1">
             <code className="rounded bg-muted px-1.5 py-0.5 text-xs">
-              {example.value}
+              {example.name}={example.value}
             </code>
             <p className="text-default-500 text-xs">{example.description}</p>
           </div>
@@ -56,29 +59,21 @@ const AcceptLanguageContent = () => (
       </div>
     </div>
 
-    <div className="space-y-2">
-      <h5 className="font-medium text-xs">Quality Values (q):</h5>
-      <p className="text-default-500 text-xs">
-        Values range from 0 to 1, where 1 is highest priority. If omitted, the
-        default is 1.
-      </p>
-    </div>
-
     <div className="border-t pt-2">
       <a
-        href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Language"
+        href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies"
         target="_blank"
         rel="noopener noreferrer"
         className="inline-flex items-center text-muted-foreground text-xs hover:text-foreground"
       >
-        Learn more about Accept-Language
+        Learn more about HTTP Cookies
         <ExternalLinkIcon className="ml-1 h-3 w-3" aria-label="External link" />
       </a>
     </div>
   </div>
 );
 
-export const AcceptLanguageTips = ({ className }: { className?: string }) => {
+export const CookieTips = ({ className }: { className?: string }) => {
   const { isMobile } = useScreenSize();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -87,7 +82,7 @@ export const AcceptLanguageTips = ({ className }: { className?: string }) => {
       <>
         <TipButton
           className={className}
-          aria-label="About Accept-Language header"
+          aria-label="About cookies"
           onClick={() => setIsModalOpen(true)}
         />
         <Modal
@@ -97,9 +92,9 @@ export const AcceptLanguageTips = ({ className }: { className?: string }) => {
           size="full"
         >
           <ModalContent>
-            <ModalHeader>Accept-Language Header</ModalHeader>
+            <ModalHeader>Cookie Detection</ModalHeader>
             <ModalBody className="pb-6">
-              <AcceptLanguageContent />
+              <CookieContent />
             </ModalBody>
           </ModalContent>
         </Modal>
@@ -110,14 +105,11 @@ export const AcceptLanguageTips = ({ className }: { className?: string }) => {
   return (
     <Popover placement="right" showArrow>
       <PopoverTrigger>
-        <TipButton
-          className={className}
-          aria-label="About Accept-Language header"
-        />
+        <TipButton className={className} aria-label="About cookies" />
       </PopoverTrigger>
       <PopoverContent className="w-[400px]">
         <div className="p-4">
-          <AcceptLanguageContent />
+          <CookieContent />
         </div>
       </PopoverContent>
     </Popover>
