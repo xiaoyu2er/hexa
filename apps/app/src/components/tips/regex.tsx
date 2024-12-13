@@ -21,11 +21,20 @@ export const RegexExpressionTips = ({ className }: { className?: string }) => {
               combinations in strings.
             </p>
             <p className="text-sm text-muted-foreground">
-              Note: This is a pattern string, not a regex literal. Do not
-              include <code className="bg-muted px-1 rounded">{'//'}</code> at
-              the beginning and end. Remember to escape backslashes. Example:
-              use <code className="bg-muted px-1 rounded">\\d+</code> not{' '}
-              <code className="bg-muted px-1 rounded">/\d+/</code>
+              Note:
+              <ul className="list-disc list-inside">
+                <li>This is a pattern string, not a regex literal.</li>
+                <li>
+                  Do not include{' '}
+                  <code className="bg-muted px-1 rounded">{'//'}</code> at the
+                  beginning and end.
+                </li>
+                <li>
+                  Remember to escape backslashes. Example: use{' '}
+                  <code className="bg-muted px-1 rounded">\\d+</code> not{' '}
+                  <code className="bg-muted px-1 rounded">/\d+/</code>
+                </li>
+              </ul>
             </p>
           </div>
           <div className="space-y-2">
@@ -125,7 +134,7 @@ export const RegexFlagsTips = ({ className }: { className?: string }) => {
                 </div>
               ))}
             </div>
-            <div className="pt-2 border-t">
+            {/* <div className="pt-2 border-t">
               <a
                 href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/RegExp#flags"
                 target="_blank"
@@ -138,7 +147,7 @@ export const RegexFlagsTips = ({ className }: { className?: string }) => {
                   aria-label="External link"
                 />
               </a>
-            </div>
+            </div> */}
           </div>
         </div>
       </PopoverContent>

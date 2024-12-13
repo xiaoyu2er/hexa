@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { defaultRegex, zRegex } from '../../regex';
 import type { FieldConfig, RuleField } from '../field';
 import type { RuleOperator } from '../operator';
 
@@ -16,8 +17,8 @@ export const LINK_RULE_IP_FIELD_CONFIG: FieldConfig = {
   operators: [
     { operator: 'EQ', defaultValue: '' },
     { operator: 'NEQ', defaultValue: '' },
-    { operator: 'REG', defaultValue: [] },
-    { operator: 'NREG', defaultValue: [] },
+    { operator: 'REG', defaultValue: defaultRegex },
+    { operator: 'NREG', defaultValue: defaultRegex },
     { operator: 'IN', defaultValue: [''] },
     { operator: 'NOT_IN', defaultValue: [''] },
   ],
@@ -38,7 +39,7 @@ export type LinkRuleIpOperator = z.infer<typeof zLinkRuleIpOperator>;
 export const LinkRuleIpConditionSchema = z.object({
   field: z.literal(LINK_RULE_IP_FIELD),
   operator: zLinkRuleIpOperator,
-  value: z.union([z.string().ip(), z.array(z.string().ip())]),
+  value: z.union([z.string().ip(), z.array(z.string().ip()), zRegex]),
 });
 
 export type LinkRuleIpCondition = z.infer<typeof LinkRuleIpConditionSchema>;
