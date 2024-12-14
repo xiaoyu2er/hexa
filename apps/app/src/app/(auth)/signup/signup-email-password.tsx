@@ -98,13 +98,13 @@ export const SignupEmailPassword: FC<SignupEmailPasswordProps> = ({
             name="email"
             label="Email"
             type="email"
-            placeholder="Enter your email"
+            isRequired
           />
           <PasswordField
             form={form}
             name="password"
             label="Password"
-            placeholder="Enter your password"
+            isRequired
           />
           <FormErrorMessage message={errors.root?.message} />
           {turnstile}

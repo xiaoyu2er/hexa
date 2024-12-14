@@ -88,7 +88,7 @@ export function DeleteProject() {
                   json,
                 })
               )}
-              className="space-y-4"
+              className="flex flex-col gap-4"
             >
               <DialogHeader>
                 <DialogTitle>Delete Project</DialogTitle>
@@ -99,10 +99,16 @@ export function DeleteProject() {
                 </DialogDescription>
               </DialogHeader>
 
-              <InputField form={form} name="projectId" label="Project ID" />
+              <InputField
+                form={form}
+                name="projectId"
+                labelPlacement="inside"
+                label="Project ID"
+              />
               <InputField
                 form={form}
                 name="confirm"
+                labelPlacement="inside"
                 label={
                   <>
                     To verify, type

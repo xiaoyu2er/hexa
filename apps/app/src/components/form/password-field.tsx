@@ -24,12 +24,12 @@ export const PasswordField = <T extends FieldValues = FieldValues>({
         <button type="button" onClick={toggleVisibility}>
           {isVisible ? (
             <Icon
-              className="pointer-events-none text-2xl text-default-400"
+              className="pointer-events-none h-4 w-4 text-2xl text-default-400"
               icon="solar:eye-closed-linear"
             />
           ) : (
             <Icon
-              className="pointer-events-none text-2xl text-default-400"
+              className="pointer-events-none h-4 w-4 text-2xl text-default-400"
               icon="solar:eye-bold"
             />
           )}

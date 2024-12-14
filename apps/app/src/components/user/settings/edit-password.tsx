@@ -80,21 +80,18 @@ export function EditPassword() {
                 form={form}
                 name="oldPassword"
                 label="Old Password"
-                labelPlacement="outside"
                 placeholder="********"
               />
             )}
             <PasswordField
               form={form}
               name="password"
-              labelPlacement="outside"
               placeholder="********"
               label={user.hasPassword ? 'New Password' : 'Password'}
             />
             <PasswordField
               form={form}
               name="confirmPassword"
-              labelPlacement="outside"
               placeholder="********"
               label="Confirm Password"
             />

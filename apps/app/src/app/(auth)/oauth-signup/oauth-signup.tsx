@@ -73,12 +73,19 @@ export const OauthSignup: FC<OauthSignupProps> = ({
           onSubmit={handleSubmit((json) => signup({ json }))}
           className="space-y-4"
         >
-          <InputField form={form} readOnly name="email" label="Email" />
+          <InputField
+            form={form}
+            isRequired
+            isReadOnly
+            name="email"
+            label="Email"
+          />
           <InputField
             form={form}
             name="name"
             label="Your name"
             placeholder="Jane Doe"
+            isRequired
           />
           <InputField
             form={form}

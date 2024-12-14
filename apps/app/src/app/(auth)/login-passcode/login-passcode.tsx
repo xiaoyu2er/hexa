@@ -87,7 +87,7 @@ export function LoginPasscode({ onSuccess }: LoginPasscodeProps) {
               name="email"
               label="Email"
               type="email"
-              placeholder="Enter your email"
+              isRequired
             />
             <FormErrorMessage message={errors.root?.message} />
             {turnstile}
