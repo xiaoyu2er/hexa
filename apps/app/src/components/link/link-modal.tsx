@@ -1,10 +1,6 @@
 'use client';
-import { InputField } from '@/components/form/input-field';
-import { SelectField } from '@/components/form/select-field';
-import { $createLink, $updateLink } from '@/lib/api';
-import { setFormError } from '@/lib/form';
 
-import { FormErrorMessage } from '@/components/form/form-error-message';
+import { $createLink, $updateLink } from '@/lib/api';
 import {
   InsertLinkSchema,
   type InsertLinkType,
@@ -15,13 +11,20 @@ import {
 import type { SelectProjectType } from '@/server/schema/project';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import type { LinkRule } from '@hexa/const/rule';
-import { Badge } from '@hexa/ui/badge';
-import { Button } from '@hexa/ui/button';
-import { Form } from '@hexa/ui/form';
+
+import {
+  Form,
+  FormErrorMessage,
+  InputField,
+  SelectField,
+  setFormError,
+} from '@/components/form';
 import { GlobeIcon } from '@hexa/ui/icons';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  Button,
+  Chip,
   Modal,
   ModalBody,
   ModalContent,
@@ -118,26 +121,27 @@ export const LinkModal = NiceModal.create(
             <p className="font-medium text-lg">
               {mode === 'create' ? 'Create Link' : 'Edit Link'}
             </p>
-            <p className="text-muted-foreground text-sm">
+            <p className="font-normal text-muted-foreground text-sm">
               {mode === 'create'
                 ? 'Create a new link'
                 : 'Update the existing link'}
             </p>
           </ModalHeader>
 
-          <Form {...form}>
-            <form
-              onSubmit={handleSubmit((json) =>
-                mode === 'create'
-                  ? // @ts-ignore
-                    createLink({ json })
-                  : // @ts-ignore
-                    updateLink({ json })
-              )}
-              className="space-y-4"
-            >
-              <ModalBody className="space-y-4 ">
-                <div className="grid grid-cols-1 gap-6 px-4 md:grid-cols-[2fr,1fr] md:px-0">
+          <Form
+            form={form}
+            handleSubmit={handleSubmit((json) =>
+              mode === 'create'
+                ? // @ts-ignore
+                  createLink({ json })
+                : // @ts-ignore
+                  updateLink({ json })
+            )}
+            className="space-y-4"
+          >
+            <ModalBody className="space-y-4">
+              <div className="grid grid-cols-1 gap-6 px-4 md:grid-cols-[2fr,1fr] md:px-0">
+                <div className="space-y-4">
                   <InputField
                     form={form}
                     name="destUrl"
@@ -161,41 +165,39 @@ export const LinkModal = NiceModal.create(
                   <InputField form={form} name="title" label="Link Name" />
                   <InputField form={form} name="desc" label="Description" />
                   <FormErrorMessage message={errors.root?.message} />
+                </div>
 
-                  <div className="md:border-l md:pl-6">
-                    <h4 className="font-medium">QR Code</h4>
-                    <div className="mt-4 flex justify-center rounded-lg border bg-muted/50 p-4">
-                      <QRCodeCanvas value={qrCodeUrl} />
-                    </div>
+                <div className="md:border-l md:pl-6">
+                  <h4 className="font-medium">QR Code</h4>
+                  <div className="mt-4 flex justify-center rounded-lg border bg-muted/50 p-4">
+                    <QRCodeCanvas value={qrCodeUrl} />
                   </div>
                 </div>
-              </ModalBody>
+              </div>
+            </ModalBody>
 
-              <ModalFooter className="flex items-center justify-between sm:justify-between">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() =>
-                    rulesModal
-                      .show({ rules })
-                      .then((newRules) =>
-                        setValue('rules', newRules as LinkRule[])
-                      )
-                  }
-                >
-                  <GlobeIcon className="mr-2 h-4 w-4" />
-                  Configure Rules
-                  {rules.length > 0 && (
-                    <Badge variant="secondary" className="ml-2">
-                      {rules.length}
-                    </Badge>
-                  )}
-                </Button>
-                <Button type="submit" loading={isSubmitting}>
-                  {mode === 'create' ? 'Create Link' : 'Update Link'}
-                </Button>
-              </ModalFooter>
-            </form>
+            <ModalFooter className="flex items-center justify-between sm:justify-between">
+              <Button
+                type="button"
+                variant="bordered"
+                onClick={() =>
+                  rulesModal
+                    .show({ rules })
+                    .then((newRules) =>
+                      setValue('rules', newRules as LinkRule[])
+                    )
+                }
+              >
+                <GlobeIcon className="mr-2 h-4 w-4" />
+                Configure Rules &nbsp;
+                <Chip color="primary" size="sm" variant="solid" radius="full">
+                  {rules.length}
+                </Chip>
+              </Button>
+              <Button type="submit" color="primary" isLoading={isSubmitting}>
+                {mode === 'create' ? 'Create Link' : 'Update Link'}
+              </Button>
+            </ModalFooter>
           </Form>
         </ModalContent>
       </Modal>

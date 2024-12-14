@@ -1,11 +1,11 @@
 'use client';
 
 import { TermsPrivacy } from '@/components/auth/terms-privacy';
+import { setFormError } from '@/components/form';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { InputField } from '@/components/form/input-field';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import { $oauthSignup, type InferApiResponseType } from '@/lib/api';
-import { setFormError } from '@/lib/form';
 import {
   OauthSignupSchema,
   type OauthSignupType,

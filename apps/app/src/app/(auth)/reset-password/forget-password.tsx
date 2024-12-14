@@ -1,5 +1,6 @@
 'use client';
 
+import { setFormError } from '@/components/form';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { InputField } from '@/components/form/input-field';
 import { useTurnstile } from '@/hooks/use-turnstile';
@@ -7,7 +8,6 @@ import {
   $resetPasswordSendPasscode,
   type InferApiResponseType,
 } from '@/lib/api';
-import { setFormError } from '@/lib/form';
 import {
   SendPasscodeSchema,
   type SendPasscodeType,

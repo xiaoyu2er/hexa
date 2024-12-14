@@ -1,10 +1,10 @@
 'use client';
 
 import { AuthLink } from '@/components/auth/auth-link';
+import { setFormError } from '@/components/form';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import { RESEND_VERIFY_CODE_TIME_SPAN, VERIFY_CODE_LENGTH } from '@/lib/const';
-import { setFormError } from '@/lib/form';
 import {
   type ResendPasscodeType,
   type VerifyPasscodeOnlyCodeType,

@@ -9,10 +9,10 @@ import { type FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { TermsPrivacy } from '@/components/auth/terms-privacy';
+import { setFormError } from '@/components/form';
 import { InputField } from '@/components/form/input-field';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import { $signupSendPasscode, type InferApiResponseType } from '@/lib/api';
-import { setFormError } from '@/lib/form';
 import { SignupSchema, type SignupType } from '@/server/schema/signup';
 import {} from '@hexa/ui/collapsible';
 import { zodResolver } from '@hookform/resolvers/zod';

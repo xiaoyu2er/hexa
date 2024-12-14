@@ -46,7 +46,6 @@ export function ContextSwitcher() {
   const {
     data: projects = [],
     refetch,
-
     isFetched,
   } = useQuery(
     queryProjectsOptions // if not owner, get all accessible projects
@@ -112,17 +111,17 @@ export function ContextSwitcher() {
       >
         <PopoverTrigger>
           {state === 'collapsed' && !isMobile ? (
-            <div className="flex w-full items-center justify-center">
+            <Button variant="light" size="sm" isIconOnly>
               {selectedProject ? (
                 <ProjectAvatar
                   project={selectedProject}
-                  className="size-5 cursor-pointer"
+                  className="h-4 w-4 cursor-pointer"
                 />
               ) : // biome-ignore lint/nursery/noNestedTernary: <explanation>
               user ? (
-                <UserAvatar className="size-5 cursor-pointer" user={user} />
+                <UserAvatar className="h-4 w-4 cursor-pointer" user={user} />
               ) : null}
-            </div>
+            </Button>
           ) : (
             <Button
               variant="flat"

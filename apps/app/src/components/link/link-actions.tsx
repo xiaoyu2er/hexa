@@ -5,14 +5,14 @@ import { invalidateProjectLinks } from '@/lib/queries/project';
 import type { SelectLinkType } from '@/server/schema/link';
 import type { SelectProjectType } from '@/server/schema/project';
 import type { NiceModalHandler } from '@ebay/nice-modal-react';
-import { Button } from '@hexa/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@hexa/ui/dropdown-menu';
 import { MoreVerticalIcon } from '@hexa/ui/icons';
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from '@nextui-org/react';
 
 interface LinkActionsProps {
   link: SelectLinkType;
@@ -28,19 +28,19 @@ export function LinkActions({
   size = 'default',
 }: LinkActionsProps) {
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+    <Dropdown>
+      <DropdownTrigger asChild>
         <Button
-          variant="ghost"
-          size="icon"
+          variant="light"
+          isIconOnly
           className={size === 'sm' ? 'h-8 w-8' : 'h-9 w-9'}
+          aria-label="Open menu"
         >
           <MoreVerticalIcon className="h-4 w-4" />
-          <span className="sr-only">Open menu</span>
         </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem
+      </DropdownTrigger>
+      <DropdownMenu>
+        <DropdownItem
           onClick={() =>
             modal.show({ project, mode: 'update', link }).then(() => {
               invalidateProjectLinks(project.id);
@@ -48,9 +48,9 @@ export function LinkActions({
           }
         >
           Edit
-        </DropdownMenuItem>
-        <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </DropdownItem>
+        <DropdownItem className="text-destructive">Delete</DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
   );
 }

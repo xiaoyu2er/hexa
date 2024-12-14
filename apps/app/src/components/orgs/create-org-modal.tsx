@@ -1,7 +1,7 @@
 'use client';
 
+import { setFormError } from '@/components/form';
 import { $createOrg } from '@/lib/api';
-import { setFormError } from '@/lib/form';
 import { invalidateProjectsQuery } from '@/lib/queries/project';
 import { Button } from '@hexa/ui/button';
 import {
