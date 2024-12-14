@@ -9,6 +9,7 @@ export * from './password-field';
 export * from './read-only';
 export * from './regex-field';
 export * from './select-field';
+export * from './textarea-field';
 export * from './time-field';
 export * from './time-range-field';
 export * from './form-utils';
