@@ -9,6 +9,7 @@ import {
 } from '@hexa/ui/card';
 
 import { setFormError } from '@/components/form';
+import { Form } from '@/components/form';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { InputField } from '@/components/form/input-field';
 import { $deleteProject } from '@/lib/api';
@@ -20,7 +21,6 @@ import {
   type DeleteProjectType,
 } from '@/server/schema/project';
 import { Button } from '@hexa/ui/button';
-import { Form } from '@hexa/ui/form';
 import {
   Dialog,
   DialogContent,
@@ -80,51 +80,50 @@ export function DeleteProject() {
           </DialogTrigger>
 
           <DialogContent className="sm:max-w-[425px]">
-            <Form {...form}>
-              <form
-                onSubmit={handleSubmit((json) =>
-                  deleteProject({
-                    json,
-                  })
-                )}
-                className="space-y-4"
-              >
-                <DialogHeader>
-                  <DialogTitle>Delete Project</DialogTitle>
-                  <DialogDescription>
-                    Permanently delete your {NEXT_PUBLIC_APP_NAME} project, and
-                    it's respective stats. This action cannot be undone - please
-                    proceed with caution.
-                  </DialogDescription>
-                </DialogHeader>
+            <Form
+              form={form}
+              onSubmit={handleSubmit((json) =>
+                deleteProject({
+                  json,
+                })
+              )}
+              className="space-y-4"
+            >
+              <DialogHeader>
+                <DialogTitle>Delete Project</DialogTitle>
+                <DialogDescription>
+                  Permanently delete your {NEXT_PUBLIC_APP_NAME} project, and
+                  it's respective stats. This action cannot be undone - please
+                  proceed with caution.
+                </DialogDescription>
+              </DialogHeader>
 
-                <InputField form={form} name="projectId" label="Project ID" />
-                <InputField
-                  form={form}
-                  name="confirm"
-                  label={
-                    <>
-                      To verify, type
-                      <span className="px-1 font-bold">
-                        {DELETE_PROJECT_CONFIRMATION}
-                      </span>
-                      below
-                    </>
-                  }
-                />
-                <FormErrorMessage message={errors.root?.message} />
+              <InputField form={form} name="projectId" label="Project ID" />
+              <InputField
+                form={form}
+                name="confirm"
+                label={
+                  <>
+                    To verify, type
+                    <span className="px-1 font-bold">
+                      {DELETE_PROJECT_CONFIRMATION}
+                    </span>
+                    below
+                  </>
+                }
+              />
+              <FormErrorMessage message={errors.root?.message} />
 
-                <DialogFooter>
-                  <Button
-                    variant="destructive"
-                    className="w-full"
-                    type="submit"
-                    loading={isSubmitting}
-                  >
-                    {DELETE_PROJECT_CONFIRMATION}
-                  </Button>
-                </DialogFooter>
-              </form>
+              <DialogFooter>
+                <Button
+                  variant="destructive"
+                  className="w-full"
+                  type="submit"
+                  loading={isSubmitting}
+                >
+                  {DELETE_PROJECT_CONFIRMATION}
+                </Button>
+              </DialogFooter>
             </Form>
           </DialogContent>
         </Dialog>

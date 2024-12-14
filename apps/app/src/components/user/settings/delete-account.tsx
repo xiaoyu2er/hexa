@@ -9,6 +9,7 @@ import {
 } from '@hexa/ui/card';
 
 import { setFormError } from '@/components/form';
+import { Form } from '@/components/form';
 import { $deleteUser } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import {
@@ -17,7 +18,6 @@ import {
   type DeleteUserType,
 } from '@/server/schema/user';
 import { Button } from '@hexa/ui/button';
-import { Form } from '@hexa/ui/form';
 
 import { InputField } from '@/components/form/input-field';
 import {
@@ -84,38 +84,36 @@ export function DeleteAccount() {
                 This action cannot be undone - please proceed with caution.
               </DialogDescription>
             </DialogHeader>
-            <Form {...form}>
-              <form
-                onSubmit={handleSubmit((json) => deleteUser({ json }))}
-                method="POST"
-                className="md:space-y-4"
-              >
-                <DialogBody className="space-y-2">
-                  <InputField
-                    form={form}
-                    name="confirm"
-                    label={
-                      <>
-                        To verify, type
-                        <span className="px-1 font-bold">
-                          {DELETE_USER_CONFIRMATION}
-                        </span>
-                        below
-                      </>
-                    }
-                  />
-                </DialogBody>
-                <DialogFooter>
-                  <Button
-                    variant="destructive"
-                    className="w-full"
-                    type="submit"
-                    loading={isSubmitting}
-                  >
-                    {DELETE_USER_CONFIRMATION}
-                  </Button>
-                </DialogFooter>
-              </form>
+            <Form
+              form={form}
+              onSubmit={handleSubmit((json) => deleteUser({ json }))}
+              className="md:space-y-4"
+            >
+              <DialogBody className="space-y-2">
+                <InputField
+                  form={form}
+                  name="confirm"
+                  label={
+                    <>
+                      To verify, type
+                      <span className="px-1 font-bold">
+                        {DELETE_USER_CONFIRMATION}
+                      </span>
+                      below
+                    </>
+                  }
+                />
+              </DialogBody>
+              <DialogFooter>
+                <Button
+                  variant="destructive"
+                  className="w-full"
+                  type="submit"
+                  loading={isSubmitting}
+                >
+                  {DELETE_USER_CONFIRMATION}
+                </Button>
+              </DialogFooter>
             </Form>
           </DialogContent>
         </Dialog>

@@ -13,8 +13,8 @@ import {
   DialogTitle,
 } from '@hexa/ui/responsive-dialog';
 
+import { Form } from '@/components/form';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
-import { Form } from '@hexa/ui/form';
 import { toast } from '@hexa/ui/sonner';
 
 import { Dialog } from '@/components/dialog';
@@ -62,36 +62,34 @@ export const CreateOrgModal = NiceModal.create(() => {
           <DialogDescription>Create a new organization</DialogDescription>
         </DialogHeader>
 
-        <Form {...form}>
-          <form
-            onSubmit={handleSubmit((json) => createOrg({ json }))}
-            method="POST"
-            className="md:space-y-4"
-          >
-            <DialogBody className="space-y-2">
-              <InputField
-                form={form}
-                name="name"
-                label="Organization name"
-                placeholder="Acme Inc."
-              />
+        <Form
+          form={form}
+          onSubmit={handleSubmit((json) => createOrg({ json }))}
+          className="md:space-y-4"
+        >
+          <DialogBody className="space-y-2">
+            <InputField
+              form={form}
+              name="name"
+              label="Organization name"
+              placeholder="Acme Inc."
+            />
 
-              <InputField
-                form={form}
-                name="desc"
-                label="Organization Description"
-                placeholder="A description of the organization"
-              />
+            <InputField
+              form={form}
+              name="desc"
+              label="Organization Description"
+              placeholder="A description of the organization"
+            />
 
-              <FormErrorMessage message={errors.root?.message} />
-            </DialogBody>
+            <FormErrorMessage message={errors.root?.message} />
+          </DialogBody>
 
-            <DialogFooter>
-              <Button className="w-full" type="submit" loading={isSubmitting}>
-                Create Organization
-              </Button>
-            </DialogFooter>
-          </form>
+          <DialogFooter>
+            <Button className="w-full" type="submit" loading={isSubmitting}>
+              Create Organization
+            </Button>
+          </DialogFooter>
         </Form>
       </DialogContent>
     </Dialog>

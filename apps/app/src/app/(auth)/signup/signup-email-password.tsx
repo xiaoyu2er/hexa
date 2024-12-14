@@ -4,6 +4,7 @@ import { FormErrorMessage } from '@/components/form/form-error-message';
 import {} from '@/server/schema/signup';
 import { Button } from '@nextui-org/react';
 
+import { Form } from '@/components/form';
 import {
   Card,
   CardContent,
@@ -12,7 +13,6 @@ import {
   CardTitle,
 } from '@hexa/ui/card';
 import { Divider } from '@hexa/ui/divider';
-import { Form } from '@hexa/ui/form';
 import { type FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -84,46 +84,44 @@ export const SignupEmailPassword: FC<SignupEmailPasswordProps> = ({
       <CardContent>
         <OauthButtons />
         <Divider>or</Divider>
-        <Form {...form}>
-          <form
-            onSubmit={handleSubmit((json) =>
-              checkUserEmail({
-                json: omit(json, ['password']),
-              })
-            )}
-            method="POST"
-            className="space-y-2"
-          >
-            <InputField
-              form={form}
-              name="email"
-              label="Email"
-              type="email"
-              placeholder="Enter your email"
-            />
-            <PasswordField
-              form={form}
-              name="password"
-              label="Password"
-              placeholder="Enter your password"
-            />
-            <FormErrorMessage message={errors.root?.message} />
-            {turnstile}
+        <Form
+          form={form}
+          onSubmit={handleSubmit((json) =>
+            checkUserEmail({
+              json: omit(json, ['password']),
+            })
+          )}
+          className="space-y-2"
+        >
+          <InputField
+            form={form}
+            name="email"
+            label="Email"
+            type="email"
+            placeholder="Enter your email"
+          />
+          <PasswordField
+            form={form}
+            name="password"
+            label="Password"
+            placeholder="Enter your password"
+          />
+          <FormErrorMessage message={errors.root?.message} />
+          {turnstile}
 
-            <AuthLink href="/login">Have an account? Login</AuthLink>
-            <Button
-              color="primary"
-              className="w-full"
-              type="submit"
-              isLoading={isSubmitting}
-              isDisabled={disableNext}
-            >
-              Continue
-            </Button>
-            <Button variant="ghost" className="w-full" onClick={onCancel}>
-              Cancel
-            </Button>
-          </form>
+          <AuthLink href="/login">Have an account? Login</AuthLink>
+          <Button
+            color="primary"
+            className="w-full"
+            type="submit"
+            isLoading={isSubmitting}
+            isDisabled={disableNext}
+          >
+            Continue
+          </Button>
+          <Button variant="ghost" className="w-full" onClick={onCancel}>
+            Cancel
+          </Button>
         </Form>
       </CardContent>
     </Card>

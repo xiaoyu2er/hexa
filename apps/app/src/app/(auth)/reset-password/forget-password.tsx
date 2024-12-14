@@ -15,6 +15,7 @@ import {
 import { Button } from '@nextui-org/react';
 
 import { AuthLink } from '@/components/auth/auth-link';
+import { Form } from '@/components/form';
 import {
   Card,
   CardContent,
@@ -22,7 +23,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@hexa/ui/card';
-import { Form } from '@hexa/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { type FC, useEffect } from 'react';
@@ -82,37 +82,33 @@ export const ForgetPassword: FC<ForgetPasswordProps> = ({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Form {...form}>
-          <form
-            onSubmit={handleSubmit((json) =>
-              resetPasswordSendPasscode({ json })
-            )}
-            method="POST"
-            className="space-y-2"
+        <Form
+          form={form}
+          onSubmit={handleSubmit((json) => resetPasswordSendPasscode({ json }))}
+          className="space-y-2"
+        >
+          <InputField
+            form={form}
+            name="email"
+            label="Email"
+            type="email"
+            placeholder="Enter your email"
+          />
+          <FormErrorMessage message={errors.root?.message} />
+          {turnstile}
+          <AuthLink href="/signup">Not signed up? Sign up now.</AuthLink>
+          <Button
+            color="primary"
+            className="w-full"
+            type="submit"
+            isLoading={isSubmitting}
+            isDisabled={disableNext}
           >
-            <InputField
-              form={form}
-              name="email"
-              label="Email"
-              type="email"
-              placeholder="Enter your email"
-            />
-            <FormErrorMessage message={errors.root?.message} />
-            {turnstile}
-            <AuthLink href="/signup">Not signed up? Sign up now.</AuthLink>
-            <Button
-              color="primary"
-              className="w-full"
-              type="submit"
-              isLoading={isSubmitting}
-              isDisabled={disableNext}
-            >
-              Continue
-            </Button>
-            <Button variant="ghost" className="w-full" onClick={onCancel}>
-              Cancel
-            </Button>
-          </form>
+            Continue
+          </Button>
+          <Button variant="ghost" className="w-full" onClick={onCancel}>
+            Cancel
+          </Button>
         </Form>
       </CardContent>
     </Card>
