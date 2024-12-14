@@ -110,11 +110,11 @@ export const SelectField = <T extends FieldValues = FieldValues>({
       variant="bordered"
       onSelectionChange={(value) => {
         if (selectionMode === 'multiple') {
-          const valueArray = [...value];
+          const valueArray = [...value] as string[];
           field.onChange(valueArray);
           onChange?.(valueArray);
         } else {
-          const val = [...value][0];
+          const val = [...value][0] as string | undefined;
           if (val) {
             field.onChange(val);
             onChange?.(val);

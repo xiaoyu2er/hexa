@@ -49,7 +49,6 @@ export const RuleConditions = ({
                 formKey={`rules.${ruleIndex}.conditions.${condIndex}`}
                 form={form}
                 key={condition.id}
-                condition={condition}
                 onRemove={() => onRemove(condIndex)}
                 conditions={conditions}
                 onUpdate={(value) => update(condIndex, value)}

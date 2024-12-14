@@ -4,18 +4,18 @@ import type { FieldValues, UseFormReturn } from 'react-hook-form';
 
 export const Form = <T extends FieldValues>({
   form,
-  handleSubmit,
+  onSubmit,
   children,
   className,
 }: {
   form: UseFormReturn<T>;
-  handleSubmit: FormEventHandler<HTMLFormElement>;
+  onSubmit: FormEventHandler<HTMLFormElement>;
   children: ReactNode;
   className?: string;
 }) => {
   return (
     <FormProvider {...form}>
-      <form onSubmit={handleSubmit} className={className}>
+      <form onSubmit={onSubmit} className={className}>
         {children}
       </form>
     </FormProvider>

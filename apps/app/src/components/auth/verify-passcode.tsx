@@ -68,7 +68,7 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
   const { resetTurnstile, turnstile } = useTurnstile({
     form: turnstileForm,
     onSuccess: () => {
-      resendPasscode({ ...turnstileForm.getValues(), id: passcodeId });
+      resendPasscode({ ...turnstileForm.getValues(), id: passcodeId ?? '' });
       resetTurnstile();
       setShowResendChange(false);
     },

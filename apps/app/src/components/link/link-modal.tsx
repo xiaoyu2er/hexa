@@ -134,7 +134,7 @@ export const LinkModal = NiceModal.create(
 
           <Form
             form={form}
-            handleSubmit={handleSubmit((json) =>
+            onSubmit={handleSubmit((json) =>
               mode === 'create'
                 ? // @ts-ignore
                   createLink({ json })

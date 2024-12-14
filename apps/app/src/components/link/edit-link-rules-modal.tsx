@@ -117,7 +117,7 @@ export const EditLinkRulesModal = NiceModal.create(
 
           <Form
             form={form}
-            handleSubmit={handleSubmit((data) => {
+            onSubmit={handleSubmit((data) => {
               modal.resolve(data.rules);
               modal.remove();
             })}
