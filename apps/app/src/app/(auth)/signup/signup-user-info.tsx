@@ -79,6 +79,7 @@ export const SignupUserInfo: FC<SignupProps> = ({
             name="name"
             label="Your name"
             placeholder="Jane Doe"
+            isRequired
           />
           <InputField
             form={form}

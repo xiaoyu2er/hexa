@@ -40,7 +40,7 @@
     "@internationalized/date": "^3.6.0",
     "@lucia-auth/adapter-drizzle": "1.0.7",
     "@lucia-auth/adapter-sqlite": "3.0.2",
-    "@marsidev/react-turnstile": "0.7.1",
+    "@marsidev/react-turnstile": "1.1.0",
     "@nextui-org/react": "^2.6.4",
     "@nextui-org/system": "^2.4.3",
     "@nextui-org/theme": "^2.4.1",

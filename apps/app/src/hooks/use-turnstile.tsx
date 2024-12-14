@@ -41,7 +41,7 @@ export function useTurnstile<T extends FieldValues>({
     <Turnstile
       ref={ref}
       options={{
-        size: 'auto',
+        size: 'flexible',
         // type TurnstileTheme = 'light' | 'dark' | 'auto';
         theme: theme === 'dark' ? 'dark' : 'light',
       }}

@@ -1,9 +1,7 @@
 'use client';
 
 import { AuthLink } from '@/components/auth/auth-link';
-import { setFormError } from '@/components/form';
-import { Form } from '@/components/form';
-import { FormErrorMessage } from '@/components/form/form-error-message';
+import { Form, FormErrorMessage, setFormError } from '@/components/form';
 import { PasswordField } from '@/components/form/password-field';
 import { $resetPassword } from '@/lib/api';
 import {
@@ -79,13 +77,13 @@ export const ResetPassword: FC<ResetParsswordCardProps> = ({
             form={form}
             name="password"
             label="Password"
-            placeholder="Enter your password"
+            isRequired
           />
           <PasswordField
             form={form}
             name="confirmPassword"
             label="Confirm Password"
-            placeholder="Enter your password again"
+            isRequired
           />
           <FormErrorMessage message={errors.root?.message} />
 
