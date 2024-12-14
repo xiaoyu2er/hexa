@@ -7,16 +7,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@hexa/ui/card';
-import {} from '@hexa/ui/form';
 
 import { ReadOnly } from '@/components/form/read-only';
 import { EditProjectSlugModal } from '@/components/project/settings/edit-project-slug-modal';
 import { useProject } from '@/hooks/use-project';
 import type { SelectProjectType } from '@/server/schema/project';
 import { useModal } from '@ebay/nice-modal-react';
-import { Button } from '@hexa/ui/button';
+import { Button } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
-import {} from 'react';
 
 export function EditProjectSlug() {
   const { project } = useProject();
@@ -37,9 +35,8 @@ export function EditProjectSlug() {
       </CardContent>
       <CardFooter className="flex-row-reverse items-center justify-between border-t px-6 py-4">
         <Button
-          variant="secondary"
-          className="shrink-0"
-          onClick={() => {
+          variant="flat"
+          onPress={() => {
             modal.show({ project }).then((newProject) => {
               router.replace(
                 `/project/${(newProject as SelectProjectType).slug}/settings`

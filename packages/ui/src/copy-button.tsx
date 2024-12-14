@@ -3,8 +3,8 @@
 import { Check, Copy } from '@hexa/ui/icons';
 import { toast } from '@hexa/ui/sonner';
 import { cn } from '@hexa/utils';
+import { Button } from '@nextui-org/react';
 import { useState } from 'react';
-import { Button } from './ui/button';
 
 export function CopyButton({
   value,
@@ -17,11 +17,10 @@ export function CopyButton({
   const Comp = copied ? Check : Copy;
   return (
     <Button
-      variant="ghost"
-      size="icon"
-      onClick={async (e) => {
-        e.stopPropagation();
-
+      variant="light"
+      isIconOnly
+      aria-label="Copy"
+      onPress={async () => {
         try {
           await navigator.clipboard.writeText(value);
           toast.success('Copied to clipboard!');
@@ -31,10 +30,12 @@ export function CopyButton({
           toast.error('Failed to copy to clipboard!');
         }
       }}
-      className={cn('h-6 w-6', className)}
+      className={cn('h-6 w-6 min-w-6', className)}
     >
-      <span className="sr-only">Copy</span>
-      <Comp className="h-4 w-4 text-gray-700 transition-all group-hover:text-blue-800" />
+      <Comp
+        className="h-4 w-4 text-gray-700 transition-all group-hover:text-blue-800"
+        strokeWidth={1.5}
+      />
     </Button>
   );
 }

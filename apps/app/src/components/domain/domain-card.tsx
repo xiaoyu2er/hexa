@@ -2,8 +2,9 @@ import { DNSRecordsTable } from '@/components/domain/dns-records-table';
 import { VerificationTab } from '@/components/domain/verification-tab';
 import type { QueryDomainType } from '@/server/schema/domain';
 import { Badge } from '@hexa/ui/badge';
-import { Button } from '@hexa/ui/button';
+
 import { GlobeIcon } from '@hexa/ui/icons';
+import { Button } from '@nextui-org/react';
 import type { Row } from '@tanstack/react-table';
 import { useState } from 'react';
 
@@ -77,7 +78,7 @@ export function DomainCard({ row, onRefresh }: DomainCardProps) {
             <Button
               variant="ghost"
               size="sm"
-              onClick={onRefresh}
+              onPress={onRefresh}
               className="flex-shrink-0"
             >
               Refresh
@@ -88,7 +89,8 @@ export function DomainCard({ row, onRefresh }: DomainCardProps) {
             <Button
               variant="ghost"
               size="sm"
-              className="flex-shrink-0 text-destructive"
+              color="danger"
+              className="flex-shrink-0"
             >
               Delete
             </Button>

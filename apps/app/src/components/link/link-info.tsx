@@ -1,8 +1,8 @@
 'use client';
 
 import type { SelectLinkType } from '@/server/schema/link';
+import { CopyButton } from '@hexa/ui/copy-button';
 import { LinkIcon } from '@hexa/ui/icons';
-import { CopyButton } from './copy-button';
 
 interface LinkInfoProps {
   link: SelectLinkType;
@@ -32,7 +32,7 @@ export function LinkInfo({ link, size = 'default' }: LinkInfoProps) {
             <span className="max-w-[180px] truncate font-medium">
               {shortUrl}
             </span>
-            <CopyButton url={shortUrl} className="flex-shrink-0" />
+            <CopyButton value={shortUrl} className="flex-shrink-0" />
           </div>
           <div className="mt-0.5 text-gray-500 text-sm">
             <span className="inline-block max-w-[200px] truncate md:max-w-[400px]">

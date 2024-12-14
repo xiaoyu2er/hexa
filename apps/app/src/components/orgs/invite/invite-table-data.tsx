@@ -4,6 +4,7 @@ import { TableColumnHeader } from '@/components/table/table-column-header';
 import type { FilterConfig } from '@/components/table/table-types';
 import { UserAvatar } from '@/components/user/settings/user-avatar';
 import { useInvites } from '@/hooks/use-invites';
+import { getInviteUrl } from '@/lib/emails/url';
 import { invalidateOrgInvites } from '@/lib/queries/orgs';
 import {
   InviteSortableColumnOptions,
@@ -12,9 +13,10 @@ import {
 import type { QueryInviteType } from '@/server/schema/org-invite';
 import { OrgRoleOptions } from '@/server/schema/org-member';
 import { Badge } from '@hexa/ui/badge';
+import { CopyButton } from '@hexa/ui/copy-button';
+import { Chip } from '@nextui-org/react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
-import { InviteLink } from './invite-link';
 
 // Helper function to get column label
 const getColumnLabel = (columnId: string) =>
@@ -98,7 +100,11 @@ export const columns: ColumnDef<QueryInviteType>[] = [
     ),
     cell: ({ row }) => {
       const invite = row.original;
-      return <Badge variant="secondary">{capitalize(invite.status)}</Badge>;
+      return (
+        <Chip color="default" size="sm">
+          {capitalize(invite.status)}
+        </Chip>
+      );
     },
   },
   {
@@ -108,7 +114,7 @@ export const columns: ColumnDef<QueryInviteType>[] = [
     ),
     cell: ({ row }) => {
       const invite = row.original;
-      return <InviteLink token={invite.token} />;
+      return <CopyButton value={getInviteUrl(invite.token)} />;
     },
     enableSorting: false,
   },

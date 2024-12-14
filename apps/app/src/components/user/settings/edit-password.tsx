@@ -1,13 +1,11 @@
 'use client';
-import { Form, setFormError } from '@/components/form';
+import { Form, PasswordField, setFormError } from '@/components/form';
 import { FormErrorMessage } from '@/components/form/form-error-message';
-import { InputField } from '@/components/form/input-field';
 import { useUser } from '@/hooks/use-user';
 import { $updateUserPassword } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import { EditPasswordSchema } from '@/server/schema/reset-password';
 import type { EditPasswordType } from '@/server/schema/reset-password';
-import { Button } from '@hexa/ui/button';
 import {
   Card,
   CardContent,
@@ -20,8 +18,8 @@ import { useForm } from '@hexa/ui/form';
 import { Input } from '@hexa/ui/input';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Link } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
-import Link from 'next/link';
 import { useState } from 'react';
 
 export function EditPassword() {
@@ -76,41 +74,51 @@ export function EditPassword() {
           form={form}
           onSubmit={handleSubmit((json) => updatePassword({ json }))}
         >
-          <CardContent className="max-w-md space-y-2">
+          <CardContent className="flex max-w-md flex-col gap-2">
             {user.hasPassword && (
-              <InputField
+              <PasswordField
                 form={form}
                 name="oldPassword"
                 label="Old Password"
-                type="password"
+                labelPlacement="outside"
+                placeholder="********"
               />
             )}
-            <InputField
+            <PasswordField
               form={form}
               name="password"
+              labelPlacement="outside"
+              placeholder="********"
               label={user.hasPassword ? 'New Password' : 'Password'}
-              type="password"
             />
-            <InputField
+            <PasswordField
               form={form}
               name="confirmPassword"
+              labelPlacement="outside"
+              placeholder="********"
               label="Confirm Password"
-              type="password"
             />
             <FormErrorMessage message={errors.root?.message} />
-            <Button variant="link" size="sm" className="p-0" asChild>
-              <Link href="/reset-password">Forgot password?</Link>
-            </Button>
+            <Link
+              size="sm"
+              className="p-0"
+              href="/reset-password"
+              color="primary"
+              underline="always"
+            >
+              Forget password?
+            </Link>
           </CardContent>
           <CardFooter className="flex-row-reverse items-center gap-4 border-t px-6 py-4">
-            <Button type="submit" className="shrink-0" loading={isSubmitting}>
+            <Button
+              type="submit"
+              className="shrink-0"
+              isLoading={isSubmitting}
+              color="primary"
+            >
               {user.hasPassword ? 'Update' : 'Set'} password
             </Button>
-            <Button
-              variant="outline"
-              className="shrink-0"
-              onClick={cancelUpdate}
-            >
+            <Button variant="light" className="shrink-0" onPress={cancelUpdate}>
               Cancel
             </Button>
           </CardFooter>
@@ -124,9 +132,9 @@ export function EditPassword() {
           </CardContent>
           <CardFooter className="flex-row-reverse items-center gap-4 border-t px-6 py-4">
             <Button
-              type="submit"
               className="shrink-0"
-              onClick={() => setShowResetPassword(true)}
+              color="primary"
+              onPress={() => setShowResetPassword(true)}
             >
               {user.hasPassword ? 'Update' : 'Set'} password
             </Button>

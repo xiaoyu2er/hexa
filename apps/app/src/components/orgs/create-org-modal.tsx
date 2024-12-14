@@ -3,7 +3,6 @@
 import { setFormError } from '@/components/form';
 import { $createOrg } from '@/lib/api';
 import { invalidateProjectsQuery } from '@/lib/queries/project';
-import { Button } from '@hexa/ui/button';
 import {
   DialogBody,
   DialogContent,
@@ -21,6 +20,7 @@ import { Dialog } from '@/components/dialog';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { InsertOrgSchema, type InsertOrgType } from '@/server/schema/org';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -86,7 +86,12 @@ export const CreateOrgModal = NiceModal.create(() => {
           </DialogBody>
 
           <DialogFooter>
-            <Button className="w-full" type="submit" loading={isSubmitting}>
+            <Button
+              className="w-full"
+              type="submit"
+              isLoading={isSubmitting}
+              color="primary"
+            >
               Create Organization
             </Button>
           </DialogFooter>

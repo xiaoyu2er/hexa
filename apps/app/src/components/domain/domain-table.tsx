@@ -6,7 +6,7 @@ import { BaseTable, type TableRef } from '@/components/table/base-table';
 import { useProject } from '@/hooks/use-project';
 import { invalidateDomains } from '@/lib/queries/orgs';
 import type { QueryDomainType } from '@/server/schema/domain';
-import { Button } from '@hexa/ui/button';
+import { Button } from '@nextui-org/react';
 import { useRef } from 'react';
 import { DomainCard as Card } from './domain-card';
 import { DomainCardSkeleton as CardSkeleton } from './domain-card-skeleton';
@@ -36,14 +36,20 @@ export const DomainTable = () => {
       useData={useData}
       Card={Card}
       CardNoResults={() => (
-        <NoDomain slot={<Button onClick={onClick}>Create Domain</Button>} />
+        <NoDomain
+          slot={
+            <Button size="sm" onPress={onClick} color="primary">
+              Create Domain
+            </Button>
+          }
+        />
       )}
       searchPlaceholder={searchPlaceholder}
       filterConfigs={filterConfigs}
       sortOptions={sortOptions}
       CardSkeleton={CardSkeleton}
       actionSlot={
-        <Button size="sm" onClick={onClick}>
+        <Button size="sm" onPress={onClick} color="primary">
           Create Domain
         </Button>
       }

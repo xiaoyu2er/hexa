@@ -17,7 +17,6 @@ import {
   DeleteUserSchema,
   type DeleteUserType,
 } from '@/server/schema/user';
-import { Button } from '@hexa/ui/button';
 
 import { InputField } from '@/components/form/input-field';
 import {
@@ -32,6 +31,7 @@ import {
 } from '@hexa/ui/responsive-dialog';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 
@@ -58,7 +58,7 @@ export function DeleteAccount() {
   });
 
   return (
-    <Card className="border border-red-600">
+    <Card className="border border-danger-500">
       <CardHeader>
         <CardTitle>Delete account</CardTitle>
         <CardDescription>
@@ -67,10 +67,10 @@ export function DeleteAccount() {
           caution.
         </CardDescription>
       </CardHeader>
-      <CardFooter className="flex-row-reverse items-center justify-between border-red-600 border-t px-6 py-4">
+      <CardFooter className="flex-row-reverse items-center justify-between border-danger-500 border-t px-6 py-4">
         <Dialog>
           <DialogTrigger asChild>
-            <Button type="submit" variant="destructive" className="shrink-0">
+            <Button color="danger" className="shrink-0">
               Delete account
             </Button>
           </DialogTrigger>
@@ -106,10 +106,10 @@ export function DeleteAccount() {
               </DialogBody>
               <DialogFooter>
                 <Button
-                  variant="destructive"
+                  color="danger"
                   className="w-full"
                   type="submit"
-                  loading={isSubmitting}
+                  isLoading={isSubmitting}
                 >
                   {DELETE_USER_CONFIRMATION}
                 </Button>

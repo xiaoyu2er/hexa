@@ -11,14 +11,15 @@ import {
   type SelectOrgMemberType,
 } from '@/server/schema/org-member';
 import { Badge } from '@hexa/ui/badge';
-import { Button } from '@hexa/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@hexa/ui/dropdown-menu';
+
 import { MoreHorizontal } from '@hexa/ui/icons';
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from '@nextui-org/react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
 
@@ -79,21 +80,25 @@ export const columns: ColumnDef<SelectOrgMemberType>[] = [
 
       return (
         <div className="flex justify-end">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
+          <Dropdown>
+            <DropdownTrigger>
+              <Button
+                isIconOnly
+                aria-label="Open menu"
+                variant="light"
+                size="sm"
+              >
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {!isOwner && (
-                <DropdownMenuItem className="text-destructive">
+            </DropdownTrigger>
+            <DropdownMenu>
+              {isOwner ? null : (
+                <DropdownItem color="danger" className="text-danger">
                   Remove member
-                </DropdownMenuItem>
+                </DropdownItem>
               )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+            </DropdownMenu>
+          </Dropdown>
         </div>
       );
     },

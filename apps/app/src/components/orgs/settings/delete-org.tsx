@@ -20,8 +20,6 @@ import {
   DeleteOrgSchema,
   type DeleteOrgType,
 } from '@/server/schema/org';
-import {} from '@/server/schema/project';
-import { Button } from '@hexa/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -33,6 +31,7 @@ import {
 } from '@hexa/ui/responsive-dialog';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -75,7 +74,7 @@ export function DeleteOrg() {
       <CardFooter className="flex-row-reverse items-center justify-between border-red-600 border-t px-6 py-4">
         <Dialog>
           <DialogTrigger asChild>
-            <Button type="submit" variant="destructive" className="shrink-0">
+            <Button type="submit" color="danger" className="shrink-0">
               Delete organization
             </Button>
           </DialogTrigger>
@@ -116,10 +115,10 @@ export function DeleteOrg() {
 
               <DialogFooter>
                 <Button
-                  variant="destructive"
+                  color="danger"
                   className="w-full"
                   type="submit"
-                  loading={isSubmitting}
+                  isLoading={isSubmitting}
                 >
                   {DELETE_ORG_CONFIRMATION}
                 </Button>
