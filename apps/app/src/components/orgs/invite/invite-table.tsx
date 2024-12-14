@@ -1,7 +1,7 @@
 'use client';
 import { BaseTable, type TableRef } from '@/components/table/base-table';
 import type { QueryInviteType } from '@/server/schema/org-invite';
-import { forwardRef } from 'react';
+import { type ReactNode, forwardRef } from 'react';
 import {
   InviteCardWithActions as Card,
   InviteCardSkeleton as CardSkeleton,
@@ -14,21 +14,27 @@ import {
   useData,
 } from './invite-table-data';
 
-export const OrgInviteTable = forwardRef<TableRef<QueryInviteType>>(
-  (_, ref) => {
-    return (
-      <BaseTable
-        ref={ref}
-        columns={columns}
-        useData={useData}
-        Card={Card}
-        searchPlaceholder={searchPlaceholder}
-        filterConfigs={filterConfigs}
-        sortOptions={sortOptions}
-        CardSkeleton={CardSkeleton}
-      />
-    );
-  }
-);
+interface OrgInviteTableProps {
+  actionSlot?: ReactNode;
+}
+
+export const OrgInviteTable = forwardRef<
+  TableRef<QueryInviteType>,
+  OrgInviteTableProps
+>(({ actionSlot }, ref) => {
+  return (
+    <BaseTable
+      ref={ref}
+      columns={columns}
+      useData={useData}
+      Card={Card}
+      searchPlaceholder={searchPlaceholder}
+      filterConfigs={filterConfigs}
+      sortOptions={sortOptions}
+      CardSkeleton={CardSkeleton}
+      actionSlot={actionSlot}
+    />
+  );
+});
 
 OrgInviteTable.displayName = 'OrgInviteTable';

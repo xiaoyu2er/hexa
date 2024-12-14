@@ -8,8 +8,7 @@ import { useProject } from '@/hooks/use-project';
 import { invalidateOrgInvites } from '@/lib/queries/orgs';
 import type { QueryInviteType } from '@/server/schema/org-invite';
 import { useModal } from '@ebay/nice-modal-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@hexa/ui/tabs';
-import { Button } from '@nextui-org/react';
+import { Button, Tab, Tabs } from '@nextui-org/react';
 import { useRef } from 'react';
 
 export function MembersPage() {
@@ -24,15 +23,19 @@ export function MembersPage() {
         <p className="text-muted-foreground">Manage your team members here.</p>
       </div>
 
-      <Tabs defaultValue="members">
-        <TabsList>
-          <TabsTrigger value="members">Members</TabsTrigger>
-          <TabsTrigger value="invites">Invites</TabsTrigger>
-        </TabsList>
+      <div className="relative">
+        <Tabs defaultSelectedKey="members">
+          <Tab key="members" title="Members">
+            <OrgMemberTable />
+          </Tab>
+          <Tab key="invites" title="Invites">
+            <OrgInviteTable ref={inviteTableRef} />
+          </Tab>
+        </Tabs>
         <Button
           color="primary"
           size="sm"
-          className="float-right"
+          className="absolute top-0 right-0"
           onPress={() =>
             modal.show(project).then(() => {
               inviteTableRef.current?.table.setPageIndex(0);
@@ -42,13 +45,7 @@ export function MembersPage() {
         >
           Invite
         </Button>
-        <TabsContent value="members" className="mt-4">
-          <OrgMemberTable />
-        </TabsContent>
-        <TabsContent value="invites" className="mt-4">
-          <OrgInviteTable ref={inviteTableRef} />
-        </TabsContent>
-      </Tabs>
+      </div>
     </>
   );
 }
