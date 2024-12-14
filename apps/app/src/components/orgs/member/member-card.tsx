@@ -1,7 +1,6 @@
 import { UserAvatar } from '@/components/user/settings/user-avatar';
 import type { SelectOrgMemberType } from '@/server/schema/org-member';
 import { Badge } from '@hexa/ui/badge';
-import { Button } from '@hexa/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,6 +9,7 @@ import {
 } from '@hexa/ui/dropdown-menu';
 import { MoreHorizontal } from '@hexa/ui/icons';
 import { Skeleton } from '@hexa/ui/skeleton';
+import { Button } from '@nextui-org/react';
 import type { Row } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
 
@@ -57,8 +57,7 @@ export const MemberCardWithActions = ({
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
+          <Button isIconOnly aria-label="Open menu" variant="ghost">
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>

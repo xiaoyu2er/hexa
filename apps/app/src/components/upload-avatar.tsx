@@ -5,7 +5,6 @@ import {
   UpdateAvatarSchema,
   type UpdateAvatarType,
 } from '@/server/schema/common';
-import { Button } from '@hexa/ui/button';
 import {
   Card,
   CardContent,
@@ -18,6 +17,7 @@ import { FileUpload } from '@hexa/ui/file-upload';
 import { FormControl, FormField, FormItem, FormMessage } from '@hexa/ui/form';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -104,9 +104,11 @@ export default function UploadAvatar({
         </CardContent>
         <CardFooter className="flex-row-reverse items-center justify-between border-t px-6 py-4">
           <Button
+            type="submit"
+            color="primary"
             className="mr-2 shrink-0"
-            loading={isSubmitting}
-            disabled={avatarUrl === avatarUrlProp}
+            isLoading={isSubmitting}
+            isDisabled={avatarUrl === avatarUrlProp}
           >
             Update
           </Button>

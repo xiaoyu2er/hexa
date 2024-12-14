@@ -5,7 +5,6 @@ import {
   type InferApiResponseType,
 } from '@/lib/api';
 import { EmailSchema, type EmailType } from '@/server/schema/common';
-import { Button } from '@hexa/ui/button';
 import {
   Card,
   CardContent,
@@ -17,6 +16,7 @@ import {
 
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import type { FC } from 'react';
 import { useForm } from 'react-hook-form';
@@ -73,15 +73,10 @@ export const AddUserEmail: FC<AddUserEmailProps> = ({
           <InputField form={form} name="email" label="Email" />
         </CardContent>
         <CardFooter className="flex-row-reverse items-center gap-4 border-t px-6 py-4">
-          <Button
-            type="submit"
-            className="shrink-0"
-            loading={isSubmitting}
-            disabled={!isDirty}
-          >
+          <Button type="submit" color="primary" isLoading={isSubmitting}>
             Update
           </Button>
-          <Button className="shrink-0" variant="secondary" onClick={onCancel}>
+          <Button variant="light" onClick={onCancel}>
             Cancel
           </Button>
         </CardFooter>

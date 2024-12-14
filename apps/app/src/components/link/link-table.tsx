@@ -17,7 +17,7 @@ import { useProject } from '@/hooks/use-project';
 import { invalidateProjectLinks } from '@/lib/queries/project';
 import type { SelectLinkType } from '@/server/schema/link';
 import { useModal } from '@ebay/nice-modal-react';
-import { Button } from '@hexa/ui/button';
+import { Button } from '@nextui-org/react';
 import { useRef } from 'react';
 
 export function LinkTable() {
@@ -28,7 +28,8 @@ export function LinkTable() {
     <Button
       className="mr-2"
       size="sm"
-      onClick={() =>
+      color="primary"
+      onPress={() =>
         modal.show({ project, mode: 'create' }).then(() => {
           ref.current?.table.setPageIndex(0);
           invalidateProjectLinks(project.id);

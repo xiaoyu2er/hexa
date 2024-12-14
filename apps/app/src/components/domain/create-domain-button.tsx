@@ -2,7 +2,7 @@
 import { useProject } from '@/hooks/use-project';
 import { invalidateDomains } from '@/lib/queries/orgs';
 import { useModal } from '@ebay/nice-modal-react';
-import { Button } from '@hexa/ui/button';
+import { Button } from '@nextui-org/react';
 import { CreateDomainModal } from './create-domain-modal';
 
 export function CreateDomain({ className }: { className?: string }) {
@@ -10,12 +10,13 @@ export function CreateDomain({ className }: { className?: string }) {
   const { project } = useProject();
   return (
     <Button
-      onClick={() => {
+      onPress={() => {
         modal.show().then(() => {
           invalidateDomains(project.org.id);
         });
       }}
       className={className}
+      color="primary"
     >
       Create Domain
     </Button>

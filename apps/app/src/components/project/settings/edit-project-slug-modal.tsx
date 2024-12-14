@@ -11,9 +11,6 @@ import {
 } from '@/server/schema/project';
 import type { SelectProjectType } from '@/server/schema/project';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
-import { Alert, AlertDescription, AlertTitle } from '@hexa/ui/alert';
-import { Button } from '@hexa/ui/button';
-import { ExclamationTriangleIcon } from '@hexa/ui/icons';
 import {
   DialogBody,
   DialogContent,
@@ -23,6 +20,7 @@ import {
 } from '@hexa/ui/responsive-dialog';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Alert, Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useBoolean } from 'usehooks-ts';
@@ -75,7 +73,11 @@ export const EditProjectSlugModal = NiceModal.create(
                 <InputField form={form} name="slug" label="Slug" />
               </DialogBody>
               <DialogFooter>
-                <Button className="w-full" type="submit" loading={isSubmitting}>
+                <Button
+                  className="w-full"
+                  type="submit"
+                  isLoading={isSubmitting}
+                >
                   Change slug
                 </Button>
               </DialogFooter>
@@ -87,13 +89,12 @@ export const EditProjectSlugModal = NiceModal.create(
               <DialogTitle>Really change project slug?</DialogTitle>
             </DialogHeader>
             <DialogBody>
-              <Alert variant="destructive" className="mt-2">
-                <ExclamationTriangleIcon className="h-4 w-4" />
-                <AlertTitle>Notice</AlertTitle>
-                <AlertDescription>
-                  Unexpected bad things will happen if you don’t read this!
-                </AlertDescription>
-              </Alert>
+              <Alert
+                color="danger"
+                className="mt-2"
+                title="Notice"
+                description="Unexpected bad things will happen if you don’t read this!"
+              />
               <ul className="list-disc px-3 pt-3">
                 <li>
                   We <strong>will not</strong> set up redirects for your
@@ -105,7 +106,7 @@ export const EditProjectSlugModal = NiceModal.create(
             </DialogBody>
             <DialogFooter>
               <Button
-                variant="destructive"
+                color="danger"
                 className="w-full"
                 type="submit"
                 onClick={understandBool.setTrue}

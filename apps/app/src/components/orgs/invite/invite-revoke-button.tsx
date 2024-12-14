@@ -1,10 +1,9 @@
 import { $revokeInvite } from '@/lib/api';
 import type { QueryInviteType } from '@/server/schema/org-invite';
-import { Button } from '@hexa/ui/button';
 import { toast } from '@hexa/ui/sonner';
 import { cn } from '@hexa/utils/cn';
+import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
-
 export default function RevokeInvite({
   invite,
   onSuccess,
@@ -28,11 +27,11 @@ export default function RevokeInvite({
   return (
     <div className={cn('flex items-center justify-end gap-2', className)}>
       <Button
-        variant="destructive"
+        color="danger"
         size="sm"
         className="w-full"
-        onClick={() => revokeInvite()}
-        loading={isPending}
+        onPress={() => revokeInvite()}
+        isLoading={isPending}
       >
         Revoke
       </Button>

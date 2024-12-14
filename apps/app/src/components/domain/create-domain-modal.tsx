@@ -2,7 +2,6 @@
 
 import { setFormError } from '@/components/form';
 import { $createDomain } from '@/lib/api';
-import { Button } from '@hexa/ui/button';
 import {
   DialogBody,
   DialogContent,
@@ -24,8 +23,8 @@ import {
 } from '@/server/schema/domain';
 import type { SelectProjectType } from '@/server/schema/project';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
-import {} from '@hexa/ui/select';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@nextui-org/react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 
@@ -98,7 +97,12 @@ export const CreateDomainModal = NiceModal.create(
             </DialogBody>
 
             <DialogFooter>
-              <Button className="w-full" type="submit" loading={isSubmitting}>
+              <Button
+                className="w-full"
+                type="submit"
+                isLoading={isSubmitting}
+                color="primary"
+              >
                 Add Domain
               </Button>
             </DialogFooter>

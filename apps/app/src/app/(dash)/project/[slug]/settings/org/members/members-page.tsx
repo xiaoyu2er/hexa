@@ -8,8 +8,8 @@ import { useProject } from '@/hooks/use-project';
 import { invalidateOrgInvites } from '@/lib/queries/orgs';
 import type { QueryInviteType } from '@/server/schema/org-invite';
 import { useModal } from '@ebay/nice-modal-react';
-import { Button } from '@hexa/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@hexa/ui/tabs';
+import { Button } from '@nextui-org/react';
 import { useRef } from 'react';
 
 export function MembersPage() {
@@ -30,9 +30,10 @@ export function MembersPage() {
           <TabsTrigger value="invites">Invites</TabsTrigger>
         </TabsList>
         <Button
-          variant="default"
+          color="primary"
+          size="sm"
           className="float-right"
-          onClick={() =>
+          onPress={() =>
             modal.show(project).then(() => {
               inviteTableRef.current?.table.setPageIndex(0);
               invalidateOrgInvites(project.org.id);

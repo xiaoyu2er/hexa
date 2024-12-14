@@ -119,6 +119,7 @@ export const LinkModal = NiceModal.create(
           }
         }}
         size="4xl"
+        backdrop="blur"
       >
         <ModalContent>
           <ModalHeader className="flex flex-col gap-1">

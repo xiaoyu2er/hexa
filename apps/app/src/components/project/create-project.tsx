@@ -2,7 +2,7 @@
 
 import { invalidateProjectsQuery } from '@/lib/queries/project';
 import { useModal } from '@ebay/nice-modal-react';
-import { Button } from '@hexa/ui/button';
+import { Button } from '@nextui-org/react';
 import { CreateProjectModal } from './project-create-modal';
 
 export function CreateProject() {
@@ -10,7 +10,8 @@ export function CreateProject() {
 
   return (
     <Button
-      onClick={() => {
+      color="primary"
+      onPress={() => {
         modal.show().then(() => {
           invalidateProjectsQuery();
         });
