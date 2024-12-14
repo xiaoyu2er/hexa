@@ -77,7 +77,7 @@ export const RegexField = <T extends FieldValues = FieldValues>({
             width="100%"
             height="120"
             src={`https://jex.im/regulex/#!embed=true&flags=${flags}&re=${encodeURIComponent(
-              unescapeRegex(expression)
+              unescapeRegex(expression) ?? ''
             )}`}
           />
         </div>

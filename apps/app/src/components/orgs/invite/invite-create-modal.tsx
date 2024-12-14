@@ -1,7 +1,5 @@
 'use client';
-
-import { Dialog } from '@/components/dialog';
-import { setFormError } from '@/components/form';
+import { Form, setFormError } from '@/components/form';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { InputField } from '@/components/form/input-field';
 import { SelectField } from '@/components/form/select-field';
@@ -12,24 +10,22 @@ import {
 } from '@/server/schema/org-invite';
 import type { SelectProjectType } from '@/server/schema/project';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
-import { Button } from '@hexa/ui/button';
-import { Form } from '@hexa/ui/form';
+
 import { Trash } from '@hexa/ui/icons';
-import {
-  DialogBody,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@hexa/ui/responsive-dialog';
-import {} from '@hexa/ui/select';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useFieldArray, useForm } from 'react-hook-form';
 
 import { OrgRoleOptions } from '@/server/schema/org-member';
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from '@nextui-org/react';
 
 export const CreateInvitesModal = NiceModal.create(
   (project: SelectProjectType) => {
@@ -79,68 +75,68 @@ export const CreateInvitesModal = NiceModal.create(
     };
 
     return (
-      <Dialog control={modal}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Invite Members</DialogTitle>
-            <DialogDescription>
-              Invite members to your organization
-            </DialogDescription>
-          </DialogHeader>
-          <Form {...form}>
-            <form
-              onSubmit={handleSubmit((json) => createInvites({ json }))}
-              method="POST"
-              className="md:space-y-4"
-            >
-              <DialogBody className="space-y-2">
-                {fields.map((field, index) => (
-                  <div className="flex w-full space-x-2" key={field.id}>
-                    <InputField
-                      formItemClassName="flex-grow"
-                      form={form}
-                      name={`invites.${index}.email`}
-                    />
-                    <SelectField
-                      formItemClassName="w-24 shrink-0"
-                      form={form}
-                      name={`invites.${index}.role`}
-                      options={getRoleOptions()}
-                    />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      className="mt-2 h-6 w-6 p-0"
-                      onClick={() => remove(index)}
-                    >
-                      <span className="sr-only">Remove invite</span>
-                      <Trash strokeWidth={1.5} />
-                    </Button>
-                  </div>
-                ))}
-                {fields.length < 10 && (
+      <Modal isOpen={modal.visible} onOpenChange={() => modal.hide()} size="md">
+        <ModalContent>
+          <ModalHeader>Invite Members</ModalHeader>
+          <Form
+            form={form}
+            onSubmit={handleSubmit((json) => createInvites({ json }))}
+          >
+            <ModalBody className="space-y-2">
+              {fields.map((field, index) => (
+                <div
+                  className="flex w-full items-start space-x-2"
+                  key={field.id}
+                >
+                  <InputField
+                    form={form}
+                    name={`invites.${index}.email`}
+                    placeholder="Email"
+                    hideErrorMessageCodes={['invalid_string']}
+                  />
+                  <SelectField
+                    form={form}
+                    name={`invites.${index}.role`}
+                    options={getRoleOptions()}
+                  />
                   <Button
                     type="button"
-                    variant="outline"
-                    size="sm"
-                    className="mt-2"
-                    onClick={() => append({ email: '', role: 'MEMBER' })}
+                    variant="light"
+                    isIconOnly
+                    aria-label="Remove invite"
+                    className="mt-2 h-6 w-6 min-w-6"
+                    onPress={() => remove(index)}
                   >
-                    Add Invite
+                    <Trash className="h-4 w-4" strokeWidth={1.5} />
                   </Button>
-                )}
-                <FormErrorMessage message={errors.root?.message} />
-              </DialogBody>
-
-              <DialogFooter>
-                <Button className="w-full" type="submit" loading={isSubmitting}>
-                  Invite members
+                </div>
+              ))}
+              {fields.length < 10 && (
+                <Button
+                  type="button"
+                  variant="bordered"
+                  size="sm"
+                  className="w-fit"
+                  onPress={() => append({ email: '', role: 'MEMBER' })}
+                >
+                  Add Invite
                 </Button>
-              </DialogFooter>
-            </form>
+              )}
+              <FormErrorMessage message={errors.root?.message} />
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                className="w-full"
+                color="primary"
+                type="submit"
+                isLoading={isSubmitting}
+              >
+                Invite members
+              </Button>
+            </ModalFooter>
           </Form>
-        </DialogContent>
-      </Dialog>
+        </ModalContent>
+      </Modal>
     );
   }
 );
