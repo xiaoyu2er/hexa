@@ -6,8 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@hexa/ui/card';
 import { BarChart2Icon } from '@hexa/ui/icons';
 import type { LucideIcon } from '@hexa/ui/icons';
 import { Skeleton } from '@hexa/ui/skeleton';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@hexa/ui/tabs';
 import type { LogsKey } from '@hexa/utils/analytics';
+import { Tab as NextUITab, Tabs } from '@nextui-org/react';
 import { useState } from 'react';
 
 export interface Tab {
@@ -124,40 +124,30 @@ export function LogsChart({ timeRange, title, tabs }: LogsChartProps) {
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="relative">
         <Tabs
-          defaultValue={tabs?.[0]?.key ?? ''}
+          selectedKey={tabs?.[0]?.key ?? ''}
           className="space-y-4"
-          onValueChange={setActiveTab}
+          onSelectionChange={(key) => setActiveTab(key as string)}
         >
-          <div className="flex items-center justify-between">
-            <TabsList>
-              {tabs.map((tab) => (
-                <TabsTrigger key={tab.key} value={tab.key}>
-                  {tab.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            <div className="flex items-center gap-2 text-muted-foreground text-sm">
-              <BarChart2Icon className="h-4 w-4" />
-              <span>Clicks</span>
-            </div>
-          </div>
-
-          {isLoading ? (
-            <LoadingSkeleton />
-          ) : (
-            <>
-              {tabs.map((tab) => (
-                <TabsContent key={tab.key} value={tab.key}>
+          {tabs.map((tab) => (
+            <NextUITab key={tab.key} value={tab.key} title={tab.label}>
+              {isLoading ? (
+                <LoadingSkeleton />
+              ) : (
+                <>
                   <div className="space-y-1">
                     {logsData && renderData(logsData.data)}
                   </div>
-                </TabsContent>
-              ))}
-            </>
-          )}
+                </>
+              )}
+            </NextUITab>
+          ))}
         </Tabs>
+        <div className="absolute top-2 right-4 flex items-center gap-2 text-muted-foreground text-sm">
+          <BarChart2Icon className="h-4 w-4" />
+          <span>Clicks</span>
+        </div>
       </CardContent>
     </Card>
   );
