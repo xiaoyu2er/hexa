@@ -4,8 +4,6 @@ import type {
   SortOption,
   TableView,
 } from '@/components/table/table-types';
-import { Button } from '@hexa/ui/button';
-import { Checkbox } from '@hexa/ui/checkbox';
 import { useScreenSize } from '@hexa/ui/hooks/use-screen-size';
 import {
   ArrowDown,
@@ -15,26 +13,25 @@ import {
   Settings2,
   X,
 } from '@hexa/ui/icons';
-import { Label } from '@hexa/ui/label';
-import { MultiSelect } from '@hexa/ui/multi-select';
-import { Popover, PopoverContent, PopoverTrigger } from '@hexa/ui/popover';
+
 import {
+  Badge,
+  Button,
+  Checkbox,
+  CheckboxGroup,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Select,
-  SelectContent,
   SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@hexa/ui/select';
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@hexa/ui/sheet';
-import { Tabs, TabsList, TabsTrigger } from '@hexa/ui/tabs';
+  Tab,
+  Tabs,
+} from '@nextui-org/react';
 import type { Table } from '@tanstack/react-table';
-import { useState } from 'react';
+import { type ComponentProps, forwardRef, useState } from 'react';
 
 // Helper function to get column label
 function getColumnLabel<TData>(options: SortOption<TData>[], columnId: string) {
@@ -79,201 +76,197 @@ function TableViewOptionsContent<TData>({
   showViewChange = true,
 }: TableViewOptionsContentProps<TData>) {
   const currentSort = table.getState().sorting[0];
+  const visibleColumns = table
+    .getAllColumns()
+    .filter((column) => column.getIsVisible())
+    .map((column) => column.id);
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex-1">
+    <div className="flex h-full w-full flex-col">
+      <div className="flex flex-1 flex-col gap-3 p-3">
         {/* View Toggle - Desktop Only */}
         {isDesktop && showViewChange && (
-          <div className="border-b">
-            <div className="p-3">
-              <Tabs
-                value={view}
-                onValueChange={(value) => onViewChange?.(value as TableView)}
-                className="w-full"
-              >
-                <TabsList className="w-full">
-                  <TabsTrigger
-                    value="cards"
-                    className="flex w-full items-center gap-2"
-                  >
-                    <LayoutGrid className="h-4 w-4" />
-                    Cards
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="rows"
-                    className="flex w-full items-center gap-2"
-                  >
-                    <LayoutList className="h-4 w-4" />
-                    Rows
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-            </div>
-          </div>
+          <Tabs
+            selectedKey={view}
+            onSelectionChange={(value) => onViewChange?.(value as TableView)}
+            classNames={{
+              base: 'w-full',
+              tabList: 'w-full',
+            }}
+          >
+            <Tab
+              key="cards"
+              className="flex w-full items-center gap-2"
+              title={
+                <div className="flex items-center gap-2">
+                  <LayoutGrid className="h-4 w-4" />
+                  Cards
+                </div>
+              }
+            />
+            <Tab
+              key="rows"
+              className="flex w-full items-center gap-2"
+              title={
+                <div className="flex items-center gap-2">
+                  <LayoutList className="h-4 w-4" />
+                  Rows
+                </div>
+              }
+            />
+          </Tabs>
         )}
 
         {/* Sorting section - Always visible */}
-        <div className="border-b">
-          <div className="p-3">
-            <div className="mb-2 font-medium">Ordering</div>
-            <div className="relative">
-              <Select
-                value={currentSort?.id || ''}
-                onValueChange={(value) => {
-                  if (value) {
+        <Select
+          size="sm"
+          label="Order by"
+          labelPlacement="outside"
+          placeholder="Select column"
+          aria-label="Order by"
+          variant="bordered"
+          selectedKeys={
+            currentSort?.id ? new Set([currentSort.id]) : new Set([])
+          }
+          endContent={
+            currentSort?.id && (
+              <>
+                <button
+                  type="button"
+                  aria-label={
+                    currentSort.desc ? 'Sort Descending' : 'Sort Ascending'
+                  }
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
                     table.setSorting([
                       {
-                        id: value,
-                        desc:
-                          currentSort?.id === value ? currentSort.desc : true,
+                        id: currentSort.id,
+                        desc: !currentSort.desc,
                       },
                     ]);
-                  } else {
-                    table.resetSorting();
+                  }}
+                  title={
+                    currentSort.desc ? 'Sort Descending' : 'Sort Ascending'
                   }
-                }}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Sort by..." />
-                </SelectTrigger>
-                <SelectContent>
-                  {sortOptions.map((option) => (
-                    <SelectItem
-                      key={String(option.value)}
-                      value={String(option.value)}
-                    >
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                >
+                  {currentSort.desc ? (
+                    <ArrowDown className="h-3 w-3" />
+                  ) : (
+                    <ArrowUp className="h-3 w-3" />
+                  )}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    table.resetSorting();
+                  }}
+                  aria-label="Clear sort"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </>
+            )
+          }
+          onSelectionChange={(selection) => {
+            const value = [...selection][0] as string;
 
-              <div className="absolute top-0 right-8 flex h-full items-center gap-1.5">
-                {currentSort?.id && (
-                  <>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-muted-foreground hover:bg-muted hover:text-foreground"
-                      onClick={() => {
-                        table.setSorting([
-                          {
-                            id: currentSort.id,
-                            desc: !currentSort.desc,
-                          },
-                        ]);
-                      }}
-                      title={
-                        currentSort.desc ? 'Sort Descending' : 'Sort Ascending'
-                      }
-                    >
-                      {currentSort.desc ? (
-                        <div className="flex items-center gap-1">
-                          <ArrowDown className="h-4 w-4" />
-                          {/* Optional: Add text for more clarity */}
-                          {/* <span className="text-xs">DESC</span> */}
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-1">
-                          <ArrowUp className="h-4 w-4" />
-                          {/* Optional: Add text for more clarity */}
-                          {/* <span className="text-xs">ASC</span> */}
-                        </div>
-                      )}
-                    </Button>
-
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-muted-foreground hover:bg-muted hover:text-foreground"
-                      onClick={() => table.resetSorting()}
-                    >
-                      <X className="h-4 w-4" />
-                      <span className="sr-only">Clear sort</span>
-                    </Button>
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
+            if (value) {
+              table.setSorting([
+                {
+                  id: value,
+                  desc: currentSort?.id === value ? currentSort.desc : true,
+                },
+              ]);
+            } else {
+              table.resetSorting();
+            }
+          }}
+        >
+          {sortOptions.map((option) => (
+            <SelectItem key={String(option.value)}>{option.label}</SelectItem>
+          ))}
+        </Select>
 
         {/* Filters section - Always visible */}
-        <div className="border-b">
-          <div className="p-3">
-            <div className="mb-2 font-medium">Filters</div>
-            <div className="space-y-3">
-              {filterConfigs.map((config) => {
-                const column = table.getColumn(String(config.columnId));
-                if (!column) {
-                  return null;
+        {filterConfigs.map((config) => {
+          const column = table.getColumn(String(config.columnId));
+          if (!column) {
+            return null;
+          }
+
+          const selectedValues = (column?.getFilterValue() as string[]) ?? [];
+
+          return (
+            <div key={config.columnId as string}>
+              <Select
+                variant="bordered"
+                labelPlacement="outside"
+                size="sm"
+                aria-label={`Filter by ${config.label}`}
+                selectionMode="multiple"
+                label={`Filter by ${config.label}`}
+                onSelectionChange={(selection) => {
+                  const values = [...selection] as string[];
+                  column?.setFilterValue(values.length ? values : undefined);
+                }}
+                selectedKeys={
+                  selectedValues ? new Set(selectedValues) : new Set([])
                 }
-
-                const selectedValues =
-                  (column?.getFilterValue() as string[]) ?? [];
-
-                return (
-                  <div key={config.columnId as string}>
-                    <div className="mb-1.5 text-muted-foreground text-sm">
-                      {config.label}
-                    </div>
-                    <MultiSelect
-                      options={config.options.map((option) => ({
-                        value: String(option.value),
-                        label: option.label,
-                      }))}
-                      onValueChange={(values) => {
-                        column?.setFilterValue(
-                          values.length ? values : undefined
-                        );
+                placeholder="Select options..."
+                className="w-full"
+                endContent={
+                  selectedValues.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        column?.setFilterValue(undefined);
                       }}
-                      defaultValue={selectedValues}
-                      placeholder="Select options..."
-                      variant="default"
-                      maxCount={3}
-                      className="w-full"
-                    />
-                  </div>
-                );
-              })}
+                      aria-label={`Clear filter for ${config.label}`}
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  )
+                }
+              >
+                {config.options.map((option) => (
+                  <SelectItem key={String(option.value)}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </Select>
             </div>
-          </div>
-        </div>
+          );
+        })}
 
         {/* Display Properties - Desktop Only */}
         {isDesktop && (
-          <div className="border-b">
-            <div className="p-3">
-              <h4 className="mb-2 font-medium">Display Properties</h4>
-              <div className="grid gap-1.5">
-                {table
-                  .getAllColumns()
-                  .filter(
-                    (column) =>
-                      typeof column.accessorFn !== 'undefined' &&
-                      column.getCanHide()
-                  )
-                  .map((column) => (
-                    <div key={column.id} className="flex items-center gap-2">
-                      <Checkbox
-                        checked={column.getIsVisible()}
-                        onCheckedChange={(value) =>
-                          column.toggleVisibility(!!value)
-                        }
-                        id={column.id}
-                      />
-                      <Label
-                        className="font-normal text-sm"
-                        htmlFor={column.id}
-                      >
-                        {getColumnLabel(sortOptions, column.id)}
-                      </Label>
-                    </div>
-                  ))}
-              </div>
-            </div>
-          </div>
+          <CheckboxGroup
+            size="sm"
+            classNames={{
+              label: 'text-foreground text-tiny',
+            }}
+            label="Display Properties"
+            value={visibleColumns}
+            onValueChange={(value) => {
+              for (const column of table.getAllColumns()) {
+                column.toggleVisibility(value.includes(column.id));
+              }
+            }}
+          >
+            {table
+              .getAllColumns()
+              .filter(
+                (column) =>
+                  typeof column.accessorFn !== 'undefined' &&
+                  column.getCanHide()
+              )
+              .map((column) => (
+                <Checkbox value={column.id} key={column.id} size="sm">
+                  {getColumnLabel(sortOptions, column.id)}
+                </Checkbox>
+              ))}
+          </CheckboxGroup>
         )}
       </div>
 
@@ -283,7 +276,7 @@ function TableViewOptionsContent<TData>({
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => {
+            onPress={() => {
               if (isDesktop) {
                 for (const column of table.getAllColumns()) {
                   column.toggleVisibility(true);
@@ -296,7 +289,7 @@ function TableViewOptionsContent<TData>({
           >
             Reset
           </Button>
-          <Button variant="default" size="sm" onClick={onClose}>
+          <Button color="primary" size="sm" onPress={onClose}>
             Set as default
           </Button>
         </div>
@@ -304,6 +297,31 @@ function TableViewOptionsContent<TData>({
     </div>
   );
 }
+
+export const TableViewOptionsButton = forwardRef<
+  HTMLButtonElement,
+  {
+    hasFiltersOrSort: boolean;
+  } & ComponentProps<typeof Button>
+>(({ hasFiltersOrSort, ...props }, ref) => {
+  const { isMobile } = useScreenSize();
+
+  return (
+    <Badge content="" color="primary" isInvisible={!hasFiltersOrSort}>
+      <Button
+        ref={ref}
+        variant="bordered"
+        size="sm"
+        isIconOnly={isMobile}
+        startContent={<Settings2 className="h-4 w-4" />}
+        className="relative ml-auto flex items-center gap-2"
+        {...props}
+      >
+        {!isMobile && <span>Display</span>}
+      </Button>
+    </Badge>
+  );
+});
 
 // Responsive wrapper component
 export function TableViewOptions<TData>({
@@ -324,72 +342,52 @@ export function TableViewOptions<TData>({
   // Separate desktop and mobile components
   if (!isMobile) {
     return (
-      <Popover open={isOpen} onOpenChange={setIsOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            size="sm"
-            className="relative ml-auto flex items-center gap-2"
-          >
-            <Settings2 className="h-4 w-4" />
-            <span>Display</span>
-            {hasFiltersOrSort && (
-              <div className="-right-0.5 -top-0.5 absolute h-2 w-2 rounded-full bg-blue-500" />
-            )}
-          </Button>
+      <Popover
+        classNames={{
+          content: 'w-[320px] p-0',
+        }}
+      >
+        <PopoverTrigger>
+          <TableViewOptionsButton hasFiltersOrSort={hasFiltersOrSort} />
         </PopoverTrigger>
-        <PopoverContent
-          align="end"
-          className="w-[320px] p-0"
-          style={{ maxHeight: 'calc(100vh - 120px)' }}
-        >
-          <div className="flex max-h-full flex-col">
-            <div className="flex-1 overflow-y-auto">
-              <TableViewOptionsContent
-                table={table}
-                sortOptions={sortOptions}
-                filterConfigs={filterConfigs}
-                showViewChange={showViewChange}
-                view={view}
-                onViewChange={onViewChange}
-                onClose={() => setIsOpen(false)}
-                isDesktop={true}
-              />
-            </div>
-          </div>
+        <PopoverContent>
+          <TableViewOptionsContent
+            table={table}
+            sortOptions={sortOptions}
+            filterConfigs={filterConfigs}
+            showViewChange={showViewChange}
+            view={view}
+            onViewChange={onViewChange}
+            onClose={() => setIsOpen(false)}
+            isDesktop={true}
+          />
         </PopoverContent>
       </Popover>
     );
   }
 
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          className="relative h-8 w-8 shrink-0"
-        >
-          <Settings2 className="h-4 w-4" />
-          {hasFiltersOrSort && (
-            <div className="-right-0.5 -top-0.5 absolute h-2 w-2 rounded-full bg-blue-500" />
-          )}
-        </Button>
-      </SheetTrigger>
-      <SheetContent side="bottom" className="flex h-[65vh] flex-col p-0">
-        <SheetHeader className="border-b px-3 py-3">
-          <SheetTitle>Sort & Filter</SheetTitle>
-        </SheetHeader>
-        <div className="flex-1 overflow-y-auto">
-          <TableViewOptionsContent
-            table={table}
-            sortOptions={sortOptions}
-            filterConfigs={filterConfigs}
-            onClose={() => setIsOpen(false)}
-            isDesktop={false}
-          />
-        </div>
-      </SheetContent>
-    </Sheet>
+    <>
+      <TableViewOptionsButton
+        hasFiltersOrSort={hasFiltersOrSort}
+        onPress={() => setIsOpen(true)}
+      />
+      <Modal isOpen={isOpen} onOpenChange={setIsOpen}>
+        <ModalContent>
+          <ModalHeader className="border-b px-3 py-3">
+            Sort & Filter
+          </ModalHeader>
+          <div className="flex-1 overflow-y-auto">
+            <TableViewOptionsContent
+              table={table}
+              sortOptions={sortOptions}
+              filterConfigs={filterConfigs}
+              onClose={() => setIsOpen(false)}
+              isDesktop={false}
+            />
+          </div>
+        </ModalContent>
+      </Modal>
+    </>
   );
 }
