@@ -1,8 +1,7 @@
 import { SiteBanner } from '@/components/www/site-banner';
 import { SiteFooter } from '@/components/www/site-footer';
 import { SiteHeader } from '@/components/www/site-header';
-import { Button } from '@hexa/ui/button';
-import Link from 'next/link';
+import { Button, Link } from '@nextui-org/react';
 import type { ReactElement } from 'react';
 
 export default function NotFound(): ReactElement {
@@ -19,8 +18,8 @@ export default function NotFound(): ReactElement {
             Oops! The page you're looking for doesn't seem to exist.
           </p>
 
-          <Button asChild>
-            <Link href="/">Return Home</Link>
+          <Button as={Link} href="/" color="primary">
+            Return Home
           </Button>
         </div>
       </main>
