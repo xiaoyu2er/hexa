@@ -8,9 +8,9 @@ import {
   CardTitle,
 } from '@hexa/ui/card';
 
+import { setFormError } from '@/components/form';
 import { $deleteUser } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
-import { setFormError } from '@/lib/form';
 import {
   DELETE_USER_CONFIRMATION,
   DeleteUserSchema,

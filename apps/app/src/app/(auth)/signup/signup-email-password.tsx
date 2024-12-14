@@ -18,11 +18,11 @@ import { useForm } from 'react-hook-form';
 
 import { AuthLink } from '@/components/auth/auth-link';
 import { OauthButtons } from '@/components/auth/oauth-buttons';
+import { setFormError } from '@/components/form';
 import { InputField } from '@/components/form/input-field';
 import { PasswordField } from '@/components/form/password-field';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import { $checkEmail } from '@/lib/api';
-import { setFormError } from '@/lib/form';
 import { PasswordSchema, type PasswordType } from '@/server/schema/common';
 import { CheckEmailSchema } from '@/server/schema/user';
 import type { CheckEmailType } from '@/server/schema/user';

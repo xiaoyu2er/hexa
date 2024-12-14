@@ -1,11 +1,11 @@
 'use client';
 
 import { Dialog } from '@/components/dialog';
+import { setFormError } from '@/components/form';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { InputField } from '@/components/form/input-field';
 import { SelectField } from '@/components/form/select-field';
 import { $createInvites } from '@/lib/api';
-import { setFormError } from '@/lib/form';
 import {
   CreateInvitesSchema,
   type CreateInvitesType,

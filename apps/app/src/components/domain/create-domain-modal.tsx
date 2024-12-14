@@ -1,7 +1,7 @@
 'use client';
 
+import { setFormError } from '@/components/form';
 import { $createDomain } from '@/lib/api';
-import { setFormError } from '@/lib/form';
 import { Button } from '@hexa/ui/button';
 import {
   DialogBody,

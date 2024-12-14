@@ -1,10 +1,10 @@
 'use client';
 
 import { AuthLink } from '@/components/auth/auth-link';
+import { setFormError } from '@/components/form';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { PasswordField } from '@/components/form/password-field';
 import { $resetPassword } from '@/lib/api';
-import { setFormError } from '@/lib/form';
 import {
   ResetPasswordSchema,
   type ResetPasswordType,

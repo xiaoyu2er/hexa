@@ -3,8 +3,8 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { toast } from '@hexa/ui/sonner';
 
+import { setFormError } from '@/components/form';
 import { $deleteUserOauthAccount } from '@/lib/api';
-import { setFormError } from '@/lib/form';
 import {
   type DeleteOauthAccountInput,
   DeleteOauthAccountSchema,

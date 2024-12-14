@@ -1,9 +1,9 @@
 'use client';
 
+import { setFormError } from '@/components/form';
 import { InputField } from '@/components/form/input-field';
 import { useUser } from '@/hooks/use-user';
 import { $updateUserName } from '@/lib/api';
-import { setFormError } from '@/lib/form';
 import {} from '@/server/schema/project';
 import {
   UpdateUserNameSchema,

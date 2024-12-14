@@ -1,4 +1,5 @@
 'use client';
+import { Form } from '@/components/form/form';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { RuleCard } from '@/components/link/rule-card';
 import {
@@ -22,9 +23,7 @@ import {
   RulesSchema,
 } from '@hexa/const/rule';
 
-import { Form } from '@hexa/ui/form';
 import { PlusIcon } from '@hexa/ui/icons';
-import {} from '@hexa/ui/responsive-dialog';
 import { ScrollArea } from '@hexa/ui/scroll-area';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -106,9 +105,9 @@ export const EditLinkRulesModal = NiceModal.create(
         <ModalContent>
           <ModalHeader className="flex flex-col gap-1">
             <p className="font-medium text-lg">Configure Routing Rules</p>
-            <p className="text-muted-foreground text-sm">
+            <p className="font-normal text-muted-foreground text-sm">
               <p>Add rules to route visitors to different destinations</p>
-              <p className="text-xs">
+              <p>
                 Rules are evaluated in order. The first matching rule will be
                 used. If no rules match, the default destination URL will be
                 used.
@@ -116,82 +115,80 @@ export const EditLinkRulesModal = NiceModal.create(
             </p>
           </ModalHeader>
 
-          <Form {...form}>
-            <form
-              onSubmit={handleSubmit((data) => {
-                modal.resolve(data.rules);
-                modal.remove();
-              })}
-              className="space-y-4"
-            >
-              <ModalBody>
-                <div className="space-y-4">
-                  <div className="sticky top-0 z-10 flex justify-end bg-background pt-2 pb-3">
-                    <Button
-                      type="button"
-                      color="primary"
-                      startContent={<PlusIcon className="h-4 w-4" />}
-                      aria-label="Add rule"
-                      size="sm"
-                      onClick={() =>
-                        append({
-                          conditions: [
-                            {
-                              field: undefined,
-                              operator: undefined,
-                              value: undefined,
-                            } as unknown as LinkRuleCondition,
-                          ],
-                          destUrl: '',
-                        })
-                      }
-                    >
-                      Add Rule
-                    </Button>
-                  </div>
-
-                  <ScrollArea className="h-[60vh] pb-2">
-                    <div className="space-y-4">
-                      <DndContext
-                        sensors={sensors}
-                        collisionDetection={closestCenter}
-                        onDragEnd={handleDragEnd}
-                      >
-                        <SortableContext
-                          items={fields}
-                          strategy={verticalListSortingStrategy}
-                        >
-                          {fields.map((field, ruleIndex) => (
-                            <RuleCard
-                              key={field.id}
-                              id={field.id}
-                              field={field}
-                              ruleIndex={ruleIndex}
-                              form={form}
-                              onRemove={() => remove(ruleIndex)}
-                            />
-                          ))}
-                        </SortableContext>
-                      </DndContext>
-
-                      {fields.length === 0 && (
-                        <p className="text-center text-muted-foreground text-sm">
-                          No rules added yet
-                        </p>
-                      )}
-                    </div>
-                  </ScrollArea>
+          <Form
+            form={form}
+            handleSubmit={handleSubmit((data) => {
+              modal.resolve(data.rules);
+              modal.remove();
+            })}
+          >
+            <ModalBody>
+              <div className="space-y-4">
+                <div className="sticky top-0 z-10 flex justify-end bg-background pt-2 pb-3">
+                  <Button
+                    type="button"
+                    color="primary"
+                    startContent={<PlusIcon className="h-4 w-4" />}
+                    aria-label="Add rule"
+                    size="sm"
+                    onClick={() =>
+                      append({
+                        conditions: [
+                          {
+                            field: undefined,
+                            operator: undefined,
+                            value: undefined,
+                          } as unknown as LinkRuleCondition,
+                        ],
+                        destUrl: '',
+                      })
+                    }
+                  >
+                    Add Rule
+                  </Button>
                 </div>
 
-                <FormErrorMessage message={errors.root?.message} />
-              </ModalBody>
+                <ScrollArea className="h-[60vh] pb-2">
+                  <div className="space-y-4">
+                    <DndContext
+                      sensors={sensors}
+                      collisionDetection={closestCenter}
+                      onDragEnd={handleDragEnd}
+                    >
+                      <SortableContext
+                        items={fields}
+                        strategy={verticalListSortingStrategy}
+                      >
+                        {fields.map((field, ruleIndex) => (
+                          <RuleCard
+                            key={field.id}
+                            id={field.id}
+                            field={field}
+                            ruleIndex={ruleIndex}
+                            form={form}
+                            onRemove={() => remove(ruleIndex)}
+                          />
+                        ))}
+                      </SortableContext>
+                    </DndContext>
 
-              <ModalFooter>
-                <Button type="submit" color="primary">
-                  Save Rules
-                </Button>
-              </ModalFooter>
-            </form>
+                    {fields.length === 0 && (
+                      <p className="text-center text-muted-foreground text-sm">
+                        No rules added yet
+                      </p>
+                    )}
+                  </div>
+                </ScrollArea>
+              </div>
+
+              <FormErrorMessage message={errors.root?.message} />
+            </ModalBody>
+
+            <ModalFooter>
+              <Button type="submit" color="primary">
+                Save Rules
+              </Button>
+            </ModalFooter>
           </Form>
         </ModalContent>
       </Modal>

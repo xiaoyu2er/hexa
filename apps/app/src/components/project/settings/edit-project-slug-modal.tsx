@@ -1,9 +1,9 @@
 'use client';
 
 import { Dialog } from '@/components/dialog';
+import { setFormError } from '@/components/form';
 import { InputField } from '@/components/form/input-field';
 import { $updateProjectSlug } from '@/lib/api';
-import { setFormError } from '@/lib/form';
 import {
   UpdateProjectSlugSchema,
   type UpdateProjectSlugType,

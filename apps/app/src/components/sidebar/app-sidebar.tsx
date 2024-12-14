@@ -2,6 +2,7 @@
 
 import { AppSidebarContent } from '@/components/sidebar/app-sidebar-content';
 import { AppSidebarFooter } from '@/components/sidebar/app-sidebar-footer';
+import { BackButton } from '@/components/sidebar/back-button';
 import { ContextSwitcher } from '@/components/sidebar/context-switcher';
 import type { SidebarGroupItem } from '@/components/sidebar/type';
 import {
@@ -10,17 +11,15 @@ import {
   getProjectSidebarItems,
   getSettingsSidebarItems,
 } from '@/components/sidebar/util';
-import { ArrowLeft } from '@hexa/ui/icons';
 import {
   Sidebar,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
 } from '@hexa/ui/sidebar';
+import {} from '@nextui-org/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 
 const variants = {
@@ -64,12 +63,7 @@ export function AppSidebar() {
                     variants={variants}
                     transition={{ duration: 0.2 }}
                   >
-                    <SidebarMenuButton asChild>
-                      <Link href={slug ? `/project/${slug}` : '/'}>
-                        <ArrowLeft />
-                        <span>Main Menu</span>
-                      </Link>
-                    </SidebarMenuButton>
+                    <BackButton slug={slug} />
                   </motion.div>
                 ) : (
                   <motion.div

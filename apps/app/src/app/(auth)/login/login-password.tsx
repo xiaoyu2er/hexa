@@ -1,8 +1,8 @@
 'use client';
 
+import { setFormError } from '@/components/form';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import { $loginPassword } from '@/lib/api';
-import { setFormError } from '@/lib/form';
 import {
   LoginPasswordSchema,
   type LoginPasswordType,
