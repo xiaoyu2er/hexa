@@ -1,8 +1,11 @@
 'use client';
 
-import { setFormError } from '@/components/form';
-import { FormErrorMessage } from '@/components/form/form-error-message';
-import { InputField } from '@/components/form/input-field';
+import {
+  Form,
+  FormErrorMessage,
+  InputField,
+  setFormError,
+} from '@/components/form';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import {
   $loginPasscodeSendPasscode,
@@ -19,7 +22,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@hexa/ui/card';
-import { Form } from '@hexa/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
@@ -73,43 +75,42 @@ export function LoginPasscode({ onSuccess }: LoginPasscodeProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Form {...form}>
-            <form
-              onSubmit={handleSubmit((json) =>
-                loginPasscodeSendPasscode({ json })
-              )}
-              className="space-y-2"
+          <Form
+            form={form}
+            onSubmit={handleSubmit((json) =>
+              loginPasscodeSendPasscode({ json })
+            )}
+            className="space-y-2"
+          >
+            <InputField
+              form={form}
+              name="email"
+              label="Email"
+              type="email"
+              placeholder="Enter your email"
+            />
+            <FormErrorMessage message={errors.root?.message} />
+            {turnstile}
+            <Button
+              color="primary"
+              type="submit"
+              className="!mt-4 w-full"
+              isLoading={isSubmitting}
+              isDisabled={disableNext}
+              key="login"
             >
-              <InputField
-                form={form}
-                name="email"
-                label="Email"
-                type="email"
-                placeholder="Enter your email"
-              />
-              <FormErrorMessage message={errors.root?.message} />
-              {turnstile}
-              <Button
-                color="primary"
-                type="submit"
-                className="!mt-4 w-full"
-                isLoading={isSubmitting}
-                isDisabled={disableNext}
-                key="login"
-              >
-                Login
-              </Button>
+              Login
+            </Button>
 
-              <Button
-                variant="ghost"
-                className="w-full"
-                key="cancel"
-                as={Link}
-                href="/login"
-              >
-                Back
-              </Button>
-            </form>
+            <Button
+              variant="ghost"
+              className="w-full"
+              key="cancel"
+              as={Link}
+              href="/login"
+            >
+              Back
+            </Button>
           </Form>
         </CardContent>
       </Card>

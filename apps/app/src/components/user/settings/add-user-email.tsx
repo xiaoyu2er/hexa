@@ -1,3 +1,4 @@
+import { Form } from '@/components/form';
 import { InputField } from '@/components/form/input-field';
 import {
   $addUserEmailSendPasscode,
@@ -13,7 +14,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@hexa/ui/card';
-import { Form } from '@hexa/ui/form';
 
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -56,38 +56,36 @@ export const AddUserEmail: FC<AddUserEmailProps> = ({
   });
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={handleSubmit((json) => addUserEmail({ json }))}
-        method="POST"
-        className="grid gap-4"
-      >
-        <Card className="mt-6">
-          <CardHeader>
-            <CardTitle>Add email address</CardTitle>
-            <CardDescription>
-              An email containing a verification code will be sent to this email
-              address.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <InputField form={form} name="email" label="Email" />
-          </CardContent>
-          <CardFooter className="flex-row-reverse items-center gap-4 border-t px-6 py-4">
-            <Button
-              type="submit"
-              className="shrink-0"
-              loading={isSubmitting}
-              disabled={!isDirty}
-            >
-              Update
-            </Button>
-            <Button className="shrink-0" variant="secondary" onClick={onCancel}>
-              Cancel
-            </Button>
-          </CardFooter>
-        </Card>
-      </form>
+    <Form
+      form={form}
+      onSubmit={handleSubmit((json) => addUserEmail({ json }))}
+      className="grid gap-4"
+    >
+      <Card className="mt-6">
+        <CardHeader>
+          <CardTitle>Add email address</CardTitle>
+          <CardDescription>
+            An email containing a verification code will be sent to this email
+            address.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <InputField form={form} name="email" label="Email" />
+        </CardContent>
+        <CardFooter className="flex-row-reverse items-center gap-4 border-t px-6 py-4">
+          <Button
+            type="submit"
+            className="shrink-0"
+            loading={isSubmitting}
+            disabled={!isDirty}
+          >
+            Update
+          </Button>
+          <Button className="shrink-0" variant="secondary" onClick={onCancel}>
+            Cancel
+          </Button>
+        </CardFooter>
+      </Card>
     </Form>
   );
 };

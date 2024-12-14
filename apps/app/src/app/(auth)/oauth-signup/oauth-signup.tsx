@@ -1,9 +1,12 @@
 'use client';
 
 import { TermsPrivacy } from '@/components/auth/terms-privacy';
-import { setFormError } from '@/components/form';
-import { FormErrorMessage } from '@/components/form/form-error-message';
-import { InputField } from '@/components/form/input-field';
+import {
+  Form,
+  FormErrorMessage,
+  InputField,
+  setFormError,
+} from '@/components/form';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import { $oauthSignup, type InferApiResponseType } from '@/lib/api';
 import {
@@ -12,7 +15,6 @@ import {
   type SelectOauthAccountType,
 } from '@/server/schema/oauth';
 import { Card, CardContent, CardHeader, CardTitle } from '@hexa/ui/card';
-import { Form } from '@hexa/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
@@ -66,38 +68,36 @@ export const OauthSignup: FC<OauthSignupProps> = ({
         <CardTitle>Tell us a bit about yourself</CardTitle>
       </CardHeader>
       <CardContent>
-        <Form {...form}>
-          <form
-            onSubmit={handleSubmit((json) => signup({ json }))}
-            method="POST"
-            className="space-y-4"
+        <Form
+          form={form}
+          onSubmit={handleSubmit((json) => signup({ json }))}
+          className="space-y-4"
+        >
+          <InputField form={form} readOnly name="email" label="Email" />
+          <InputField
+            form={form}
+            name="name"
+            label="Your name"
+            placeholder="Jane Doe"
+          />
+          <InputField
+            form={form}
+            name="orgName"
+            label="Organization name"
+            placeholder="Acme Inc."
+          />
+          <FormErrorMessage message={errors.root?.message} />
+          {turnstile}
+          <Button
+            color="primary"
+            className="w-full"
+            type="submit"
+            isLoading={isSubmitting}
+            isDisabled={disableNext}
           >
-            <InputField form={form} readOnly name="email" label="Email" />
-            <InputField
-              form={form}
-              name="name"
-              label="Your name"
-              placeholder="Jane Doe"
-            />
-            <InputField
-              form={form}
-              name="orgName"
-              label="Organization name"
-              placeholder="Acme Inc."
-            />
-            <FormErrorMessage message={errors.root?.message} />
-            {turnstile}
-            <Button
-              color="primary"
-              className="w-full"
-              type="submit"
-              isLoading={isSubmitting}
-              isDisabled={disableNext}
-            >
-              Create account
-            </Button>
-            <TermsPrivacy />
-          </form>
+            Create account
+          </Button>
+          <TermsPrivacy />
         </Form>
       </CardContent>
     </Card>

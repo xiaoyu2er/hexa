@@ -3,8 +3,8 @@
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { Button } from '@nextui-org/react';
 
+import { Form } from '@/components/form';
 import { Card, CardContent, CardHeader, CardTitle } from '@hexa/ui/card';
-import { Form } from '@hexa/ui/form';
 import { type FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -69,40 +69,38 @@ export const SignupUserInfo: FC<SignupProps> = ({
         <CardTitle>Tell us a bit about yourself</CardTitle>
       </CardHeader>
       <CardContent>
-        <Form {...form}>
-          <form
-            onSubmit={handleSubmit((json) => signup({ json }))}
-            method="POST"
-            className="space-y-4"
+        <Form
+          form={form}
+          onSubmit={handleSubmit((json) => signup({ json }))}
+          className="space-y-4"
+        >
+          <InputField
+            form={form}
+            name="name"
+            label="Your name"
+            placeholder="Jane Doe"
+          />
+          <InputField
+            form={form}
+            name="orgName"
+            label="Organization name"
+            placeholder="Acme Inc."
+          />
+          <FormErrorMessage message={errors.root?.message} />
+          {turnstile}
+          <Button
+            color="primary"
+            className="w-full"
+            type="submit"
+            isLoading={isSubmitting}
+            isDisabled={disableNext}
           >
-            <InputField
-              form={form}
-              name="name"
-              label="Your name"
-              placeholder="Jane Doe"
-            />
-            <InputField
-              form={form}
-              name="orgName"
-              label="Organization name"
-              placeholder="Acme Inc."
-            />
-            <FormErrorMessage message={errors.root?.message} />
-            {turnstile}
-            <Button
-              color="primary"
-              className="w-full"
-              type="submit"
-              isLoading={isSubmitting}
-              isDisabled={disableNext}
-            >
-              Create account
-            </Button>
-            {/* <Button variant="outline" className="w-full" onClick={onCancel}>
+            Create account
+          </Button>
+          {/* <Button variant="outline" className="w-full" onClick={onCancel}>
               Go back
             </Button> */}
-            <TermsPrivacy />
-          </form>
+          <TermsPrivacy />
         </Form>
       </CardContent>
     </Card>

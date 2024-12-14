@@ -13,6 +13,7 @@ import {
 } from '@hexa/ui/responsive-dialog';
 
 import { Dialog } from '@/components/dialog';
+import { Form } from '@/components/form';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { InputField } from '@/components/form/input-field';
 import { SelectField } from '@/components/form/select-field';
@@ -23,7 +24,6 @@ import {
 } from '@/server/schema/domain';
 import type { SelectProjectType } from '@/server/schema/project';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
-import { Form } from '@hexa/ui/form';
 import {} from '@hexa/ui/select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -70,40 +70,38 @@ export const CreateDomainModal = NiceModal.create(
             </DialogDescription>
           </DialogHeader>
 
-          <Form {...form}>
-            <form
-              onSubmit={handleSubmit((json) => createDomain({ json }))}
-              method="POST"
-              className="md:space-y-4"
-            >
-              <DialogBody className="space-y-2">
-                <SelectField
-                  form={form}
-                  name="orgId"
-                  label="Owner"
-                  placeholder="Select an owner"
-                  options={orgs?.map((org) => ({
-                    label: org.name,
-                    value: org.id,
-                  }))}
-                />
+          <Form
+            form={form}
+            onSubmit={handleSubmit((json) => createDomain({ json }))}
+            className="md:space-y-4"
+          >
+            <DialogBody className="space-y-2">
+              <SelectField
+                form={form}
+                name="orgId"
+                label="Owner"
+                placeholder="Select an owner"
+                options={orgs?.map((org) => ({
+                  label: org.name,
+                  value: org.id,
+                }))}
+              />
 
-                <InputField
-                  form={form}
-                  name="hostname"
-                  label="Hostname"
-                  placeholder="s.example.com"
-                />
+              <InputField
+                form={form}
+                name="hostname"
+                label="Hostname"
+                placeholder="s.example.com"
+              />
 
-                <FormErrorMessage message={errors.root?.message} />
-              </DialogBody>
+              <FormErrorMessage message={errors.root?.message} />
+            </DialogBody>
 
-              <DialogFooter>
-                <Button className="w-full" type="submit" loading={isSubmitting}>
-                  Add Domain
-                </Button>
-              </DialogFooter>
-            </form>
+            <DialogFooter>
+              <Button className="w-full" type="submit" loading={isSubmitting}>
+                Add Domain
+              </Button>
+            </DialogFooter>
           </Form>
         </DialogContent>
       </Dialog>

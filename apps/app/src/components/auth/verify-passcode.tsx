@@ -1,7 +1,7 @@
 'use client';
 
 import { AuthLink } from '@/components/auth/auth-link';
-import { setFormError } from '@/components/form';
+import { Form, setFormError } from '@/components/form';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import { RESEND_VERIFY_CODE_TIME_SPAN, VERIFY_CODE_LENGTH } from '@/lib/const';
@@ -20,7 +20,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@hexa/ui/card';
-import { Form, FormControl, FormField, FormItem } from '@hexa/ui/form';
+import { FormControl, FormField, FormItem } from '@hexa/ui/form';
 import { PencilLine } from '@hexa/ui/icons';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@hexa/ui/input-otp';
 import { cn } from '@hexa/utils';
@@ -73,7 +73,7 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
       setShowResendChange(false);
     },
   });
-  const formRef = useRef<HTMLFormElement>(null);
+  const _formRef = useRef<HTMLFormElement>(null);
   const {
     handleSubmit,
     setError,
@@ -139,67 +139,60 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
         ) : null}
       </CardHeader>
       <CardContent>
-        <Form {...form}>
-          <form
-            onSubmit={handleSubmit((json) => execVerifyCode(json))}
-            ref={formRef}
-            method="POST"
-            className="space-y-4"
-          >
-            <FormField
-              control={form.control}
-              name="code"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    {/* @ts-ignore */}
-                    <InputOTP
-                      maxLength={VERIFY_CODE_LENGTH}
-                      autoFocus
-                      {...field}
-                      containerClassName="justify-center"
-                      onComplete={handleSubmit((json) => execVerifyCode(json))}
-                    >
-                      {[...new Array(VERIFY_CODE_LENGTH).keys()].map(
-                        (index) => (
-                          <InputOTPGroup key={index}>
-                            <InputOTPSlot
-                              index={index}
-                              className={
-                                errors.code || errors.root
-                                  ? 'border-danger'
-                                  : ''
-                              }
-                            />
-                          </InputOTPGroup>
-                        )
-                      )}
-                    </InputOTP>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+        <Form
+          form={form}
+          onSubmit={handleSubmit((json) => execVerifyCode(json))}
+          className="space-y-4"
+        >
+          <FormField
+            control={form.control}
+            name="code"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  {/* @ts-ignore */}
+                  <InputOTP
+                    maxLength={VERIFY_CODE_LENGTH}
+                    autoFocus
+                    {...field}
+                    containerClassName="justify-center"
+                    onComplete={handleSubmit((json) => execVerifyCode(json))}
+                  >
+                    {[...new Array(VERIFY_CODE_LENGTH).keys()].map((index) => (
+                      <InputOTPGroup key={index}>
+                        <InputOTPSlot
+                          index={index}
+                          className={
+                            errors.code || errors.root ? 'border-danger' : ''
+                          }
+                        />
+                      </InputOTPGroup>
+                    ))}
+                  </InputOTP>
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
-            <FormErrorMessage message={errors.root?.message} />
-            {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
-            <AuthLink
-              href="#"
-              className={cn('block text-center text-sm', {
-                'opacity-70': count > 0 || showResendChange,
-                'hover:cursor-not-allowed': count > 0 || showResendChange,
-              })}
-              onClick={resed}
-            >
-              Didn't receive a code? Resend
-              {count > 0
-                ? `(${count}s)`
-                : // biome-ignore lint/nursery/noNestedTernary: <explanation>
-                  isRensedPending
-                  ? '...'
-                  : ''}
-            </AuthLink>
-            {showResendChange ? turnstile : null}
-          </form>
+          <FormErrorMessage message={errors.root?.message} />
+          {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+          <AuthLink
+            href="#"
+            className={cn('block text-center text-sm', {
+              'opacity-70': count > 0 || showResendChange,
+              'hover:cursor-not-allowed': count > 0 || showResendChange,
+            })}
+            onClick={resed}
+          >
+            Didn't receive a code? Resend
+            {count > 0
+              ? `(${count}s)`
+              : // biome-ignore lint/nursery/noNestedTernary: <explanation>
+                isRensedPending
+                ? '...'
+                : ''}
+          </AuthLink>
+          {showResendChange ? turnstile : null}
         </Form>
       </CardContent>
       <CardFooter className={cn('flex gap-2', 'flex-col')}>

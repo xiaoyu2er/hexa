@@ -4,9 +4,9 @@ import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { toast } from '@hexa/ui/sonner';
 
 import { setFormError } from '@/components/form';
+import { Form } from '@/components/form';
 import { $deleteUserEmail } from '@/lib/api';
 import { Button } from '@hexa/ui/button';
-import { Form } from '@hexa/ui/form';
 
 import {
   DialogBody,
@@ -67,36 +67,34 @@ export const DeleteUserEmailModal = NiceModal.create(
               stats. This action cannot be undone - please proceed with caution.
             </DialogDescription>
           </DialogHeader>
-          <Form {...form}>
-            <form
-              onSubmit={handleSubmit((json) => deleteUserEmail({ json }))}
-              method="POST"
-              className="md:space-y-4"
-            >
-              <DialogBody className="space-y-2">
-                <InputField
-                  form={form}
-                  name="email"
-                  label={
-                    <>
-                      To verify, type&nbsp;
-                      <span className="font-bold">{email}</span>&nbsp;below
-                    </>
-                  }
-                />
-              </DialogBody>
+          <Form
+            form={form}
+            onSubmit={handleSubmit((json) => deleteUserEmail({ json }))}
+            className="md:space-y-4"
+          >
+            <DialogBody className="space-y-2">
+              <InputField
+                form={form}
+                name="email"
+                label={
+                  <>
+                    To verify, type&nbsp;
+                    <span className="font-bold">{email}</span>&nbsp;below
+                  </>
+                }
+              />
+            </DialogBody>
 
-              <DialogFooter>
-                <Button
-                  variant="destructive"
-                  className="w-full"
-                  type="submit"
-                  loading={isSubmitting}
-                >
-                  Delete Email
-                </Button>
-              </DialogFooter>
-            </form>
+            <DialogFooter>
+              <Button
+                variant="destructive"
+                className="w-full"
+                type="submit"
+                loading={isSubmitting}
+              >
+                Delete Email
+              </Button>
+            </DialogFooter>
           </Form>
         </DialogContent>
       </Dialog>

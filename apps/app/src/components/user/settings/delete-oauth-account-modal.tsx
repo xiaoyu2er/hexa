@@ -4,6 +4,7 @@ import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { toast } from '@hexa/ui/sonner';
 
 import { setFormError } from '@/components/form';
+import { Form } from '@/components/form';
 import { $deleteUserOauthAccount } from '@/lib/api';
 import {
   type DeleteOauthAccountInput,
@@ -11,7 +12,6 @@ import {
 } from '@/server/schema/oauth';
 import type { ProviderType } from '@/server/schema/oauth';
 import { Button } from '@hexa/ui/button';
-import { Form } from '@hexa/ui/form';
 
 import {
   DialogBody,
@@ -71,37 +71,33 @@ export const DeleteOauthAccountModal = NiceModal.create(
               profile.
             </DialogDescription>
           </DialogHeader>
-          <Form {...form}>
-            <form
-              onSubmit={handleSubmit((json) =>
-                deleteUserOauthAccount({ json })
-              )}
-              method="POST"
-              className="md:space-y-4"
-            >
-              <DialogBody className="space-y-2">
-                <InputField
-                  form={form}
-                  name="provider"
-                  label={
-                    <>
-                      To verify, type&nbsp;
-                      <span className="font-bold">{provider}</span>&nbsp;below
-                    </>
-                  }
-                />
-              </DialogBody>
-              <DialogFooter>
-                <Button
-                  variant="destructive"
-                  className="w-full"
-                  type="submit"
-                  loading={isSubmitting}
-                >
-                  Delete Connected Account
-                </Button>
-              </DialogFooter>
-            </form>
+          <Form
+            form={form}
+            onSubmit={handleSubmit((json) => deleteUserOauthAccount({ json }))}
+            className="md:space-y-4"
+          >
+            <DialogBody className="space-y-2">
+              <InputField
+                form={form}
+                name="provider"
+                label={
+                  <>
+                    To verify, type&nbsp;
+                    <span className="font-bold">{provider}</span>&nbsp;below
+                  </>
+                }
+              />
+            </DialogBody>
+            <DialogFooter>
+              <Button
+                variant="destructive"
+                className="w-full"
+                type="submit"
+                loading={isSubmitting}
+              >
+                Delete Connected Account
+              </Button>
+            </DialogFooter>
           </Form>
         </DialogContent>
       </Dialog>

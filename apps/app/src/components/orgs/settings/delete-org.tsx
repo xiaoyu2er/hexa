@@ -9,6 +9,7 @@ import {
 } from '@hexa/ui/card';
 
 import { setFormError } from '@/components/form';
+import { Form } from '@/components/form';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { InputField } from '@/components/form/input-field';
 import { $deleteOrg } from '@/lib/api';
@@ -21,7 +22,6 @@ import {
 } from '@/server/schema/org';
 import {} from '@/server/schema/project';
 import { Button } from '@hexa/ui/button';
-import { Form } from '@hexa/ui/form';
 import {
   Dialog,
   DialogContent,
@@ -80,51 +80,50 @@ export function DeleteOrg() {
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
-            <Form {...form}>
-              <form
-                onSubmit={handleSubmit((json) =>
-                  deleteOrg({
-                    json,
-                  })
-                )}
-                className="space-y-4"
-              >
-                <DialogHeader>
-                  <DialogTitle>Delete Organization</DialogTitle>
-                  <DialogDescription>
-                    Permanently delete your {NEXT_PUBLIC_APP_NAME} organization,
-                    and it's respective stats. This action cannot be undone -
-                    please proceed with caution.
-                  </DialogDescription>
-                </DialogHeader>
+            <Form
+              form={form}
+              onSubmit={handleSubmit((json) =>
+                deleteOrg({
+                  json,
+                })
+              )}
+              className="space-y-4"
+            >
+              <DialogHeader>
+                <DialogTitle>Delete Organization</DialogTitle>
+                <DialogDescription>
+                  Permanently delete your {NEXT_PUBLIC_APP_NAME} organization,
+                  and it's respective stats. This action cannot be undone -
+                  please proceed with caution.
+                </DialogDescription>
+              </DialogHeader>
 
-                <InputField form={form} name="orgId" label="Organization ID" />
-                <InputField
-                  form={form}
-                  name="confirm"
-                  label={
-                    <>
-                      To verify, type
-                      <span className="px-1 font-bold">
-                        {DELETE_ORG_CONFIRMATION}
-                      </span>
-                      below
-                    </>
-                  }
-                />
-                <FormErrorMessage message={errors.root?.message} />
+              <InputField form={form} name="orgId" label="Organization ID" />
+              <InputField
+                form={form}
+                name="confirm"
+                label={
+                  <>
+                    To verify, type
+                    <span className="px-1 font-bold">
+                      {DELETE_ORG_CONFIRMATION}
+                    </span>
+                    below
+                  </>
+                }
+              />
+              <FormErrorMessage message={errors.root?.message} />
 
-                <DialogFooter>
-                  <Button
-                    variant="destructive"
-                    className="w-full"
-                    type="submit"
-                    loading={isSubmitting}
-                  >
-                    {DELETE_ORG_CONFIRMATION}
-                  </Button>
-                </DialogFooter>
-              </form>
+              <DialogFooter>
+                <Button
+                  variant="destructive"
+                  className="w-full"
+                  type="submit"
+                  loading={isSubmitting}
+                >
+                  {DELETE_ORG_CONFIRMATION}
+                </Button>
+              </DialogFooter>
             </Form>
           </DialogContent>
         </Dialog>

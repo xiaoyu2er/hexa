@@ -2,6 +2,7 @@
 
 import { Dialog } from '@/components/dialog';
 import { setFormError } from '@/components/form';
+import { Form } from '@/components/form';
 import { InputField } from '@/components/form/input-field';
 import { $updateProjectSlug } from '@/lib/api';
 import {
@@ -12,7 +13,6 @@ import type { SelectProjectType } from '@/server/schema/project';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { Alert, AlertDescription, AlertTitle } from '@hexa/ui/alert';
 import { Button } from '@hexa/ui/button';
-import { Form } from '@hexa/ui/form';
 import { ExclamationTriangleIcon } from '@hexa/ui/icons';
 import {
   DialogBody,
@@ -66,25 +66,19 @@ export const EditProjectSlugModal = NiceModal.create(
               <DialogTitle>Enter a new project slug</DialogTitle>
             </DialogHeader>
 
-            <Form {...form}>
-              <form
-                onSubmit={handleSubmit((json) => updateProjectSlug({ json }))}
-                method="PUT"
-                className="md:space-y-4"
-              >
-                <DialogBody className="space-y-2">
-                  <InputField form={form} name="slug" label="Slug" />
-                </DialogBody>
-                <DialogFooter>
-                  <Button
-                    className="w-full"
-                    type="submit"
-                    loading={isSubmitting}
-                  >
-                    Change slug
-                  </Button>
-                </DialogFooter>
-              </form>
+            <Form
+              form={form}
+              onSubmit={handleSubmit((json) => updateProjectSlug({ json }))}
+              className="md:space-y-4"
+            >
+              <DialogBody className="space-y-2">
+                <InputField form={form} name="slug" label="Slug" />
+              </DialogBody>
+              <DialogFooter>
+                <Button className="w-full" type="submit" loading={isSubmitting}>
+                  Change slug
+                </Button>
+              </DialogFooter>
             </Form>
           </DialogContent>
         ) : (

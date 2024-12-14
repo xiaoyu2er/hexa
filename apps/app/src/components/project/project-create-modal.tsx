@@ -1,6 +1,7 @@
 'use client';
 
 import { setFormError } from '@/components/form';
+import { Form } from '@/components/form';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { InputField } from '@/components/form/input-field';
 import { SelectField } from '@/components/form/select-field';
@@ -12,7 +13,6 @@ import {
   type InsertProjectType,
 } from '@/server/schema/project';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
-import { Form } from '@hexa/ui/form';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -73,56 +73,54 @@ export const CreateProjectModal = NiceModal.create(() => {
     >
       <ModalContent>
         <ModalHeader>Create Project</ModalHeader>
-        <Form {...form}>
-          <form
-            onSubmit={handleSubmit((json) =>
-              createProject({ json: { ...json, orgId: json.orgId } })
-            )}
-            method="POST"
-            className="md:space-y-4"
-          >
-            <ModalBody className="space-y-2">
-              <div className="grid grid-cols-2 gap-4">
-                <SelectField
-                  form={form}
-                  name="orgId"
-                  label="Owner"
-                  placeholder="Select an owner"
-                  options={orgs?.map((org) => ({
-                    label: org.name,
-                    value: org.id,
-                  }))}
-                />
-
-                <InputField
-                  form={form}
-                  name="slug"
-                  label="Project Slug"
-                  placeholder="Enter project slug"
-                />
-              </div>
+        <Form
+          form={form}
+          onSubmit={handleSubmit((json) =>
+            createProject({ json: { ...json, orgId: json.orgId } })
+          )}
+          className="md:space-y-4"
+        >
+          <ModalBody className="space-y-2">
+            <div className="grid grid-cols-2 gap-4">
+              <SelectField
+                form={form}
+                name="orgId"
+                label="Owner"
+                placeholder="Select an owner"
+                options={orgs?.map((org) => ({
+                  label: org.name,
+                  value: org.id,
+                }))}
+              />
 
               <InputField
                 form={form}
-                name="name"
-                label="Project Name"
-                placeholder="Enter project name"
+                name="slug"
+                label="Project Slug"
+                placeholder="Enter project slug"
               />
+            </div>
 
-              <FormErrorMessage message={errors.root?.message} />
-            </ModalBody>
+            <InputField
+              form={form}
+              name="name"
+              label="Project Name"
+              placeholder="Enter project name"
+            />
 
-            <ModalFooter>
-              <Button
-                color="primary"
-                className="w-full"
-                type="submit"
-                isLoading={isSubmitting}
-              >
-                Create Project
-              </Button>
-            </ModalFooter>
-          </form>
+            <FormErrorMessage message={errors.root?.message} />
+          </ModalBody>
+
+          <ModalFooter>
+            <Button
+              color="primary"
+              className="w-full"
+              type="submit"
+              isLoading={isSubmitting}
+            >
+              Create Project
+            </Button>
+          </ModalFooter>
         </Form>
       </ModalContent>
     </Modal>

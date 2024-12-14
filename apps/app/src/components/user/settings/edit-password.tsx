@@ -1,5 +1,5 @@
 'use client';
-import { setFormError } from '@/components/form';
+import { Form, setFormError } from '@/components/form';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { InputField } from '@/components/form/input-field';
 import { useUser } from '@/hooks/use-user';
@@ -16,7 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@hexa/ui/card';
-import { Form, useForm } from '@hexa/ui/form';
+import { useForm } from '@hexa/ui/form';
 import { Input } from '@hexa/ui/input';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -35,7 +35,6 @@ export function EditPassword() {
     handleSubmit,
     setError,
     formState: { isSubmitting, errors },
-    setFocus,
     reset,
   } = form;
 
@@ -73,50 +72,48 @@ export function EditPassword() {
       </CardHeader>
 
       {showResetPassword ? (
-        <Form {...form}>
-          <form
-            onSubmit={handleSubmit((json) => updatePassword({ json }))}
-            method="POST"
-          >
-            <CardContent className="max-w-md space-y-2">
-              {user.hasPassword && (
-                <InputField
-                  form={form}
-                  name="oldPassword"
-                  label="Old Password"
-                  type="password"
-                />
-              )}
+        <Form
+          form={form}
+          onSubmit={handleSubmit((json) => updatePassword({ json }))}
+        >
+          <CardContent className="max-w-md space-y-2">
+            {user.hasPassword && (
               <InputField
                 form={form}
-                name="password"
-                label={user.hasPassword ? 'New Password' : 'Password'}
+                name="oldPassword"
+                label="Old Password"
                 type="password"
               />
-              <InputField
-                form={form}
-                name="confirmPassword"
-                label="Confirm Password"
-                type="password"
-              />
-              <FormErrorMessage message={errors.root?.message} />
-              <Button variant="link" size="sm" className="p-0" asChild>
-                <Link href="/reset-password">Forgot password?</Link>
-              </Button>
-            </CardContent>
-            <CardFooter className="flex-row-reverse items-center gap-4 border-t px-6 py-4">
-              <Button type="submit" className="shrink-0" loading={isSubmitting}>
-                {user.hasPassword ? 'Update' : 'Set'} password
-              </Button>
-              <Button
-                variant="outline"
-                className="shrink-0"
-                onClick={cancelUpdate}
-              >
-                Cancel
-              </Button>
-            </CardFooter>
-          </form>
+            )}
+            <InputField
+              form={form}
+              name="password"
+              label={user.hasPassword ? 'New Password' : 'Password'}
+              type="password"
+            />
+            <InputField
+              form={form}
+              name="confirmPassword"
+              label="Confirm Password"
+              type="password"
+            />
+            <FormErrorMessage message={errors.root?.message} />
+            <Button variant="link" size="sm" className="p-0" asChild>
+              <Link href="/reset-password">Forgot password?</Link>
+            </Button>
+          </CardContent>
+          <CardFooter className="flex-row-reverse items-center gap-4 border-t px-6 py-4">
+            <Button type="submit" className="shrink-0" loading={isSubmitting}>
+              {user.hasPassword ? 'Update' : 'Set'} password
+            </Button>
+            <Button
+              variant="outline"
+              className="shrink-0"
+              onClick={cancelUpdate}
+            >
+              Cancel
+            </Button>
+          </CardFooter>
         </Form>
       ) : (
         <>
