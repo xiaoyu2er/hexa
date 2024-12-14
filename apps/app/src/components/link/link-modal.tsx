@@ -21,7 +21,7 @@ import {
   setFormError,
 } from '@/components/form';
 
-import { GlobeIcon } from '@hexa/ui/icons';
+import { GlobeIcon, RefreshCwIcon } from '@hexa/ui/icons';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -32,9 +32,11 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Tooltip,
 } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { QRCodeCanvas } from 'qrcode.react';
+import { generateSlug } from 'random-word-slugs';
 import { useForm } from 'react-hook-form';
 import { EditLinkRulesModal } from './edit-link-rules-modal';
 
@@ -151,13 +153,16 @@ export const LinkModal = NiceModal.create(
                     placeholder="https://example.com"
                   />
 
-                  <div className="flex items-end gap-2">
+                  <div className="flex items-end gap-0">
                     <SelectField
                       form={form}
                       name="domain"
                       label="Link"
                       className="w-[200px]"
                       labelPlacement="outside"
+                      classNames={{
+                        trigger: ' rounded-r-none',
+                      }}
                       placeholder="Select a domain"
                       options={project.domains.map((domain) => ({
                         label: domain,
@@ -170,6 +175,34 @@ export const LinkModal = NiceModal.create(
                       className="flex-1"
                       placeholder="Slug"
                       labelPlacement="outside"
+                      classNames={{
+                        inputWrapper: 'border-l-0 rounded-l-none',
+                      }}
+                      startContent={
+                        <div className="pointer-events-none flex items-center">
+                          <span className="text-default-400 text-small">/</span>
+                        </div>
+                      }
+                      endContent={
+                        <Tooltip content="Generate a random slug">
+                          <Button
+                            isIconOnly
+                            variant="light"
+                            size="sm"
+                            className="h-5 w-5 min-w-5"
+                            onClick={() => {
+                              setValue(
+                                'slug',
+                                generateSlug(2, {
+                                  format: 'kebab',
+                                })
+                              );
+                            }}
+                          >
+                            <RefreshCwIcon className="h-3 w-3" />
+                          </Button>
+                        </Tooltip>
+                      }
                     />
                   </div>
 

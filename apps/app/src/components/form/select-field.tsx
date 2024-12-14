@@ -29,6 +29,7 @@ export const SelectField = <T extends FieldValues = FieldValues>({
   form,
   name,
   className,
+  classNames,
   selectionMode,
   options,
   selectItemStartContent,
@@ -75,6 +76,7 @@ export const SelectField = <T extends FieldValues = FieldValues>({
       aria-label={field.name}
       maxListboxHeight={308}
       className={className}
+      classNames={classNames}
       endContent={
         showClear &&
         (selectionMode === 'multiple' ? field.value.length : field.value) ? (
