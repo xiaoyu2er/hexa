@@ -17,8 +17,10 @@ import {
   FormErrorMessage,
   InputField,
   SelectField,
+  TextareaField,
   setFormError,
 } from '@/components/form';
+
 import { GlobeIcon } from '@hexa/ui/icons';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -137,37 +139,58 @@ export const LinkModal = NiceModal.create(
                 : // @ts-ignore
                   updateLink({ json })
             )}
-            className="space-y-4"
           >
             <ModalBody className="space-y-4">
-              <div className="grid grid-cols-1 gap-6 px-4 md:grid-cols-[2fr,1fr] md:px-0">
-                <div className="space-y-4">
+              <div className="flex flex-col gap-6 md:flex-row md:px-0">
+                <div className="flex flex-1 flex-col gap-4">
                   <InputField
                     form={form}
                     name="destUrl"
+                    labelPlacement="outside"
                     label="Default Destination URL"
+                    placeholder="https://example.com"
                   />
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="flex items-end gap-2">
                     <SelectField
                       form={form}
                       name="domain"
-                      label="Domain"
+                      label="Link"
+                      className="w-[200px]"
+                      labelPlacement="outside"
                       placeholder="Select a domain"
                       options={project.domains.map((domain) => ({
                         label: domain,
                         value: domain,
                       }))}
                     />
-                    <InputField form={form} name="slug" label="Slug" />
+                    <InputField
+                      form={form}
+                      name="slug"
+                      className="flex-1"
+                      placeholder="Slug"
+                      labelPlacement="outside"
+                    />
                   </div>
 
-                  <InputField form={form} name="title" label="Link Name" />
-                  <InputField form={form} name="desc" label="Description" />
+                  <InputField
+                    form={form}
+                    name="title"
+                    label="Link Name"
+                    labelPlacement="outside"
+                    placeholder="(optional)"
+                  />
+                  <TextareaField
+                    form={form}
+                    name="desc"
+                    label="Description"
+                    placeholder="(optional)"
+                    labelPlacement="outside"
+                  />
                   <FormErrorMessage message={errors.root?.message} />
                 </div>
 
-                <div className="md:border-l md:pl-6">
+                <div className="w-full md:w-[300px] md:border-l md:pl-6">
                   <h4 className="font-medium">QR Code</h4>
                   <div className="mt-4 flex justify-center rounded-lg border bg-muted/50 p-4">
                     <QRCodeCanvas value={qrCodeUrl} />
