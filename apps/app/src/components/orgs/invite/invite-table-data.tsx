@@ -14,7 +14,6 @@ import type { QueryInviteType } from '@/server/schema/org-invite';
 import { OrgRoleOptions } from '@/server/schema/org-member';
 import { Badge } from '@hexa/ui/badge';
 import { CopyButton } from '@hexa/ui/copy-button';
-import { Chip } from '@nextui-org/react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
 
@@ -100,11 +99,7 @@ export const columns: ColumnDef<QueryInviteType>[] = [
     ),
     cell: ({ row }) => {
       const invite = row.original;
-      return (
-        <Chip color="default" size="sm">
-          {capitalize(invite.status)}
-        </Chip>
-      );
+      return <Badge variant="secondary">{capitalize(invite.status)}</Badge>;
     },
   },
   {

@@ -91,11 +91,13 @@ export const CreateInvitesModal = NiceModal.create(
                   <InputField
                     form={form}
                     name={`invites.${index}.email`}
+                    size="md"
                     placeholder="Email"
                     hideErrorMessageCodes={['invalid_string']}
                   />
                   <SelectField
                     form={form}
+                    size="md"
                     name={`invites.${index}.role`}
                     options={getRoleOptions()}
                   />
