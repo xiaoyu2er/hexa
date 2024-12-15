@@ -12,7 +12,7 @@ import {
 import { Turnstile } from '@marsidev/react-turnstile';
 import { useTheme } from 'next-themes';
 import { useEffect, useRef } from 'react';
-import type { FieldValues, UseFormReturn } from 'react-hook-form';
+import type { FieldPath, FieldValues, UseFormReturn } from 'react-hook-form';
 
 export function useTurnstile<T extends FieldValues>({
   form,
@@ -26,7 +26,12 @@ export function useTurnstile<T extends FieldValues>({
   onError?: (err: string) => void;
   onSuccess?: (res: string) => void;
 }) {
-  const { setError, setValue, watch } = form;
+  const {
+    setError,
+    clearErrors,
+    setValue,
+    formState: { errors },
+  } = form;
   const ref = useRef();
   const { theme } = useTheme();
   const resetTurnstile = () => {
@@ -62,8 +67,12 @@ export function useTurnstile<T extends FieldValues>({
         const res = ref.current?.getResponse();
         // @ts-ignore
         setValue('cf-turnstile-response', res);
+        clearErrors('cf-turnstile-response' as FieldPath<T>);
         onSuccess?.(res);
       }}
+      className={
+        errors['cf-turnstile-response'] ? 'outline outline-danger' : ''
+      }
     />
   );
 
@@ -76,12 +85,8 @@ export function useTurnstile<T extends FieldValues>({
     }
   }, []);
 
-  // @ts-ignore
-  const allowNext = !!watch('cf-turnstile-response');
-
   return {
     resetTurnstile,
     turnstile,
-    disableNext: !allowNext,
   };
 }
