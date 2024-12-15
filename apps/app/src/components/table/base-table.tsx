@@ -49,12 +49,12 @@ export interface BaseTableProps<T> {
     isFetching: boolean;
     refetch?: (options?: RefetchOptions) => Promise<unknown>;
   };
-  Card: ComponentType<{ row: Row<T> }>;
-  CardSkeleton: ComponentType;
+  Card?: ComponentType<{ row: Row<T> }>;
+  CardSkeleton?: ComponentType;
   CardNoResults?: ComponentType;
-  searchPlaceholder: string;
-  filterConfigs: FilterConfig<T>[];
-  sortOptions: SortOption<T>[];
+  searchPlaceholder?: string;
+  filterConfigs?: FilterConfig<T>[];
+  sortOptions?: SortOption<T>[];
   actionSlot?: ReactNode;
   showToolbar?: boolean;
   defaultView?: TableView;
@@ -84,7 +84,7 @@ const InternalBaseTable = <T extends object>(
     actionSlot,
     showToolbar = true,
     defaultView = 'rows',
-    showViewChange = true,
+    showViewChange = Boolean(Card),
     showHeader = true,
   } = props;
 
@@ -129,6 +129,7 @@ const InternalBaseTable = <T extends object>(
     table,
   }));
 
+  const showTableViewOptions = sortOptions || filterConfigs || showViewChange;
   return (
     <div className="space-y-4">
       {showToolbar && (
@@ -139,17 +140,19 @@ const InternalBaseTable = <T extends object>(
           sortOptions={sortOptions}
         >
           {actionSlot}
-          <TableViewOptions
-            table={table}
-            sortOptions={sortOptions}
-            filterConfigs={filterConfigs}
-            showViewChange={showViewChange}
-            view={view}
-            onViewChange={setView}
-          />
+          {showTableViewOptions && (
+            <TableViewOptions
+              table={table}
+              sortOptions={sortOptions}
+              filterConfigs={filterConfigs}
+              showViewChange={showViewChange}
+              view={view}
+              onViewChange={setView}
+            />
+          )}
         </TableToolbar>
       )}
-      {view === 'cards' || isMobile ? (
+      {(view === 'cards' || isMobile) && Card ? (
         <TableCard
           table={table}
           isFetching={isFetching}

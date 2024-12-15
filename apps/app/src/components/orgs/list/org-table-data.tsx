@@ -2,13 +2,12 @@
 
 import { LeaveOrg } from '@/components/orgs/list/leave-org';
 import { OrgAvatar } from '@/components/orgs/org-avatar';
+import { useOrgs } from '@/hooks/use-orgs';
 import type { SelectUserOrgType } from '@/server/schema/org';
 import { Badge } from '@hexa/ui/badge';
-import { Button } from '@hexa/ui/button';
-import {} from '@hexa/ui/dropdown-menu';
+import { Button } from '@nextui-org/react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
-import Link from 'next/link';
 
 export const columns: ColumnDef<SelectUserOrgType>[] = [
   {
@@ -30,8 +29,8 @@ export const columns: ColumnDef<SelectUserOrgType>[] = [
       const org = row.original;
       return (
         <div className="flex items-center justify-end gap-2">
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/">Settings</Link>
+          <Button variant="bordered" size="sm">
+            Settings
           </Button>
           <LeaveOrg orgId={org.id} onSuccess={() => {}} />
         </div>
@@ -39,3 +38,5 @@ export const columns: ColumnDef<SelectUserOrgType>[] = [
     },
   },
 ];
+
+export const useData = useOrgs;

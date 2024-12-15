@@ -5,7 +5,7 @@ import type { ComponentType } from 'react';
 interface TableCardProps<T> {
   table: TableType<T>;
   isFetching: boolean;
-  CardSkeleton: ComponentType;
+  CardSkeleton?: ComponentType;
   Card: ComponentType<{ row: Row<T> }>;
   CardNoResults?: ComponentType;
 }
@@ -21,7 +21,7 @@ export const TableCard = <T,>({
 
   return (
     <div className="space-y-4">
-      {isFetching ? (
+      {isFetching && CardSkeleton ? (
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
             <CardSkeleton key={i} />

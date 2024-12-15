@@ -1,12 +1,12 @@
-import { Button, buttonVariants } from '@hexa/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@hexa/ui/dropdown-menu';
-import { ArrowDown, ArrowUp, ChevronsUpDown } from '@hexa/ui/icons';
+import { ArrowDown, ArrowUp, ChevronsUpDown, EyeOff } from '@hexa/ui/icons';
 import { cn } from '@hexa/utils';
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from '@nextui-org/react';
 import type { Column } from '@tanstack/react-table';
 import type { HTMLAttributes } from 'react';
 
@@ -23,59 +23,61 @@ export function TableColumnHeader<TData, TValue>({
 }: TableColumnHeaderProps<TData, TValue>) {
   if (!column.getCanSort()) {
     return (
-      <div
-        className={cn(
-          buttonVariants({
-            variant: 'ghost',
-            size: 'sm',
-          }),
-          className
-        )}
-      >
+      <Button variant="light" size="sm" className="text-sm">
         {title}
-      </div>
+      </Button>
     );
   }
 
+  const iconClass = 'h-3.5 w-3.5 text-muted-foreground/70';
   return (
     <div className={cn('flex items-center space-x-2', className)}>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+      <Dropdown classNames={{ content: 'min-w-[100px]' }}>
+        <DropdownTrigger>
           <Button
-            variant="ghost"
+            variant="light"
             size="sm"
             className="-ml-3 h-8 data-[state=open]:bg-accent"
           >
             <span>{title}</span>
             {column.getIsSorted() === 'desc' ? (
-              <ArrowDown />
+              <ArrowDown className={iconClass} />
+              // biome-ignore lint/nursery/noNestedTernary: <explanation>
             ) : column.getIsSorted() === 'asc' ? (
-              <ArrowUp />
+              <ArrowUp className={iconClass} />
             ) : (
-              <ChevronsUpDown />
+              <ChevronsUpDown className={iconClass} />
             )}
           </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="start">
-          <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-            <ArrowUp className="h-3.5 w-3.5 text-muted-foreground/70" />
+        </DropdownTrigger>
+        <DropdownMenu>
+          <DropdownItem
+            onClick={() => column.toggleSorting(false)}
+            startContent={<ArrowUp className={iconClass} />}
+          >
             Asc
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-            <ArrowDown className="h-3.5 w-3.5 text-muted-foreground/70" />
+          </DropdownItem>
+          <DropdownItem
+            onClick={() => column.toggleSorting(true)}
+            startContent={<ArrowDown className={iconClass} />}
+          >
             Desc
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => column.clearSorting()}>
-            <ChevronsUpDown className="h-3.5 w-3.5 text-muted-foreground/70" />
+          </DropdownItem>
+          <DropdownItem
+            onClick={() => column.clearSorting()}
+            startContent={<ChevronsUpDown className={iconClass} />}
+          >
             Clear
-          </DropdownMenuItem>
-          {/* <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-            <EyeOff className="h-3.5 w-3.5 text-muted-foreground/70" />
+          </DropdownItem>
+
+          <DropdownItem
+            onClick={() => column.toggleVisibility(false)}
+            startContent={<EyeOff className={iconClass} />}
+          >
             Hide
-          </DropdownMenuItem> */}
-        </DropdownMenuContent>
-      </DropdownMenu>
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
     </div>
   );
 }

@@ -1,8 +1,8 @@
 'use client';
 
 import { $leaveOrg } from '@/lib/api';
-import { Button } from '@hexa/ui/button';
 import { toast } from '@hexa/ui/sonner';
+import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 
 export const LeaveOrg = ({
@@ -22,10 +22,11 @@ export const LeaveOrg = ({
 
   return (
     <Button
-      variant="destructive"
+      variant="solid"
+      color="danger"
       size="sm"
       onClick={() => mutateAsync()}
-      loading={isPending}
+      isLoading={isPending}
     >
       Leave
     </Button>

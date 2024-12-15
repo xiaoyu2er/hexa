@@ -1,14 +1,15 @@
 import { UserAvatar } from '@/components/user/settings/user-avatar';
 import type { SelectOrgMemberType } from '@/server/schema/org-member';
 import { Badge } from '@hexa/ui/badge';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@hexa/ui/dropdown-menu';
+
 import { MoreHorizontal } from '@hexa/ui/icons';
-import { Button } from '@nextui-org/react';
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from '@nextui-org/react';
 import { Skeleton } from '@nextui-org/skeleton';
 import type { Row } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
@@ -55,20 +56,20 @@ export const MemberCardWithActions = ({
         </div>
       </div>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+      <Dropdown>
+        <DropdownTrigger>
           <Button isIconOnly aria-label="Open menu" variant="ghost">
             <MoreHorizontal className="h-4 w-4" />
           </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          {member.role !== 'OWNER' && (
-            <DropdownMenuItem className="text-destructive">
+        </DropdownTrigger>
+        <DropdownMenu>
+          {member.role !== 'OWNER' ? (
+            <DropdownItem className="text-destructive">
               Remove member
-            </DropdownMenuItem>
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
+            </DropdownItem>
+          ) : null}
+        </DropdownMenu>
+      </Dropdown>
     </div>
   );
 };
