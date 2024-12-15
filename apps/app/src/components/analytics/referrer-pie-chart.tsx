@@ -2,7 +2,7 @@
 
 // import { type TimeRange, useLogsData } from '@/hooks/use-analytics';
 // import { ChartContainer, ChartTooltip } from '@hexa/ui/chart';
-// import { Skeleton } from '@nextui-org/skeleton';
+// import { Skeleton } from '@nextui-org/react';
 // import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 
 // const COLORS = [

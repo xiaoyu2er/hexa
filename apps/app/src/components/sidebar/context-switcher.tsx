@@ -23,7 +23,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@nextui-org/react';
-import { Skeleton } from '@nextui-org/skeleton';
+import { Skeleton } from '@nextui-org/react';
 import { useQuery } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
