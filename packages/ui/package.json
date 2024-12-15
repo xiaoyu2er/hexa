@@ -54,8 +54,6 @@
     "./number-ticker": "./src/ui/number-ticker.tsx",
     "./pagination": "./src/ui/pagination.tsx",
     "./particles": "./src/ui/particles.tsx",
-    "./popover": "./src/ui/popover.tsx",
-    "./progress": "./src/ui/progress.tsx",
     "./rainbow-button": "./src/ui/rainbow-button.tsx",
     "./safari.stories": "./src/ui/safari.stories.tsx",
     "./safari": "./src/ui/safari.tsx",

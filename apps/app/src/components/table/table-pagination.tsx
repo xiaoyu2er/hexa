@@ -7,14 +7,7 @@ import {
 } from '@hexa/ui/icons';
 import type { Table } from '@tanstack/react-table';
 
-import { Button } from '@hexa/ui/button';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@hexa/ui/select';
+import { Button, Select, SelectItem } from '@nextui-org/react';
 
 interface TablePaginationProps<TData> {
   table: Table<TData>;
@@ -32,23 +25,28 @@ export function TablePagination<TData>({ table }: TablePaginationProps<TData>) {
         <div className="flex items-center gap-2">
           <p className="whitespace-nowrap text-sm">Rows per page</p>
           <Select
-            value={`${table.getState().pagination.pageSize}`}
-            onValueChange={(value) => {
+            className="w-[80px]"
+            size="sm"
+            aria-label="Rows per page"
+            selectionMode="single"
+            variant="bordered"
+            onSelectionChange={(selection) => {
+              const value = [...selection][0];
               table.setPageSize(Number(value));
             }}
+            selectedKeys={[`${table.getState().pagination.pageSize}`]}
           >
-            <SelectTrigger className="h-8 w-[70px]">
-              <SelectValue placeholder={table.getState().pagination.pageSize} />
-            </SelectTrigger>
-            <SelectContent side="top">
-              {(IS_DEVELOPMENT ? [3, 5, 10, 50] : [10, 20, 30, 40, 50]).map(
-                (pageSize) => (
-                  <SelectItem key={pageSize} value={`${pageSize}`}>
-                    {pageSize}
-                  </SelectItem>
-                )
-              )}
-            </SelectContent>
+            {(IS_DEVELOPMENT ? [3, 5, 10, 50] : [10, 20, 30, 40, 50]).map(
+              (pageSize) => (
+                <SelectItem
+                  key={`${pageSize}`}
+                  aria-label={`${pageSize}`}
+                  textValue={`${pageSize}`}
+                >
+                  {`${pageSize}`}
+                </SelectItem>
+              )
+            )}
           </Select>
         </div>
         <div className="flex items-center gap-2">
@@ -58,40 +56,48 @@ export function TablePagination<TData>({ table }: TablePaginationProps<TData>) {
           </div>
           <div className="flex items-center gap-1">
             <Button
-              variant="outline"
+              variant="bordered"
+              size="sm"
+              isIconOnly
               className="hidden h-8 w-8 p-0 lg:flex"
               onClick={() => table.setPageIndex(0)}
-              disabled={!table.getCanPreviousPage()}
+              isDisabled={!table.getCanPreviousPage()}
+              aria-label="Go to first page"
             >
-              <span className="sr-only">Go to first page</span>
-              <ChevronsLeft className="h-4 w-4" />
+              <ChevronsLeft className="h-4 w-4" strokeWidth={1.5} />
             </Button>
             <Button
-              variant="outline"
+              variant="bordered"
+              size="sm"
+              isIconOnly
               className="h-8 w-8 p-0"
               onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
+              isDisabled={!table.getCanPreviousPage()}
+              aria-label="Go to previous page"
             >
-              <span className="sr-only">Go to previous page</span>
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className="h-4 w-4" strokeWidth={1.5} />
             </Button>
             <Button
-              variant="outline"
+              variant="bordered"
+              size="sm"
+              isIconOnly
               className="h-8 w-8 p-0"
               onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
+              isDisabled={!table.getCanNextPage()}
+              aria-label="Go to next page"
             >
-              <span className="sr-only">Go to next page</span>
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className="h-4 w-4" strokeWidth={1.5} />
             </Button>
             <Button
-              variant="outline"
+              variant="bordered"
+              size="sm"
+              isIconOnly
               className="hidden h-8 w-8 p-0 lg:flex"
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              disabled={!table.getCanNextPage()}
+              isDisabled={!table.getCanNextPage()}
+              aria-label="Go to last page"
             >
-              <span className="sr-only">Go to last page</span>
-              <ChevronsRight className="h-4 w-4" />
+              <ChevronsRight className="h-4 w-4" strokeWidth={1.5} />
             </Button>
           </div>
         </div>
