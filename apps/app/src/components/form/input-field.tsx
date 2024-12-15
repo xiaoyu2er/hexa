@@ -27,9 +27,7 @@ export const InputField = <T extends FieldValues = FieldValues>({
       isInvalid={!!error}
       aria-label={name}
       errorMessage={
-        error?.type &&
-        error?.message &&
-        !hideErrorMessageCodes?.includes(error.type)
+        error?.message && !hideErrorMessageCodes?.includes(error.type)
           ? error.message
           : undefined
       }

@@ -22,18 +22,20 @@ import {
 import { MAX_EMAILS } from '@/lib/const';
 import { useModal } from '@ebay/nice-modal-react';
 import { Badge } from '@hexa/ui/badge';
-import { Button } from '@hexa/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@hexa/ui/dropdown-menu';
+
 import { EllipsisIcon, MailPlusIcon, MoveRightIcon } from '@hexa/ui/icons';
 import { useMutation } from '@tanstack/react-query';
 import { useBoolean } from 'usehooks-ts';
 import { AddUserEmail } from './add-user-email';
 import { DeleteUserEmailModal } from './delete-user-email-modal';
+
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from '@nextui-org/react';
 
 export function EditUserEmails() {
   const { data: emails = [], refetch } = useQuery(queryUserEmailsOptions);
@@ -86,66 +88,66 @@ export function EditUserEmails() {
               .map((email) => {
                 return (
                   <>
-                    <Button
-                      className="justify-between"
-                      variant="ghost"
-                      key={email.email}
-                    >
-                      <p className="flex items-center gap-2 overflow-auto font-medium text-sm leading-none">
-                        <span className="shrink overflow-hidden text-ellipsis text-nowrap">
-                          {email.email}
-                        </span>
-                        {email.primary && (
-                          <Badge className="text-xs">Primary</Badge>
-                        )}
-                        {!email.verified && (
-                          <Badge variant="outline" className="text-xs">
-                            Unverified
-                          </Badge>
-                        )}
-                      </p>
-
+                    <Dropdown key={email.email} placement="bottom-end">
+                      <DropdownTrigger>
+                        <Button
+                          className="justify-between"
+                          variant="light"
+                          key={email.email}
+                          endContent={<EllipsisIcon className="h4 ml-2 w-4" />}
+                        >
+                          <p className="flex items-center gap-2 overflow-auto font-medium text-sm leading-none">
+                            <span className="shrink overflow-hidden text-ellipsis text-nowrap">
+                              {email.email}
+                            </span>
+                            {email.primary && (
+                              <Badge className="text-xs">Primary</Badge>
+                            )}
+                            {!email.verified && (
+                              <Badge variant="outline" className="text-xs">
+                                Unverified
+                              </Badge>
+                            )}
+                          </p>
+                        </Button>
+                      </DropdownTrigger>
                       <DropdownMenu>
-                        <DropdownMenuTrigger>
-                          <EllipsisIcon className="h4 ml-2 w-4" />
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                          <DropdownMenuItem
-                            className="cursor-pointer"
-                            disabled={isSettingPrimaryEmail || !email.verified}
-                            onClick={() =>
-                              setUserPrimaryEmail({
-                                json: { email: email.email },
-                              })
-                            }
-                          >
-                            Set as primary
-                          </DropdownMenuItem>
-                          {!email.verified && (
-                            <DropdownMenuItem
-                              className="cursor-pointer"
-                              disabled={isSendingPasscode}
-                              onClick={() => {
-                                sendPasscode({ json: { email: email.email } });
-                              }}
-                            >
-                              Verify email
-                            </DropdownMenuItem>
-                          )}
-
-                          <DropdownMenuItem
-                            className="cursor-pointer text-destructive focus:text-destructive"
+                        <DropdownItem
+                          key="set-primary"
+                          isDisabled={isSettingPrimaryEmail || !email.verified}
+                          onClick={() =>
+                            setUserPrimaryEmail({
+                              json: { email: email.email },
+                            })
+                          }
+                        >
+                          Set as primary
+                        </DropdownItem>
+                        {email.verified ? null : (
+                          <DropdownItem
+                            key="verify-email"
+                            isDisabled={isSendingPasscode}
                             onClick={() => {
-                              modal
-                                .show({ email: email.email })
-                                .then(() => refetch());
+                              sendPasscode({ json: { email: email.email } });
                             }}
                           >
-                            Remove email
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
+                            Verify email
+                          </DropdownItem>
+                        )}
+
+                        <DropdownItem
+                          color="danger"
+                          className="text-danger"
+                          onClick={() => {
+                            modal
+                              .show({ email: email.email })
+                              .then(() => refetch());
+                          }}
+                        >
+                          Remove email
+                        </DropdownItem>
                       </DropdownMenu>
-                    </Button>
+                    </Dropdown>
 
                     {!email.verified && verifingEmail === email.email && (
                       <VerifyPasscode
@@ -177,15 +179,19 @@ export function EditUserEmails() {
 
             {!emailCardBool.value && (
               <Button
-                variant="ghost"
-                disabled={emails.length >= MAX_EMAILS}
-                className="group items-center justify-start gap-2 disabled:cursor-not-allowed"
+                variant="light"
+                isDisabled={emails.length >= MAX_EMAILS}
+                className="justify-between"
                 onClick={emailCardBool.setTrue}
+                endContent={
+                  emails.length < MAX_EMAILS ? (
+                    <MoveRightIcon className="hidden h-4 w-4 animate-in group-hover:block" />
+                  ) : null
+                }
               >
-                <MailPlusIcon className="h-4 w-4" /> Add new email
-                {emails.length < MAX_EMAILS && (
-                  <MoveRightIcon className="hidden h-4 w-4 animate-in group-hover:block" />
-                )}
+                <p className="flex items-center gap-2 overflow-auto font-medium text-sm leading-none">
+                  <MailPlusIcon className="h-4 w-4" /> Add new email
+                </p>
               </Button>
             )}
           </div>

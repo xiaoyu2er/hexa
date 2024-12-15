@@ -1,4 +1,4 @@
-import { Form } from '@/components/form';
+import { Form, setFormError } from '@/components/form';
 import { InputField } from '@/components/form';
 import {
   $addUserEmailSendPasscode,
@@ -41,13 +41,13 @@ export const AddUserEmail: FC<AddUserEmailProps> = ({
   const {
     handleSubmit,
     setError,
-    formState: { isSubmitting, isDirty },
+    formState: { isSubmitting, errors },
   } = form;
 
   const { mutateAsync: addUserEmail } = useMutation({
     mutationFn: $addUserEmailSendPasscode,
     onError: (err) => {
-      setError('email', { message: err.message });
+      setFormError(err, setError, 'email', true);
     },
     onSuccess: (data) => {
       toast.success('You just aded a new email!');
