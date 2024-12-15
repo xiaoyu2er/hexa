@@ -93,7 +93,6 @@ export function SiteHeader({ showStars = true }: SiteHeaderProps) {
             >
               <TwitterIcon className="h-4 w-4" />
             </Button>
-
             <ModeToggle />
           </nav>
         </div>
