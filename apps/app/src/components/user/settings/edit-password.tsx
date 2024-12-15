@@ -14,13 +14,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@hexa/ui/card';
-import { useForm } from '@hexa/ui/form';
-import { Input } from '@hexa/ui/input';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Link } from '@nextui-org/react';
+import { Button, Input, Link } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 export function EditPassword() {
   const { user, refetch } = useUser();
@@ -124,7 +123,7 @@ export function EditPassword() {
         <>
           <CardContent>
             {user.hasPassword && (
-              <Input placeholder="********" className="max-w-md" disabled />
+              <Input placeholder="********" className="max-w-md" isDisabled />
             )}
           </CardContent>
           <CardFooter className="flex-row-reverse items-center gap-4 border-t px-6 py-4">

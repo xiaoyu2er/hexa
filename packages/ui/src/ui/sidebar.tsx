@@ -1,18 +1,14 @@
 'use client';
 
+import { Button } from '@hexa/ui/button';
+import { useIsMobile } from '@hexa/ui/hooks/use-mobile';
+import { Sheet, SheetContent } from '@hexa/ui/sheet';
+import { cn } from '@hexa/utils';
+import { Skeleton, Tooltip } from '@nextui-org/react';
 import { Slot } from '@radix-ui/react-slot';
 import { type VariantProps, cva } from 'class-variance-authority';
 import { PanelLeft } from 'lucide-react';
 import React from 'react';
-
-import { Button } from '@hexa/ui/button';
-import { useIsMobile } from '@hexa/ui/hooks/use-mobile';
-import { Input } from '@hexa/ui/input';
-import { Separator } from '@hexa/ui/separator';
-import { Sheet, SheetContent } from '@hexa/ui/sheet';
-import { cn } from '@hexa/utils';
-import { Skeleton } from '@nextui-org/skeleton';
-import { Tooltip } from '@nextui-org/tooltip';
 
 const SIDEBAR_COOKIE_NAME = 'sidebar:state';
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -327,24 +323,6 @@ const SidebarInset = React.forwardRef<
 });
 SidebarInset.displayName = 'SidebarInset';
 
-const SidebarInput = React.forwardRef<
-  React.ElementRef<typeof Input>,
-  React.ComponentProps<typeof Input>
->(({ className, ...props }, ref) => {
-  return (
-    <Input
-      ref={ref}
-      data-sidebar="input"
-      className={cn(
-        'h-8 w-full bg-background shadow-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
-        className
-      )}
-      {...props}
-    />
-  );
-});
-SidebarInput.displayName = 'SidebarInput';
-
 const SidebarHeader = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<'div'>
@@ -374,21 +352,6 @@ const SidebarFooter = React.forwardRef<
   );
 });
 SidebarFooter.displayName = 'SidebarFooter';
-
-const SidebarSeparator = React.forwardRef<
-  React.ElementRef<typeof Separator>,
-  React.ComponentProps<typeof Separator>
->(({ className, ...props }, ref) => {
-  return (
-    <Separator
-      ref={ref}
-      data-sidebar="separator"
-      className={cn('mx-2 w-auto bg-sidebar-border', className)}
-      {...props}
-    />
-  );
-});
-SidebarSeparator.displayName = 'SidebarSeparator';
 
 const SidebarContent = React.forwardRef<
   HTMLDivElement,
@@ -727,7 +690,6 @@ export {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
-  SidebarInput,
   SidebarInset,
   SidebarMenu,
   SidebarMenuAction,
@@ -740,7 +702,6 @@ export {
   SidebarMenuSubItem,
   SidebarProvider,
   SidebarRail,
-  SidebarSeparator,
   SidebarTrigger,
   useSidebar,
 };

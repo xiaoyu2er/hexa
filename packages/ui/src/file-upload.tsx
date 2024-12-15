@@ -1,11 +1,11 @@
 import { Loader2, UploadCloud } from '@hexa/ui/icons';
+import { toast } from '@hexa/ui/sonner';
 import { cn } from '@hexa/utils';
 import { MAX_PROFILE_FILE_SIZE_MB } from '@hexa/utils/const';
 import { Avatar } from '@nextui-org/react';
 import { type VariantProps, cva } from 'class-variance-authority';
 import type React from 'react';
 import { type ReactNode, useState } from 'react';
-import { toast } from 'sonner';
 
 const acceptFileTypes = {
   any: { types: [], errorMessage: '' },
