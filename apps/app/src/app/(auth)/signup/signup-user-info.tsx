@@ -14,7 +14,6 @@ import { InputField } from '@/components/form/input-field';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import { $signupSendPasscode, type InferApiResponseType } from '@/lib/api';
 import { SignupSchema, type SignupType } from '@/server/schema/signup';
-import {} from '@hexa/ui/collapsible';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 

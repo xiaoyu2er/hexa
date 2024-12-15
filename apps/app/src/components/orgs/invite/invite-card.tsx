@@ -10,8 +10,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@hexa/ui/sheet';
-import { Skeleton } from '@hexa/ui/skeleton';
 import { cn } from '@hexa/utils';
+import { Skeleton } from '@nextui-org/skeleton';
 import type { Row } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
 import { type HTMLAttributes, forwardRef } from 'react';

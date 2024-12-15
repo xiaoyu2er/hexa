@@ -12,11 +12,11 @@ import {
   CardHeader,
   CardTitle,
 } from '@hexa/ui/card';
-import { Divider } from '@hexa/ui/divider';
 import { type FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { AuthLink } from '@/components/auth/auth-link';
+import { DividerOr } from '@/components/auth/divider-or';
 import { OauthButtons } from '@/components/auth/oauth-buttons';
 import { setFormError } from '@/components/form';
 import { InputField } from '@/components/form/input-field';
@@ -83,7 +83,7 @@ export const SignupEmailPassword: FC<SignupEmailPasswordProps> = ({
       </CardHeader>
       <CardContent>
         <OauthButtons />
-        <Divider>or</Divider>
+        <DividerOr />
         <Form
           form={form}
           onSubmit={handleSubmit((json) =>

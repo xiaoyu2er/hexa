@@ -8,8 +8,8 @@ import {
   DropdownMenuTrigger,
 } from '@hexa/ui/dropdown-menu';
 import { MoreHorizontal } from '@hexa/ui/icons';
-import { Skeleton } from '@hexa/ui/skeleton';
 import { Button } from '@nextui-org/react';
+import { Skeleton } from '@nextui-org/skeleton';
 import type { Row } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
 
