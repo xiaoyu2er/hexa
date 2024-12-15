@@ -48,7 +48,7 @@ export function LoginPasscode({ onSuccess }: LoginPasscodeProps) {
     setFocus,
   } = form;
 
-  const { resetTurnstile, turnstile, disableNext } = useTurnstile({
+  const { resetTurnstile, turnstile } = useTurnstile({
     form,
   });
 
@@ -96,7 +96,6 @@ export function LoginPasscode({ onSuccess }: LoginPasscodeProps) {
               type="submit"
               className="!mt-4 w-full"
               isLoading={isSubmitting}
-              isDisabled={disableNext}
               key="login"
             >
               Login

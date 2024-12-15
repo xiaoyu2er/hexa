@@ -55,7 +55,7 @@ export const SignupEmailPassword: FC<SignupEmailPasswordProps> = ({
     setFocus,
   } = form;
 
-  const { resetTurnstile, turnstile, disableNext } = useTurnstile({ form });
+  const { resetTurnstile, turnstile } = useTurnstile({ form });
 
   const { mutateAsync: checkUserEmail } = useMutation({
     mutationFn: $checkEmail,
@@ -115,7 +115,6 @@ export const SignupEmailPassword: FC<SignupEmailPasswordProps> = ({
             className="w-full"
             type="submit"
             isLoading={isSubmitting}
-            isDisabled={disableNext}
           >
             Continue
           </Button>

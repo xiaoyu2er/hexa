@@ -45,7 +45,7 @@ export const SignupUserInfo: FC<SignupProps> = ({
     formState: { isSubmitting, errors },
     setFocus,
   } = form;
-  const { resetTurnstile, turnstile, disableNext } = useTurnstile({ form });
+  const { resetTurnstile, turnstile } = useTurnstile({ form });
 
   const { mutateAsync: signup } = useMutation({
     mutationFn: $signupSendPasscode,
@@ -93,7 +93,6 @@ export const SignupUserInfo: FC<SignupProps> = ({
             className="w-full"
             type="submit"
             isLoading={isSubmitting}
-            isDisabled={disableNext}
           >
             Create account
           </Button>
