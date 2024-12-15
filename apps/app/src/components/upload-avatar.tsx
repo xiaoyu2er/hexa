@@ -14,13 +14,12 @@ import {
   CardTitle,
 } from '@hexa/ui/card';
 import { FileUpload } from '@hexa/ui/file-upload';
-import { FormControl, FormField, FormItem, FormMessage } from '@hexa/ui/form';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 export default function UploadAvatar({
   onUpdate,
@@ -39,14 +38,14 @@ export default function UploadAvatar({
 
   const {
     handleSubmit,
-    setError,
     formState: { isSubmitting },
   } = form;
 
   const { mutateAsync: updateAvatar } = useMutation({
     mutationFn: onUpdate,
+
     onError: (err) => {
-      setError('image', { message: err.message });
+      toast.error(err.message);
     },
     onSuccess: () => {
       toast.success('Successfully updated avatar!');
@@ -76,29 +75,26 @@ export default function UploadAvatar({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <FormField
+          <Controller
             control={form.control}
             name="image"
             render={({ field: { onChange } }) => (
-              <FormItem>
-                <FormControl>
-                  <FileUpload
-                    accept="images"
-                    className="h-24 w-24 rounded-full border border-gray-300"
-                    iconClassName="w-5 h-5"
-                    variant="plain"
-                    imageSrc={avatarUrl}
-                    readFile
-                    onChange={({ src, file }) => {
-                      onChange(file);
-                      setAvatarUrl(src);
-                    }}
-                    content={null}
-                    maxFileSizeMB={2}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+              <>
+                <FileUpload
+                  accept="images"
+                  className="h-24 w-24 rounded-full border border-gray-300"
+                  iconClassName="w-5 h-5"
+                  variant="plain"
+                  imageSrc={avatarUrl}
+                  readFile
+                  onChange={({ src, file }) => {
+                    onChange(file);
+                    setAvatarUrl(src);
+                  }}
+                  content={null}
+                  maxFileSizeMB={2}
+                />
+              </>
             )}
           />
         </CardContent>

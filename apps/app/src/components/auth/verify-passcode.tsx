@@ -20,7 +20,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@hexa/ui/card';
-import { FormControl, FormField, FormItem } from '@hexa/ui/form';
 import { PencilLine } from '@hexa/ui/icons';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@hexa/ui/input-otp';
 import { cn } from '@hexa/utils';
@@ -28,7 +27,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { type FC, useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useCountdown } from 'usehooks-ts';
 
 export interface VerifyPasscodeProps {
@@ -144,33 +143,28 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
           onSubmit={handleSubmit((json) => execVerifyCode(json))}
           className="space-y-4"
         >
-          <FormField
+          <Controller
             control={form.control}
             name="code"
             render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  {/* @ts-ignore */}
-                  <InputOTP
-                    maxLength={VERIFY_CODE_LENGTH}
-                    autoFocus
-                    {...field}
-                    containerClassName="justify-center"
-                    onComplete={handleSubmit((json) => execVerifyCode(json))}
-                  >
-                    {[...new Array(VERIFY_CODE_LENGTH).keys()].map((index) => (
-                      <InputOTPGroup key={index}>
-                        <InputOTPSlot
-                          index={index}
-                          className={
-                            errors.code || errors.root ? 'border-danger' : ''
-                          }
-                        />
-                      </InputOTPGroup>
-                    ))}
-                  </InputOTP>
-                </FormControl>
-              </FormItem>
+              <InputOTP
+                maxLength={VERIFY_CODE_LENGTH}
+                autoFocus
+                {...field}
+                containerClassName="justify-center"
+                onComplete={handleSubmit((json) => execVerifyCode(json))}
+              >
+                {[...new Array(VERIFY_CODE_LENGTH).keys()].map((index) => (
+                  <InputOTPGroup key={index}>
+                    <InputOTPSlot
+                      index={index}
+                      className={
+                        errors.code || errors.root ? 'border-danger' : ''
+                      }
+                    />
+                  </InputOTPGroup>
+                ))}
+              </InputOTP>
             )}
           />
 
