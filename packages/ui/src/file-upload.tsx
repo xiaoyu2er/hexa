@@ -1,11 +1,11 @@
 import { Loader2, UploadCloud } from '@hexa/ui/icons';
 import { cn } from '@hexa/utils';
 import { MAX_PROFILE_FILE_SIZE_MB } from '@hexa/utils/const';
+import { Avatar } from '@nextui-org/react';
 import { type VariantProps, cva } from 'class-variance-authority';
 import type React from 'react';
 import { type ReactNode, useState } from 'react';
 import { toast } from 'sonner';
-import { Avatar, AvatarImage } from './ui/avatar';
 
 const acceptFileTypes = {
   any: { types: [], errorMessage: '' },
@@ -224,9 +224,10 @@ export function FileUpload({
         <span className="sr-only">{accessibilityLabel}</span>
       </div>
       {imageSrc && (
-        <Avatar className="h-full w-full rounded-[inherit] object-cover">
-          <AvatarImage src={imageSrc} alt="Preview" />
-        </Avatar>
+        <Avatar
+          className="h-full w-full rounded-[inherit] object-cover"
+          src={imageSrc}
+        />
       )}
       {clickToUpload && (
         <div className="sr-only mt-1 flex shadow-sm">

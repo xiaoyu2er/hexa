@@ -14,7 +14,7 @@ export function ProjectCard({ project }: { project: SelectProjectType }) {
       <Link href={`/project/${project.slug}`}>
         <CardHeader className="flex flex-row items-start justify-between">
           <div className="items-top flex flex-shrink-0 flex-row gap-2">
-            <ProjectAvatar project={project} className="h-6 w-6" />
+            <ProjectAvatar project={project} />
             <CardDescription>{name}</CardDescription>
           </div>
           <Badge

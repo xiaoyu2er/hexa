@@ -2,22 +2,23 @@
 
 import { getAvatarFallbackUrl } from '@/lib/user';
 import type { SelectUserType } from '@/server/schema/user';
-import { Avatar, AvatarImage } from '@hexa/ui/avatar';
 import { cn } from '@hexa/utils';
+import { Avatar, type AvatarProps } from '@nextui-org/react';
 
 export function UserAvatar({
   user,
   className,
+  ...props
 }: {
   user: Pick<SelectUserType, 'name' | 'avatarUrl'>;
-  className?: string;
-}) {
+} & AvatarProps) {
   return (
-    <Avatar className={cn('h-6 w-6', className)}>
-      <AvatarImage
-        src={user.avatarUrl ?? getAvatarFallbackUrl(user)}
-        alt={user.name}
-      />
-    </Avatar>
+    <Avatar
+      className={cn('shrink-0', className)}
+      src={user.avatarUrl ?? getAvatarFallbackUrl(user)}
+      name={user.name}
+      showFallback={false}
+      {...props}
+    />
   );
 }
