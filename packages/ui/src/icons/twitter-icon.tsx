@@ -7,7 +7,7 @@ export const TwitterIcon = forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>(
       xmlns="http://www.w3.org/2000/svg"
       ref={ref}
       {...props}
-      viewBox="0 0 1200 1227"
+      viewBox="-150 -150 1500 1527"
       width="24"
       height="24"
       className={cn(className)}
