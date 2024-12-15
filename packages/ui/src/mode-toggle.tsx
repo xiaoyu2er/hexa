@@ -3,39 +3,30 @@
 import { MoonIcon, SunIcon } from '@hexa/ui/icons';
 import { useTheme } from 'next-themes';
 
-import { Button } from '@hexa/ui/button';
 import {
+  Button,
+  Dropdown,
+  DropdownItem,
   DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@hexa/ui/dropdown-menu';
+  DropdownTrigger,
+} from '@nextui-org/react';
 
 export function ModeToggle() {
   const { setTheme } = useTheme();
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon">
-          {/* <Sun className="dark:-rotate-90 h-[1.2rem] w-[1.2rem] rotate-0 scale-100 text-black transition-all dark:scale-0" /> */}
-          {/* <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" /> */}
+    <Dropdown>
+      <DropdownTrigger>
+        <Button variant="light" isIconOnly aria-label="Toggle theme">
           <SunIcon className="size-[1.2rem] text-neutral-800 dark:hidden dark:text-neutral-200" />
           <MoonIcon className="hidden size-[1.2rem] text-neutral-800 dark:block dark:text-neutral-200" />
-          <span className="sr-only">Toggle theme</span>
         </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme('light')}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('dark')}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('system')}>
-          System
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </DropdownTrigger>
+      <DropdownMenu>
+        <DropdownItem onClick={() => setTheme('light')}>Light</DropdownItem>
+        <DropdownItem onClick={() => setTheme('dark')}>Dark</DropdownItem>
+        <DropdownItem onClick={() => setTheme('system')}>System</DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
   );
 }

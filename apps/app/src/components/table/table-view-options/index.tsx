@@ -17,7 +17,7 @@ import { useState } from 'react';
 
 interface TableViewOptionsProps<TData> {
   table: Table<TData>;
-  sortOptions: SortOption<TData>[];
+  sortOptions?: SortOption<TData>[];
   filterConfigs?: FilterConfig<TData>[];
   view?: TableView;
   onViewChange?: (view: TableView) => void;

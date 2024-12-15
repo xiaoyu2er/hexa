@@ -1,5 +1,5 @@
-import OrgSettingsPage from './org-page';
+import OrgPage from './org-page';
 
-export default function OrgPage() {
-  return <OrgSettingsPage />;
+export default function () {
+  return <OrgPage />;
 }

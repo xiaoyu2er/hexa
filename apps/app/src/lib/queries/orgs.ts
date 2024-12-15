@@ -10,11 +10,18 @@ import { queryOptions } from '@tanstack/react-query';
 
 import { useParams } from 'next/navigation';
 
-export const queryOrgsOptions = queryOptions({
-  queryKey: ['orgs'],
-  queryFn: $getOrgs,
-  staleTime: Number.POSITIVE_INFINITY,
-});
+export const queryOrgsOptions = (
+  query: TableQuery = {
+    pagination: { pageIndex: 0, pageSize: 10 },
+    sorting: [],
+    filters: [],
+  }
+) =>
+  queryOptions({
+    queryKey: ['orgs', query],
+    queryFn: () => $getOrgs({ query: getTableQuery(query) }),
+    staleTime: Number.POSITIVE_INFINITY,
+  });
 
 export const queryOrgMembersOptions = (orgId: string, query: TableQuery) =>
   queryOptions({

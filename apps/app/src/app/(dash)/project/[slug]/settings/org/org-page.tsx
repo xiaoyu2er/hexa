@@ -7,7 +7,7 @@ import { useProject } from '@/hooks/use-project';
 import { $updateOrgAvatar } from '@/lib/api';
 import { getOrgAvatarFallbackUrl } from '@/lib/org';
 
-export default function OrgSettingsPage() {
+export default function OrgPage() {
   const {
     project: { org },
   } = useProject();

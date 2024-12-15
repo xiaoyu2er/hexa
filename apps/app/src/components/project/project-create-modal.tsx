@@ -8,7 +8,6 @@ import {
   setFormError,
 } from '@/components/form';
 import { $createProject } from '@/lib/api';
-import { queryOrgsOptions } from '@/lib/queries/orgs';
 import { invalidateProjectsQuery } from '@/lib/queries/project';
 import {
   InsertProjectSchema,
@@ -17,10 +16,11 @@ import {
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
+import { useOrgs } from '@/hooks/use-orgs';
 import {
   Button,
   Modal,
@@ -35,7 +35,7 @@ export const CreateProjectModal = NiceModal.create(() => {
   const router = useRouter();
   const {
     data: { data: orgs } = { data: [], rowCount: 0 },
-  } = useQuery(queryOrgsOptions);
+  } = useOrgs();
   const form = useForm<InsertProjectType>({
     resolver: zodResolver(InsertProjectSchema),
   });

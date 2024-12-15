@@ -5,8 +5,8 @@ import { Form } from '@/components/form';
 import { FormErrorMessage } from '@/components/form';
 import { InputField } from '@/components/form';
 import { SelectField } from '@/components/form';
+import { useOrgs } from '@/hooks/use-orgs';
 import { $createDomain } from '@/lib/api';
-import { queryOrgsOptions } from '@/lib/queries/orgs';
 import {
   InsertDomainSchema,
   type InsertDomainType,
@@ -22,7 +22,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from '@nextui-org/react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 
 export const CreateDomainModal = NiceModal.create(
@@ -30,7 +30,7 @@ export const CreateDomainModal = NiceModal.create(
     const modal = useModal();
     const {
       data: { data: orgs } = { data: [], rowCount: 0 },
-    } = useQuery(queryOrgsOptions);
+    } = useOrgs();
     const form = useForm<InsertDomainType>({
       resolver: zodResolver(InsertDomainSchema),
       defaultValues: {

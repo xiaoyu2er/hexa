@@ -4,7 +4,7 @@ import {} from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
-import { DataTable } from '@/components/orgs/list/data-table';
+import { OrgTable } from '@/components/orgs/list/org-table';
 
 export const OrgPage = () => {
   const searchParams = useSearchParams();
@@ -22,7 +22,7 @@ export const OrgPage = () => {
         <h2 className="font-bold text-2xl tracking-tight">Organizations</h2>
         <p className="text-muted-foreground">Manage your organizations here.</p>
       </div>
-      <DataTable />
+      <OrgTable />
     </>
   );
 };

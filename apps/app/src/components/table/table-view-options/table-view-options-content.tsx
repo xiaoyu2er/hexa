@@ -30,7 +30,7 @@ function getColumnLabel<TData>(options: SortOption<TData>[], columnId: string) {
 
 interface TableViewOptionsContentProps<TData> {
   table: Table<TData>;
-  sortOptions: SortOption<TData>[];
+  sortOptions?: SortOption<TData>[];
   filterConfigs?: FilterConfig<TData>[];
   view?: TableView;
   onViewChange?: (view: TableView) => void;
@@ -91,75 +91,77 @@ export function TableViewOptionsContent<TData>({
         )}
 
         {/* Sorting section - Always visible */}
-        <Select
-          size="sm"
-          label="Order by"
-          labelPlacement="outside"
-          placeholder="Select column"
-          aria-label="Order by"
-          variant="bordered"
-          selectedKeys={
-            currentSort?.id ? new Set([currentSort.id]) : new Set([])
-          }
-          endContent={
-            currentSort?.id && (
-              <>
-                <button
-                  type="button"
-                  aria-label={
-                    currentSort.desc ? 'Sort Descending' : 'Sort Ascending'
-                  }
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    table.setSorting([
-                      {
-                        id: currentSort.id,
-                        desc: !currentSort.desc,
-                      },
-                    ]);
-                  }}
-                  title={
-                    currentSort.desc ? 'Sort Descending' : 'Sort Ascending'
-                  }
-                >
-                  {currentSort.desc ? (
-                    <ArrowDown className="h-3 w-3" />
-                  ) : (
-                    <ArrowUp className="h-3 w-3" />
-                  )}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    table.resetSorting();
-                  }}
-                  aria-label="Clear sort"
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </>
-            )
-          }
-          onSelectionChange={(selection) => {
-            const value = [...selection][0] as string;
-
-            if (value) {
-              table.setSorting([
-                {
-                  id: value,
-                  desc: currentSort?.id === value ? currentSort.desc : true,
-                },
-              ]);
-            } else {
-              table.resetSorting();
+        {sortOptions && (
+          <Select
+            size="sm"
+            label="Order by"
+            labelPlacement="outside"
+            placeholder="Select column"
+            aria-label="Order by"
+            variant="bordered"
+            selectedKeys={
+              currentSort?.id ? new Set([currentSort.id]) : new Set([])
             }
-          }}
-        >
-          {sortOptions.map((option) => (
-            <SelectItem key={String(option.value)}>{option.label}</SelectItem>
-          ))}
-        </Select>
+            endContent={
+              currentSort?.id && (
+                <>
+                  <button
+                    type="button"
+                    aria-label={
+                      currentSort.desc ? 'Sort Descending' : 'Sort Ascending'
+                    }
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      table.setSorting([
+                        {
+                          id: currentSort.id,
+                          desc: !currentSort.desc,
+                        },
+                      ]);
+                    }}
+                    title={
+                      currentSort.desc ? 'Sort Descending' : 'Sort Ascending'
+                    }
+                  >
+                    {currentSort.desc ? (
+                      <ArrowDown className="h-3 w-3" />
+                    ) : (
+                      <ArrowUp className="h-3 w-3" />
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      table.resetSorting();
+                    }}
+                    aria-label="Clear sort"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </>
+              )
+            }
+            onSelectionChange={(selection) => {
+              const value = [...selection][0] as string;
+
+              if (value) {
+                table.setSorting([
+                  {
+                    id: value,
+                    desc: currentSort?.id === value ? currentSort.desc : true,
+                  },
+                ]);
+              } else {
+                table.resetSorting();
+              }
+            }}
+          >
+            {sortOptions.map((option) => (
+              <SelectItem key={String(option.value)}>{option.label}</SelectItem>
+            ))}
+          </Select>
+        )}
 
         {/* Filters section - Always visible */}
         {filterConfigs.map((config) => {
@@ -213,7 +215,7 @@ export function TableViewOptionsContent<TData>({
         })}
 
         {/* Display Properties - Desktop Only */}
-        {isDesktop && (
+        {isDesktop && sortOptions && (
           <CheckboxGroup
             size="sm"
             classNames={{
