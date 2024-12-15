@@ -1,13 +1,10 @@
 'use client';
-
-import { useDebounce } from '@hexa/ui/hooks/use-debounce';
 import { X } from '@hexa/ui/icons';
-import { useEffect, useState } from 'react';
 
-import { DataTableFacetedFilter } from '@/components/table/table-faceted-filter';
+import { DataTableFacetedFilter } from '@/components/table/table-toolbar/table-faceted-filter';
+import { TableToolbarSearch } from '@/components/table/table-toolbar/table-toolbar-search';
 import type { TableToolbarProps } from '@/components/table/table-types';
-import { Button } from '@hexa/ui/button';
-import { Input } from '@hexa/ui/input';
+import { Button } from '@nextui-org/react';
 
 export function TableToolbarDesktop<TData>({
   table,
@@ -15,26 +12,15 @@ export function TableToolbarDesktop<TData>({
   searchPlaceholder = 'Search...',
   children,
 }: TableToolbarProps<TData>) {
-  const [value, setValue] = useState('');
-  const debouncedValue = useDebounce(value, 1000);
   const isFiltered = table.getState().columnFilters.length > 0;
-
-  useEffect(() => {
-    if (value === '') {
-      table.getColumn('search')?.setFilterValue('');
-    } else {
-      table.getColumn('search')?.setFilterValue(debouncedValue);
-    }
-  }, [debouncedValue, table, value]);
 
   return (
     <div className="flex items-center justify-between gap-2">
       <div className="flex flex-1 items-center space-x-2">
-        <Input
+        <TableToolbarSearch
+          table={table}
           placeholder={searchPlaceholder}
-          value={value}
-          onChange={(event) => setValue(event.target.value)}
-          className="h-8 w-[150px] lg:w-[250px]"
+          className="w-[150px] lg:w-[250px]"
         />
         {filterConfigs.map((config) => {
           const column = table.getColumn(String(config.columnId));
@@ -53,15 +39,15 @@ export function TableToolbarDesktop<TData>({
         })}
         {isFiltered && (
           <Button
-            variant="ghost"
+            variant="light"
+            size="sm"
             onClick={() => {
-              setValue('');
+              table.getColumn('search')?.setFilterValue('');
               table.resetColumnFilters();
             }}
-            className="h-8 px-2 lg:px-3"
+            endContent={<X className="h-4 w-4" strokeWidth={1.5} />}
           >
             Reset
-            <X className="ml-2 h-4 w-4" />
           </Button>
         )}
       </div>
