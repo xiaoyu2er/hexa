@@ -119,7 +119,8 @@ export function ContextSwitcher() {
               {selectedProject ? (
                 <ProjectAvatar
                   project={selectedProject}
-                  className="h-4 w-4 cursor-pointer"
+                  size="sm"
+                  className="h-4 w-4"
                 />
               ) : // biome-ignore lint/nursery/noNestedTernary: <explanation>
               user ? (
@@ -138,7 +139,7 @@ export function ContextSwitcher() {
                 <>
                   <ProjectAvatar
                     project={selectedProject}
-                    className="h-6 w-6"
+                    className="h-5 w-5"
                   />
                   <span className="w-2/3 overflow-hidden text-ellipsis text-nowrap text-left">
                     {selectedProject.name}
@@ -188,7 +189,8 @@ export function ContextSwitcher() {
                       startContent={
                         <ProjectAvatar
                           project={project}
-                          className="mr-2 h-5 w-5 "
+                          size="sm"
+                          className="h-4 w-4"
                         />
                       }
                     >

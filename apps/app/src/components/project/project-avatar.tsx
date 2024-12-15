@@ -1,21 +1,23 @@
 import { getProjectAvatarFallbackUrl } from '@/lib/project';
 import type { SelectProjectType } from '@/server/schema/project';
-import { Avatar, AvatarImage } from '@hexa/ui/avatar';
-import { cn } from '@hexa/utils';
+import { Avatar, type AvatarProps, cn } from '@nextui-org/react';
+
+export type ProjectAvatarProps = {
+  project: SelectProjectType;
+} & AvatarProps;
 
 export function ProjectAvatar({
   project,
   className,
-}: {
-  project: SelectProjectType;
-  className: string;
-}) {
+  ...props
+}: ProjectAvatarProps) {
   return (
-    <Avatar className={cn('h-6 w-6', className)}>
-      <AvatarImage
-        src={project.avatarUrl || getProjectAvatarFallbackUrl(project)}
-        alt="Project Profile Picture"
-      />
-    </Avatar>
+    <Avatar
+      src={project.avatarUrl || getProjectAvatarFallbackUrl(project)}
+      name={project.name || 'Project Profile Picture'}
+      className={cn('shrink-0', className)}
+      showFallback={false}
+      {...props}
+    />
   );
 }

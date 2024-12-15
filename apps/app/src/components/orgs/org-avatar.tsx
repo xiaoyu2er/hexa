@@ -2,22 +2,24 @@
 
 import { getOrgAvatarFallbackUrl } from '@/lib/org';
 import type { SelectOrgType } from '@/server/schema/org';
-import { Avatar, AvatarImage } from '@hexa/ui/avatar';
+
 import { cn } from '@hexa/utils';
+import { Avatar, type AvatarProps } from '@nextui-org/react';
 
 export function OrgAvatar({
   org,
   className,
+  ...props
 }: {
   org: SelectOrgType;
-  className: string;
-}) {
+} & AvatarProps) {
   return (
-    <Avatar className={cn('h-6 w-6', className)}>
-      <AvatarImage
-        src={org?.avatarUrl || getOrgAvatarFallbackUrl(org)}
-        alt={org?.name || 'Organization Profile Picture'}
-      />
-    </Avatar>
+    <Avatar
+      className={cn('shrink-0', className)}
+      name={org?.name || 'Organization Profile Picture'}
+      src={org?.avatarUrl || getOrgAvatarFallbackUrl(org)}
+      showFallback={false}
+      {...props}
+    />
   );
 }
