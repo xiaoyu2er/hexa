@@ -1,10 +1,12 @@
 'use client';
 
-import { setFormError } from '@/components/form';
-import { Form } from '@/components/form';
-import { FormErrorMessage } from '@/components/form/form-error-message';
-import { InputField } from '@/components/form/input-field';
-import { SelectField } from '@/components/form/select-field';
+import {
+  Form,
+  FormErrorMessage,
+  InputField,
+  SelectField,
+  setFormError,
+} from '@/components/form';
 import { $createProject } from '@/lib/api';
 import { queryOrgsOptions } from '@/lib/queries/orgs';
 import { invalidateProjectsQuery } from '@/lib/queries/project';
@@ -64,12 +66,7 @@ export const CreateProjectModal = NiceModal.create(() => {
       size="lg"
       isOpen={modal.visible}
       backdrop="blur"
-      onOpenChange={(v: boolean) => {
-        if (!v) {
-          modal.reject();
-          modal.remove();
-        }
-      }}
+      onOpenChange={modal.hide}
     >
       <ModalContent>
         <ModalHeader>Create Project</ModalHeader>

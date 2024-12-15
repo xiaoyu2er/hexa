@@ -1,6 +1,6 @@
 'use client';
 
-import { FormErrorMessage } from '@/components/form/form-error-message';
+import { FormErrorMessage } from '@/components/form';
 import {} from '@/server/schema/signup';
 import { Button } from '@nextui-org/react';
 
@@ -19,8 +19,8 @@ import { AuthLink } from '@/components/auth/auth-link';
 import { DividerOr } from '@/components/auth/divider-or';
 import { OauthButtons } from '@/components/auth/oauth-buttons';
 import { setFormError } from '@/components/form';
-import { InputField } from '@/components/form/input-field';
-import { PasswordField } from '@/components/form/password-field';
+import { InputField } from '@/components/form';
+import { PasswordField } from '@/components/form';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import { $checkEmail } from '@/lib/api';
 import { PasswordSchema, type PasswordType } from '@/server/schema/common';

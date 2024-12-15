@@ -49,7 +49,12 @@ export const DomainTable = () => {
       sortOptions={sortOptions}
       CardSkeleton={CardSkeleton}
       actionSlot={
-        <Button size="sm" onPress={onClick} color="primary">
+        <Button
+          size="sm"
+          onPress={onClick}
+          color="primary"
+          className="shrink-0"
+        >
           Create Domain
         </Button>
       }

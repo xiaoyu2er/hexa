@@ -1,21 +1,11 @@
 'use client';
 
 import { setFormError } from '@/components/form';
-import { $createDomain } from '@/lib/api';
-import {
-  DialogBody,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@hexa/ui/responsive-dialog';
-
-import { Dialog } from '@/components/dialog';
 import { Form } from '@/components/form';
-import { FormErrorMessage } from '@/components/form/form-error-message';
-import { InputField } from '@/components/form/input-field';
-import { SelectField } from '@/components/form/select-field';
+import { FormErrorMessage } from '@/components/form';
+import { InputField } from '@/components/form';
+import { SelectField } from '@/components/form';
+import { $createDomain } from '@/lib/api';
 import { queryOrgsOptions } from '@/lib/queries/orgs';
 import {
   InsertDomainSchema,
@@ -24,7 +14,14 @@ import {
 import type { SelectProjectType } from '@/server/schema/project';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@nextui-org/react';
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from '@nextui-org/react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 
@@ -60,21 +57,14 @@ export const CreateDomainModal = NiceModal.create(
     });
 
     return (
-      <Dialog control={modal}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Add domain</DialogTitle>
-            <DialogDescription>
-              Add a new domain to your organization
-            </DialogDescription>
-          </DialogHeader>
-
+      <Modal isOpen={modal.visible} onOpenChange={modal.hide}>
+        <ModalContent>
+          <ModalHeader>Add domain</ModalHeader>
           <Form
             form={form}
             onSubmit={handleSubmit((json) => createDomain({ json }))}
-            className="md:space-y-4"
           >
-            <DialogBody className="space-y-2">
+            <ModalBody>
               <SelectField
                 form={form}
                 name="orgId"
@@ -94,9 +84,8 @@ export const CreateDomainModal = NiceModal.create(
               />
 
               <FormErrorMessage message={errors.root?.message} />
-            </DialogBody>
-
-            <DialogFooter>
+            </ModalBody>
+            <ModalFooter>
               <Button
                 className="w-full"
                 type="submit"
@@ -105,10 +94,10 @@ export const CreateDomainModal = NiceModal.create(
               >
                 Add Domain
               </Button>
-            </DialogFooter>
+            </ModalFooter>
           </Form>
-        </DialogContent>
-      </Dialog>
+        </ModalContent>
+      </Modal>
     );
   }
 );

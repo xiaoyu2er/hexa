@@ -1,5 +1,5 @@
 import { Form } from '@/components/form';
-import { InputField } from '@/components/form/input-field';
+import { InputField } from '@/components/form';
 import {
   $addUserEmailSendPasscode,
   type InferApiResponseType,

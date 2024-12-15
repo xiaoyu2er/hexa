@@ -1,8 +1,8 @@
 'use client';
 
 import { setFormError } from '@/components/form';
-import { FormErrorMessage } from '@/components/form/form-error-message';
-import { InputField } from '@/components/form/input-field';
+import { FormErrorMessage } from '@/components/form';
+import { InputField } from '@/components/form';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import {
   $resetPasswordSendPasscode,

@@ -1,4 +1,4 @@
-import { InputField } from '@/components/form/input-field';
+import { InputField } from '@/components/form';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import type { RulesFormType } from '@hexa/const/rule';

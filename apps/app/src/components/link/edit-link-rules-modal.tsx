@@ -1,6 +1,6 @@
 'use client';
-import { Form } from '@/components/form/form';
-import { FormErrorMessage } from '@/components/form/form-error-message';
+import { FormErrorMessage } from '@/components/form';
+import { Form } from '@/components/form';
 import { RuleCard } from '@/components/link/rule-card';
 import {
   DndContext,

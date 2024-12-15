@@ -2,7 +2,7 @@
 
 import { setFormError } from '@/components/form';
 import { Form } from '@/components/form';
-import { InputField } from '@/components/form/input-field';
+import { InputField } from '@/components/form';
 import { useUser } from '@/hooks/use-user';
 import { $updateUserName } from '@/lib/api';
 import {} from '@/server/schema/project';

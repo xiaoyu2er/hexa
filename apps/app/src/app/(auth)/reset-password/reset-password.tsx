@@ -2,7 +2,7 @@
 
 import { AuthLink } from '@/components/auth/auth-link';
 import { Form, FormErrorMessage, setFormError } from '@/components/form';
-import { PasswordField } from '@/components/form/password-field';
+import { PasswordField } from '@/components/form';
 import { $resetPassword } from '@/lib/api';
 import {
   ResetPasswordSchema,

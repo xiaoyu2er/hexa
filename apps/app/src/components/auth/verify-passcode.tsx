@@ -2,7 +2,7 @@
 
 import { AuthLink } from '@/components/auth/auth-link';
 import { Form, setFormError } from '@/components/form';
-import { FormErrorMessage } from '@/components/form/form-error-message';
+import { FormErrorMessage } from '@/components/form';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import { RESEND_VERIFY_CODE_TIME_SPAN, VERIFY_CODE_LENGTH } from '@/lib/const';
 import {

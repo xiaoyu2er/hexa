@@ -1,5 +1,5 @@
-import { FloatField } from '@/components/form/float-field';
-import type { BaseFieldProps } from '@/components/form/form-type';
+import { FloatField } from '@/components/form';
+import type { BaseFieldProps } from '@/components/form';
 import { type ComponentProps, useEffect } from 'react';
 import type { FieldValues, Path } from 'react-hook-form';
 

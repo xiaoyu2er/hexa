@@ -1,6 +1,6 @@
 'use client';
 import { Form, PasswordField, setFormError } from '@/components/form';
-import { FormErrorMessage } from '@/components/form/form-error-message';
+import { FormErrorMessage } from '@/components/form';
 import { useUser } from '@/hooks/use-user';
 import { $updateUserPassword } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';

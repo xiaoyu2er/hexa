@@ -1,6 +1,6 @@
 'use client';
 
-import { ReadOnly } from '@/components/form/read-only';
+import { ReadOnly } from '@/components/form';
 import { useUser } from '@/hooks/use-user';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import {

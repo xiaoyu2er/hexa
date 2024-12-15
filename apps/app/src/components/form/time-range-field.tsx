@@ -1,4 +1,4 @@
-import type { BaseFieldProps } from '@/components/form/form-type';
+import type { BaseFieldProps } from '@/components/form';
 import {
   DateRangePicker,
   type DateRangePickerProps,

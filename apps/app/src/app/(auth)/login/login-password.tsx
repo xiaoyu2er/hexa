@@ -5,7 +5,7 @@ import { DividerOr } from '@/components/auth/divider-or';
 import { OauthButtons } from '@/components/auth/oauth-buttons';
 import { setFormError } from '@/components/form';
 import { Form, FormErrorMessage, InputField } from '@/components/form';
-import { PasswordField } from '@/components/form/password-field';
+import { PasswordField } from '@/components/form';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import { $loginPassword } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
