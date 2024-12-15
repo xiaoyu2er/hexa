@@ -1,4 +1,5 @@
 'use client';
+import AnalyticsTimePicker from '@/components/analytics/analytics-time-picker';
 import {
   CONTINENT_ICONS,
   getBrowserIcon,
@@ -7,10 +8,11 @@ import {
   getOSIcon,
 } from '@/lib/icons';
 import type { LogsData } from '@/server/route/analytics';
-import { DateRangePicker } from '@hexa/ui/date-range-picker';
-import { subDays } from 'date-fns';
 import { useState } from 'react';
 import { LogsChart, type Tab } from './logs-chart';
+
+import type { TimeRange } from '@/hooks/use-analytics';
+import { getLocalTimeZone, today } from '@internationalized/date';
 
 // URL Stats Configuration
 const urlTabs: Tab[] = [
@@ -98,25 +100,16 @@ const referrerTabs: Tab[] = [
 ];
 
 export function AnalyticsPage() {
-  const [date, setDate] = useState({
-    start: subDays(new Date(), 7),
-    end: new Date(),
+  const [date, setDate] = useState<TimeRange>({
+    start: today(getLocalTimeZone()),
+    end: today(getLocalTimeZone()).add({ days: 7 }),
   });
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="font-bold text-3xl">Analytics</h1>
-        <DateRangePicker
-          initialDateFrom={date.start}
-          initialDateTo={date.end}
-          onUpdate={(newDate) => {
-            setDate({
-              start: newDate.range.from,
-              end: newDate.range.to || new Date(),
-            });
-          }}
-        />
+        <AnalyticsTimePicker dateRange={date} onUpdate={setDate} />
       </div>
 
       <div className="grid grid-cols-2 gap-4">

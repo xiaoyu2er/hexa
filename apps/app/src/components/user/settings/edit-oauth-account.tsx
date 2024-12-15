@@ -11,13 +11,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 
 import { useModal } from '@ebay/nice-modal-react';
-import { Button } from '@hexa/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@hexa/ui/dropdown-menu';
+
 import {
   EllipsisIcon,
   GithubIcon,
@@ -25,9 +19,20 @@ import {
   MoveRightIcon,
   UserPlusIcon,
 } from '@hexa/ui/icons';
-import { Popover, PopoverContent, PopoverTrigger } from '@hexa/ui/popover';
-
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Listbox,
+  ListboxItem,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@nextui-org/react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { DeleteOauthAccountModal } from './delete-oauth-account-modal';
 
 export function EditOauthAccount() {
@@ -38,7 +43,7 @@ export function EditOauthAccount() {
   const hasGithubAccount = accounts.some((a) => a.provider === 'GITHUB');
 
   const modal = useModal(DeleteOauthAccountModal);
-
+  const router = useRouter();
   return (
     <>
       <Card>
@@ -47,91 +52,120 @@ export function EditOauthAccount() {
           <CardDescription>Manage your connected accounts.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex max-w-md flex-col">
+          <div className="flex max-w-md flex-col gap-1">
             {accounts
               // .sort((a, b) => (a.primary ? -1 : 1))
               .map((account) => {
                 return (
-                  <Button
+                  <Dropdown
+                    placement="bottom-end"
                     key={account.provider}
-                    className="justify-between"
-                    variant="ghost"
+                    backdrop="transparent"
                   >
-                    <p className="flex items-center gap-2 font-medium text-sm leading-none">
-                      {account.provider === 'GITHUB' && (
-                        <GithubIcon className="h-4 w-4" />
-                      )}
-                      {account.provider === 'GOOGLE' && (
-                        <GoogleIcon className="h-4 w-4" />
-                      )}
-                      {account.provider[0] +
-                        account.provider.slice(1).toLowerCase()}
-                      {account.username && (
-                        <span className="text-gray-600 text-sm">
-                          {account.username}
-                        </span>
-                      )}
-                    </p>
-
+                    <DropdownTrigger>
+                      <Button
+                        key={account.provider}
+                        className="justify-between"
+                        variant="light"
+                        endContent={<EllipsisIcon className="h4 w-4" />}
+                      >
+                        <p className="flex items-center gap-2 font-medium text-sm leading-none">
+                          {account.provider === 'GITHUB' && (
+                            <GithubIcon className="h-4 w-4" />
+                          )}
+                          {account.provider === 'GOOGLE' && (
+                            <GoogleIcon className="h-4 w-4" />
+                          )}
+                          {account.provider[0] +
+                            account.provider.slice(1).toLowerCase()}
+                          {account.username && (
+                            <span className="text-gray-600 text-sm">
+                              {account.username}
+                            </span>
+                          )}
+                        </p>
+                      </Button>
+                    </DropdownTrigger>
                     <DropdownMenu>
-                      <DropdownMenuTrigger>
-                        <EllipsisIcon className="h4 w-4" />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuItem
-                          className="cursor-pointer text-destructive focus:text-destructive"
-                          onClick={() => {
-                            modal
-                              .show({ provider: account.provider })
-                              .then(() => refetch());
-                          }}
-                        >
-                          Remove account
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
+                      <DropdownItem
+                        className="cursor-pointer text-destructive focus:text-destructive"
+                        onClick={() => {
+                          modal
+                            .show({ provider: account.provider })
+                            .then(() => refetch());
+                        }}
+                      >
+                        Remove account
+                      </DropdownItem>
                     </DropdownMenu>
-                  </Button>
+                  </Dropdown>
                 );
               })}
 
-            <Popover modal={false}>
-              <PopoverTrigger asChild>
+            <Popover
+              placement="bottom-end"
+              backdrop="transparent"
+              classNames={{
+                base: 'w-[200px] p-0',
+                content: 'p-0',
+              }}
+            >
+              <PopoverTrigger>
                 <Button
-                  variant="ghost"
+                  variant="light"
                   disabled={hasGithubAccount && hasGoogleAccount}
-                  className="group items-center justify-start gap-2 disabled:cursor-not-allowed"
+                  className="justify-between disabled:cursor-not-allowed"
+                  endContent={
+                    !hasGithubAccount || !hasGoogleAccount ? (
+                      <MoveRightIcon className="hidden h-4 w-4 animate-in group-hover:block" />
+                    ) : null
+                  }
                 >
-                  <UserPlusIcon className="h-4 w-4" /> Add new account
-                  {(!hasGithubAccount || !hasGoogleAccount) && (
-                    <MoveRightIcon className="hidden h-4 w-4 animate-in group-hover:block" />
-                  )}
+                  <p className="flex items-center gap-2 font-medium text-sm leading-none">
+                    <UserPlusIcon className="h-4 w-4" /> Add new account
+                  </p>
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="flex w-md flex-col p-0">
-                {!hasGithubAccount && (
-                  <Button
-                    variant="ghost"
-                    className="h-11 w-full justify-start "
-                    asChild
-                  >
-                    <Link href="/api/oauth/github" prefetch={false}>
-                      <GithubIcon className="mr-2 h-4 w-4" />
-                      Github
-                    </Link>
-                  </Button>
-                )}
-                {!hasGoogleAccount && (
-                  <Button
-                    variant="ghost"
-                    className="h-11 w-full justify-start"
-                    asChild
-                  >
-                    <Link href="/api/oauth/google" prefetch={false}>
-                      <GoogleIcon className="mr-2 h-4 w-4" />
-                      Google
-                    </Link>
-                  </Button>
-                )}
+              <PopoverContent>
+                <Listbox
+                  aria-label="Actions"
+                  variant="flat"
+                  selectionMode="none"
+                  classNames={{
+                    list: 'p-0',
+                  }}
+                  onAction={(key) => {
+                    // console.log(key);
+                    router.push(`/api/oauth/${key}`);
+                  }}
+                >
+                  {hasGithubAccount ? null : (
+                    <ListboxItem
+                      key="github"
+                      startContent={<GithubIcon className="h-4 w-4" />}
+                      classNames={{
+                        base: 'w-full [&>a]:w-full [&>a]:flex [&>a]:items-center [&>a]:gap-2',
+                      }}
+                    >
+                      <Link href="/api/oauth/github" prefetch={false}>
+                        Github
+                      </Link>
+                    </ListboxItem>
+                  )}
+                  {hasGoogleAccount ? null : (
+                    <ListboxItem
+                      key="google"
+                      startContent={<GoogleIcon className="h-4 w-4" />}
+                      classNames={{
+                        base: 'w-full [&>a]:w-full [&>a]:flex [&>a]:items-center [&>a]:gap-2',
+                      }}
+                    >
+                      <Link href="/api/oauth/google" prefetch={false}>
+                        Google
+                      </Link>
+                    </ListboxItem>
+                  )}
+                </Listbox>
               </PopoverContent>
             </Popover>
           </div>
