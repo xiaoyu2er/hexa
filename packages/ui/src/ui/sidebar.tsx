@@ -1,9 +1,8 @@
 'use client';
 
-import { Button } from '@hexa/ui/button';
 import { useIsMobile } from '@hexa/ui/hooks/use-mobile';
-import { Sheet, SheetContent } from '@hexa/ui/sheet';
 import { cn } from '@hexa/utils';
+import { Button, Drawer, DrawerContent } from '@nextui-org/react';
 import { Skeleton, Tooltip } from '@nextui-org/react';
 import { Slot } from '@radix-ui/react-slot';
 import { type VariantProps, cva } from 'class-variance-authority';
@@ -13,7 +12,6 @@ import React from 'react';
 const SIDEBAR_COOKIE_NAME = 'sidebar:state';
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 const SIDEBAR_WIDTH = '16rem';
-const SIDEBAR_WIDTH_MOBILE = '18rem';
 const SIDEBAR_WIDTH_ICON = '3rem';
 const SIDEBAR_KEYBOARD_SHORTCUT = 'b';
 
@@ -185,21 +183,16 @@ const Sidebar = React.forwardRef<
 
     if (isMobile) {
       return (
-        <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
-          <SheetContent
-            data-sidebar="sidebar"
-            data-mobile="true"
-            className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
-            style={
-              {
-                '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
-              } as React.CSSProperties
-            }
-            side={side}
-          >
-            <div className="flex h-full w-full flex-col">{children}</div>
-          </SheetContent>
-        </Sheet>
+        <Drawer
+          placement={side}
+          radius="none"
+          size="xs"
+          isOpen={openMobile}
+          onOpenChange={setOpenMobile}
+          hideCloseButton
+        >
+          <DrawerContent>{children}</DrawerContent>
+        </Drawer>
       );
     }
 
@@ -253,24 +246,24 @@ Sidebar.displayName = 'Sidebar';
 const SidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
   React.ComponentProps<typeof Button>
->(({ className, onClick, ...props }, ref) => {
+>(({ className, ...props }, ref) => {
   const { toggleSidebar } = useSidebar();
 
   return (
     <Button
       ref={ref}
       data-sidebar="trigger"
-      variant="ghost"
-      size="icon"
+      variant="light"
+      isIconOnly
+      size="sm"
       className={cn('h-7 w-7', className)}
-      onClick={(event) => {
-        onClick?.(event);
+      onPress={() => {
         toggleSidebar();
       }}
+      aria-label="Toggle Sidebar"
       {...props}
     >
-      <PanelLeft />
-      <span className="sr-only">Toggle Sidebar</span>
+      <PanelLeft className="h-4 w-4" strokeWidth={1.8} />
     </Button>
   );
 });
