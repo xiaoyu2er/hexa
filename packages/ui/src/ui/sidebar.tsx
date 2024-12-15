@@ -10,7 +10,6 @@ import { useIsMobile } from '@hexa/ui/hooks/use-mobile';
 import { Input } from '@hexa/ui/input';
 import { Separator } from '@hexa/ui/separator';
 import { Sheet, SheetContent } from '@hexa/ui/sheet';
-import { Skeleton } from '@hexa/ui/skeleton';
 import {
   Tooltip,
   TooltipContent,
@@ -18,6 +17,7 @@ import {
   TooltipTrigger,
 } from '@hexa/ui/tooltip';
 import { cn } from '@hexa/utils';
+import { Skeleton } from '@nextui-org/skeleton';
 
 const SIDEBAR_COOKIE_NAME = 'sidebar:state';
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;

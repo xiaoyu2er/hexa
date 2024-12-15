@@ -4,7 +4,7 @@ import { useProject } from '@/hooks/use-project';
 import type { SelectLinkType } from '@/server/schema/link';
 import { useModal } from '@ebay/nice-modal-react';
 import { SparklesIcon } from '@hexa/ui/icons';
-import { Skeleton } from '@hexa/ui/skeleton';
+import { Skeleton } from '@nextui-org/skeleton';
 import type { Row } from '@tanstack/react-table';
 import { LinkActions } from './link-actions';
 import { LinkInfo } from './link-info';

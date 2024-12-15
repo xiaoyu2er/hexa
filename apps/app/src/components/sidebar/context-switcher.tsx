@@ -11,7 +11,6 @@ import { Badge } from '@hexa/ui/badge';
 import { useScreenSize } from '@hexa/ui/hooks/use-screen-size';
 import { CaretSortIcon, PlusCircledIcon } from '@hexa/ui/icons';
 import { useSidebar } from '@hexa/ui/sidebar';
-import { Skeleton } from '@hexa/ui/skeleton';
 import { toast } from '@hexa/ui/sonner';
 import { cn } from '@hexa/utils';
 import {
@@ -24,6 +23,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@nextui-org/react';
+import { Skeleton } from '@nextui-org/skeleton';
 import { useQuery } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
@@ -96,7 +96,11 @@ export function ContextSwitcher() {
   if (!isFetched) {
     return (
       <Skeleton
-        className={cn('w-full', state === 'collapsed' ? 'h-5' : 'h-10')}
+        className={cn(
+          'w-full',
+          'rounded-lg',
+          state === 'collapsed' ? 'h-5' : 'h-10'
+        )}
       />
     );
   }
