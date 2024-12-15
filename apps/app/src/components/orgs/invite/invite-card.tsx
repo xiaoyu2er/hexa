@@ -1,111 +1,114 @@
 import RevokeInvite from '@/components/orgs/invite/invite-revoke-button';
 import { UserAvatar } from '@/components/user/settings/user-avatar';
 import type { QueryInviteType } from '@/server/schema/org-invite';
+import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { Badge } from '@hexa/ui/badge';
-import { Card, CardContent } from '@hexa/ui/card';
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@hexa/ui/sheet';
 import { cn } from '@hexa/utils';
+import {
+  Card,
+  CardBody,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+} from '@nextui-org/react';
 import { Skeleton } from '@nextui-org/skeleton';
 import type { Row } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
-import { type HTMLAttributes, forwardRef } from 'react';
 
-export const InviteCardWithActions = ({
-  row,
-}: { row: Row<QueryInviteType> }) => (
-  <Sheet>
-    <SheetTrigger asChild>
-      <InviteCard row={row} />
-    </SheetTrigger>
-
-    <SheetContent side="bottom" className="h-fit max-h-[50vh]">
-      <SheetHeader>
-        <SheetTitle>Invite Actions</SheetTitle>
-      </SheetHeader>
-      <div className="mt-4 space-y-3">
-        <RevokeInvite invite={row.original} className="w-full justify-start" />
-        {/* Add more actions here as needed */}
-      </div>
-    </SheetContent>
-  </Sheet>
+export const InviteCardActionModal = NiceModal.create(
+  ({ row }: { row: Row<QueryInviteType> }) => {
+    const modal = useModal();
+    return (
+      <Modal isOpen={modal.visible} onOpenChange={modal.hide} backdrop="blur">
+        <ModalContent>
+          <ModalHeader>Invite Actions</ModalHeader>
+          <ModalBody>
+            <RevokeInvite
+              invite={row.original}
+              className="w-full justify-start"
+            />
+            {/* Add more actions here as needed */}
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    );
+  }
 );
 
-export const InviteCard = forwardRef<
-  HTMLDivElement,
-  { row: Row<QueryInviteType> } & HTMLAttributes<HTMLDivElement>
->(({ row, className, ...props }, ref) => (
-  <Card
-    ref={ref}
-    className={cn('mb-4 cursor-pointer hover:bg-muted/50', className)}
-    {...props}
-  >
-    <CardContent className="p-4">
-      <div className="space-y-3">
-        {/* Invitee Section */}
-        <div>
-          <div className="mb-1.5 font-medium text-muted-foreground text-xs">
-            Invitee
-          </div>
-          <div className="flex items-center justify-between">
-            <div className="font-medium">{row.getValue('email')}</div>
-            <div className="flex gap-2">
-              <Badge variant="secondary">{row.getValue('role')}</Badge>
-              <Badge
-                variant="outline"
-                className={cn(
-                  row.getValue('status') === 'PENDING'
-                    ? 'border-yellow-500 text-yellow-500'
-                    : 'border-red-500 text-red-500'
-                )}
-              >
-                {capitalize(row.getValue('status'))}
-              </Badge>
+export const InviteCard = ({ row }: { row: Row<QueryInviteType> }) => {
+  const modal = useModal(InviteCardActionModal);
+  return (
+    <Card
+      shadow="sm"
+      isPressable
+      onPress={() => modal.show({ row })}
+      classNames={{
+        base: 'w-full',
+      }}
+    >
+      <CardBody>
+        <div className="space-y-3">
+          {/* Invitee Section */}
+          <div>
+            <div className="mb-1.5 font-medium text-muted-foreground text-xs">
+              Invitee
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="font-medium">{row.getValue('email')}</div>
+              <div className="flex gap-2">
+                <Badge variant="secondary">{row.getValue('role')}</Badge>
+                <Badge
+                  variant="outline"
+                  className={cn(
+                    row.getValue('status') === 'PENDING'
+                      ? 'border-yellow-500 text-yellow-500'
+                      : 'border-red-500 text-red-500'
+                  )}
+                >
+                  {capitalize(row.getValue('status'))}
+                </Badge>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Inviter Section */}
-        <div>
-          <div className="mb-1.5 font-medium text-muted-foreground text-xs">
-            Invited by
+          {/* Inviter Section */}
+          <div>
+            <div className="mb-1.5 font-medium text-muted-foreground text-xs">
+              Invited by
+            </div>
+            <div className="flex items-center gap-2">
+              <UserAvatar user={row.original.inviter} className="h-5 w-5" />
+              <span className="text-sm">{row.original.inviter.name}</span>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <UserAvatar user={row.original.inviter} className="h-5 w-5" />
-            <span className="text-sm">{row.original.inviter.name}</span>
-          </div>
-        </div>
 
-        {/* Dates Section */}
-        <div className="flex justify-between border-t pt-3 text-muted-foreground text-sm">
-          <div className="space-y-1">
-            <div className="font-medium text-xs">Invited</div>
-            <div>
-              {new Date(row.getValue('createdAt')).toLocaleDateString()}
+          {/* Dates Section */}
+          <div className="flex justify-between border-t pt-3 text-muted-foreground text-sm">
+            <div className="space-y-1">
+              <div className="font-medium text-xs">Invited</div>
+              <div>
+                {new Date(row.getValue('createdAt')).toLocaleDateString()}
+              </div>
             </div>
-          </div>
-          <div className="space-y-1 text-right">
-            <div className="font-medium text-xs">Expires</div>
-            <div>
-              {new Date(row.getValue('expiresAt')).toLocaleDateString()}
+            <div className="space-y-1 text-right">
+              <div className="font-medium text-xs">Expires</div>
+              <div>
+                {new Date(row.getValue('expiresAt')).toLocaleDateString()}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </CardContent>
-  </Card>
-));
+      </CardBody>
+    </Card>
+  );
+};
 
 InviteCard.displayName = 'InviteCard';
 
 export const InviteCardSkeleton = () => (
   <Card>
-    <CardContent className="p-4">
+    <CardBody>
       <div className="space-y-3">
         {/* Invitee Section */}
         <div>
@@ -144,6 +147,6 @@ export const InviteCardSkeleton = () => (
           </div>
         </div>
       </div>
-    </CardContent>
+    </CardBody>
   </Card>
 );
