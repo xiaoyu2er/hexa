@@ -3,28 +3,23 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { toast } from '@hexa/ui/sonner';
 
-import { setFormError } from '@/components/form';
-import { Form } from '@/components/form';
+import { Form, InputField, setFormError } from '@/components/form';
 import { $deleteUserOauthAccount } from '@/lib/api';
+import type { ProviderType } from '@/server/schema/oauth';
 import {
   type DeleteOauthAccountInput,
   DeleteOauthAccountSchema,
 } from '@/server/schema/oauth';
-import type { ProviderType } from '@/server/schema/oauth';
-import { Button } from '@hexa/ui/button';
-
-import {
-  DialogBody,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@hexa/ui/responsive-dialog';
-
-import { Dialog } from '@/components/dialog';
-import { InputField } from '@/components/form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Alert,
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 
@@ -62,21 +57,18 @@ export const DeleteOauthAccountModal = NiceModal.create(
     });
 
     return (
-      <Dialog control={modal}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Delete Connected Account</DialogTitle>
-            <DialogDescription>
-              Warning: This will remove your {provider} account from your
-              profile.
-            </DialogDescription>
-          </DialogHeader>
+      <Modal isOpen={modal.visible} onOpenChange={modal.hide} backdrop="blur">
+        <ModalContent className="sm:max-w-[425px]">
+          <ModalHeader>Delete Connected Account</ModalHeader>
           <Form
             form={form}
             onSubmit={handleSubmit((json) => deleteUserOauthAccount({ json }))}
-            className="md:space-y-4"
           >
-            <DialogBody className="space-y-2">
+            <ModalBody>
+              <Alert
+                description={`Warning: This will remove your ${provider} account from your profile.`}
+                color="danger"
+              />
               <InputField
                 form={form}
                 name="provider"
@@ -87,20 +79,20 @@ export const DeleteOauthAccountModal = NiceModal.create(
                   </>
                 }
               />
-            </DialogBody>
-            <DialogFooter>
+            </ModalBody>
+            <ModalFooter>
               <Button
-                variant="destructive"
+                color="danger"
                 className="w-full"
                 type="submit"
-                loading={isSubmitting}
+                isLoading={isSubmitting}
               >
                 Delete Connected Account
               </Button>
-            </DialogFooter>
+            </ModalFooter>
           </Form>
-        </DialogContent>
-      </Dialog>
+        </ModalContent>
+      </Modal>
     );
   }
 );

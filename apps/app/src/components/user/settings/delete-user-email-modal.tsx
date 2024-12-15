@@ -3,24 +3,19 @@
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { toast } from '@hexa/ui/sonner';
 
-import { setFormError } from '@/components/form';
-import { Form } from '@/components/form';
+import { Form, InputField, setFormError } from '@/components/form';
 import { $deleteUserEmail } from '@/lib/api';
-import { Button } from '@hexa/ui/button';
-
-import {
-  DialogBody,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@hexa/ui/responsive-dialog';
-
-import { Dialog } from '@/components/dialog';
-import { InputField } from '@/components/form';
 import { DeleteEmailSchema, type DeleteEmailType } from '@/server/schema/email';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Alert,
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 
@@ -58,21 +53,18 @@ export const DeleteUserEmailModal = NiceModal.create(
     });
 
     return (
-      <Dialog control={modal}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Delete Email</DialogTitle>
-            <DialogDescription>
-              Warning: Permanently delete your email, and their respective
-              stats. This action cannot be undone - please proceed with caution.
-            </DialogDescription>
-          </DialogHeader>
+      <Modal isOpen={modal.visible} onOpenChange={modal.hide} backdrop="blur">
+        <ModalContent>
+          <ModalHeader>Delete Email</ModalHeader>
           <Form
             form={form}
             onSubmit={handleSubmit((json) => deleteUserEmail({ json }))}
-            className="md:space-y-4"
           >
-            <DialogBody className="space-y-2">
+            <ModalBody>
+              <Alert
+                description={`Warning: Permanently delete your email: ${email}, and their respective stats. This action cannot be undone - please proceed with caution.`}
+                color="danger"
+              />
               <InputField
                 form={form}
                 name="email"
@@ -83,21 +75,21 @@ export const DeleteUserEmailModal = NiceModal.create(
                   </>
                 }
               />
-            </DialogBody>
+            </ModalBody>
 
-            <DialogFooter>
+            <ModalFooter>
               <Button
-                variant="destructive"
+                color="danger"
                 className="w-full"
                 type="submit"
-                loading={isSubmitting}
+                isLoading={isSubmitting}
               >
                 Delete Email
               </Button>
-            </DialogFooter>
+            </ModalFooter>
           </Form>
-        </DialogContent>
-      </Dialog>
+        </ModalContent>
+      </Modal>
     );
   }
 );
