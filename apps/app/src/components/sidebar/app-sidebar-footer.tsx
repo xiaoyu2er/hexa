@@ -1,12 +1,11 @@
 'use client';
 
 import { $logout } from '@/lib/api';
-import { Button } from '@hexa/ui/button';
 import { useScreenSize } from '@hexa/ui/hooks/use-screen-size';
 import { LogOut, Monitor, Moon, Sun } from '@hexa/ui/icons';
 import { SidebarFooter, useSidebar } from '@hexa/ui/sidebar';
 import { cn } from '@hexa/utils/cn';
-import { Tooltip } from '@nextui-org/tooltip';
+import { Button, Tooltip } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
@@ -29,10 +28,11 @@ export function AppSidebarFooter() {
 
   const systemTheme = (
     <Button
-      variant="ghost"
+      variant="light"
+      isIconOnly
+      size="sm"
       className={clsNames}
-      size="icon"
-      onClick={() => setTheme('system')}
+      onPress={() => setTheme('system')}
       aria-label="Toggle theme"
     >
       <Monitor className="h-4 w-4" />
@@ -41,10 +41,11 @@ export function AppSidebarFooter() {
 
   const lightTheme = (
     <Button
-      variant="ghost"
+      variant="light"
+      isIconOnly
+      size="sm"
       className={clsNames}
-      size="icon"
-      onClick={() => setTheme('light')}
+      onPress={() => setTheme('light')}
     >
       <Sun className="h-4 w-4" />
     </Button>
@@ -52,10 +53,11 @@ export function AppSidebarFooter() {
 
   const darkTheme = (
     <Button
-      variant="ghost"
+      variant="light"
+      isIconOnly
+      size="sm"
       className={clsNames}
-      size="icon"
-      onClick={() => setTheme('dark')}
+      onPress={() => setTheme('dark')}
     >
       <Moon className="h-4 w-4" />
     </Button>
@@ -64,9 +66,11 @@ export function AppSidebarFooter() {
   const logout = (
     <Tooltip content="Logout" placement="right">
       <Button
-        variant="ghost"
+        variant="light"
+        isIconOnly
+        size="sm"
         className={cn(clsNames, 'ml-auto')}
-        onClick={() => execLogout({})}
+        onPress={() => execLogout({})}
         disabled={isPending}
       >
         <LogOut className="h-4 w-4" />

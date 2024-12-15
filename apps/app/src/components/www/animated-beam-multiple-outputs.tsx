@@ -14,21 +14,25 @@ import {
   WhatsAppIcon,
 } from '@hexa/ui/icons';
 import { cn } from '@hexa/utils';
+import { Button } from '@nextui-org/react';
 
 const Circle = forwardRef<
-  HTMLDivElement,
+  HTMLButtonElement,
   { className?: string; children?: React.ReactNode }
 >(({ className, children }, ref) => {
   return (
-    <div
+    <Button
       ref={ref}
+      isIconOnly
       className={cn(
-        'z-10 flex size-12 items-center justify-center rounded-full border-2 bg-white p-3 shadow-[0_0_20px_-12px_rgba(0,0,0,0.8)]',
+        'relative z-10 border-default-200 bg-white dark:bg-black',
         className
       )}
+      radius="full"
+      variant="bordered"
     >
       {children}
-    </div>
+    </Button>
   );
 });
 
@@ -40,13 +44,13 @@ export function AnimatedBeamMultipleOutputDemo({
   className?: string;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const googleDriveRef = useRef<HTMLDivElement>(null);
-  const googleDocsRef = useRef<HTMLDivElement>(null);
-  const whatsAppRef = useRef<HTMLDivElement>(null);
-  const openAiRef = useRef<HTMLDivElement>(null);
-  const notionRef = useRef<HTMLDivElement>(null);
-  const logoRef = useRef<HTMLDivElement>(null);
-  const personRef = useRef<HTMLDivElement>(null);
+  const googleDriveRef = useRef<HTMLButtonElement>(null);
+  const googleDocsRef = useRef<HTMLButtonElement>(null);
+  const whatsAppRef = useRef<HTMLButtonElement>(null);
+  const openAiRef = useRef<HTMLButtonElement>(null);
+  const notionRef = useRef<HTMLButtonElement>(null);
+  const logoRef = useRef<HTMLButtonElement>(null);
+  const personRef = useRef<HTMLButtonElement>(null);
 
   return (
     <div
@@ -59,7 +63,7 @@ export function AnimatedBeamMultipleOutputDemo({
       <div className="flex size-full max-w-lg flex-row items-stretch justify-between gap-10">
         <div className="flex flex-col justify-center">
           <Circle ref={personRef}>
-            <User2Icon />
+            <User2Icon className="h-5 w-5" strokeWidth={1.5} />
           </Circle>
         </div>
         <div className="flex flex-col justify-center">

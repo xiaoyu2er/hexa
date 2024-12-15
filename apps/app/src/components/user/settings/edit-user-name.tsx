@@ -10,7 +10,6 @@ import {
   UpdateUserNameSchema,
   type UpdateUserNameType,
 } from '@/server/schema/user';
-import { Button } from '@hexa/ui/button';
 import {
   Card,
   CardContent,
@@ -21,6 +20,7 @@ import {
 } from '@hexa/ui/card';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
@@ -84,9 +84,10 @@ export function EditUserName() {
         <CardFooter className="flex-row-reverse items-center justify-between border-t px-6 py-4">
           <Button
             type="submit"
+            color="primary"
             className="shrink-0"
-            loading={isSubmitting}
-            disabled={!isDirty}
+            isLoading={isSubmitting}
+            isDisabled={!isDirty}
           >
             Update
           </Button>
