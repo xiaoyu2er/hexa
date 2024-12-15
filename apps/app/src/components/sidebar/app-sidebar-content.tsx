@@ -7,9 +7,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from '@hexa/ui/sidebar';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@hexa/ui/tooltip';
 import Link from 'next/link';
 
 interface AppSidebarContentProps {
@@ -18,7 +16,6 @@ interface AppSidebarContentProps {
 }
 
 export function AppSidebarContent({ items, pathname }: AppSidebarContentProps) {
-  const { state } = useSidebar();
   return (
     <SidebarContent>
       {items.map((item, index) => {
@@ -28,30 +25,18 @@ export function AppSidebarContent({ items, pathname }: AppSidebarContentProps) {
             <SidebarGroupContent>
               <SidebarMenu>
                 {item.subItems.map((subItem) => {
-                  const button = (
-                    <SidebarMenuButton
-                      asChild
-                      isActive={subItem.url === pathname}
-                      key={subItem.url}
-                    >
-                      <Link href={subItem.url}>
-                        <subItem.icon />
-                        <span>{subItem.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  );
                   return (
                     <SidebarMenuItem key={subItem.title}>
-                      {state === 'collapsed' ? (
-                        <Tooltip>
-                          <TooltipTrigger asChild>{button}</TooltipTrigger>
-                          <TooltipContent side="right" className="z-[100]">
-                            {subItem.title}
-                          </TooltipContent>
-                        </Tooltip>
-                      ) : (
-                        button
-                      )}
+                      <SidebarMenuButton
+                        asChild
+                        isActive={subItem.url === pathname}
+                        tooltip={subItem.title}
+                      >
+                        <Link href={subItem.url}>
+                          <subItem.icon />
+                          <span>{subItem.title}</span>
+                        </Link>
+                      </SidebarMenuButton>
                     </SidebarMenuItem>
                   );
                 })}

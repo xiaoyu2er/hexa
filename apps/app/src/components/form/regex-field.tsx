@@ -4,9 +4,7 @@ import {
   RegexExpressionTips,
   RegexFlagsTips,
 } from '@/components/tips/regex-tips';
-import {} from '@hexa/ui/form';
 import { useDebounce } from '@hexa/ui/hooks/use-debounce';
-import {} from '@hexa/ui/popover';
 import type { ComponentProps } from 'react';
 import type { FieldValues, Path } from 'react-hook-form';
 

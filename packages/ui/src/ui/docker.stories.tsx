@@ -7,13 +7,8 @@ import type React from 'react';
 import { buttonVariants } from '@hexa/ui/button';
 import { Dock, DockIcon } from '@hexa/ui/dock';
 import { Separator } from '@hexa/ui/separator';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@hexa/ui/tooltip';
 import { cn } from '@hexa/utils';
+import { Tooltip } from '@nextui-org/react';
 
 export type IconProps = React.HTMLAttributes<SVGElement>;
 
@@ -99,53 +94,42 @@ function DockDemo() {
       <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center font-semibold text-8xl text-transparent leading-none dark:from-white dark:to-slate-900/10">
         Dock
       </span>
-      <TooltipProvider>
-        <Dock direction="middle">
-          {DATA.navbar.map((item) => (
-            <DockIcon key={item.label}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link
-                    href={item.href}
-                    aria-label={item.label}
-                    className={cn(
-                      buttonVariants({ variant: 'ghost', size: 'icon' }),
-                      'size-12 rounded-full'
-                    )}
-                  >
-                    <item.icon className="size-4" />
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{item.label}</p>
-                </TooltipContent>
-              </Tooltip>
-            </DockIcon>
-          ))}
-          <Separator orientation="vertical" className="h-full" />
-          {Object.entries(DATA.contact.social).map(([name, social]) => (
-            <DockIcon key={name}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link
-                    href={social.url}
-                    aria-label={social.name}
-                    className={cn(
-                      buttonVariants({ variant: 'ghost', size: 'icon' }),
-                      'size-12 rounded-full'
-                    )}
-                  >
-                    <social.icon className="size-4" />
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{name}</p>
-                </TooltipContent>
-              </Tooltip>
-            </DockIcon>
-          ))}
-        </Dock>
-      </TooltipProvider>
+
+      <Dock direction="middle">
+        {DATA.navbar.map((item) => (
+          <DockIcon key={item.label}>
+            <Tooltip content={item.label} placement="right">
+              <Link
+                href={item.href}
+                aria-label={item.label}
+                className={cn(
+                  buttonVariants({ variant: 'ghost', size: 'icon' }),
+                  'size-12 rounded-full'
+                )}
+              >
+                <item.icon className="size-4" />
+              </Link>
+            </Tooltip>
+          </DockIcon>
+        ))}
+        <Separator orientation="vertical" className="h-full" />
+        {Object.entries(DATA.contact.social).map(([name, social]) => (
+          <DockIcon key={name}>
+            <Tooltip content={social.name} placement="right">
+              <Link
+                href={social.url}
+                aria-label={social.name}
+                className={cn(
+                  buttonVariants({ variant: 'ghost', size: 'icon' }),
+                  'size-12 rounded-full'
+                )}
+              >
+                <social.icon className="size-4" />
+              </Link>
+            </Tooltip>
+          </DockIcon>
+        ))}
+      </Dock>
     </div>
   );
 }

@@ -1,11 +1,11 @@
 import { APP_URL } from '@/lib/env';
 import { buttonVariants } from '@hexa/ui/button';
 import { ChevronRight } from '@hexa/ui/icons';
-import { Separator } from '@hexa/ui/separator';
 import { cn } from '@hexa/utils';
+import { Divider } from '@nextui-org/react';
 import Link from 'next/link';
 export default function Hero() {
-  const post = { href: null, title: 'Introducing Hexa' };
+  const post = { href: '/blog/introducing-hexa', title: 'Introducing Hexa' };
 
   return (
     <div
@@ -23,7 +23,7 @@ export default function Hero() {
             'rounded-full'
           )}
         >
-          🎉 <Separator className="mx-2 h-4" orientation="vertical" />
+          🎉 <Divider className="mx-2 h-3" orientation="vertical" />
           {post.title}
           <ChevronRight className="ml-1 h-4 w-4 text-muted-foreground" />
         </Link>

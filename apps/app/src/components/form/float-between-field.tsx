@@ -1,7 +1,5 @@
 import { FloatField } from '@/components/form/float-field';
 import type { BaseFieldProps } from '@/components/form/form-type';
-import {} from '@hexa/ui/form';
-import {} from '@hexa/ui/popover';
 import { type ComponentProps, useEffect } from 'react';
 import type { FieldValues, Path } from 'react-hook-form';
 

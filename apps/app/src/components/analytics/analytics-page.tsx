@@ -7,9 +7,7 @@ import {
   getOSIcon,
 } from '@/lib/icons';
 import type { LogsData } from '@/server/route/analytics';
-import {} from '@hexa/ui/card';
 import { DateRangePicker } from '@hexa/ui/date-range-picker';
-import {} from '@hexa/ui/icons';
 import { subDays } from 'date-fns';
 import { useState } from 'react';
 import { LogsChart, type Tab } from './logs-chart';
