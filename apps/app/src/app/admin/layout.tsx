@@ -6,12 +6,12 @@ import { protectRoute } from '@/lib/check-route-permission';
 import { getDb } from '@/lib/db';
 import { getSession } from '@/lib/session';
 import { getOrgMember } from '@/server/store/org-member';
-import { Separator } from '@hexa/ui/separator';
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from '@hexa/ui/sidebar';
+import { Divider } from '@nextui-org/react';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { redirect } from 'next/navigation';
 import type { ReactNode } from 'react';
@@ -48,7 +48,7 @@ export default async function AdminLayout({
         <SidebarInset>
           <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center gap-2 bg-background px-4">
             <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Divider orientation="vertical" className="mr-2 h-4" />
             <AppSidebarBreadcrumb />
           </header>
           <div className="mx-auto grid w-full max-w-screen-xl gap-5 px-3 pt-3 pb-10 lg:px-10">

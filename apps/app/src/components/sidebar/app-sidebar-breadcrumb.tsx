@@ -1,46 +1,12 @@
 'use client';
 
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@hexa/ui/breadcrumb';
+import { BreadcrumbItem, Breadcrumbs } from '@nextui-org/react';
 import { useParams, usePathname } from 'next/navigation';
-import { Fragment } from 'react';
 export const getSidebarBreadcrumb = ({
   slug,
   pathname,
 }: { slug: string; pathname: string }) => {
   const items: Record<string, { name: string; link?: string }[]> = {
-    '/user/profile': [
-      {
-        name: 'User',
-      },
-      {
-        name: 'Profile',
-      },
-    ],
-    '/user/account': [
-      {
-        name: 'User',
-        link: '/user/profile',
-      },
-      {
-        name: 'Account',
-      },
-    ],
-    '/user/organizations': [
-      {
-        name: 'User',
-        link: '/user/profile',
-      },
-      {
-        name: 'Organizations',
-      },
-    ],
     [`/project/${slug}`]: [
       {
         name: 'Project',
@@ -49,7 +15,43 @@ export const getSidebarBreadcrumb = ({
         name: 'Links',
       },
     ],
-    [`/project/${slug}/settings`]: [
+    [`/project/${slug}/analytics`]: [
+      {
+        name: 'Project',
+        link: `/project/${slug}`,
+      },
+      {
+        name: 'Analytics',
+      },
+    ],
+    [`/project/${slug}/settings/user/profile`]: [
+      {
+        name: 'User',
+      },
+      {
+        name: 'Profile',
+      },
+    ],
+    [`/project/${slug}/settings/user/account`]: [
+      {
+        name: 'User',
+        link: `/project/${slug}/settings/user/profile`,
+      },
+      {
+        name: 'Account',
+      },
+    ],
+    [`/project/${slug}/settings/user/organizations`]: [
+      {
+        name: 'User',
+        link: `/project/${slug}/settings/user/profile`,
+      },
+      {
+        name: 'Organizations',
+      },
+    ],
+
+    [`/project/${slug}/settings/project`]: [
       {
         name: 'Project',
         link: `/project/${slug}`,
@@ -58,7 +60,7 @@ export const getSidebarBreadcrumb = ({
         name: 'Settings',
       },
     ],
-    [`/project/${slug}/org`]: [
+    [`/project/${slug}/settings/org`]: [
       {
         name: 'Organization',
       },
@@ -66,12 +68,22 @@ export const getSidebarBreadcrumb = ({
         name: 'Settings',
       },
     ],
-    [`/project/${slug}/org/members`]: [
+    [`/project/${slug}/settings/org/members`]: [
       {
         name: 'Organization',
+        link: `/project/${slug}/settings/org`,
       },
       {
         name: 'Members',
+      },
+    ],
+    [`/project/${slug}/settings/org/domains`]: [
+      {
+        name: 'Organization',
+        link: `/project/${slug}/settings/org`,
+      },
+      {
+        name: 'Domains',
       },
     ],
   };
@@ -91,23 +103,14 @@ export function AppSidebarBreadcrumb() {
   }
 
   return (
-    <Breadcrumb>
-      <BreadcrumbList>
-        {breadcrumbs.map((item, index) => {
-          return (
-            <Fragment key={item.name}>
-              <BreadcrumbItem>
-                {item.link ? (
-                  <BreadcrumbLink href={item.link}>{item.name}</BreadcrumbLink>
-                ) : (
-                  <BreadcrumbPage>{item.name}</BreadcrumbPage>
-                )}
-              </BreadcrumbItem>
-              {index !== breadcrumbs.length - 1 && <BreadcrumbSeparator />}
-            </Fragment>
-          );
-        })}
-      </BreadcrumbList>
-    </Breadcrumb>
+    <Breadcrumbs>
+      {breadcrumbs.map((item, index) => {
+        return (
+          <BreadcrumbItem key={index} href={item.link}>
+            {item.name}
+          </BreadcrumbItem>
+        );
+      })}
+    </Breadcrumbs>
   );
 }

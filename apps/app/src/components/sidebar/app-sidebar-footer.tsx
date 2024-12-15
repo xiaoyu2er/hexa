@@ -5,8 +5,8 @@ import { Button } from '@hexa/ui/button';
 import { useScreenSize } from '@hexa/ui/hooks/use-screen-size';
 import { LogOut, Monitor, Moon, Sun } from '@hexa/ui/icons';
 import { SidebarFooter, useSidebar } from '@hexa/ui/sidebar';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@hexa/ui/tooltip';
 import { cn } from '@hexa/utils/cn';
+import { Tooltip } from '@nextui-org/tooltip';
 import { useMutation } from '@tanstack/react-query';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
@@ -62,18 +62,15 @@ export function AppSidebarFooter() {
   );
 
   const logout = (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button
-          variant="ghost"
-          className={cn(clsNames, 'ml-auto')}
-          onClick={() => execLogout({})}
-          disabled={isPending}
-        >
-          <LogOut className="h-4 w-4" />
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>Logout</TooltipContent>
+    <Tooltip content="Logout" placement="right">
+      <Button
+        variant="ghost"
+        className={cn(clsNames, 'ml-auto')}
+        onClick={() => execLogout({})}
+        disabled={isPending}
+      >
+        <LogOut className="h-4 w-4" />
+      </Button>
     </Tooltip>
   );
 

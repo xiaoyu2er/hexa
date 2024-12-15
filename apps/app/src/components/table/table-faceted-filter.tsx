@@ -13,8 +13,8 @@ import {
   CommandSeparator,
 } from '@hexa/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@hexa/ui/popover';
-import { Separator } from '@hexa/ui/separator';
 import { cn } from '@hexa/utils';
+import { Divider } from '@nextui-org/react';
 
 export function DataTableFacetedFilter<TData, TValue>({
   column,
@@ -32,7 +32,7 @@ export function DataTableFacetedFilter<TData, TValue>({
           {title}
           {selectedValues?.size > 0 && (
             <>
-              <Separator orientation="vertical" className="mx-2 h-4" />
+              <Divider orientation="vertical" className="mx-2 h-4" />
               <Badge
                 variant="secondary"
                 className="rounded-sm px-1 font-normal lg:hidden"
