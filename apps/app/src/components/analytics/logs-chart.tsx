@@ -7,7 +7,7 @@ import { BarChart2Icon } from '@hexa/ui/icons';
 import type { LucideIcon } from '@hexa/ui/icons';
 import type { LogsKey } from '@hexa/utils/analytics';
 import { Tab as NextUITab, Tabs } from '@nextui-org/react';
-import { Skeleton } from '@nextui-org/skeleton';
+import { Skeleton } from '@nextui-org/react';
 import { useState } from 'react';
 
 export interface Tab {

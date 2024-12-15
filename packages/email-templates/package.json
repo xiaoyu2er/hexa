@@ -22,7 +22,7 @@
   "devDependencies": {
     "@hexa/tailwind-config": "workspace:*",
     "@hexa/typescript-config": "workspace:*",
-    "@types/node": "^20.14.10",
+    "@types/node": "22.10.1",
     "@types/react": "^18.3.3",
     "tailwindcss": "^3.4.4"
   }

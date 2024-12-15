@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "mintlify": "^4.0.286",
-    "typescript": "^5.6.3",
-    "concurrently": "^8.2.0"
+    "typescript": "5.7.2",
+    "concurrently": "9.1.0"
   }
 }
