@@ -1,11 +1,8 @@
 'use client';
-
-import { buttonVariants } from '@hexa/ui/button';
 import { GithubIcon, StarIcon, TwitterIcon } from '@hexa/ui/icons';
 import { ModeToggle } from '@hexa/ui/mode-toggle';
 import NumberTicker from '@hexa/ui/number-ticker';
 import { cn } from '@hexa/utils';
-// import Link from 'next/link';
 
 import { siteConfig } from '@/config/www/site';
 import { Button, Link } from '@nextui-org/react';
@@ -72,40 +69,31 @@ export function SiteHeader({ showStars = true }: SiteHeaderProps) {
           )}
 
           <nav className="flex items-center gap-1">
-            <Link
+            <Button
+              as={Link}
               href={siteConfig.links.github}
               target="_blank"
+              size="sm"
               rel="noreferrer"
+              variant="light"
+              aria-label="GitHub"
+              className="min-w-8"
             >
-              <div
-                className={cn(
-                  buttonVariants({
-                    variant: 'ghost',
-                  }),
-                  'w-9 px-0'
-                )}
-              >
-                <GithubIcon className="size-4" />
-                <span className="sr-only">GitHub</span>
-              </div>
-            </Link>
-            <Link
+              <GithubIcon className="h-4 w-4" />
+            </Button>
+            <Button
+              as={Link}
               href={siteConfig.links.twitter}
               target="_blank"
               rel="noreferrer"
+              variant="light"
+              aria-label="Twitter"
+              size="sm"
+              className="min-w-8"
             >
-              <div
-                className={cn(
-                  buttonVariants({
-                    variant: 'ghost',
-                  }),
-                  'w-9 px-0'
-                )}
-              >
-                <TwitterIcon className="size-4 fill-current" />
-                <span className="sr-only">Twitter</span>
-              </div>
-            </Link>
+              <TwitterIcon className="h-4 w-4" />
+            </Button>
+
             <ModeToggle />
           </nav>
         </div>

@@ -18,8 +18,8 @@ export function ModeToggle() {
     <Dropdown>
       <DropdownTrigger>
         <Button variant="light" isIconOnly aria-label="Toggle theme">
-          <SunIcon className="size-[1.2rem] text-neutral-800 dark:hidden dark:text-neutral-200" />
-          <MoonIcon className="hidden size-[1.2rem] text-neutral-800 dark:block dark:text-neutral-200" />
+          <SunIcon className="h-4 w-4 text-neutral-800 dark:hidden dark:text-neutral-200" />
+          <MoonIcon className="hidden h-4 w-4 text-neutral-800 dark:block dark:text-neutral-200" />
         </Button>
       </DropdownTrigger>
       <DropdownMenu>

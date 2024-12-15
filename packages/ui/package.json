@@ -10,7 +10,6 @@
     "./font": "./src/font/font.tsx",
     "./animated-beam": "./src/ui/animated-beam.tsx",
     "./badge": "./src/ui/badge.tsx",
-    "./border-beam": "./src/ui/border-beam.tsx",
     "./button.stories": "./src/ui/button.stories.tsx",
     "./button": "./src/ui/button.tsx",
     "./card": "./src/ui/card.tsx",
