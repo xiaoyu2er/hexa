@@ -96,6 +96,7 @@ const config: Config = {
         'caret-blink': 'caret-blink 1.25s ease-out infinite',
         marquee: 'marquee var(--duration) linear infinite',
         'marquee-vertical': 'marquee-vertical var(--duration) linear infinite',
+        'rainbow-bg': 'rainbow-bg 3s linear infinite',
       },
     },
   },

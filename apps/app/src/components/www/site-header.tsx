@@ -5,9 +5,10 @@ import { GithubIcon, StarIcon, TwitterIcon } from '@hexa/ui/icons';
 import { ModeToggle } from '@hexa/ui/mode-toggle';
 import NumberTicker from '@hexa/ui/number-ticker';
 import { cn } from '@hexa/utils';
-import Link from 'next/link';
+// import Link from 'next/link';
 
 import { siteConfig } from '@/config/www/site';
+import { Button, Link } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
 import { MainNav } from './main-nav';
 import { MobileNav } from './mobile-nav';
@@ -49,29 +50,25 @@ export function SiteHeader({ showStars = true }: SiteHeaderProps) {
         <MobileNav />
         <div className="flex flex-1 items-center justify-between gap-2 md:justify-end">
           {showStars && (
-            <Link
-              className={cn(
-                buttonVariants({
-                  variant: 'rainbow',
-                }),
-                'hidden md:inline-flex'
-              )}
+            <Button
+              as={Link}
+              size="sm"
               target="_blank"
+              color="primary"
               href={siteConfig.links.github}
+              startContent={<GithubIcon className="relative z-[2] size-4" />}
+              endContent={
+                <div className="ml-2 flex items-center gap-1 text-sm md:flex">
+                  <StarIcon className="size-4 text-gray-500 transition-all duration-300 group-hover:text-yellow-300" />
+                  <NumberTicker
+                    value={stars}
+                    className="font-display font-medium text-white dark:text-black"
+                  />
+                </div>
+              }
             >
-              <div className="flex items-center">
-                <GithubIcon className="size-4" />
-                <span className="ml-1 lg:hidden">Star</span>
-                <span className="ml-1 hidden lg:inline">Star on GitHub</span>
-              </div>
-              <div className="ml-2 flex items-center gap-1 text-sm md:flex">
-                <StarIcon className="size-4 text-gray-500 transition-all duration-300 group-hover:text-yellow-300" />
-                <NumberTicker
-                  value={stars}
-                  className="font-display font-medium text-white dark:text-black"
-                />
-              </div>
-            </Link>
+              <span className="relative z-[2]">Star</span>
+            </Button>
           )}
 
           <nav className="flex items-center gap-1">
