@@ -62,8 +62,6 @@
     "./progress": "./src/ui/progress.tsx",
     "./rainbow-button": "./src/ui/rainbow-button.tsx",
     "./resizable": "./src/ui/resizable.tsx",
-    "./responsive-dialog.stories": "./src/ui/responsive-dialog.stories.tsx",
-    "./responsive-dialog": "./src/ui/responsive-dialog.tsx",
     "./safari.stories": "./src/ui/safari.stories.tsx",
     "./safari": "./src/ui/safari.tsx",
     "./scroll-area": "./src/ui/scroll-area.tsx",
