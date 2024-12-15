@@ -1,9 +1,8 @@
 import { APP_URL } from '@/lib/env';
-import { buttonVariants } from '@hexa/ui/button';
 import { ChevronRight } from '@hexa/ui/icons';
 import { cn } from '@hexa/utils';
-import { Divider } from '@nextui-org/react';
-import Link from 'next/link';
+import { Button, Divider, Link } from '@nextui-org/react';
+
 export default function Hero() {
   const post = { href: '/blog/introducing-hexa', title: 'Introducing Hexa' };
 
@@ -13,20 +12,20 @@ export default function Hero() {
       id="hero"
     >
       {post.href && (
-        <Link
+        <Button
+          as={Link}
           href={post.href}
-          className={cn(
-            buttonVariants({
-              variant: 'outline',
-              size: 'sm',
-            }),
-            'rounded-full'
-          )}
+          variant="bordered"
+          radius="full"
+          size="sm"
+          endContent={
+            <ChevronRight className="size-4 shrink-0 text-muted-foreground transition-all duration-300 ease-out group-hover:translate-x-1" />
+          }
         >
-          🎉 <Divider className="mx-2 h-3" orientation="vertical" />
+          🎉
+          <Divider className="mx-2 h-3" orientation="vertical" />
           {post.title}
-          <ChevronRight className="ml-1 h-4 w-4 text-muted-foreground" />
-        </Link>
+        </Button>
       )}
 
       <div className="flex flex-col gap-6 text-balance md:items-center">
@@ -61,32 +60,28 @@ export default function Hero() {
       </div>
 
       <div className="mx-0 flex w-full max-w-full flex-col gap-2 py-1 sm:max-w-lg sm:flex-row sm:gap-4">
-        <Link
+        <Button
+          as={Link}
           href={`${APP_URL}/login`}
-          className={cn(
-            buttonVariants({
-              variant: 'default',
-              size: 'lg',
-            }),
-            'w-full gap-2'
-          )}
+          color="primary"
+          className="w-full"
+          endContent={
+            <ChevronRight className="ml-1 size-4 shrink-0 transition-all duration-300 ease-out group-hover:translate-x-1" />
+          }
         >
           Get Started
-          <ChevronRight className="ml-1 size-4 shrink-0 transition-all duration-300 ease-out group-hover:translate-x-1" />
-        </Link>
-        <Link
+        </Button>
+        <Button
+          as={Link}
           href="https://pro.magicui.design"
-          className={cn(
-            buttonVariants({
-              size: 'lg',
-              variant: 'outline',
-            }),
-            'w-full gap-2'
-          )}
+          variant="bordered"
+          className="w-full"
+          endContent={
+            <ChevronRight className="ml-1 size-4 shrink-0 transition-all duration-300 ease-out group-hover:translate-x-1" />
+          }
         >
           Learn More
-          <ChevronRight className="ml-1 size-4 shrink-0 transition-all duration-300 ease-out group-hover:translate-x-1" />
-        </Link>
+        </Button>
       </div>
     </div>
   );

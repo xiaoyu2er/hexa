@@ -26,7 +26,7 @@ export function LinkTable() {
   const { project } = useProject();
   const create = (
     <Button
-      className="mr-2"
+      className="mr-2 shrink-0"
       size="sm"
       color="primary"
       onPress={() =>

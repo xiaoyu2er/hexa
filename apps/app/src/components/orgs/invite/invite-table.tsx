@@ -3,7 +3,7 @@ import { BaseTable, type TableRef } from '@/components/table/base-table';
 import type { QueryInviteType } from '@/server/schema/org-invite';
 import { type ReactNode, forwardRef } from 'react';
 import {
-  InviteCardWithActions as Card,
+  InviteCard as Card,
   InviteCardSkeleton as CardSkeleton,
 } from './invite-card';
 import {
