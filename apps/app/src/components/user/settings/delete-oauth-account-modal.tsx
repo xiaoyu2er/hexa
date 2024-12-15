@@ -23,7 +23,7 @@ import {
 } from '@hexa/ui/responsive-dialog';
 
 import { Dialog } from '@/components/dialog';
-import { InputField } from '@/components/form/input-field';
+import { InputField } from '@/components/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';

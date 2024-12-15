@@ -1,6 +1,6 @@
 'use client';
 
-import { ReadOnly } from '@/components/form/read-only';
+import { ReadOnly } from '@/components/form';
 import { useProject } from '@/hooks/use-project';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import {

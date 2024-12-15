@@ -1,7 +1,4 @@
-import {
-  InputField,
-  type InputFieldProps,
-} from '@/components/form/input-field';
+import { InputField, type InputFieldProps } from '@/components/form';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import type { FieldValues } from 'react-hook-form';

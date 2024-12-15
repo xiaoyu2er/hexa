@@ -18,24 +18,50 @@ import {
   type DeleteUserType,
 } from '@/server/schema/user';
 
-import { InputField } from '@/components/form/input-field';
-import {
-  Dialog,
-  DialogBody,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@hexa/ui/responsive-dialog';
+import { InputField } from '@/components/form';
+
+import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@nextui-org/react';
+import {
+  Alert,
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 
 export function DeleteAccount() {
+  const modal = useModal(DeleteAccountModal);
+  return (
+    <Card className="border border-danger-500">
+      <CardHeader>
+        <CardTitle>Delete account</CardTitle>
+        <CardDescription>
+          Permanently delete your {NEXT_PUBLIC_APP_NAME} account, and their
+          respective stats. This action cannot be undone - please proceed with
+          caution.
+        </CardDescription>
+      </CardHeader>
+      <CardFooter className="flex-row-reverse items-center justify-between border-danger-500 border-t px-6 py-4">
+        <Button
+          color="danger"
+          className="shrink-0"
+          onPress={() => modal.show()}
+        >
+          Delete account
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+}
+
+export const DeleteAccountModal = NiceModal.create(() => {
+  const modal = useModal();
   const form = useForm<DeleteUserType>({
     resolver: zodResolver(DeleteUserSchema),
     defaultValues: {},
@@ -58,66 +84,44 @@ export function DeleteAccount() {
   });
 
   return (
-    <Card className="border border-danger-500">
-      <CardHeader>
-        <CardTitle>Delete account</CardTitle>
-        <CardDescription>
-          Permanently delete your {NEXT_PUBLIC_APP_NAME} account, and their
-          respective stats. This action cannot be undone - please proceed with
-          caution.
-        </CardDescription>
-      </CardHeader>
-      <CardFooter className="flex-row-reverse items-center justify-between border-danger-500 border-t px-6 py-4">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button color="danger" className="shrink-0">
-              Delete account
-            </Button>
-          </DialogTrigger>
-
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Delete account</DialogTitle>
-              <DialogDescription>
-                Warning: Permanently delete your&nsbp;
-                {NEXT_PUBLIC_APP_NAME}&nbsp;account, and their respective stats.
-                This action cannot be undone - please proceed with caution.
-              </DialogDescription>
-            </DialogHeader>
-            <Form
+    <Modal isOpen={modal.visible} onOpenChange={modal.hide} backdrop="blur">
+      <ModalContent>
+        <ModalHeader>Delete account</ModalHeader>
+        <Form
+          form={form}
+          onSubmit={handleSubmit((json) => deleteUser({ json }))}
+        >
+          <ModalBody>
+            <Alert
+              color="danger"
+              description={`Warning: Permanently delete your ${NEXT_PUBLIC_APP_NAME} account, and their respective stats. This action cannot be undone - please proceed with caution.`}
+            />
+            <InputField
               form={form}
-              onSubmit={handleSubmit((json) => deleteUser({ json }))}
-              className="md:space-y-4"
+              name="confirm"
+              label={
+                <>
+                  To verify, type
+                  <span className="px-1 font-bold">
+                    {DELETE_USER_CONFIRMATION}
+                  </span>
+                  below
+                </>
+              }
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              color="danger"
+              className="w-full"
+              type="submit"
+              isLoading={isSubmitting}
             >
-              <DialogBody className="space-y-2">
-                <InputField
-                  form={form}
-                  name="confirm"
-                  label={
-                    <>
-                      To verify, type
-                      <span className="px-1 font-bold">
-                        {DELETE_USER_CONFIRMATION}
-                      </span>
-                      below
-                    </>
-                  }
-                />
-              </DialogBody>
-              <DialogFooter>
-                <Button
-                  color="danger"
-                  className="w-full"
-                  type="submit"
-                  isLoading={isSubmitting}
-                >
-                  {DELETE_USER_CONFIRMATION}
-                </Button>
-              </DialogFooter>
-            </Form>
-          </DialogContent>
-        </Dialog>
-      </CardFooter>
-    </Card>
+              {DELETE_USER_CONFIRMATION}
+            </Button>
+          </ModalFooter>
+        </Form>
+      </ModalContent>
+    </Modal>
   );
-}
+});

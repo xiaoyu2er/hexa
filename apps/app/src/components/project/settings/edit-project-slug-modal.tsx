@@ -1,9 +1,7 @@
 'use client';
-
-import { Dialog } from '@/components/dialog';
 import { setFormError } from '@/components/form';
 import { Form } from '@/components/form';
-import { InputField } from '@/components/form/input-field';
+import { InputField } from '@/components/form';
 import { $updateProjectSlug } from '@/lib/api';
 import {
   UpdateProjectSlugSchema,
@@ -11,16 +9,17 @@ import {
 } from '@/server/schema/project';
 import type { SelectProjectType } from '@/server/schema/project';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
-import {
-  DialogBody,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@hexa/ui/responsive-dialog';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Alert, Button } from '@nextui-org/react';
+import {
+  Alert,
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useBoolean } from 'usehooks-ts';
@@ -57,38 +56,34 @@ export const EditProjectSlugModal = NiceModal.create(
     });
 
     return (
-      <Dialog control={modal}>
+      <Modal isOpen={modal.visible} onOpenChange={modal.hide} backdrop="blur">
         {understandBool.value ? (
-          <DialogContent className="md:max-w-[485px]">
-            <DialogHeader>
-              <DialogTitle>Enter a new project slug</DialogTitle>
-            </DialogHeader>
-
+          <ModalContent>
+            <ModalHeader>Enter a new project slug</ModalHeader>
             <Form
               form={form}
               onSubmit={handleSubmit((json) => updateProjectSlug({ json }))}
-              className="md:space-y-4"
             >
-              <DialogBody className="space-y-2">
+              <ModalBody className="space-y-2">
                 <InputField form={form} name="slug" label="Slug" />
-              </DialogBody>
-              <DialogFooter>
+              </ModalBody>
+              <ModalFooter>
                 <Button
                   className="w-full"
+                  color="primary"
                   type="submit"
                   isLoading={isSubmitting}
                 >
                   Change slug
                 </Button>
-              </DialogFooter>
+              </ModalFooter>
             </Form>
-          </DialogContent>
+          </ModalContent>
         ) : (
-          <DialogContent className="md:max-w-[485px]">
-            <DialogHeader>
-              <DialogTitle>Really change project slug?</DialogTitle>
-            </DialogHeader>
-            <DialogBody>
+          <ModalContent className="md:max-w-[485px]">
+            <ModalHeader>Really change project slug?</ModalHeader>
+
+            <ModalBody>
               <Alert
                 color="danger"
                 className="mt-2"
@@ -103,8 +98,8 @@ export const EditProjectSlugModal = NiceModal.create(
                 <li>Project old slug will be available for anyone to claim.</li>
                 <li>You will need to update any bookmarks or saved links.</li>
               </ul>
-            </DialogBody>
-            <DialogFooter>
+            </ModalBody>
+            <ModalFooter>
               <Button
                 color="danger"
                 className="w-full"
@@ -113,10 +108,10 @@ export const EditProjectSlugModal = NiceModal.create(
               >
                 I understand, let’s change project slug
               </Button>
-            </DialogFooter>
-          </DialogContent>
+            </ModalFooter>
+          </ModalContent>
         )}
-      </Dialog>
+      </Modal>
     );
   }
 );

@@ -1,6 +1,6 @@
 'use client';
 
-import { FormErrorMessage } from '@/components/form/form-error-message';
+import { FormErrorMessage } from '@/components/form';
 import { Button } from '@nextui-org/react';
 
 import { Form } from '@/components/form';
@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form';
 
 import { TermsPrivacy } from '@/components/auth/terms-privacy';
 import { setFormError } from '@/components/form';
-import { InputField } from '@/components/form/input-field';
+import { InputField } from '@/components/form';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import { $signupSendPasscode, type InferApiResponseType } from '@/lib/api';
 import { SignupSchema, type SignupType } from '@/server/schema/signup';

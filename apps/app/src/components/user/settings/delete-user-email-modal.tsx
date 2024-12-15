@@ -18,7 +18,7 @@ import {
 } from '@hexa/ui/responsive-dialog';
 
 import { Dialog } from '@/components/dialog';
-import { InputField } from '@/components/form/input-field';
+import { InputField } from '@/components/form';
 import { DeleteEmailSchema, type DeleteEmailType } from '@/server/schema/email';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';

@@ -1,5 +1,5 @@
-import type { BaseFieldProps } from '@/components/form/form-type';
-import { InputField } from '@/components/form/input-field';
+import { InputField } from '@/components/form';
+import type { BaseFieldProps } from '@/components/form';
 import {
   RegexExpressionTips,
   RegexFlagsTips,

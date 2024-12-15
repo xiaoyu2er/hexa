@@ -1,4 +1,4 @@
-import type { BaseFieldProps } from '@/components/form/form-type';
+import type { BaseFieldProps } from '@/components/form';
 import { DatePicker, type DatePickerProps } from '@nextui-org/react';
 import { type FieldValues, useController } from 'react-hook-form';
 

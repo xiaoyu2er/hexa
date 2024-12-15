@@ -1,5 +1,5 @@
 'use client';
-import { SelectField } from '@/components/form/select-field';
+import { SelectField } from '@/components/form';
 import {
   RuleValueInput,
   RuleValueInputPlaceholder,

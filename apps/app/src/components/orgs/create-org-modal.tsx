@@ -3,24 +3,21 @@
 import { setFormError } from '@/components/form';
 import { $createOrg } from '@/lib/api';
 import { invalidateProjectsQuery } from '@/lib/queries/project';
-import {
-  DialogBody,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@hexa/ui/responsive-dialog';
 
 import { Form } from '@/components/form';
+import { FormErrorMessage } from '@/components/form';
+import { InsertOrgSchema, type InsertOrgType } from '@/server/schema/org';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { toast } from '@hexa/ui/sonner';
-
-import { Dialog } from '@/components/dialog';
-import { FormErrorMessage } from '@/components/form/form-error-message';
-import { InsertOrgSchema, type InsertOrgType } from '@/server/schema/org';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@nextui-org/react';
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -55,19 +52,15 @@ export const CreateOrgModal = NiceModal.create(() => {
   });
 
   return (
-    <Dialog control={modal}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Create Organization</DialogTitle>
-          <DialogDescription>Create a new organization</DialogDescription>
-        </DialogHeader>
+    <Modal isOpen={modal.visible} onOpenChange={modal.hide}>
+      <ModalContent className="p-4">
+        <ModalHeader>Create Organization</ModalHeader>
 
         <Form
           form={form}
           onSubmit={handleSubmit((json) => createOrg({ json }))}
-          className="md:space-y-4"
         >
-          <DialogBody className="space-y-2">
+          <ModalBody>
             <InputField
               form={form}
               name="name"
@@ -83,9 +76,9 @@ export const CreateOrgModal = NiceModal.create(() => {
             />
 
             <FormErrorMessage message={errors.root?.message} />
-          </DialogBody>
+          </ModalBody>
 
-          <DialogFooter>
+          <ModalFooter>
             <Button
               className="w-full"
               type="submit"
@@ -94,9 +87,9 @@ export const CreateOrgModal = NiceModal.create(() => {
             >
               Create Organization
             </Button>
-          </DialogFooter>
+          </ModalFooter>
         </Form>
-      </DialogContent>
-    </Dialog>
+      </ModalContent>
+    </Modal>
   );
 });

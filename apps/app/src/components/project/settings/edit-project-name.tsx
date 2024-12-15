@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from '@hexa/ui/card';
 
-import { InputField } from '@/components/form/input-field';
+import { InputField } from '@/components/form';
 import { useProject } from '@/hooks/use-project';
 import { $updateProjectName } from '@/lib/api';
 import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';

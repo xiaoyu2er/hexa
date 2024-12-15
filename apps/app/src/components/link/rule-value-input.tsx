@@ -1,13 +1,13 @@
 'use client';
 
-import { FloatBetweenField } from '@/components/form/float-between-field';
-import { FloatField } from '@/components/form/float-field';
-import { InputField } from '@/components/form/input-field';
-import { MultiInputField } from '@/components/form/multi-input-field';
-import { RegexField } from '@/components/form/regex-field';
-import { SelectField } from '@/components/form/select-field';
-import { TimeField } from '@/components/form/time-field';
-import { TimeRangeField } from '@/components/form/time-range-field';
+import { InputField } from '@/components/form';
+import { FloatBetweenField } from '@/components/form';
+import { FloatField } from '@/components/form';
+import { MultiInputField } from '@/components/form';
+import { RegexField } from '@/components/form';
+import { SelectField } from '@/components/form';
+import { TimeField } from '@/components/form';
+import { TimeRangeField } from '@/components/form';
 import type { RuleField, RulesFormType } from '@hexa/const/rule';
 import type { RuleValueTypeCode } from '@hexa/const/rule-value-type';
 import type { SelectOptions } from '@hexa/const/select-option';

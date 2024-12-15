@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from '@hexa/ui/card';
 
-import { ReadOnly } from '@/components/form/read-only';
+import { ReadOnly } from '@/components/form';
 import { EditProjectSlugModal } from '@/components/project/settings/edit-project-slug-modal';
 import { useProject } from '@/hooks/use-project';
 import type { SelectProjectType } from '@/server/schema/project';
@@ -39,7 +39,7 @@ export function EditProjectSlug() {
           onPress={() => {
             modal.show({ project }).then((newProject) => {
               router.replace(
-                `/project/${(newProject as SelectProjectType).slug}/settings`
+                `/project/${(newProject as SelectProjectType).slug}/settings/project`
               );
             });
           }}
