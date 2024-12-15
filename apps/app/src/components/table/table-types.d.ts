@@ -1,3 +1,4 @@
+import type { InputProps } from '@nextui-org/react';
 import type { Column, Table } from '@tanstack/react-table';
 import type { ComponentType, ReactNode } from 'react';
 
@@ -18,7 +19,7 @@ export interface SortOption<TData> {
   label: string;
 }
 
-interface TableToolbarProps<TData> {
+export interface TableToolbarProps<TData> {
   table: Table<TData>;
   filterConfigs?: FilterConfig<TData>[];
   searchPlaceholder?: string;
@@ -32,4 +33,8 @@ export interface TableFacetedFilterProps<TData, TValue> {
   column: Column<TData>;
   title: string;
   options: FilterOption<TValue>[];
+}
+
+export interface TableToolbarSearchProps<TData> extends InputProps {
+  table: Table<TData>;
 }

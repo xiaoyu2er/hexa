@@ -1,6 +1,5 @@
 'use client';
 
-import {} from '@/components/orgs/member/member-card';
 import { TableCard } from '@/components/table/table-card';
 import { TablePagination } from '@/components/table/table-pagination';
 import { TableRows } from '@/components/table/table-rows';
@@ -13,7 +12,6 @@ import type {
 import { TableViewOptions } from '@/components/table/table-view-options';
 import type { TableQuery } from '@/lib/queries/table';
 import { useScreenSize } from '@hexa/ui/hooks/use-screen-size';
-import {} from '@hexa/ui/table';
 import type { RefetchOptions } from '@tanstack/react-query';
 import {
   type ColumnDef,
