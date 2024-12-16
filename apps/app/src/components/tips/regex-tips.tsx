@@ -16,23 +16,23 @@ export const RegexExpressionTips = ({ className }: { className?: string }) => {
         <div className="space-y-4 p-4">
           <div className="space-y-2">
             <h4 className="font-medium leading-none">Regular Expression</h4>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Regular expressions are patterns used to match character
               combinations in strings.
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Note:
-              <ul className="list-disc list-inside">
+              <ul className="list-inside list-disc">
                 <li>This is a pattern string, not a regex literal.</li>
                 <li>
                   Do not include{' '}
-                  <code className="bg-muted px-1 rounded">{'//'}</code> at the
+                  <code className="rounded bg-muted px-1">{'//'}</code> at the
                   beginning and end.
                 </li>
                 <li>
                   Remember to escape backslashes. Example: use{' '}
-                  <code className="bg-muted px-1 rounded">\\d+</code> not{' '}
-                  <code className="bg-muted px-1 rounded">/\d+/</code>
+                  <code className="rounded bg-muted px-1">\\d+</code> not{' '}
+                  <code className="rounded bg-muted px-1">/\d+/</code>
                 </li>
               </ul>
             </p>
@@ -41,7 +41,7 @@ export const RegexExpressionTips = ({ className }: { className?: string }) => {
             <button
               type="button"
               onClick={() => setShowCheatsheet(!showCheatsheet)}
-              className="flex items-center justify-between w-full text-sm font-medium"
+              className="flex w-full items-center justify-between font-medium text-sm"
             >
               Cheatsheet
               {showCheatsheet ? (
@@ -51,51 +51,51 @@ export const RegexExpressionTips = ({ className }: { className?: string }) => {
               )}
             </button>
             {showCheatsheet && (
-              <div className="text-sm animate-in slide-in-from-top-1 duration-100">
+              <div className="slide-in-from-top-1 animate-in text-sm duration-100">
                 <div className="flex gap-2 py-1">
-                  <code className="bg-muted px-1 rounded">\d</code>
+                  <code className="rounded bg-muted px-1">\d</code>
                   <span className="text-muted-foreground">any digit (0-9)</span>
                 </div>
                 <div className="flex gap-2 py-1">
-                  <code className="bg-muted px-1 rounded">\w</code>
+                  <code className="rounded bg-muted px-1">\w</code>
                   <span className="text-muted-foreground">
                     any word character (a-z, A-Z, 0-9, _)
                   </span>
                 </div>
                 <div className="flex gap-2 py-1">
-                  <code className="bg-muted px-1 rounded">[abc]</code>
+                  <code className="rounded bg-muted px-1">[abc]</code>
                   <span className="text-muted-foreground">
                     any character in brackets
                   </span>
                 </div>
                 <div className="flex gap-2 py-1">
-                  <code className="bg-muted px-1 rounded">+</code>
+                  <code className="rounded bg-muted px-1">+</code>
                   <span className="text-muted-foreground">one or more</span>
                 </div>
                 <div className="flex gap-2 py-1">
-                  <code className="bg-muted px-1 rounded">*</code>
+                  <code className="rounded bg-muted px-1">*</code>
                   <span className="text-muted-foreground">zero or more</span>
                 </div>
                 <div className="flex gap-2 py-1">
-                  <code className="bg-muted px-1 rounded">?</code>
+                  <code className="rounded bg-muted px-1">?</code>
                   <span className="text-muted-foreground">zero or one</span>
                 </div>
                 <div className="flex gap-2 py-1">
-                  <code className="bg-muted px-1 rounded">^</code>
+                  <code className="rounded bg-muted px-1">^</code>
                   <span className="text-muted-foreground">start of string</span>
                 </div>
                 <div className="flex gap-2 py-1">
-                  <code className="bg-muted px-1 rounded">$</code>
+                  <code className="rounded bg-muted px-1">$</code>
                   <span className="text-muted-foreground">end of string</span>
                 </div>
               </div>
             )}
-            <div className="pt-2 border-t">
+            <div className="border-t pt-2">
               <a
                 href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Cheatsheet"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center"
+                className="inline-flex items-center text-muted-foreground text-xs hover:text-foreground"
               >
                 Learn more about Regular Expressions
                 <ExternalLinkIcon
@@ -121,7 +121,7 @@ export const RegexFlagsTips = ({ className }: { className?: string }) => {
         <div className="space-y-4 p-4">
           <div className="space-y-2">
             <h4 className="font-medium leading-none">Regex Flags</h4>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Available flags to modify the regular expression behavior:
             </p>
           </div>
@@ -129,7 +129,7 @@ export const RegexFlagsTips = ({ className }: { className?: string }) => {
             <div className="whitespace-pre-line text-sm">
               {Object.entries(REGEX_FLAGS).map(([flag, desc]) => (
                 <div key={flag} className="flex gap-2 py-1">
-                  <code className="bg-muted px-1 rounded">{flag}</code>
+                  <code className="rounded bg-muted px-1">{flag}</code>
                   <span className="text-muted-foreground">{desc}</span>
                 </div>
               ))}

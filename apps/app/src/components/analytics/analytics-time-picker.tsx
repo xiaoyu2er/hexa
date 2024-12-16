@@ -34,7 +34,7 @@ export default function AnalyticsTimePicker({
         {...otherProps}
         classNames={{
           base: cn(
-            'flex-none m-0 h-8 bg-content1 hover:bg-content2 items-center justify-between',
+            'm-0 h-8 flex-none items-center justify-between bg-content1 hover:bg-content2',
             'cursor-pointer rounded-full border-2 border-default-200/60',
             'data-[selected=true]:border-primary'
           ),
