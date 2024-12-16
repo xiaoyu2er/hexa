@@ -151,6 +151,7 @@ export const LinkModal = NiceModal.create(
                     name="destUrl"
                     label="Default Destination URL"
                     placeholder="https://example.com"
+                    labelPlacement="outside"
                   />
 
                   <div className="flex items-end gap-0">
@@ -158,6 +159,7 @@ export const LinkModal = NiceModal.create(
                       form={form}
                       name="domain"
                       label="Link"
+                      labelPlacement="outside"
                       className="w-[200px]"
                       classNames={{
                         trigger: ' rounded-r-none',
@@ -173,6 +175,7 @@ export const LinkModal = NiceModal.create(
                       name="slug"
                       className="flex-1"
                       placeholder="Slug"
+                      labelPlacement="outside"
                       classNames={{
                         inputWrapper: 'border-l-0 rounded-l-none',
                       }}
@@ -209,12 +212,14 @@ export const LinkModal = NiceModal.create(
                     name="title"
                     label="Link Name"
                     placeholder="(optional)"
+                    labelPlacement="outside"
                   />
                   <TextareaField
                     form={form}
                     name="desc"
                     label="Description"
                     placeholder="(optional)"
+                    labelPlacement="outside"
                   />
                   <FormErrorMessage message={errors.root?.message} />
                 </div>

@@ -77,7 +77,6 @@ export const SelectField = <T extends FieldValues = FieldValues>({
       maxListboxHeight={308}
       className={className}
       classNames={classNames}
-      size="sm"
       endContent={
         showClear &&
         (selectionMode === 'multiple' ? field.value.length : field.value) ? (
