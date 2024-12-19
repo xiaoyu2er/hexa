@@ -16,7 +16,7 @@ export default async function DashLayout({
 }: {
   children: ReactNode;
 }) {
-  protectRoute();
+  await protectRoute();
   const { session, user } = await getSession();
 
   if (!session) {

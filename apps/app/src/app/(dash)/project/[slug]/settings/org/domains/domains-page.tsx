@@ -1,8 +1,8 @@
 'use client';
 
 import { DomainTable } from '@/components/domain/domain-table';
-
-export function DomainsPage() {
+import type { FC } from 'react';
+export const DomainsPage: FC = () => {
   return (
     <>
       <div>
@@ -13,4 +13,4 @@ export function DomainsPage() {
       <DomainTable />
     </>
   );
-}
+};

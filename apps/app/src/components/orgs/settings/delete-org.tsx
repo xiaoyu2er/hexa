@@ -41,7 +41,7 @@ export function DeleteOrg() {
   const modal = useModal(DeleteOrgModal);
 
   return (
-    <Card className="border border-red-600">
+    <Card className="border border-red-500">
       <CardHeader>
         <CardTitle>Delete organization</CardTitle>
         <CardDescription>
@@ -50,7 +50,7 @@ export function DeleteOrg() {
           caution.
         </CardDescription>
       </CardHeader>
-      <CardFooter className="flex-row-reverse items-center justify-between border-red-600 border-t px-6 py-4">
+      <CardFooter className=" border-red-500">
         <Button
           type="submit"
           color="danger"

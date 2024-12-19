@@ -7,11 +7,12 @@ import type { ReactNode } from 'react';
 
 export default async function ProjectLayout({
   children,
-  params: { slug },
+  params,
 }: {
   children: ReactNode;
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = await params;
   const { session } = await getSession();
 
   if (!session) {

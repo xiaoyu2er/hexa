@@ -1,23 +1,23 @@
 #:schema node_modules/wrangler/config-schema.json
 name = "hexa-app"
 # middleware version
-#main = ".open-next/worker.ts"
-main = ".worker-next/index.mjs"
+main = ".open-next/worker.js"
+# main = ".worker-next/index.mjs"
 workers_dev = false
 routes = [
   { pattern = "hexa.im", custom_domain = true },
   { pattern = "hexa.im/*", zone_name = "hexa.im" },
 ]
 
-compatibility_date = "2024-09-26"
+compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 
 # Minification helps to keep the Worker bundle size down and improve start up time.
 minify = true
 
 # Use the new Workers + Assets to host the static frontend files
-#assets = { directory = ".open-next/assets", binding = "ASSETS" }
-assets = { directory = ".worker-next/assets", binding = "ASSETS" }
+assets = { directory = ".open-next/assets", binding = "ASSETS" }
+# assets = { directory = ".worker-next/assets", binding = "ASSETS" }
 
 # wrangler.toml (wrangler v3.79.0^)
 [observability]

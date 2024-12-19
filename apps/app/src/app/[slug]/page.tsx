@@ -5,11 +5,15 @@ import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { headers } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
   const { env, ctx, cf } = await getCloudflareContext();
   const header = await headers();
-  const host = header.get('host');
-  const slug = params.slug;
+  const host = await header.get('host');
   const key = `${host}/${slug}`;
 
   const link = (await env.APP_KV.get(key, {

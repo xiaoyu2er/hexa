@@ -41,7 +41,8 @@ export function LinkActions({
       </DropdownTrigger>
       <DropdownMenu>
         <DropdownItem
-          onClick={() =>
+          key="edit"
+          onPress={() =>
             modal.show({ project, mode: 'update', link }).then(() => {
               invalidateProjectLinks(project.id);
             })
@@ -49,7 +50,9 @@ export function LinkActions({
         >
           Edit
         </DropdownItem>
-        <DropdownItem className="text-destructive">Delete</DropdownItem>
+        <DropdownItem key="delete" className="text-destructive">
+          Delete
+        </DropdownItem>
       </DropdownMenu>
     </Dropdown>
   );

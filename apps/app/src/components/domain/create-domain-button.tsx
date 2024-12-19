@@ -3,9 +3,12 @@ import { useProject } from '@/hooks/use-project';
 import { invalidateDomains } from '@/lib/queries/orgs';
 import { useModal } from '@ebay/nice-modal-react';
 import { Button } from '@nextui-org/react';
+import type { FC } from 'react';
 import { CreateDomainModal } from './create-domain-modal';
 
-export function CreateDomain({ className }: { className?: string }) {
+export const CreateDomainButton: FC<{ className?: string }> = ({
+  className,
+}) => {
   const modal = useModal(CreateDomainModal);
   const { project } = useProject();
   return (
@@ -21,4 +24,4 @@ export function CreateDomain({ className }: { className?: string }) {
       Create Domain
     </Button>
   );
-}
+};

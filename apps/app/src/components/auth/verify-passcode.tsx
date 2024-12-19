@@ -4,7 +4,7 @@ import { AuthLink } from '@/components/auth/auth-link';
 import { Form, setFormError } from '@/components/form';
 import { FormErrorMessage } from '@/components/form';
 import { useTurnstile } from '@/hooks/use-turnstile';
-import { RESEND_VERIFY_CODE_TIME_SPAN, VERIFY_CODE_LENGTH } from '@/lib/const';
+import { RESEND_VERIFY_CODE_TIME_SPAN } from '@/lib/const';
 import {
   type ResendPasscodeType,
   type VerifyPasscodeOnlyCodeType,
@@ -16,17 +16,15 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@hexa/ui/card';
 import { PencilLine } from '@hexa/ui/icons';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@hexa/ui/input-otp';
 import { cn } from '@hexa/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@nextui-org/react';
+import { Button, InputOtp } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
-import { type FC, useEffect, useRef, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useCountdown } from 'usehooks-ts';
 
@@ -72,12 +70,13 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
       setShowResendChange(false);
     },
   });
-  const _formRef = useRef<HTMLFormElement>(null);
+
   const {
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
     reset,
+    clearErrors,
   } = form;
 
   const [count, { startCountdown, resetCountdown }] = useCountdown({
@@ -141,35 +140,33 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
         <Form
           form={form}
           onSubmit={handleSubmit((json) => execVerifyCode(json))}
-          className="space-y-4"
+          className="space-y-2"
         >
           <Controller
             control={form.control}
             name="code"
             render={({ field }) => (
-              <InputOTP
-                maxLength={VERIFY_CODE_LENGTH}
-                autoFocus
+              <InputOtp
                 {...field}
-                containerClassName="justify-center"
-                onComplete={handleSubmit((json) => execVerifyCode(json))}
-              >
-                {[...new Array(VERIFY_CODE_LENGTH).keys()].map((index) => (
-                  <InputOTPGroup key={index}>
-                    <InputOTPSlot
-                      index={index}
-                      className={
-                        errors.code || errors.root ? 'border-danger' : ''
-                      }
-                    />
-                  </InputOTPGroup>
-                ))}
-              </InputOTP>
+                onValueChange={(value) => {
+                  field.onChange(value);
+                  clearErrors('root');
+                  if (value.length === 6) {
+                    handleSubmit((json) => execVerifyCode(json))();
+                  }
+                }}
+                classNames={{
+                  base: 'mx-auto',
+                }}
+                isInvalid={!!errors.code || !!errors.root}
+                variant="bordered"
+                length={6}
+              />
             )}
           />
 
           <FormErrorMessage message={errors.root?.message} />
-          {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+
           <AuthLink
             href="#"
             className={cn('block text-center text-sm', {
@@ -187,21 +184,20 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
                 : ''}
           </AuthLink>
           {showResendChange ? turnstile : null}
+
+          <Button
+            color="primary"
+            className="w-full"
+            isLoading={isSubmitting}
+            type="submit"
+          >
+            Verify
+          </Button>
+          <Button variant="ghost" className="w-full" onClick={onCancel}>
+            Cancel
+          </Button>
         </Form>
       </CardContent>
-      <CardFooter className={cn('flex gap-2', 'flex-col')}>
-        <Button
-          color="primary"
-          className="w-full"
-          isLoading={isSubmitting}
-          type="submit"
-        >
-          Verify
-        </Button>
-        <Button variant="ghost" className="w-full" onClick={onCancel}>
-          Cancel
-        </Button>
-      </CardFooter>
     </Card>
   );
 };

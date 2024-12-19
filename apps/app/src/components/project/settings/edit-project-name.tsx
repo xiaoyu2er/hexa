@@ -72,9 +72,8 @@ export function EditProjectName() {
           json,
         })
       )}
-      className="grid gap-4"
     >
-      <Card x-chunk="dashboard-04-chunk-1">
+      <Card>
         <CardHeader>
           <CardTitle>Project name</CardTitle>
           <CardDescription>
@@ -85,7 +84,7 @@ export function EditProjectName() {
         <CardContent>
           <InputField form={form} name="name" className="max-w-md" />
         </CardContent>
-        <CardFooter className="flex-row-reverse items-center justify-between border-t px-6 py-4">
+        <CardFooter>
           <Button
             type="submit"
             color="primary"

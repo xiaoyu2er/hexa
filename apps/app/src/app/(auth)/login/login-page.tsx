@@ -1,6 +1,8 @@
 'use client';
+import type { FC } from 'react';
+
 import { LoginPassword } from './login-password';
 
-export function LoginPage() {
+export const LoginPage: FC = () => {
   return <LoginPassword />;
-}
+};

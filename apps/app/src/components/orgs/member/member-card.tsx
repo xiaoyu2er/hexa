@@ -64,7 +64,7 @@ export const MemberCardWithActions = ({
         </DropdownTrigger>
         <DropdownMenu>
           {member.role !== 'OWNER' ? (
-            <DropdownItem className="text-destructive">
+            <DropdownItem key="remove" className="text-destructive">
               Remove member
             </DropdownItem>
           ) : null}

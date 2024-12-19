@@ -93,7 +93,11 @@ export const columns: ColumnDef<SelectOrgMemberType>[] = [
             </DropdownTrigger>
             <DropdownMenu>
               {isOwner ? null : (
-                <DropdownItem color="danger" className="text-danger">
+                <DropdownItem
+                  key="remove"
+                  color="danger"
+                  className="text-danger"
+                >
                   Remove member
                 </DropdownItem>
               )}

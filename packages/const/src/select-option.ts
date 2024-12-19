@@ -1,9 +1,9 @@
-import type { ComponentType } from 'react';
+type IconComponent = (props: { className?: string }) => unknown;
 
 export type SelectOption<T extends string | number = string> = {
   label: string;
   value: T;
-  icon?: ComponentType<{ className?: string }>;
+  icon?: IconComponent;
 };
 
 export type SelectOptionGroup<T extends string | number = string> = {

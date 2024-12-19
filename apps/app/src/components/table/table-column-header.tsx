@@ -52,26 +52,30 @@ export function TableColumnHeader<TData, TValue>({
         </DropdownTrigger>
         <DropdownMenu>
           <DropdownItem
-            onClick={() => column.toggleSorting(false)}
+            key="asc"
+            onPress={() => column.toggleSorting(false)}
             startContent={<ArrowUp className={iconClass} />}
           >
             Asc
           </DropdownItem>
           <DropdownItem
-            onClick={() => column.toggleSorting(true)}
+            key="desc"
+            onPress={() => column.toggleSorting(true)}
             startContent={<ArrowDown className={iconClass} />}
           >
             Desc
           </DropdownItem>
           <DropdownItem
-            onClick={() => column.clearSorting()}
+            key="clear"
+            onPress={() => column.clearSorting()}
             startContent={<ChevronsUpDown className={iconClass} />}
           >
             Clear
           </DropdownItem>
 
           <DropdownItem
-            onClick={() => column.toggleVisibility(false)}
+            key="hide"
+            onPress={() => column.toggleVisibility(false)}
             startContent={<EyeOff className={iconClass} />}
           >
             Hide

@@ -116,7 +116,8 @@ export function RuleCard({
               </DropdownTrigger>
               <DropdownMenu aria-label="Actions">
                 <DropdownItem
-                  onClick={onRemove}
+                  key="delete"
+                  onPress={onRemove}
                   className="text-destructive"
                   startContent={<TrashIcon className="mr-2 h-4 w-4" />}
                 >

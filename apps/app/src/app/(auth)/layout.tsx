@@ -4,8 +4,10 @@ import type { ReactNode } from 'react';
 
 export { metadata };
 
-export default function AuthLayout({ children }: { children: ReactNode }) {
-  protectRoute();
+export default async function AuthLayout({
+  children,
+}: { children: ReactNode }) {
+  await protectRoute();
   return (
     <div className="grid min-h-screen place-items-center p-4">
       <div className="max-w-full md:w-96">{children}</div>

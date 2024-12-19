@@ -105,7 +105,7 @@ export function EditPassword() {
               Forget password?
             </Link>
           </CardContent>
-          <CardFooter className="flex-row-reverse items-center gap-4 border-t px-6 py-4">
+          <CardFooter>
             <Button
               type="submit"
               className="shrink-0"
@@ -126,7 +126,7 @@ export function EditPassword() {
               <Input placeholder="********" className="max-w-md" isDisabled />
             )}
           </CardContent>
-          <CardFooter className="flex-row-reverse items-center gap-4 border-t px-6 py-4">
+          <CardFooter>
             <Button
               className="shrink-0"
               color="primary"

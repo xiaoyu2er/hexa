@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 9
       - uses: actions/setup-node@v3
         with:
           cache: pnpm
@@ -68,7 +68,9 @@ jobs:
           workingDirectory: "apps/app"
           packageManager: pnpm
           preCommands: |
+            echo "*** pre command ***"
             pnpm run build:worker
+            ls .open-next
           command: |
             deploy
           secrets: |

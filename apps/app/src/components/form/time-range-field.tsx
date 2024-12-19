@@ -10,7 +10,8 @@ import { type FieldValues, useController } from 'react-hook-form';
 export type TimeRangeFieldProps<T extends FieldValues> = BaseFieldProps<T> &
   Omit<DateRangePickerProps, keyof BaseFieldProps<T>>;
 import {
-  type ZonedDateTime,
+  type DateValue,
+  ZonedDateTime,
   fromDate,
   getLocalTimeZone,
 } from '@internationalized/date';
@@ -45,11 +46,18 @@ export const TimeRangeField = <T extends FieldValues = FieldValues>({
           ? error.message
           : undefined
       }
-      onChange={(value: RangeValue<ZonedDateTime>) => {
-        field.onChange([
-          value.start.toDate().toISOString(),
-          value.end.toDate().toISOString(),
-        ]);
+      onChange={(value: RangeValue<DateValue> | null) => {
+        if (
+          value?.start &&
+          value.end &&
+          value.start instanceof ZonedDateTime &&
+          value.end instanceof ZonedDateTime
+        ) {
+          field.onChange([
+            value.start.toDate().toISOString(),
+            value.end.toDate().toISOString(),
+          ]);
+        }
       }}
       // @ts-ignore
       value={

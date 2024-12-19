@@ -99,7 +99,11 @@
     {
       "group": "Get Started",
       "version": "English",
-      "pages": ["en/introduction", "en/quickstart", "en/development"]
+      "pages": [
+        "en/introduction",
+        "en/quickstart",
+        "en/development"
+      ]
     },
     {
       "group": "Essentials",
@@ -116,7 +120,9 @@
     {
       "group": "API Documentation",
       "version": "English",
-      "pages": ["en/api-reference/introduction"]
+      "pages": [
+        "en/api-reference/introduction"
+      ]
     },
     {
       "group": "Endpoint Examples",
@@ -130,7 +136,11 @@
     {
       "group": "入门",
       "version": "简体中文",
-      "pages": ["zh-CN/introduction", "zh-CN/quickstart", "zh-CN/development"]
+      "pages": [
+        "zh-CN/introduction",
+        "zh-CN/quickstart",
+        "zh-CN/development"
+      ]
     },
     {
       "group": "基础",
@@ -147,7 +157,9 @@
     {
       "group": "API 文档",
       "version": "简体中文",
-      "pages": ["zh-CN/api-reference/introduction"]
+      "pages": [
+        "zh-CN/api-reference/introduction"
+      ]
     },
     {
       "group": "API 示例",

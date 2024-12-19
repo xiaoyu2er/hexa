@@ -56,11 +56,7 @@ export const AddUserEmail: FC<AddUserEmailProps> = ({
   });
 
   return (
-    <Form
-      form={form}
-      onSubmit={handleSubmit((json) => addUserEmail({ json }))}
-      className="grid gap-4"
-    >
+    <Form form={form} onSubmit={handleSubmit((json) => addUserEmail({ json }))}>
       <Card className="mt-6">
         <CardHeader>
           <CardTitle>Add email address</CardTitle>
@@ -72,7 +68,7 @@ export const AddUserEmail: FC<AddUserEmailProps> = ({
         <CardContent>
           <InputField form={form} name="email" label="Email" />
         </CardContent>
-        <CardFooter className="flex-row-reverse items-center gap-4 border-t px-6 py-4">
+        <CardFooter>
           <Button type="submit" color="primary" isLoading={isSubmitting}>
             Update
           </Button>

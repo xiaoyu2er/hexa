@@ -1,7 +1,7 @@
 'use client';
 
 import { useInView, useMotionValue, useSpring } from 'framer-motion';
-import { useEffect, useRef } from 'react';
+import { type RefObject, useEffect, useRef } from 'react';
 
 import { cn } from '@hexa/utils';
 
@@ -24,7 +24,10 @@ export default function NumberTicker({
     damping: 60,
     stiffness: 100,
   });
-  const isInView = useInView(ref, { once: true, margin: '0px' });
+  const isInView = useInView(ref as RefObject<Element>, {
+    once: true,
+    margin: '0px',
+  });
 
   useEffect(() => {
     isInView &&

@@ -5,7 +5,9 @@ import { type FieldValues, useController } from 'react-hook-form';
 export type TimeFieldProps<T extends FieldValues> = BaseFieldProps<T> &
   Omit<DatePickerProps, keyof BaseFieldProps<T>>;
 import {
-  type ZonedDateTime,
+  type CalendarDate,
+  type CalendarDateTime,
+  ZonedDateTime,
   fromDate,
   getLocalTimeZone,
   toCalendarDateTime,
@@ -39,8 +41,12 @@ export const TimeField = <T extends FieldValues = FieldValues>({
           ? error.message
           : undefined
       }
-      onChange={(value: ZonedDateTime) => {
-        field.onChange(value.toDate().toISOString());
+      onChange={(
+        value: CalendarDate | CalendarDateTime | ZonedDateTime | null
+      ) => {
+        if (value instanceof ZonedDateTime) {
+          field.onChange(value.toDate().toISOString());
+        }
       }}
       // @ts-ignore
       value={

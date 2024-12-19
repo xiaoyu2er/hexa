@@ -5,8 +5,9 @@ import { EditUserName } from '@/components/user/settings/edit-user-name';
 import { useUser } from '@/hooks/use-user';
 import { $updateUserAvatar } from '@/lib/api';
 import { getAvatarFallbackUrl } from '@/lib/user';
+import type { FC } from 'react';
 
-export function ProfilePage() {
+export const ProfilePage: FC = () => {
   const { user, invalidate } = useUser();
   return (
     <>
@@ -21,4 +22,4 @@ export function ProfilePage() {
       />
     </>
   );
-}
+};
