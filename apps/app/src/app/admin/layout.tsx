@@ -24,7 +24,7 @@ export default async function AdminLayout({
 }: {
   children: ReactNode;
 }) {
-  protectRoute();
+  await protectRoute();
   const { env } = await getCloudflareContext();
   const db = await getDb();
 

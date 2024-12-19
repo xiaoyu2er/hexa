@@ -6,8 +6,9 @@ import UploadAvatar from '@/components/upload-avatar';
 import { useProject } from '@/hooks/use-project';
 import { $updateOrgAvatar } from '@/lib/api';
 import { getOrgAvatarFallbackUrl } from '@/lib/org';
+import type { FC } from 'react';
 
-export default function OrgPage() {
+export const OrgPage: FC = () => {
   const {
     project: { org },
   } = useProject();
@@ -27,4 +28,4 @@ export default function OrgPage() {
       <DeleteOrg />
     </>
   );
-}
+};

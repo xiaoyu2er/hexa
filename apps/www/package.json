@@ -1,0 +1,36 @@
+{
+  "name": "@hexa/www",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 7003",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "build:worker": "pnpm opennextjs-cloudflare",
+    "dev:worker": "wrangler dev --port 8771",
+    "preview:worker": "pnpm build:worker && pnpm dev:worker",
+    "deploy:worker": "pnpm build:worker && wrangler deploy"
+  },
+  "dependencies": {
+    "@hexa/const": "workspace:*",
+    "@hexa/email-templates": "workspace:*",
+    "@hexa/tailwind-config": "workspace:*",
+    "@hexa/ui": "workspace:*",
+    "@hexa/utils": "workspace:*",
+    "next": "15.1.1",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "devDependencies": {
+    "@hexa/typescript-config": "workspace:*",
+    "@opennextjs/cloudflare": "https://pkg.pr.new/@opennextjs/cloudflare@experimental",
+    "@types/node": "22.10.2",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "caniuse-lite": "^1.0.30001689",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.4",
+    "typescript": "5.7.2"
+  }
+}

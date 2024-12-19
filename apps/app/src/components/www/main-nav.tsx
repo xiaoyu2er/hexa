@@ -10,8 +10,9 @@ import { cn } from '@hexa/utils';
 
 import { docsConfig } from '@/config/www/docs';
 import { siteConfig } from '@/config/www/site';
+import type { FC } from 'react';
 
-export function MainNav() {
+export const MainNav: FC = () => {
   const pathname = usePathname();
 
   return (
@@ -26,7 +27,7 @@ export function MainNav() {
       <nav className="hidden items-center space-x-6 font-medium text-sm xl:flex">
         {docsConfig.mainNav.map((item) => (
           <Link
-            key={item.href}
+            key={item.title}
             href={item.href ?? ''}
             aria-label={item.title}
             target={item.external ? '_blank' : undefined}
@@ -49,4 +50,4 @@ export function MainNav() {
       </nav>
     </div>
   );
-}
+};

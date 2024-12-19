@@ -18,7 +18,8 @@
       "apps/redirect/drizzle/**/*",
       "apps/redirect/env.d.ts",
       "apps/redirect/worker-configuration.d.ts",
-      "packages/email-templates/.react-email/**/*"
+      "packages/email-templates/.react-email/**/*",
+      "apps/docs/mint.json"
     ]
   },
   "linter": {

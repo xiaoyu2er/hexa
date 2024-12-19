@@ -61,11 +61,7 @@ export default function UploadAvatar({
   }, [avatarUrlProp]);
 
   return (
-    <Form
-      form={form}
-      onSubmit={handleSubmit((form) => updateAvatar(form))}
-      className="grid gap-4"
-    >
+    <Form form={form} onSubmit={handleSubmit((form) => updateAvatar(form))}>
       <Card>
         <CardHeader>
           <CardTitle>{title ?? 'Avatar'}</CardTitle>
@@ -98,7 +94,7 @@ export default function UploadAvatar({
             )}
           />
         </CardContent>
-        <CardFooter className="flex-row-reverse items-center justify-between border-t px-6 py-4">
+        <CardFooter className="justify-between">
           <Button
             type="submit"
             color="primary"

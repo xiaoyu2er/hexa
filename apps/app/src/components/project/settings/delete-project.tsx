@@ -50,7 +50,7 @@ export function DeleteProject() {
           caution.
         </CardDescription>
       </CardHeader>
-      <CardFooter className="flex-row-reverse items-center justify-between border-danger-500 border-t px-6 py-4">
+      <CardFooter className="border-danger-500 ">
         <Button
           type="submit"
           color="danger"

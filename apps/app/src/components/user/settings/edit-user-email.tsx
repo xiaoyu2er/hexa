@@ -86,6 +86,13 @@ export function EditUserEmails() {
             {emails
               // .sort((a, b) => (a.primary ? -1 : 1))
               .map((email) => {
+                const disabledKeys = [
+                  'delete',
+                  isSettingPrimaryEmail || !email.verified
+                    ? 'set-primary'
+                    : undefined,
+                  isSendingPasscode ? 'verify-email' : undefined,
+                ].filter(Boolean) as string[];
                 return (
                   <>
                     <Dropdown key={email.email} placement="bottom-end">
@@ -111,11 +118,10 @@ export function EditUserEmails() {
                           </p>
                         </Button>
                       </DropdownTrigger>
-                      <DropdownMenu>
+                      <DropdownMenu disabledKeys={disabledKeys}>
                         <DropdownItem
                           key="set-primary"
-                          isDisabled={isSettingPrimaryEmail || !email.verified}
-                          onClick={() =>
+                          onPress={() =>
                             setUserPrimaryEmail({
                               json: { email: email.email },
                             })
@@ -126,8 +132,7 @@ export function EditUserEmails() {
                         {email.verified ? null : (
                           <DropdownItem
                             key="verify-email"
-                            isDisabled={isSendingPasscode}
-                            onClick={() => {
+                            onPress={() => {
                               sendPasscode({ json: { email: email.email } });
                             }}
                           >
@@ -136,9 +141,10 @@ export function EditUserEmails() {
                         )}
 
                         <DropdownItem
+                          key="delete"
                           color="danger"
                           className="text-danger"
-                          onClick={() => {
+                          onPress={() => {
                             modal
                               .show({ email: email.email })
                               .then(() => refetch());
@@ -182,7 +188,7 @@ export function EditUserEmails() {
                 variant="light"
                 isDisabled={emails.length >= MAX_EMAILS}
                 className="justify-between"
-                onClick={emailCardBool.setTrue}
+                onPress={emailCardBool.setTrue}
                 endContent={
                   emails.length < MAX_EMAILS ? (
                     <MoveRightIcon className="hidden h-4 w-4 animate-in group-hover:block" />
