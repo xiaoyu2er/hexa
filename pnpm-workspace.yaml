@@ -3,7 +3,10 @@ packages:
   - "packages/*"
 
 catalog:
+  "@biomejs/biome": "1.9.4"
   "@cloudflare/workers-types": "4.20241112.0"
+  "@commitlint/cli": "19.3.0"
+  "@commitlint/config-conventional": "19.2.2"
   "@dnd-kit/core": "6.2.0"
   "@dnd-kit/sortable": "9.0.0"
   "@dnd-kit/utilities": "3.2.2"
@@ -83,15 +86,20 @@ catalog:
   "resend": "3.3.0"
   "sonner": "1.5.0"
   "storybook": "8.4.3"
+  "syncpack": "13.0.0"
   "tailwind-merge": "2.3.0"
   "tailwind-scrollbar-hide": "1.1.7"
   "tailwindcss-animate": "1.0.7"
   "tailwindcss-radix": "2.9.0"
   "tailwindcss": "3.4.4"
+  "tsx": "4.7.1"
+  "turbo": "2.0.4"
   "type-fest": "4.27.0"
   "typescript": "5.7.2"
   "ua-parser-js": "2.0.0"
+  "ultracite": "4.1.14"
   "usehooks-ts": "3.1.0"
   "wrangler": "3.99.0"
   "zod": "3.23.8"
+  
  
