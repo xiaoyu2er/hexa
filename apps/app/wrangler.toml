@@ -9,7 +9,7 @@ routes = [
   { pattern = "hexa.im/*", zone_name = "hexa.im" },
 ]
 
-compatibility_date = "2024-09-26"
+compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 
 # Minification helps to keep the Worker bundle size down and improve start up time.
