@@ -196,8 +196,8 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0(react@19.0.0)
       '@opennextjs/cloudflare':
-        specifier: https://pkg.pr.new/@opennextjs/cloudflare@main
-        version: https://pkg.pr.new/@opennextjs/cloudflare@main(wrangler@3.96.0(@cloudflare/workers-types@4.20241218.0))
+        specifier: https://pkg.pr.new/@opennextjs/cloudflare@experimental
+        version: https://pkg.pr.new/@opennextjs/cloudflare@experimental(wrangler@3.96.0(@cloudflare/workers-types@4.20241218.0))
       '@react-types/shared':
         specifier: ^3.26.0
         version: 3.26.0(react@19.0.0)
@@ -219,6 +219,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.20(postcss@8.4.49)
+      caniuse-lite:
+        specifier: ^1.0.30001689
+        version: 1.0.30001689
       dotenv:
         specifier: ^16.4.5
         version: 16.4.7
@@ -428,9 +431,6 @@ importers:
       geist:
         specifier: 1.3.1
         version: 1.3.1(next@15.1.1(@babel/core@7.24.5)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))
-      input-otp:
-        specifier: 1.2.4
-        version: 1.2.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       lucide-react:
         specifier: 0.460.0
         version: 0.460.0(react@19.0.0)
@@ -3805,13 +3805,6 @@ packages:
     peerDependencies:
       wrangler: ^3.95.0
 
-  '@opennextjs/cloudflare@https://pkg.pr.new/@opennextjs/cloudflare@main':
-    resolution: {tarball: https://pkg.pr.new/@opennextjs/cloudflare@main}
-    version: 0.2.1
-    hasBin: true
-    peerDependencies:
-      wrangler: ^3.78.10
-
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
@@ -6560,9 +6553,6 @@ packages:
     resolution: {integrity: sha512-QOSvevhslijgYwRx6Rv7zKdMF8lbRmx+uQGx2+vDc+KI/eBnsy9kit5aj23AgGu3pa4t9AgwbnXWqS+iOY+2aA==}
     engines: {node: '>= 6'}
 
-  caniuse-lite@1.0.30001680:
-    resolution: {integrity: sha512-rPQy70G6AGUMnbwS1z6Xg+RkHYPAi18ihs47GH0jcxIG7wArmPgY3XbS2sRdBbxJljp3thdT8BIqv9ccCypiPA==}
-
   caniuse-lite@1.0.30001689:
     resolution: {integrity: sha512-CmeR2VBycfa+5/jOfnp/NpWPGd06nf1XYiefUvhXFfZE4GkRc9jv+eGPS4nT558WS/8lYCzV8SlANCIPvbWP1g==}
 
@@ -8339,12 +8329,6 @@ packages:
   ini@4.1.1:
     resolution: {integrity: sha512-QQnnxNyfvmHFIsj7gkPcYymR8Jdw/o7mp5ZFihxn6h8Ci6fh3Dx4E1gPjpQEpIuPo9XVNY/ZUwh4BPMjGyL01g==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
-
-  input-otp@1.2.4:
-    resolution: {integrity: sha512-md6rhmD+zmMnUh5crQNSQxq3keBRYvE3odbr4Qb9g2NWzQv9azi+t1a3X4TBTbh98fsGHgEEJlzbe1q860uGCA==}
-    peerDependencies:
-      react: ^16.8 || ^17.0 || ^18.0
-      react-dom: ^16.8 || ^17.0 || ^18.0
 
   input-otp@1.4.1:
     resolution: {integrity: sha512-+yvpmKYKHi9jIGngxagY9oWiiblPB7+nEO75F2l2o4vs+6vpPZZmUl4tBNYuTCvQjhvEIbdNeJu70bhfYP2nbw==}
@@ -16722,11 +16706,6 @@ snapshots:
       - aws-crt
       - supports-color
 
-  '@opennextjs/cloudflare@https://pkg.pr.new/@opennextjs/cloudflare@main(wrangler@3.96.0(@cloudflare/workers-types@4.20241218.0))':
-    dependencies:
-      ts-morph: 23.0.0
-      wrangler: 3.96.0(@cloudflare/workers-types@4.20241218.0)
-
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
@@ -20121,7 +20100,7 @@ snapshots:
   autoprefixer@10.4.20(postcss@8.4.49):
     dependencies:
       browserslist: 4.24.3
-      caniuse-lite: 1.0.30001680
+      caniuse-lite: 1.0.30001689
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.1.1
@@ -20421,8 +20400,6 @@ snapshots:
       tslib: 2.8.1
 
   camelcase-css@2.0.1: {}
-
-  caniuse-lite@1.0.30001680: {}
 
   caniuse-lite@1.0.30001689: {}
 
@@ -22555,11 +22532,6 @@ snapshots:
   ini@1.3.8: {}
 
   ini@4.1.1: {}
-
-  input-otp@1.2.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
-    dependencies:
-      react: 19.0.0
-      react-dom: 19.0.0(react@19.0.0)
 
   input-otp@1.4.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
