@@ -22,7 +22,7 @@
     "turbo": "^2.0.4",
     "typescript": "5.7.2",
     "ultracite": "4.1.14",
-    "wrangler": "^3.91.0"
+    "wrangler": "^3.99.0"
   },
   "packageManager": "pnpm@8.15.6",
   "engines": {

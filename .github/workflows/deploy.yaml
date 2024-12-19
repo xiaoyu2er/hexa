@@ -68,7 +68,9 @@ jobs:
           workingDirectory: "apps/app"
           packageManager: pnpm
           preCommands: |
+            echo echo "*** pre command ***"
             pnpm run build:worker
+            ls .open-next
           command: |
             deploy
           secrets: |
