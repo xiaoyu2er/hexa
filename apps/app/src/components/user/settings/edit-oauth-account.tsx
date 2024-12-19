@@ -88,8 +88,9 @@ export function EditOauthAccount() {
                     </DropdownTrigger>
                     <DropdownMenu>
                       <DropdownItem
+                        key="delete"
                         className="cursor-pointer text-destructive focus:text-destructive"
-                        onClick={() => {
+                        onPress={() => {
                           modal
                             .show({ provider: account.provider })
                             .then(() => refetch());

@@ -9,7 +9,7 @@ import {
   IS_DEVELOPMENT,
   NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY,
 } from '@/lib/env';
-import { Turnstile } from '@marsidev/react-turnstile';
+import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile';
 import { useTheme } from 'next-themes';
 import { useEffect, useRef } from 'react';
 import type { FieldPath, FieldValues, UseFormReturn } from 'react-hook-form';
@@ -32,7 +32,7 @@ export function useTurnstile<T extends FieldValues>({
     setValue,
     formState: { errors },
   } = form;
-  const ref = useRef();
+  const ref = useRef<TurnstileInstance | null>(null);
   const { theme } = useTheme();
   const resetTurnstile = () => {
     // turnstile response could be only used once
@@ -68,7 +68,7 @@ export function useTurnstile<T extends FieldValues>({
         // @ts-ignore
         setValue('cf-turnstile-response', res);
         clearErrors('cf-turnstile-response' as FieldPath<T>);
-        onSuccess?.(res);
+        onSuccess?.(res ?? '');
       }}
       className={
         errors['cf-turnstile-response'] ? 'outline outline-danger' : ''

@@ -7,7 +7,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@hexa/ui/card';
@@ -27,7 +26,6 @@ export function OrgId() {
       <CardContent>
         <ReadOnly text={org.id} className="max-w-md" />
       </CardContent>
-      <CardFooter className="flex-row-reverse items-center justify-between border-t px-6 py-4" />
     </Card>
   );
 }

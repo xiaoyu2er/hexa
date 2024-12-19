@@ -18,7 +18,7 @@ import {
   useData,
 } from './domain-table-data';
 
-export const DomainTable = () => {
+export function DomainTable() {
   const ref = useRef<TableRef<QueryDomainType>>(null);
   const modal = useModal(CreateDomainModal);
   const { project } = useProject();
@@ -62,6 +62,4 @@ export const DomainTable = () => {
       showViewChange={false}
     />
   );
-};
-
-DomainTable.displayName = 'DomainTable';
+}

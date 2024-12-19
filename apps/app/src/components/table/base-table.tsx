@@ -28,9 +28,8 @@ import {
 } from '@tanstack/react-table';
 import {
   type ComponentType,
-  type ForwardedRef,
   type ReactNode,
-  forwardRef,
+  type Ref,
   useImperativeHandle,
   useState,
 } from 'react';
@@ -60,18 +59,10 @@ export interface BaseTableProps<T> {
   defaultView?: TableView;
   showViewChange?: boolean;
   showHeader?: boolean;
+  ref: Ref<TableRef<T>>;
 }
 
-// First define the function type that preserves generics
-type BaseTableComponent = <T extends object>(
-  props: BaseTableProps<T> & { ref?: ForwardedRef<TableRef<T>> }
-) => JSX.Element;
-
-// Then create the internal component
-const InternalBaseTable = <T extends object>(
-  props: BaseTableProps<T>,
-  ref: ForwardedRef<TableRef<T>>
-) => {
+export const BaseTable = <T extends object>(props: BaseTableProps<T>) => {
   const {
     columns,
     useData,
@@ -86,6 +77,7 @@ const InternalBaseTable = <T extends object>(
     defaultView = 'rows',
     showViewChange = Boolean(Card),
     showHeader = true,
+    ref,
   } = props;
 
   const { isMobile } = useScreenSize();
@@ -172,7 +164,4 @@ const InternalBaseTable = <T extends object>(
   );
 };
 
-// Finally export with proper typing
-export const BaseTable = forwardRef(InternalBaseTable) as BaseTableComponent;
-
-InternalBaseTable.displayName = 'BaseTable';
+BaseTable.displayName = 'BaseTable';

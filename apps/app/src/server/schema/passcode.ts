@@ -20,11 +20,13 @@ export const PasscodeTypeSchema = z.object({
 });
 
 export type PasscodeType = z.infer<typeof PasscodeTypeEnum>;
+export const zCode = z.string().min(6, 'Invalid code').max(6, 'Invalid code');
 
 export const InsertPasscodeSchema = createInsertSchema(passcodeTable, {
   type: PasscodeTypeEnum,
+  code: zCode,
 });
-export type InsertPasscodeType = Simplify<z.infer<typeof InsertPasscodeSchema>>;
+export type InsertPasscodeType = z.infer<typeof InsertPasscodeSchema>;
 
 export const SelectedPasscodeSchema = createSelectSchema(passcodeTable, {
   type: PasscodeTypeEnum,

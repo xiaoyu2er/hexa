@@ -83,6 +83,7 @@ export function AppSidebar() {
         </SidebarHeader>
 
         <motion.div
+          // @ts-ignore
           className="flex-1 overflow-y-auto"
           initial="initial"
           animate="animate"

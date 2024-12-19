@@ -12,17 +12,20 @@ import {
   cn,
 } from '@nextui-org/react';
 import { useLocale } from '@react-aria/i18n';
+import type { FC } from 'react';
 
-export default function AnalyticsTimePicker({
-  dateRange: value,
-  onUpdate: setValue,
-}: {
+type AnalyticsTimePickerProps = {
   dateRange: {
     start: CalendarDate;
     end: CalendarDate;
   };
   onUpdate: (dateRange: { start: CalendarDate; end: CalendarDate }) => void;
-}) {
+};
+
+export const AnalyticsTimePicker: FC<AnalyticsTimePickerProps> = ({
+  dateRange: value,
+  onUpdate: setValue,
+}) => {
   const { locale } = useLocale();
   const now = today(getLocalTimeZone());
 
@@ -120,8 +123,12 @@ export default function AnalyticsTimePicker({
       // @ts-ignore
       value={value}
       onChange={(newDate) => {
-        setValue(newDate);
+        if (newDate) {
+          setValue(newDate);
+        }
       }}
     />
   );
-}
+};
+
+export default AnalyticsTimePicker;

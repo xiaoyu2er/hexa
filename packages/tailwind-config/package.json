@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {},
   "dependencies": {
-    "@nextui-org/react": "2.6.4",
+    "@nextui-org/react": "2.6.8",
     "@tailwindcss/forms": "0.5.7",
     "@tailwindcss/typography": "0.5.13",
     "tailwind-scrollbar-hide": "1.1.7",

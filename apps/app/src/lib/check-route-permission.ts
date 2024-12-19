@@ -10,8 +10,8 @@ export const isAppHost = (host: string) => {
 /**
  * We don't allow custom domains to access routes other than /[slug].
  */
-export function protectRoute() {
-  const header = headers();
+export async function protectRoute() {
+  const header = await headers();
   const host = header.get('host');
   if (!host || !isAppHost(host)) {
     return notFound();
