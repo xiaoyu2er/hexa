@@ -18,19 +18,19 @@
     "@hexa/tailwind-config": "workspace:*",
     "@hexa/ui": "workspace:*",
     "@hexa/utils": "workspace:*",
-    "next": "15.1.1",
-    "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "next": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "devDependencies": {
     "@hexa/typescript-config": "workspace:*",
-    "@opennextjs/cloudflare": "https://pkg.pr.new/@opennextjs/cloudflare@experimental",
-    "@types/node": "22.10.2",
-    "@types/react": "^19.0.2",
-    "@types/react-dom": "^19.0.2",
-    "caniuse-lite": "^1.0.30001689",
-    "postcss": "^8.4.38",
-    "tailwindcss": "^3.4.4",
-    "typescript": "5.7.2"
+    "@opennextjs/cloudflare": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "caniuse-lite": "catalog:",
+    "postcss": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:"
   }
 }
