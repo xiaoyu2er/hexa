@@ -9,8 +9,8 @@
     "watch-mint": "node --watch-path=./config scripts/merge-mint.mjs"
   },
   "devDependencies": {
-    "mintlify": "^4.0.286",
-    "typescript": "5.7.2",
-    "concurrently": "9.1.0"
+    "mintlify": "catalog:",
+    "typescript": "catalog:",
+    "concurrently": "catalog:"
   }
 }
