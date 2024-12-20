@@ -10,7 +10,7 @@
     "production": "dotenv-run-script .env .env.production --",
     "development": "dotenv-run-script .env .env.development --",
     "build:worker": "pnpm opennextjs-cloudflare",
-    "dev:worker": "wrangler dev --port 7002",
+    "dev:worker": "wrangler dev --port 7002 --inspector-port 9330",
     "preview:worker": "npm run dev:worker ",
     "deploy:worker": "wrangler deploy",
     "deploy:worker:staging": "wrangler deploy --env staging",
