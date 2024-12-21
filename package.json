@@ -3,6 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "clean:list": "find . -name 'node_modules' -type d -prune",
+    "clean": "find . -name 'node_modules' -type d -prune -exec rm -rf {} +",
     "build": "turbo build",
     "dev": "turbo dev",
     "format-and-lint": "biome check .",
@@ -11,7 +13,8 @@
     "sync-deps": "syncpack list",
     "setup": "pnpm run setup-hosts",
     "setup:hosts": "tsx scripts/hosts.ts",
-    "setup:wrangler": "node scripts/setup-wrangler-links.js"
+    "setup:wrangler": "node scripts/setup-wrangler-links.js",
+    "check-updates": "tsx scripts/check-updates.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
@@ -23,7 +26,9 @@
     "turbo": "catalog:",
     "typescript": "catalog:",
     "ultracite": "catalog:",
-    "wrangler": "catalog:"
+    "wrangler": "catalog:",
+    "node-fetch": "catalog:",
+    "yaml": "catalog:"
   },
   "packageManager": "pnpm@9.15.0",
   "engines": {
