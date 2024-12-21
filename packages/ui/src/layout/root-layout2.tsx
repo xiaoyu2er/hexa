@@ -1,4 +1,5 @@
 import '@hexa/tailwind-config/globals.css';
+import { NiceModalProvider } from '@hexa/ui/modal-provider';
 import { RootLayout as InnerRootLayout } from '@hexa/ui/root-layout';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
@@ -13,7 +14,7 @@ export function RootLayout({
   return (
     <InnerRootLayout>
       <QueryClientProvider>
-        {children}
+        <NiceModalProvider>{children}</NiceModalProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </InnerRootLayout>

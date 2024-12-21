@@ -4,7 +4,6 @@ import { Toaster } from '@hexa/ui/sonner';
 import { cn } from '../../../lib/src';
 import '@hexa/tailwind-config/globals.css';
 import { Indicator } from '@hexa/ui/indicator';
-import { NiceModalProvider } from '@hexa/ui/modal-provider';
 import { NextUIProvider } from '@hexa/ui/nextui-provider';
 import type { ReactNode } from 'react';
 
@@ -23,18 +22,16 @@ export function RootLayout({
           GeistSans.className
         )}
       >
-        <NiceModalProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <NextUIProvider>{children}</NextUIProvider>
-            <Toaster richColors position="top-center" />
-            <Indicator />
-          </ThemeProvider>
-        </NiceModalProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <NextUIProvider>{children}</NextUIProvider>
+          <Toaster richColors position="top-center" />
+          <Indicator />
+        </ThemeProvider>
       </body>
     </html>
   );
