@@ -2,7 +2,6 @@ import {
   Body,
   Button,
   Container,
-  Head,
   Heading,
   Html,
   Preview,
@@ -33,7 +32,6 @@ export default function OrgInviteTemplate({
 }: OrgInviteTemplateProps) {
   return (
     <Html>
-      <Head />
       <Preview>You've been invited to join {orgName}</Preview>
       <Tailwind>
         <Body className="mx-auto my-auto bg-white font-sans">

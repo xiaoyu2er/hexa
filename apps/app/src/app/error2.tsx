@@ -1,8 +1,8 @@
 'use client';
 
-import { SiteBanner } from '@/components/www/site-banner';
-import { SiteFooter } from '@/components/www/site-footer';
-import { SiteHeader } from '@/components/www/site-header';
+import { SiteBanner } from '@hexa/ui/site-banner';
+import { SiteFooter } from '@hexa/ui/site-footer';
+import { SiteHeader } from '@hexa/ui/site-header';
 import { Button, Link } from '@nextui-org/react';
 import type { ReactElement } from 'react';
 

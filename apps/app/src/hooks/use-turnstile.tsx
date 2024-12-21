@@ -8,7 +8,7 @@ import {
   DISABLE_CLOUDFLARE_TURNSTILE,
   IS_DEVELOPMENT,
   NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY,
-} from '@/lib/env';
+} from '@hexa/env';
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile';
 import { useTheme } from 'next-themes';
 import { useEffect, useRef } from 'react';

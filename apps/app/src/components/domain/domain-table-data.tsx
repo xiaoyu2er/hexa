@@ -2,7 +2,7 @@
 import type { FilterConfig } from '@/components/table/table-types';
 import { useDomains } from '@/hooks/use-domains';
 
-import type { QueryDomainType } from '@/server/schema/domain';
+import type { QueryDomainType } from '@hexa/server/schema/domain';
 import type { ColumnDef } from '@tanstack/react-table';
 
 export const columns: ColumnDef<QueryDomainType>[] = [

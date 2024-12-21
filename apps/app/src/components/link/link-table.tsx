@@ -15,8 +15,8 @@ import {
 import { BaseTable, type TableRef } from '@/components/table/base-table';
 import { useProject } from '@/hooks/use-project';
 import { invalidateProjectLinks } from '@/lib/queries/project';
-import type { SelectLinkType } from '@/server/schema/link';
 import { useModal } from '@ebay/nice-modal-react';
+import type { SelectLinkType } from '@hexa/server/schema/link';
 import { Button } from '@nextui-org/react';
 import { useRef } from 'react';
 

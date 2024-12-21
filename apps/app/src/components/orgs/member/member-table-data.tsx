@@ -9,7 +9,7 @@ import {
   OrgMemberSortableColumnOptions,
   OrgRoleOptions,
   type SelectOrgMemberType,
-} from '@/server/schema/org-member';
+} from '@hexa/server/schema/org-member';
 import { Badge } from '@hexa/ui/badge';
 
 import { MoreHorizontal } from '@hexa/ui/icons';

@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "types": ["@cloudflare/workers-types/2023-07-01"],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "exclude": ["node_modules", "../../packages/ui"],
+  "extends": "@hexa/typescript-config/nextjs.json",
+  "include": [
+    "next-env.d.ts",
+    "next.config.js",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "../app/env.d.ts"
+  ]
+}

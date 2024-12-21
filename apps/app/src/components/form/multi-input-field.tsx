@@ -131,7 +131,7 @@ export const MultiInputField = <T extends FieldValues = FieldValues>({
               isIconOnly
               size="sm"
               aria-label="Remove value"
-              onClick={() => {
+              onPress={() => {
                 remove(index);
                 updateStringArray(
                   form
@@ -155,7 +155,7 @@ export const MultiInputField = <T extends FieldValues = FieldValues>({
         size="sm"
         isIconOnly
         color={error?.message ? 'danger' : 'default'}
-        onClick={() => {
+        onPress={() => {
           append({ value: '' } as FieldPathValue<T, Path<T>>);
           updateStringArray([
             ...form.getValues(internalArrayName),

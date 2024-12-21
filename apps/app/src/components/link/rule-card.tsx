@@ -11,7 +11,6 @@ import {
   GripVerticalIcon,
   TrashIcon,
 } from '@hexa/ui/icons';
-import { cn } from '@hexa/utils/cn';
 import {
   Button,
   Dropdown,
@@ -23,6 +22,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import type { useForm } from 'react-hook-form';
 import type { FieldArrayWithId } from 'react-hook-form';
+import { cn } from '../../../../../packages/lib/src/cn';
 import { RuleConditions } from './rule-conditions';
 
 interface RuleCardProps {
@@ -90,7 +90,7 @@ export function RuleCard({
               isIconOnly
               aria-label="Toggle rule details"
               className="w-8"
-              onClick={() => setIsCollapsed(!isCollapsed)}
+              onPress={() => setIsCollapsed(!isCollapsed)}
             >
               {isCollapsed ? (
                 <ChevronDownIcon className="h-5 w-5" />

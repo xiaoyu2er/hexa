@@ -3,8 +3,8 @@
 import UploadAvatar from '@/components/upload-avatar';
 import { EditUserName } from '@/components/user/settings/edit-user-name';
 import { useUser } from '@/hooks/use-user';
-import { $updateUserAvatar } from '@/lib/api';
 import { getAvatarFallbackUrl } from '@/lib/user';
+import { $updateUserAvatar } from '@hexa/server/api';
 import type { FC } from 'react';
 
 export const ProfilePage: FC = () => {

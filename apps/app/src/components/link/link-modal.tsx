@@ -1,16 +1,16 @@
 'use client';
 
-import { $createLink, $updateLink } from '@/lib/api';
+import NiceModal, { useModal } from '@ebay/nice-modal-react';
+import type { LinkRule } from '@hexa/const/rule';
+import { $createLink, $updateLink } from '@hexa/server/api';
 import {
   InsertLinkSchema,
   type InsertLinkType,
   type SelectLinkType,
   UpdateLinkSchema,
   type UpdateLinkType,
-} from '@/server/schema/link';
-import type { SelectProjectType } from '@/server/schema/project';
-import NiceModal, { useModal } from '@ebay/nice-modal-react';
-import type { LinkRule } from '@hexa/const/rule';
+} from '@hexa/server/schema/link';
+import type { SelectProjectType } from '@hexa/server/schema/project';
 
 import {
   Form,
@@ -191,7 +191,7 @@ export const LinkModal = NiceModal.create(
                             variant="light"
                             size="sm"
                             className="h-5 w-5 min-w-5"
-                            onClick={() => {
+                            onPress={() => {
                               setValue(
                                 'slug',
                                 generateSlug(2, {
@@ -237,7 +237,7 @@ export const LinkModal = NiceModal.create(
               <Button
                 type="button"
                 variant="bordered"
-                onClick={() =>
+                onPress={() =>
                   rulesModal
                     .show({ rules })
                     .then((newRules) =>

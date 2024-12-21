@@ -10,13 +10,13 @@ import {
 
 import { setFormError } from '@/components/form';
 import { Form } from '@/components/form';
-import { $deleteUser } from '@/lib/api';
-import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
+import { NEXT_PUBLIC_APP_NAME } from '@hexa/env';
+import { $deleteUser } from '@hexa/server/api';
 import {
   DELETE_USER_CONFIRMATION,
   DeleteUserSchema,
   type DeleteUserType,
-} from '@/server/schema/user';
+} from '@hexa/server/schema/user';
 
 import { InputField } from '@/components/form';
 

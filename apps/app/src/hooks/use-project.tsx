@@ -1,6 +1,6 @@
 import { ProjectContext } from '@/components/providers/project-provicer';
 import { invalidateProject, queryProjectOptions } from '@/lib/queries/project';
-import type { SelectProjectType } from '@/server/schema/project';
+import type { SelectProjectType } from '@hexa/server/schema/project';
 import { useQuery } from '@tanstack/react-query';
 import { useContext } from 'react';
 

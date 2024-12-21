@@ -41,7 +41,7 @@ export function TableToolbarDesktop<TData>({
           <Button
             variant="light"
             size="sm"
-            onClick={() => {
+            onPress={() => {
               table.getColumn('search')?.setFilterValue('');
               table.resetColumnFilters();
             }}

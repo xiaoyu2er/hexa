@@ -1,6 +1,6 @@
 'use client';
 
-import type { SelectLinkType } from '@/server/schema/link';
+import type { SelectLinkType } from '@hexa/server/schema/link';
 import { CopyButton } from '@hexa/ui/copy-button';
 import { LinkIcon } from '@hexa/ui/icons';
 

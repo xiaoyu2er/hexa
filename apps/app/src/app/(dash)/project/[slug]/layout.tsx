@@ -1,7 +1,7 @@
 import { ProjectProvider } from '@/components/providers/project-provicer';
-import { getDb } from '@/lib/db';
-import { getSession } from '@/lib/session';
-import { getProjectWithRoleBySlug } from '@/server/store/project';
+import { getDb } from '@hexa/server/db';
+import { getSession } from '@hexa/server/session';
+import { getProjectWithRoleBySlug } from '@hexa/server/store/project';
 import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
 

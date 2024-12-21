@@ -1,6 +1,6 @@
 'use client';
 import { BaseTable, type TableRef } from '@/components/table/base-table';
-import type { QueryInviteType } from '@/server/schema/org-invite';
+import type { QueryInviteType } from '@hexa/server/schema/org-invite';
 import { type ReactNode, forwardRef } from 'react';
 import {
   InviteCard as Card,

@@ -1,5 +1,5 @@
-import { cn } from '@hexa/utils';
 import { type SVGProps, forwardRef } from 'react';
+import { cn } from '../../../lib/src';
 
 // from shacdcn google icon https://ui.shadcn.com/examples/cards
 // export const GoogleIcon = forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>(

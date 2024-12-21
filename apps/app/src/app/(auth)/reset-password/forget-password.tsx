@@ -7,11 +7,11 @@ import { useTurnstile } from '@/hooks/use-turnstile';
 import {
   $resetPasswordSendPasscode,
   type InferApiResponseType,
-} from '@/lib/api';
+} from '@hexa/server/api';
 import {
   SendPasscodeSchema,
   type SendPasscodeType,
-} from '@/server/schema/passcode';
+} from '@hexa/server/schema/passcode';
 import { Button } from '@nextui-org/react';
 
 import { AuthLink } from '@/components/auth/auth-link';

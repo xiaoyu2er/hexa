@@ -10,11 +10,11 @@ import { useTurnstile } from '@/hooks/use-turnstile';
 import {
   $loginPasscodeSendPasscode,
   type InferApiResponseType,
-} from '@/lib/api';
+} from '@hexa/server/api';
 import {
   SendPasscodeSchema,
   type SendPasscodeType,
-} from '@/server/schema/passcode';
+} from '@hexa/server/schema/passcode';
 import {
   Card,
   CardContent,

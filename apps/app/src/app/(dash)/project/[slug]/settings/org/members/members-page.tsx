@@ -6,8 +6,8 @@ import { OrgMemberTable } from '@/components/orgs/member/member-table';
 import type { TableRef } from '@/components/table/base-table';
 import { useProject } from '@/hooks/use-project';
 import { invalidateOrgInvites } from '@/lib/queries/orgs';
-import type { QueryInviteType } from '@/server/schema/org-invite';
 import { useModal } from '@ebay/nice-modal-react';
+import type { QueryInviteType } from '@hexa/server/schema/org-invite';
 import { Button, Tab, Tabs } from '@nextui-org/react';
 import { useRef } from 'react';
 

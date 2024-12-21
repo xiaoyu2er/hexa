@@ -125,7 +125,7 @@ export const DeviceTypeTips = ({ className }: { className?: string }) => {
         <TipButton
           className={className}
           aria-label="About device types"
-          onClick={() => setIsModalOpen(true)}
+          onPress={() => setIsModalOpen(true)}
         />
         <Modal
           isOpen={isModalOpen}

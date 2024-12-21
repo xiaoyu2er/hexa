@@ -3,8 +3,8 @@ import { InputField } from '@/components/form';
 import {
   $addUserEmailSendPasscode,
   type InferApiResponseType,
-} from '@/lib/api';
-import { EmailSchema, type EmailType } from '@/server/schema/common';
+} from '@hexa/server/api';
+import { EmailSchema, type EmailType } from '@hexa/server/schema/common';
 import {
   Card,
   CardContent,
@@ -72,7 +72,7 @@ export const AddUserEmail: FC<AddUserEmailProps> = ({
           <Button type="submit" color="primary" isLoading={isSubmitting}>
             Update
           </Button>
-          <Button variant="light" onClick={onCancel}>
+          <Button variant="light" onPress={onCancel}>
             Cancel
           </Button>
         </CardFooter>

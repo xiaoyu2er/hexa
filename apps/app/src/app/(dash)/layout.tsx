@@ -1,22 +1,18 @@
-import { SessionProvider } from '@/components/providers/session-provider';
-import { SidebarProvider } from '@/components/providers/sidebar-provider';
-import { metadata } from '@/components/root-layout';
-import { AppSidebar } from '@/components/sidebar/app-sidebar';
-import { AppSidebarBreadcrumb } from '@/components/sidebar/app-sidebar-breadcrumb';
-import { protectRoute } from '@/lib/check-route-permission';
-import { getSession } from '@/lib/session';
+import { AppSidebar } from '@/components/app-sidebar/app-sidebar';
+import { getSession } from '@hexa/server/session/index';
+import { AppSidebarBreadcrumb } from '@hexa/ui/app-sidebar-breadcrumb';
+import { SessionProvider } from '@hexa/ui/session-provider';
 import { SidebarInset, SidebarTrigger } from '@hexa/ui/sidebar';
+import { SidebarProvider } from '@hexa/ui/sidebar-provider';
 import { Divider } from '@nextui-org/react';
 import { redirect } from 'next/navigation';
 import type { ReactNode } from 'react';
 
-export { metadata };
 export default async function DashLayout({
   children,
 }: {
   children: ReactNode;
 }) {
-  await protectRoute();
   const { session, user } = await getSession();
 
   if (!session) {

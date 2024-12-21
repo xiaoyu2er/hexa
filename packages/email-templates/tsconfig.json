@@ -1,5 +1,5 @@
 {
   "exclude": ["node_modules", "dist"],
-  "extends": "@hexa/typescript-config/base.json",
+  "extends": "@hexa/typescript-config/react-library.json",
   "include": ["src"]
 }

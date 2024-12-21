@@ -11,7 +11,7 @@ export const TableViewOptionsButton = forwardRef<
   {
     hasFiltersOrSort: boolean;
   } & ComponentProps<typeof Button>
->(({ hasFiltersOrSort, ...props }, ref) => {
+>(({ hasFiltersOrSort, onPress }, ref) => {
   const { isMobile } = useScreenSize();
 
   return (
@@ -23,7 +23,7 @@ export const TableViewOptionsButton = forwardRef<
         isIconOnly={isMobile}
         startContent={<Settings2 className="h-4 w-4" />}
         className="relative ml-auto flex items-center gap-2"
-        {...props}
+        onPress={onPress}
       >
         {!isMobile && <span>Display</span>}
       </Button>

@@ -2,9 +2,9 @@
 
 import { Check, Copy } from '@hexa/ui/icons';
 import { toast } from '@hexa/ui/sonner';
-import { cn } from '@hexa/utils';
 import { Button } from '@nextui-org/react';
 import { useState } from 'react';
+import { cn } from '../../lib/src';
 
 export function CopyButton({
   value,

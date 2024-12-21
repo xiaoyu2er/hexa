@@ -4,7 +4,7 @@ import { VerifyPasscode } from '@/components/auth/verify-passcode';
 import {
   $resetPasswordResendPasscode,
   $resetPasswordVerifyPasscode,
-} from '@/lib/api';
+} from '@hexa/server/api';
 import { toast } from '@hexa/ui/sonner';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { type FC, useState } from 'react';

@@ -1,11 +1,11 @@
 'use client';
 import { CreateDomainModal } from '@/components/domain/create-domain-modal';
 import NoDomain from '@/components/domain/no-domain';
-import { useModal } from '@/components/modal';
 import { BaseTable, type TableRef } from '@/components/table/base-table';
 import { useProject } from '@/hooks/use-project';
 import { invalidateDomains } from '@/lib/queries/orgs';
-import type { QueryDomainType } from '@/server/schema/domain';
+import { useModal } from '@ebay/nice-modal-react';
+import type { QueryDomainType } from '@hexa/server/schema/domain';
 import { Button } from '@nextui-org/react';
 import { useRef } from 'react';
 import { DomainCard as Card } from './domain-card';

@@ -6,15 +6,15 @@ import {
   InputField,
   setFormError,
 } from '@/components/form';
-import { $deleteOrg } from '@/lib/api';
-import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import { invalidateProjectsQuery } from '@/lib/queries/project';
+import NiceModal, { useModal } from '@ebay/nice-modal-react';
+import { NEXT_PUBLIC_APP_NAME } from '@hexa/env';
+import { $deleteOrg } from '@hexa/server/api';
 import {
   DELETE_ORG_CONFIRMATION,
   DeleteOrgSchema,
   type DeleteOrgType,
-} from '@/server/schema/org';
-import NiceModal, { useModal } from '@ebay/nice-modal-react';
+} from '@hexa/server/schema/org';
 import {
   Card,
   CardDescription,
@@ -55,7 +55,7 @@ export function DeleteOrg() {
           type="submit"
           color="danger"
           className="shrink-0"
-          onClick={() => modal.show()}
+          onPress={() => modal.show()}
         >
           Delete organization
         </Button>

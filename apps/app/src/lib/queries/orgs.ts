@@ -1,11 +1,11 @@
-import { getQueryClient } from '@/components/providers/get-query-client';
+import { type TableQuery, getTableQuery } from '@/lib/queries/table';
 import {
   $getDomains,
   $getOrgInvites,
   $getOrgMembers,
   $getOrgs,
-} from '@/lib/api';
-import { type TableQuery, getTableQuery } from '@/lib/queries/table';
+} from '@hexa/server/api';
+import { getQueryClient } from '@hexa/ui/get-query-client';
 import { queryOptions } from '@tanstack/react-query';
 
 import { useParams } from 'next/navigation';

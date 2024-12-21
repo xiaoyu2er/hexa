@@ -1,9 +1,9 @@
 'use client';
 
 import { getAvatarFallbackUrl } from '@/lib/user';
-import type { SelectUserType } from '@/server/schema/user';
-import { cn } from '@hexa/utils';
+import type { SelectUserType } from '@hexa/server/schema/user';
 import { Avatar, type AvatarProps } from '@nextui-org/react';
+import { cn } from '../../../../../../packages/lib/src';
 
 export function UserAvatar({
   user,

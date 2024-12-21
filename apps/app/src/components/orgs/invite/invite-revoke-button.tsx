@@ -1,9 +1,9 @@
-import { $revokeInvite } from '@/lib/api';
-import type { QueryInviteType } from '@/server/schema/org-invite';
+import { $revokeInvite } from '@hexa/server/api';
+import type { QueryInviteType } from '@hexa/server/schema/org-invite';
 import { toast } from '@hexa/ui/sonner';
-import { cn } from '@hexa/utils/cn';
 import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
+import { cn } from '../../../../../../packages/lib/src/cn';
 export default function RevokeInvite({
   invite,
   onSuccess,

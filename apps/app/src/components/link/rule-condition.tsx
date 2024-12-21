@@ -15,9 +15,9 @@ import {
   getRuleFieldSelectOptions,
 } from '@hexa/const/rule';
 import { TrashIcon } from '@hexa/ui/icons';
-import { cn } from '@hexa/utils';
 import { Button } from '@nextui-org/react';
 import type { Path, useForm } from 'react-hook-form';
+import { cn } from '../../../../../packages/lib/src';
 
 export const RuleCondition = ({
   formKey,
@@ -135,7 +135,7 @@ export const RuleCondition = ({
           isIconOnly
           size="sm"
           aria-label="Remove condition"
-          onClick={() => onRemove()}
+          onPress={() => onRemove()}
           className="shrink-0 p-0 sm:hidden"
         >
           <TrashIcon className="h-4 w-4" />
@@ -178,7 +178,7 @@ export const RuleCondition = ({
         isIconOnly
         size="sm"
         aria-label="Remove condition"
-        onClick={() => onRemove()}
+        onPress={() => onRemove()}
         className="hidden h-10 w-10 shrink-0 p-0 sm:flex"
       >
         <TrashIcon className="h-4 w-4" />

@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "paths": {
+      "@hexa/server/lib": ["./src/lib/index.ts"],
+      "@hexa/server/middleware/*": ["./src/middleware/*.ts"],
+      "@hexa/server/route/*": ["./src/route/*.ts"],
+      "@hexa/server/schema/*": ["./src/schema/*.ts"],
+      "@hexa/server/service/*": ["./src/service/*.ts"],
+      "@hexa/server/store/*": ["./src/store/*.ts"],
+      "@hexa/server/table": ["./src/table/index.ts"],
+      "@hexa/server/session": ["./src/session/index.ts"],
+      "@hexa/server/*": ["./src/*.ts"]
+    }
+  },
+  "exclude": ["node_modules", "dist"],
+  "extends": "@hexa/typescript-config/react-library.json",
+  "include": ["src", "../../apps/app/env.d.ts"]
+}

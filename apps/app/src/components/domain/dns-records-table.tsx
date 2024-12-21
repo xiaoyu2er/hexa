@@ -1,6 +1,6 @@
 import { DNSRecordGrid } from '@/components/domain/dns-record-grid';
 import { InfoMessage } from '@/components/domain/info-message';
-import type { QueryDomainType } from '@/server/schema/domain';
+import type { QueryDomainType } from '@hexa/server/schema/domain';
 
 interface DNSRecordsTableProps {
   domain: QueryDomainType;

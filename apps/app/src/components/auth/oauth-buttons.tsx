@@ -13,7 +13,7 @@ export const OauthGithubButton = () => {
       }
       variant="bordered"
       as={Link}
-      onClick={() => setIsLoading(true)}
+      onPress={() => setIsLoading(true)}
       href="/api/oauth/github"
       isLoading={isLoading}
     >
@@ -35,7 +35,7 @@ export const OauthGoogleButton = () => {
           />
         )
       }
-      onClick={() => setIsLoading(true)}
+      onPress={() => setIsLoading(true)}
       variant="bordered"
       as={Link}
       href="/api/oauth/google"

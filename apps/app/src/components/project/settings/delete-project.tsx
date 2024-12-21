@@ -6,14 +6,14 @@ import {
   InputField,
   setFormError,
 } from '@/components/form';
-import { $deleteProject } from '@/lib/api';
-import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import { invalidateProjectsQuery } from '@/lib/queries/project';
+import { NEXT_PUBLIC_APP_NAME } from '@hexa/env';
+import { $deleteProject } from '@hexa/server/api';
 import {
   DELETE_PROJECT_CONFIRMATION,
   DeleteProjectSchema,
   type DeleteProjectType,
-} from '@/server/schema/project';
+} from '@hexa/server/schema/project';
 import {
   Card,
   CardDescription,
@@ -55,7 +55,7 @@ export function DeleteProject() {
           type="submit"
           color="danger"
           className="shrink-0"
-          onClick={() => modal.show()}
+          onPress={() => modal.show()}
         >
           Delete project
         </Button>

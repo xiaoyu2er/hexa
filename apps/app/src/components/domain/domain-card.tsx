@@ -1,6 +1,6 @@
 import { DNSRecordsTable } from '@/components/domain/dns-records-table';
 import { VerificationTab } from '@/components/domain/verification-tab';
-import type { QueryDomainType } from '@/server/schema/domain';
+import type { QueryDomainType } from '@hexa/server/schema/domain';
 import { Badge } from '@hexa/ui/badge';
 
 import { GlobeIcon } from '@hexa/ui/icons';

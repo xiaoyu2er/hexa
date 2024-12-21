@@ -1,9 +1,8 @@
 import RevokeInvite from '@/components/orgs/invite/invite-revoke-button';
 import { UserAvatar } from '@/components/user/settings/user-avatar';
-import type { QueryInviteType } from '@/server/schema/org-invite';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
+import type { QueryInviteType } from '@hexa/server/schema/org-invite';
 import { Badge } from '@hexa/ui/badge';
-import { cn } from '@hexa/utils';
 import {
   Card,
   CardBody,
@@ -15,6 +14,7 @@ import {
 import { Skeleton } from '@nextui-org/react';
 import type { Row } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
+import { cn } from '../../../../../../packages/lib/src';
 
 export const InviteCardActionModal = NiceModal.create(
   ({ row }: { row: Row<QueryInviteType> }) => {

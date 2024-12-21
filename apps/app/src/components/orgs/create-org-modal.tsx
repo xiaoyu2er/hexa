@@ -1,13 +1,13 @@
 'use client';
 
 import { setFormError } from '@/components/form';
-import { $createOrg } from '@/lib/api';
 import { invalidateProjectsQuery } from '@/lib/queries/project';
+import { $createOrg } from '@hexa/server/api';
 
 import { Form } from '@/components/form';
 import { FormErrorMessage } from '@/components/form';
-import { InsertOrgSchema, type InsertOrgType } from '@/server/schema/org';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
+import { InsertOrgSchema, type InsertOrgType } from '@hexa/server/schema/org';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {

@@ -1,5 +1,5 @@
-import { cn } from '@hexa/utils';
 import { type SVGProps, forwardRef } from 'react';
+import { cn } from '../../../lib/src';
 
 export const MessengerIcon = forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>(
   ({ className, ...props }, ref) => (

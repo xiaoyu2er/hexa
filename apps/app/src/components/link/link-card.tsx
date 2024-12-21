@@ -1,8 +1,8 @@
 'use client';
 
 import { useProject } from '@/hooks/use-project';
-import type { SelectLinkType } from '@/server/schema/link';
 import { useModal } from '@ebay/nice-modal-react';
+import type { SelectLinkType } from '@hexa/server/schema/link';
 import { SparklesIcon } from '@hexa/ui/icons';
 import { Skeleton } from '@nextui-org/react';
 import type { Row } from '@tanstack/react-table';

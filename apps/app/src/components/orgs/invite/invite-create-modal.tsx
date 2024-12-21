@@ -3,13 +3,13 @@ import { Form, setFormError } from '@/components/form';
 import { FormErrorMessage } from '@/components/form';
 import { InputField } from '@/components/form';
 import { SelectField } from '@/components/form';
-import { $createInvites } from '@/lib/api';
+import NiceModal, { useModal } from '@ebay/nice-modal-react';
+import { $createInvites } from '@hexa/server/api';
 import {
   CreateInvitesSchema,
   type CreateInvitesType,
-} from '@/server/schema/org-invite';
-import type { SelectProjectType } from '@/server/schema/project';
-import NiceModal, { useModal } from '@ebay/nice-modal-react';
+} from '@hexa/server/schema/org-invite';
+import type { SelectProjectType } from '@hexa/server/schema/project';
 
 import { Trash } from '@hexa/ui/icons';
 import { toast } from '@hexa/ui/sonner';
@@ -17,7 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useFieldArray, useForm } from 'react-hook-form';
 
-import { OrgRoleOptions } from '@/server/schema/org-member';
+import { OrgRoleOptions } from '@hexa/server/schema/org-member';
 import {
   Button,
   Modal,

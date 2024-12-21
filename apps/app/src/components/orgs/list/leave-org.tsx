@@ -1,6 +1,6 @@
 'use client';
 
-import { $leaveOrg } from '@/lib/api';
+import { $leaveOrg } from '@hexa/server/api';
 import { toast } from '@hexa/ui/sonner';
 import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
@@ -25,7 +25,7 @@ export const LeaveOrg = ({
       variant="solid"
       color="danger"
       size="sm"
-      onClick={() => mutateAsync()}
+      onPress={() => mutateAsync()}
       isLoading={isPending}
     >
       Leave

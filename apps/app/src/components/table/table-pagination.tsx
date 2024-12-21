@@ -1,4 +1,4 @@
-import { IS_DEVELOPMENT } from '@/lib/env';
+import { IS_DEVELOPMENT } from '@hexa/env';
 import {
   ChevronLeft,
   ChevronRight,
@@ -60,7 +60,7 @@ export function TablePagination<TData>({ table }: TablePaginationProps<TData>) {
               size="sm"
               isIconOnly
               className="hidden h-8 w-8 p-0 lg:flex"
-              onClick={() => table.setPageIndex(0)}
+              onPress={() => table.setPageIndex(0)}
               isDisabled={!table.getCanPreviousPage()}
               aria-label="Go to first page"
             >
@@ -71,7 +71,7 @@ export function TablePagination<TData>({ table }: TablePaginationProps<TData>) {
               size="sm"
               isIconOnly
               className="h-8 w-8 p-0"
-              onClick={() => table.previousPage()}
+              onPress={() => table.previousPage()}
               isDisabled={!table.getCanPreviousPage()}
               aria-label="Go to previous page"
             >
@@ -82,7 +82,7 @@ export function TablePagination<TData>({ table }: TablePaginationProps<TData>) {
               size="sm"
               isIconOnly
               className="h-8 w-8 p-0"
-              onClick={() => table.nextPage()}
+              onPress={() => table.nextPage()}
               isDisabled={!table.getCanNextPage()}
               aria-label="Go to next page"
             >
@@ -93,7 +93,7 @@ export function TablePagination<TData>({ table }: TablePaginationProps<TData>) {
               size="sm"
               isIconOnly
               className="hidden h-8 w-8 p-0 lg:flex"
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+              onPress={() => table.setPageIndex(table.getPageCount() - 1)}
               isDisabled={!table.getCanNextPage()}
               aria-label="Go to last page"
             >

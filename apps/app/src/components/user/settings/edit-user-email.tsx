@@ -13,14 +13,14 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { VerifyPasscode } from '@/components/auth/verify-passcode';
+import { useModal } from '@ebay/nice-modal-react';
+import { MAX_EMAILS } from '@hexa/const';
 import {
   $addUserEmailResendPasscode,
   $addUserEmailSendPasscode,
   $addUserEmailVerifyPasscode,
   $updateUserPrimaryEmail,
-} from '@/lib/api';
-import { MAX_EMAILS } from '@/lib/const';
-import { useModal } from '@ebay/nice-modal-react';
+} from '@hexa/server/api';
 import { Badge } from '@hexa/ui/badge';
 
 import { EllipsisIcon, MailPlusIcon, MoveRightIcon } from '@hexa/ui/icons';

@@ -3,8 +3,8 @@ import { VerifyPasscode } from '@/components/auth/verify-passcode';
 import {
   $oauthSignupResendPasscode,
   $oauthSignupVerifyPasscode,
-} from '@/lib/api';
-import type { SelectOauthAccountType } from '@/server/schema/oauth';
+} from '@hexa/server/api';
+import type { SelectOauthAccountType } from '@hexa/server/schema/oauth';
 import { toast } from '@hexa/ui/sonner';
 import { useRouter } from 'next/navigation';
 import { type FC, useState } from 'react';

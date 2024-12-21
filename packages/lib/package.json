@@ -1,0 +1,30 @@
+{
+  "name": "@hexa/lib",
+  "description": "Utilities for Hexa",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@hexa/typescript-config": "workspace:*",
+    "typescript": "catalog:",
+    "@opennextjs/cloudflare": "catalog:",
+    "type-fest": "catalog:"
+  },
+  "dependencies": {
+    "clsx": "catalog:",
+    "cookie": "catalog:",
+    "resend": "catalog:",
+    "tailwind-merge": "catalog:",
+    "@hexa/env": "workspace:*",
+    "aws4fetch": "catalog:",
+    "lucia": "catalog:",
+    "oslo": "catalog:",
+    "random-word-slugs": "catalog:"
+  }
+}

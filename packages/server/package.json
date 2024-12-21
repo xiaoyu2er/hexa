@@ -1,0 +1,49 @@
+{
+  "name": "@hexa/server",
+  "description": "Server for Hexa",
+  "version": "0.0.0",
+  "sideEffects": false,
+  "private": true,
+  "exports": {
+    "./lib": "./src/lib/index.ts",
+    "./middleware/*": "./src/middleware/*.ts",
+    "./route/*": "./src/route/*.ts",
+    "./schema/*": "./src/schema/*.ts",
+    "./service/*": "./src/service/*.ts",
+    "./store/*": "./src/store/*.ts",
+    "./table": "./src/table/index.ts",
+    "./session": "./src/session/index.ts",
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit",
+    "db:studio:local": "DB_LOCAL_PATH=$(find .wrangler/state/v3/d1/miniflare-D1DatabaseObject -type f -name '*.sqlite' -print -quit) drizzle-kit studio"
+  },
+  "devDependencies": {
+    "@hexa/typescript-config": "workspace:*",
+    "typescript": "catalog:",
+    "type-fest": "catalog:",
+    "drizzle-kit": "catalog:",
+    "dotenv": "catalog:",
+    "@types/lodash": "catalog:",
+    "@types/react": "catalog:"
+  },
+  "dependencies": {
+    "lodash": "catalog:",
+    "@hexa/const": "workspace:*",
+    "@opennextjs/cloudflare": "catalog:",
+    "@hexa/email-templates": "workspace:*",
+    "drizzle-zod": "catalog:",
+    "@hexa/env": "workspace:*",
+    "hono": "catalog:",
+    "drizzle-orm": "catalog:",
+    "@hexa/lib": "workspace:*",
+    "next": "catalog:",
+    "@marsidev/react-turnstile": "catalog:",
+    "@hono/zod-validator": "catalog:",
+    "lucia": "catalog:",
+    "arctic": "catalog:",
+    "@lucia-auth/adapter-sqlite": "catalog:",
+    "react": "catalog:"
+  }
+}

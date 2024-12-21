@@ -7,13 +7,13 @@ import {
   SelectField,
   setFormError,
 } from '@/components/form';
-import { $createProject } from '@/lib/api';
 import { invalidateProjectsQuery } from '@/lib/queries/project';
+import NiceModal, { useModal } from '@ebay/nice-modal-react';
+import { $createProject } from '@hexa/server/api';
 import {
   InsertProjectSchema,
   type InsertProjectType,
-} from '@/server/schema/project';
-import NiceModal, { useModal } from '@ebay/nice-modal-react';
+} from '@hexa/server/schema/project';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';

@@ -50,7 +50,7 @@ export const CountryTips = ({ className }: { className?: string }) => {
         <TipButton
           className={className}
           aria-label="About country codes"
-          onClick={() => setIsModalOpen(true)}
+          onPress={() => setIsModalOpen(true)}
         />
         <Modal
           isOpen={isModalOpen}

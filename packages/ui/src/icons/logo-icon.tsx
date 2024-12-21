@@ -1,5 +1,5 @@
-import { cn } from '@hexa/utils';
 import { Avatar } from '@nextui-org/react';
+import { cn } from '../../../lib/src';
 
 export const LogoIcon = ({ className }: { className?: string }) => {
   return (

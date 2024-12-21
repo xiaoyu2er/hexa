@@ -88,7 +88,7 @@ export const AcceptLanguageTips = ({ className }: { className?: string }) => {
         <TipButton
           className={className}
           aria-label="About Accept-Language header"
-          onClick={() => setIsModalOpen(true)}
+          onPress={() => setIsModalOpen(true)}
         />
         <Modal
           isOpen={isModalOpen}

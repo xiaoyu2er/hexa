@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { type FC, type RefObject, useEffect, useId, useState } from 'react';
 
-import { cn } from '@hexa/utils';
+import { cn } from '../../../lib/src';
 
 export interface AnimatedBeamProps {
   className?: string;
