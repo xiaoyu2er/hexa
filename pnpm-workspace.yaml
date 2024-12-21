@@ -72,6 +72,7 @@ catalog:
   "mintlify": "4.0.286"
   "next-themes": "0.3.0"
   "next": "15.1.2"
+  "node-fetch": "3.3.2"
   "oslo": "1.2.0"
   "postcss-import": "16.1.0"
   "postcss": "8.4.38"
@@ -99,6 +100,7 @@ catalog:
   "ultracite": "4.1.14"
   "usehooks-ts": "3.1.0"
   "wrangler": "3.99.0"
+  "yaml": "2.6.1"
   "zod": "3.23.8"
   
  
