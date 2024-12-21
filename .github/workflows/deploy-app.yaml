@@ -1,7 +1,7 @@
 name: Deploy APP
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       environment:
         description: "Choose an environment to deploy to: <staging|production>"
