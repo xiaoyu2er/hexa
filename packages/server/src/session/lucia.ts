@@ -1,4 +1,4 @@
-import { IS_PRODUCTION } from '@hexa/env';
+import { IS_PRODUCTION, LOGIN_DOMAIN } from '@hexa/env';
 import { getD1 } from '@hexa/server/d1';
 // @ts-ignore
 import { D1Adapter } from '@lucia-auth/adapter-sqlite';
@@ -38,7 +38,9 @@ export const getLucia = async () => {
       expires: false,
       attributes: {
         secure: IS_PRODUCTION,
-        domain: 'hexa.local',
+        // we use the login domain to set the cookie domain so it can be accessed by subdomains
+        // if we don't have a login domain, pass undefined so that we use the current domain
+        domain: LOGIN_DOMAIN ?? undefined,
       },
     },
   });

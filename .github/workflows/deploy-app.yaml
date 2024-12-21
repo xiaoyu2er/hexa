@@ -43,6 +43,7 @@ jobs:
           echo "NEXT_PUBLIC_ADMIN_URL=${{ vars.NEXT_PUBLIC_ADMIN_URL }}" >> ./apps/app/.env
           echo "NEXT_PUBLIC_WWW_URL=${{ vars.NEXT_PUBLIC_WWW_URL }}" >> ./apps/app/.env
           echo "NEXT_PUBLIC_REDIRECT_URL=${{ vars.NEXT_PUBLIC_REDIRECT_URL }}" >> ./apps/app/.env
+          echo "NEXT_PUBLIC_LOGIN_DOMAIN=${{ vars.NEXT_PUBLIC_LOGIN_DOMAIN }}" >> ./apps/app/.env
           cat ./apps/app/.env
       - name: Build and Deploy
         id: deploy

@@ -6,6 +6,7 @@ export const ADMIN_ORG_ID = process.env.NEXT_PUBLIC_ADMIN_ORG_ID;
 export const ADMIN_URL = process.env.NEXT_PUBLIC_ADMIN_URL ?? '';
 export const WWW_URL = process.env.NEXT_PUBLIC_WWW_URL ?? '';
 export const REDIRECT_URL = process.env.NEXT_PUBLIC_REDIRECT_URL ?? '';
+export const LOGIN_DOMAIN = process.env.NEXT_PUBLIC_LOGIN_DOMAIN ?? '';
 
 export const NEXT_PUBLIC_APP_NAME = process.env.NEXT_PUBLIC_APP_NAME;
 
