@@ -25,7 +25,8 @@
     "react-dom": "catalog:",
     "@nextui-org/theme": "catalog:",
     "framer-motion": "catalog:",
-    "ua-parser-js": "catalog:"
+    "ua-parser-js": "catalog:",
+    "intl-parse-accept-language": "catalog:"
   },
   "devDependencies": {
     "@hexa/typescript-config": "workspace:*",
