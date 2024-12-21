@@ -34,16 +34,16 @@ jobs:
           pnpm install
       - name: Create .env file
         run: |
-          echo "NEXT_PUBLIC_APP_NAME=${{ vars.NEXT_PUBLIC_APP_NAME }}" > ./apps/app/.env
-          echo "NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY=${{ vars.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY }}" >> ./apps/app/.env
-          echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ vars.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}" >> ./apps/app/.env
-          echo "NEXT_PUBLIC_STORAGE_ENDPOINT=${{ vars.NEXT_PUBLIC_STORAGE_ENDPOINT }}" >> ./apps/app/.env
-          echo "NEXT_PUBLIC_STORAGE_BASE_URL=${{ vars.NEXT_PUBLIC_STORAGE_BASE_URL }}" >> ./apps/app/.env
-          echo "NEXT_PUBLIC_APP_URL=${{ vars.NEXT_PUBLIC_APP_URL }}" >> ./apps/app/.env
-          echo "NEXT_PUBLIC_ADMIN_URL=${{ vars.NEXT_PUBLIC_ADMIN_URL }}" >> ./apps/app/.env
-          echo "NEXT_PUBLIC_WWW_URL=${{ vars.NEXT_PUBLIC_WWW_URL }}" >> ./apps/app/.env
-          echo "NEXT_PUBLIC_REDIRECT_URL=${{ vars.NEXT_PUBLIC_REDIRECT_URL }}" >> ./apps/app/.env
-          cat ./apps/app/.env
+          echo "NEXT_PUBLIC_APP_NAME=${{ vars.NEXT_PUBLIC_APP_NAME }}" > ./apps/link/.env
+          echo "NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY=${{ vars.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY }}" >> ./apps/link/.env
+          echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ vars.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}" >> ./apps/link/.env
+          echo "NEXT_PUBLIC_STORAGE_ENDPOINT=${{ vars.NEXT_PUBLIC_STORAGE_ENDPOINT }}" >> ./apps/link/.env
+          echo "NEXT_PUBLIC_STORAGE_BASE_URL=${{ vars.NEXT_PUBLIC_STORAGE_BASE_URL }}" >> ./apps/link/.env
+          echo "NEXT_PUBLIC_APP_URL=${{ vars.NEXT_PUBLIC_APP_URL }}" >> ./apps/link/.env
+          echo "NEXT_PUBLIC_ADMIN_URL=${{ vars.NEXT_PUBLIC_ADMIN_URL }}" >> ./apps/link/.env
+          echo "NEXT_PUBLIC_WWW_URL=${{ vars.NEXT_PUBLIC_WWW_URL }}" >> ./apps/link/.env
+          echo "NEXT_PUBLIC_REDIRECT_URL=${{ vars.NEXT_PUBLIC_REDIRECT_URL }}" >> ./apps/link/.env
+          cat ./apps/link/.env
       - name: Build and Deploy
         id: deploy
         uses: cloudflare/wrangler-action@v3
