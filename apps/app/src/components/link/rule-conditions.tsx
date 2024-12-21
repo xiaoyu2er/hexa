@@ -69,7 +69,7 @@ export const RuleConditions = ({
           type="button"
           variant="bordered"
           size="sm"
-          onClick={() =>
+          onPress={() =>
             append({
               field: '',
               operator: '',

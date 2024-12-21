@@ -11,8 +11,8 @@ import {
 import { ReadOnly } from '@/components/form';
 import { EditProjectSlugModal } from '@/components/project/settings/edit-project-slug-modal';
 import { useProject } from '@/hooks/use-project';
-import type { SelectProjectType } from '@/server/schema/project';
 import { useModal } from '@ebay/nice-modal-react';
+import type { SelectProjectType } from '@hexa/server/schema/project';
 import { Button } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 

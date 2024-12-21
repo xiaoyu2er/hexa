@@ -1,0 +1,56 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "hexa-link"
+main = ".open-next/worker.js"
+workers_dev = false
+routes = [
+  { pattern = "hexa.im", custom_domain = true },
+  { pattern = "hexa.im/*", zone_name = "hexa.im" },
+]
+
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+minify = true
+
+assets = { directory = ".open-next/assets", binding = "ASSETS" }
+
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[[d1_databases]]
+binding = "DB"
+database_name = "hexa"
+database_id = "ce720dbc-f1ce-4d3b-9348-a7d1cb6bbe43"
+migrations_dir = "./drizzle/migrations"
+
+[[kv_namespaces]]
+binding = "APP_KV"
+id = "1eed1bf2d8ae4aa9a112121be24ad5d7"
+
+[[analytics_engine_datasets]]
+binding = "REDIRECT_ANALYTICS"
+dataset = "redirect_events_xyz_v0"
+
+# =================== Staging ===================
+[env.staging]
+name="hexa-link-xyz"
+routes = [
+  { pattern = "ml.kg", custom_domain = true },
+  { pattern = "ml.kg/*", zone_name = "ml.kg" },
+]
+
+[[env.staging.d1_databases]]
+binding = "DB"
+database_name = "hexa-xyz"
+database_id = "8540e0e2-15ee-44f6-82ec-64584e8331a8"
+migrations_dir = "./drizzle/migrations"
+
+
+[[env.staging.kv_namespaces]]
+binding = "APP_KV"
+id = "082a86f93ac54912af21bdf8ae170ade"
+
+[[env.staging.analytics_engine_datasets]]
+binding = "REDIRECT_ANALYTICS"
+dataset = "redirect_events_xyz_v0"

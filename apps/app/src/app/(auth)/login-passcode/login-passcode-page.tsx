@@ -4,7 +4,7 @@ import { VerifyPasscode } from '@/components/auth/verify-passcode';
 import {
   $loginPasscodeResendPasscode,
   $loginPasscodeVerifyPasscode,
-} from '@/lib/api';
+} from '@hexa/server/api';
 import { toast } from '@hexa/ui/sonner';
 import { useState } from 'react';
 import { useStep } from 'usehooks-ts';
@@ -19,6 +19,7 @@ export function LoginPasscodePage() {
     <div>
       {currentStep === 1 && (
         <LoginPasscode
+          // @ts-ignore
           onSuccess={({ id, email }) => {
             setEmail(email);
             setPasscodeId(id);

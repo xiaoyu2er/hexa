@@ -7,7 +7,7 @@ import {
   getFlagEmoji,
   getOSIcon,
 } from '@/lib/icons';
-import type { LogsData } from '@/server/route/analytics';
+import type { LogsData } from '@hexa/server/route/analytics';
 import { useState } from 'react';
 import { LogsChart, type Tab } from './logs-chart';
 

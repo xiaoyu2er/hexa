@@ -15,9 +15,12 @@ const uiExports = uiFiles.reduce((acc, file) => {
 }, {});
 
 const otherFiles = fs
-  .readdirSync(path.resolve(__dirname, '../src'))
+  .readdirSync(path.resolve(__dirname, '../src'), {recursive: true})
   .filter(
     (file) =>
+      !file.startsWith('ui') &&
+      !file.startsWith('font') &&
+      !file.startsWith('icons') &&
       file.endsWith('.tsx') &&
       !file.endsWith('stories.tsx') &&
       !file.endsWith('demo.tsx') &&
@@ -25,7 +28,7 @@ const otherFiles = fs
   );
 
 const otherExports = otherFiles.reduce((acc, file) => {
-  const name = file.replace(/\.tsx$/, '');
+  const name = file.split('/').pop().replace(/\.tsx$/, '');
   acc[`./${name}`] = `./src/${file}`;
   return acc;
 }, {});
@@ -39,6 +42,8 @@ pkg.exports = {
   ...otherExports,
   '.': './src/index.tsx',
 };
+
+console.log(pkg.exports);
 
 // udpate package.json
 fs.writeFileSync(

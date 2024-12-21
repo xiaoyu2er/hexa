@@ -6,13 +6,13 @@ import { FormErrorMessage } from '@/components/form';
 import { InputField } from '@/components/form';
 import { SelectField } from '@/components/form';
 import { useOrgs } from '@/hooks/use-orgs';
-import { $createDomain } from '@/lib/api';
+import NiceModal, { useModal } from '@ebay/nice-modal-react';
+import { $createDomain } from '@hexa/server/api';
 import {
   InsertDomainSchema,
   type InsertDomainType,
-} from '@/server/schema/domain';
-import type { SelectProjectType } from '@/server/schema/project';
-import NiceModal, { useModal } from '@ebay/nice-modal-react';
+} from '@hexa/server/schema/domain';
+import type { SelectProjectType } from '@hexa/server/schema/project';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Button,

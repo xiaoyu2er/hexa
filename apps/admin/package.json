@@ -1,0 +1,42 @@
+{
+  "name": "@hexa/admin",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 7004",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "build:worker": "pnpm opennextjs-cloudflare",
+    "dev:worker": "wrangler dev --port 8771",
+    "preview:worker": "pnpm build:worker && pnpm dev:worker",
+    "deploy:worker": "pnpm build:worker && wrangler deploy"
+  },
+  "dependencies": {
+    "@hexa/const": "workspace:*",
+    "@hexa/email-templates": "workspace:*",
+    "@hexa/tailwind-config": "workspace:*",
+    "@hexa/server": "workspace:*",
+    "@hexa/env": "workspace:*",
+    "@hexa/ui": "workspace:*",
+    "@hexa/lib": "workspace:*",
+    "next": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "@nextui-org/theme": "catalog:",
+    "framer-motion": "catalog:"
+  },
+  "devDependencies": {
+    "@hexa/typescript-config": "workspace:*",
+    "@opennextjs/cloudflare": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "caniuse-lite": "catalog:",
+    "postcss": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:",
+    "autoprefixer": "catalog:",
+    "postcss-import": "catalog:"
+  }
+}

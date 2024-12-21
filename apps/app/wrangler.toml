@@ -5,8 +5,8 @@ main = ".open-next/worker.js"
 # main = ".worker-next/index.mjs"
 workers_dev = false
 routes = [
-  { pattern = "hexa.im", custom_domain = true },
-  { pattern = "hexa.im/*", zone_name = "hexa.im" },
+  { pattern = "app.hexa.im", custom_domain = true },
+  
 ]
 
 compatibility_date = "2024-09-23"
@@ -42,8 +42,7 @@ dataset = "redirect_events_xyz_v0"
 [env.staging]
 name="hexa-app-xyz"
 routes = [
-  { pattern = "ml.kg", custom_domain = true },
-  { pattern = "ml.kg/*", zone_name = "ml.kg" },
+  { pattern = "app.ml.kg", custom_domain = true }
 ]
 
 [[env.staging.d1_databases]]

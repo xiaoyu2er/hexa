@@ -4,14 +4,17 @@ import { AuthLink } from '@/components/auth/auth-link';
 import { Form, setFormError } from '@/components/form';
 import { FormErrorMessage } from '@/components/form';
 import { useTurnstile } from '@/hooks/use-turnstile';
-import { RESEND_VERIFY_CODE_TIME_SPAN } from '@/lib/const';
+import { RESEND_VERIFY_CODE_TIME_SPAN } from '@hexa/const';
 import {
   type ResendPasscodeType,
   type VerifyPasscodeOnlyCodeType,
   VerifyPasscodeSchema,
   type VerifyPasscodeType,
-} from '@/server/schema/passcode';
-import { TurnstileSchema, type TurnstileType } from '@/server/schema/turnstile';
+} from '@hexa/server/schema/passcode';
+import {
+  TurnstileSchema,
+  type TurnstileType,
+} from '@hexa/server/schema/turnstile';
 import {
   Card,
   CardContent,
@@ -20,13 +23,13 @@ import {
   CardTitle,
 } from '@hexa/ui/card';
 import { PencilLine } from '@hexa/ui/icons';
-import { cn } from '@hexa/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, InputOtp } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { type FC, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useCountdown } from 'usehooks-ts';
+import { cn } from '../../../../../packages/lib/src';
 
 export interface VerifyPasscodeProps {
   email?: string;
@@ -173,7 +176,7 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
               'opacity-70': count > 0 || showResendChange,
               'hover:cursor-not-allowed': count > 0 || showResendChange,
             })}
-            onClick={resed}
+            onPress={resed}
           >
             Didn't receive a code? Resend
             {count > 0

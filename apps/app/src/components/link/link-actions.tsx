@@ -2,9 +2,9 @@
 
 import type { LinkModalProps } from '@/components/link/link-modal';
 import { invalidateProjectLinks } from '@/lib/queries/project';
-import type { SelectLinkType } from '@/server/schema/link';
-import type { SelectProjectType } from '@/server/schema/project';
 import type { NiceModalHandler } from '@ebay/nice-modal-react';
+import type { SelectLinkType } from '@hexa/server/schema/link';
+import type { SelectProjectType } from '@hexa/server/schema/project';
 import { MoreVerticalIcon } from '@hexa/ui/icons';
 import {
   Button,

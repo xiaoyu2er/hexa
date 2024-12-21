@@ -12,8 +12,11 @@ import { TermsPrivacy } from '@/components/auth/terms-privacy';
 import { setFormError } from '@/components/form';
 import { InputField } from '@/components/form';
 import { useTurnstile } from '@/hooks/use-turnstile';
-import { $signupSendPasscode, type InferApiResponseType } from '@/lib/api';
-import { SignupSchema, type SignupType } from '@/server/schema/signup';
+import {
+  $signupSendPasscode,
+  type InferApiResponseType,
+} from '@hexa/server/api';
+import { SignupSchema, type SignupType } from '@hexa/server/schema/signup';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 

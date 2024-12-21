@@ -2,7 +2,7 @@
 
 import { ReadOnly } from '@/components/form';
 import { useProject } from '@/hooks/use-project';
-import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
+import { NEXT_PUBLIC_APP_NAME } from '@hexa/env';
 import {
   Card,
   CardContent,

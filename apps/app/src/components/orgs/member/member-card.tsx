@@ -1,5 +1,5 @@
 import { UserAvatar } from '@/components/user/settings/user-avatar';
-import type { SelectOrgMemberType } from '@/server/schema/org-member';
+import type { SelectOrgMemberType } from '@hexa/server/schema/org-member';
 import { Badge } from '@hexa/ui/badge';
 
 import { MoreHorizontal } from '@hexa/ui/icons';

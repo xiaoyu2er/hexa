@@ -1,6 +1,6 @@
 'use client';
 
-import type { SelectProjectType } from '@/server/schema/project';
+import type { SelectProjectType } from '@hexa/server/schema/project';
 import { Badge } from '@hexa/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader } from '@hexa/ui/card';
 import { BarChart2Icon, GlobeIcon, Link2Icon } from '@hexa/ui/icons';

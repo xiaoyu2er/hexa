@@ -1,10 +1,10 @@
 'use client';
 import { Form } from '@/components/form';
-import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
+import { NEXT_PUBLIC_APP_NAME } from '@hexa/env';
 import {
   UpdateAvatarSchema,
   type UpdateAvatarType,
-} from '@/server/schema/common';
+} from '@hexa/server/schema/common';
 import {
   Card,
   CardContent,

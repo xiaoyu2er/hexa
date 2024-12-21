@@ -5,12 +5,12 @@ import { LinkModal } from '@/components/link/link-modal';
 import type { FilterConfig } from '@/components/table/table-types';
 import { useLinks } from '@/hooks/use-links';
 import { useProject } from '@/hooks/use-project';
+import { useModal } from '@ebay/nice-modal-react';
 import {
   LinkColumnOptions,
   LinkSortableColumnOptions,
   type SelectLinkType,
-} from '@/server/schema/link';
-import { useModal } from '@ebay/nice-modal-react';
+} from '@hexa/server/schema/link';
 import type { ColumnDef } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
 

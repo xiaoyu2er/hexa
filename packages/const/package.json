@@ -3,11 +3,15 @@
   "version": "0.0.1",
   "private": true,
   "exports": {
+    ".": "./src/index.ts",
     "./*": "./src/*.ts",
+    "./config/*": "./src/config/*.ts",
     "./rule": "./src/rule/index.ts"
   },
   "dependencies": {
-    "zod": "catalog:"
+    "@hexa/env": "workspace:*",
+    "zod": "catalog:",
+    "oslo": "catalog:"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "catalog:",

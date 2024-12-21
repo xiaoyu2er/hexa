@@ -2,10 +2,10 @@
 import { Form, PasswordField, setFormError } from '@/components/form';
 import { FormErrorMessage } from '@/components/form';
 import { useUser } from '@/hooks/use-user';
-import { $updateUserPassword } from '@/lib/api';
-import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
-import { EditPasswordSchema } from '@/server/schema/reset-password';
-import type { EditPasswordType } from '@/server/schema/reset-password';
+import { NEXT_PUBLIC_APP_NAME } from '@hexa/env';
+import { $updateUserPassword } from '@hexa/server/api';
+import { EditPasswordSchema } from '@hexa/server/schema/reset-password';
+import type { EditPasswordType } from '@hexa/server/schema/reset-password';
 import {
   Card,
   CardContent,

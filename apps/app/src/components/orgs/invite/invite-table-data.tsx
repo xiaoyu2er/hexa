@@ -4,14 +4,14 @@ import { TableColumnHeader } from '@/components/table/table-column-header';
 import type { FilterConfig } from '@/components/table/table-types';
 import { UserAvatar } from '@/components/user/settings/user-avatar';
 import { useInvites } from '@/hooks/use-invites';
-import { getInviteUrl } from '@/lib/emails/url';
 import { invalidateOrgInvites } from '@/lib/queries/orgs';
+import { getInviteUrl } from '@hexa/lib';
 import {
   InviteSortableColumnOptions,
   InviteStatusOptions,
-} from '@/server/schema/org-invite';
-import type { QueryInviteType } from '@/server/schema/org-invite';
-import { OrgRoleOptions } from '@/server/schema/org-member';
+} from '@hexa/server/schema/org-invite';
+import type { QueryInviteType } from '@hexa/server/schema/org-invite';
+import { OrgRoleOptions } from '@hexa/server/schema/org-member';
 import { Badge } from '@hexa/ui/badge';
 import { CopyButton } from '@hexa/ui/copy-button';
 import type { ColumnDef } from '@tanstack/react-table';

@@ -12,13 +12,13 @@ import {
 
 import { InputField } from '@/components/form';
 import { useProject } from '@/hooks/use-project';
-import { $updateProjectName } from '@/lib/api';
-import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import { invalidateProjectsQuery } from '@/lib/queries/project';
+import { NEXT_PUBLIC_APP_NAME } from '@hexa/env';
+import { $updateProjectName } from '@hexa/server/api';
 import {
   type UpdateProjectNameType,
   UpdateProjectrNameSchema,
-} from '@/server/schema/project';
+} from '@hexa/server/schema/project';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';

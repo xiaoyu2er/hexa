@@ -1,11 +1,11 @@
 'use client';
 
 import { type TimeRange, useLogsData } from '@/hooks/use-analytics';
-import type { LogsData } from '@/server/route/analytics';
+import type { LogsKey } from '@hexa/lib';
+import type { LogsData } from '@hexa/server/route/analytics';
 import { Card, CardContent, CardHeader, CardTitle } from '@hexa/ui/card';
 import { BarChart2Icon } from '@hexa/ui/icons';
 import type { LucideIcon } from '@hexa/ui/icons';
-import type { LogsKey } from '@hexa/utils/analytics';
 import { Tab as NextUITab, Tabs } from '@nextui-org/react';
 import { Skeleton } from '@nextui-org/react';
 import { useState } from 'react';

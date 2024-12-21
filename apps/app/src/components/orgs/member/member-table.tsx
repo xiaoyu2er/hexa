@@ -5,7 +5,7 @@ import {
   MemberCardSkeleton as CardSkeleton,
 } from '@/components/orgs/member/member-card';
 import { BaseTable, type TableRef } from '@/components/table/base-table';
-import type { SelectOrgMemberType } from '@/server/schema/org-member';
+import type { SelectOrgMemberType } from '@hexa/server/schema/org-member';
 import { forwardRef } from 'react';
 import {
   columns,

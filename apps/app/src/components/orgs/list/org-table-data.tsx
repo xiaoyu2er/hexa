@@ -3,7 +3,7 @@
 import { LeaveOrg } from '@/components/orgs/list/leave-org';
 import { OrgAvatar } from '@/components/orgs/org-avatar';
 import { useOrgs } from '@/hooks/use-orgs';
-import type { SelectUserOrgType } from '@/server/schema/org';
+import type { SelectUserOrgType } from '@hexa/server/schema/org';
 import { Badge } from '@hexa/ui/badge';
 import { Button } from '@nextui-org/react';
 import type { ColumnDef } from '@tanstack/react-table';

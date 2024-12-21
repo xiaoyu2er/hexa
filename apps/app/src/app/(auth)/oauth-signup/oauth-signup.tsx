@@ -8,12 +8,12 @@ import {
   setFormError,
 } from '@/components/form';
 import { useTurnstile } from '@/hooks/use-turnstile';
-import { $oauthSignup, type InferApiResponseType } from '@/lib/api';
+import { $oauthSignup, type InferApiResponseType } from '@hexa/server/api';
 import {
   OauthSignupSchema,
   type OauthSignupType,
   type SelectOauthAccountType,
-} from '@/server/schema/oauth';
+} from '@hexa/server/schema/oauth';
 import { Card, CardContent, CardHeader, CardTitle } from '@hexa/ui/card';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';

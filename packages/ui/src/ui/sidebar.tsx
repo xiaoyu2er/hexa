@@ -1,7 +1,7 @@
 'use client';
 
+import { cn } from '@hexa/lib';
 import { useScreenSize } from '@hexa/ui/hooks/use-screen-size';
-import { cn } from '@hexa/utils';
 import { Button, Drawer, DrawerContent } from '@nextui-org/react';
 import { Skeleton, Tooltip } from '@nextui-org/react';
 import { Slot } from '@radix-ui/react-slot';

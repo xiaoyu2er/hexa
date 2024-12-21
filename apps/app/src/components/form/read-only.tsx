@@ -1,6 +1,6 @@
 import { CopyButton } from '@hexa/ui/copy-button';
-import { cn } from '@hexa/utils/cn';
 import { Input } from '@nextui-org/react';
+import { cn } from '../../../../../packages/lib/src/cn';
 
 export function ReadOnly({
   text,

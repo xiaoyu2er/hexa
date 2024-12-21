@@ -107,7 +107,7 @@ export const SourceTips = ({ className }: { className?: string }) => {
         <TipButton
           className={className}
           aria-label="About traffic sources"
-          onClick={() => setIsModalOpen(true)}
+          onPress={() => setIsModalOpen(true)}
         />
         <Modal
           isOpen={isModalOpen}

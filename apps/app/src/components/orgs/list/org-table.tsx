@@ -2,7 +2,7 @@
 import { BaseTable, type TableRef } from '@/components/table/base-table';
 import { type ReactNode, forwardRef } from 'react';
 
-import type { SelectUserOrgType } from '@/server/schema/org';
+import type { SelectUserOrgType } from '@hexa/server/schema/org';
 import { columns, useData } from './org-table-data';
 
 interface OrgTableProps {

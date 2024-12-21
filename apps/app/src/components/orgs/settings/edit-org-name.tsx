@@ -12,13 +12,13 @@ import {
 
 import { InputField } from '@/components/form';
 import { useProject } from '@/hooks/use-project';
-import { $updateOrgName } from '@/lib/api';
-import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
 import { invalidateProjectsQuery } from '@/lib/queries/project';
+import { NEXT_PUBLIC_APP_NAME } from '@hexa/env';
+import { $updateOrgName } from '@hexa/server/api';
 import {
   UpdateOrgNameSchema,
   type UpdateOrgNameType,
-} from '@/server/schema/org';
+} from '@hexa/server/schema/org';
 
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';

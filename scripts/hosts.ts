@@ -4,6 +4,7 @@
  * - admin.hexa.local -> 127.0.0.1
  * - app.hexa.local -> 127.0.0.1
  * - www.hexa.local -> 127.0.0.1
+ * - link.hexa.local -> 127.0.0.1
  * 
  * Usage: 
  * - Mac/Linux: sudo pnpm setup-hosts
@@ -19,9 +20,9 @@ const HOSTS_ENTRIES = [
   '127.0.0.1 admin.hexa.local',
   // for user app
   '127.0.0.1 app.hexa.local',
-  // for official website
+  // for website
   '127.0.0.1 www.hexa.local',
-  // for redirect
+  // for link
   '127.0.0.1 hexa.local'
 ];
 

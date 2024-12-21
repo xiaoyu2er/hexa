@@ -3,11 +3,11 @@
 import { AuthLink } from '@/components/auth/auth-link';
 import { Form, FormErrorMessage, setFormError } from '@/components/form';
 import { PasswordField } from '@/components/form';
-import { $resetPassword } from '@/lib/api';
+import { $resetPassword } from '@hexa/server/api';
 import {
   ResetPasswordSchema,
   type ResetPasswordType,
-} from '@/server/schema/reset-password';
+} from '@hexa/server/schema/reset-password';
 import {
   Card,
   CardContent,
@@ -96,7 +96,7 @@ export const ResetPassword: FC<ResetParsswordCardProps> = ({
           >
             Reset Password
           </Button>
-          <Button variant="ghost" className="w-full" onClick={onCancel}>
+          <Button variant="ghost" className="w-full" onPress={onCancel}>
             Cancel
           </Button>
         </Form>

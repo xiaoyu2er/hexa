@@ -1,4 +1,4 @@
-import { ADMIN_URL, APP_URL, WWW_URL } from '@/lib/env';
+import { ADMIN_URL, APP_URL, WWW_URL } from '@hexa/env';
 import { type NextRequest, NextResponse } from 'next/server';
 export const config = {
   matcher: [

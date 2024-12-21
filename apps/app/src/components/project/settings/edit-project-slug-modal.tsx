@@ -2,13 +2,13 @@
 import { setFormError } from '@/components/form';
 import { Form } from '@/components/form';
 import { InputField } from '@/components/form';
-import { $updateProjectSlug } from '@/lib/api';
+import NiceModal, { useModal } from '@ebay/nice-modal-react';
+import { $updateProjectSlug } from '@hexa/server/api';
 import {
   UpdateProjectSlugSchema,
   type UpdateProjectSlugType,
-} from '@/server/schema/project';
-import type { SelectProjectType } from '@/server/schema/project';
-import NiceModal, { useModal } from '@ebay/nice-modal-react';
+} from '@hexa/server/schema/project';
+import type { SelectProjectType } from '@hexa/server/schema/project';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {

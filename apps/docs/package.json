@@ -2,7 +2,7 @@
   "name": "@hexa/docs",
   "private": true,
   "scripts": {
-    "dev:mintlify": "mintlify dev --port 7004",
+    "dev:mintlify": "mintlify dev --port 7005",
     "dev": "concurrently \"npm run dev:mintlify\" \"npm run watch-mint\"",
     "lint": "mintlify broken-links",
     "merge-mint": "node scripts/merge-mint.mjs",

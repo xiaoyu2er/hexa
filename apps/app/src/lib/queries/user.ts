@@ -1,5 +1,9 @@
-import { getQueryClient } from '@/components/providers/get-query-client';
-import { $getUserEmails, $getUserInfo, $getUserOauthAccounts } from '@/lib/api';
+import {
+  $getUserEmails,
+  $getUserInfo,
+  $getUserOauthAccounts,
+} from '@hexa/server/api';
+import { getQueryClient } from '@hexa/ui/get-query-client';
 import { queryOptions } from '@tanstack/react-query';
 
 export const queryUserOptions = queryOptions({

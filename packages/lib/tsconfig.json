@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"],
+  "extends": "@hexa/typescript-config/react-library.json",
+  "include": ["src", "../../apps/app/env.d.ts"]
+}

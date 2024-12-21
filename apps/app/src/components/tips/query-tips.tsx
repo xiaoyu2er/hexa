@@ -93,7 +93,7 @@ export const QueryTips = ({ className }: { className?: string }) => {
         <TipButton
           className={className}
           aria-label="About URL query strings"
-          onClick={() => setIsModalOpen(true)}
+          onPress={() => setIsModalOpen(true)}
         />
         <Modal
           isOpen={isModalOpen}

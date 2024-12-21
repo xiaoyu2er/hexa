@@ -1,7 +1,7 @@
 'use client';
 
 import { FormErrorMessage } from '@/components/form';
-import {} from '@/server/schema/signup';
+import {} from '@hexa/server/schema/signup';
 import { Button } from '@nextui-org/react';
 
 import { Form } from '@/components/form';
@@ -22,10 +22,10 @@ import { setFormError } from '@/components/form';
 import { InputField } from '@/components/form';
 import { PasswordField } from '@/components/form';
 import { useTurnstile } from '@/hooks/use-turnstile';
-import { $checkEmail } from '@/lib/api';
-import { PasswordSchema, type PasswordType } from '@/server/schema/common';
-import { CheckEmailSchema } from '@/server/schema/user';
-import type { CheckEmailType } from '@/server/schema/user';
+import { $checkEmail } from '@hexa/server/api';
+import { PasswordSchema, type PasswordType } from '@hexa/server/schema/common';
+import { CheckEmailSchema } from '@hexa/server/schema/user';
+import type { CheckEmailType } from '@hexa/server/schema/user';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { omit } from 'lodash';
@@ -118,7 +118,7 @@ export const SignupEmailPassword: FC<SignupEmailPasswordProps> = ({
           >
             Continue
           </Button>
-          <Button variant="ghost" className="w-full" onClick={onCancel}>
+          <Button variant="ghost" className="w-full" onPress={onCancel}>
             Cancel
           </Button>
         </Form>

@@ -95,7 +95,7 @@ export const UserAgentTips = ({ className }: { className?: string }) => {
         <TipButton
           className={className}
           aria-label="About User-Agent header"
-          onClick={() => setIsModalOpen(true)}
+          onPress={() => setIsModalOpen(true)}
         />
         <Modal
           isOpen={isModalOpen}

@@ -83,7 +83,7 @@ export const CookieTips = ({ className }: { className?: string }) => {
         <TipButton
           className={className}
           aria-label="About cookies"
-          onClick={() => setIsModalOpen(true)}
+          onPress={() => setIsModalOpen(true)}
         />
         <Modal
           isOpen={isModalOpen}

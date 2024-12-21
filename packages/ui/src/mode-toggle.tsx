@@ -9,17 +9,24 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  cn,
 } from '@nextui-org/react';
 
-export function ModeToggle() {
+export function ModeToggle({ className }: { className?: string }) {
   const { setTheme } = useTheme();
 
   return (
     <Dropdown>
       <DropdownTrigger>
-        <Button variant="light" isIconOnly aria-label="Toggle theme">
-          <SunIcon className="h-4 w-4 text-neutral-800 dark:hidden dark:text-neutral-200" />
-          <MoonIcon className="hidden h-4 w-4 text-neutral-800 dark:block dark:text-neutral-200" />
+        <Button
+          variant="light"
+          isIconOnly
+          size="sm"
+          aria-label="Toggle theme"
+          className={cn('text-neutral-800 dark:text-neutral-200', className)}
+        >
+          <SunIcon className="h-4 w-4 dark:hidden " />
+          <MoonIcon className="hidden h-4 w-4 dark:block" />
         </Button>
       </DropdownTrigger>
       <DropdownMenu>

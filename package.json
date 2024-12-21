@@ -10,7 +10,8 @@
     "check-types": "turbo check-types",
     "sync-deps": "syncpack list",
     "setup": "pnpm run setup-hosts",
-    "setup-hosts": "tsx scripts/hosts.ts"
+    "setup:hosts": "tsx scripts/hosts.ts",
+    "setup:wrangler": "node scripts/setup-wrangler-links.js"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",

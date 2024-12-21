@@ -14,13 +14,15 @@
   },
   "dependencies": {
     "@hexa/const": "workspace:*",
+    "@hexa/env": "workspace:*",
     "@hexa/email-templates": "workspace:*",
     "@hexa/tailwind-config": "workspace:*",
     "@hexa/ui": "workspace:*",
-    "@hexa/utils": "workspace:*",
+    "@hexa/lib": "workspace:*",
     "next": "catalog:",
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "@nextui-org/theme": "catalog:"
   },
   "devDependencies": {
     "@hexa/typescript-config": "workspace:*",
@@ -31,6 +33,8 @@
     "caniuse-lite": "catalog:",
     "postcss": "catalog:",
     "tailwindcss": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "autoprefixer": "catalog:",
+    "postcss-import": "catalog:"
   }
 }

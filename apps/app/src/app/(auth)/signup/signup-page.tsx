@@ -1,7 +1,7 @@
 'use client';
 
 import { VerifyPasscode } from '@/components/auth/verify-passcode';
-import { $signupResendPasscode, $signupVerifyPasscode } from '@/lib/api';
+import { $signupResendPasscode, $signupVerifyPasscode } from '@hexa/server/api';
 import { toast } from '@hexa/ui/sonner';
 import { useRouter } from 'next/navigation';
 import { type FC, useState } from 'react';

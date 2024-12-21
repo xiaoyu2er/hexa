@@ -6,8 +6,8 @@ import { EditProjectSlug } from '@/components/project/settings/edit-project-slug
 import { ProjectId } from '@/components/project/settings/project-id';
 import UploadAvatar from '@/components/upload-avatar';
 import { useProject } from '@/hooks/use-project';
-import { $updateProjectAvatar } from '@/lib/api';
 import { getProjectAvatarFallbackUrl } from '@/lib/project';
+import { $updateProjectAvatar } from '@hexa/server/api';
 
 export default function ProjectSettingsPage() {
   const { project, invalidate } = useProject();

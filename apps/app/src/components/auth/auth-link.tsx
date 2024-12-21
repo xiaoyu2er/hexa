@@ -5,15 +5,15 @@ export const AuthLink: FC<{
   href?: string;
   children: ReactNode;
   className?: string;
-  onClick?: () => void;
-}> = ({ href, children, className, onClick }) => {
+  onPress?: () => void;
+}> = ({ href, children, className, onPress }) => {
   return (
     <Link
       href={href}
       underline="hover"
       size="sm"
       className={cn('font-medium text-xs', className)}
-      onClick={onClick}
+      onPress={onPress}
     >
       {children}
     </Link>

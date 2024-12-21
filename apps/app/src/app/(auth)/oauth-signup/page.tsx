@@ -1,5 +1,5 @@
-import { getDb } from '@/lib/db';
-import { getOauthAccount } from '@/server/store/oauth';
+import { getDb } from '@hexa/server/db';
+import { getOauthAccount } from '@hexa/server/store/oauth';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { OauthSignupPage } from './oauth-signup-page';

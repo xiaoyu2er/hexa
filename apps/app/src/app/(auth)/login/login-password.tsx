@@ -7,12 +7,12 @@ import { setFormError } from '@/components/form';
 import { Form, FormErrorMessage, InputField } from '@/components/form';
 import { PasswordField } from '@/components/form';
 import { useTurnstile } from '@/hooks/use-turnstile';
-import { $loginPassword } from '@/lib/api';
-import { NEXT_PUBLIC_APP_NAME } from '@/lib/env';
+import { NEXT_PUBLIC_APP_NAME } from '@hexa/env';
+import { $loginPassword } from '@hexa/server/api';
 import {
   LoginPasswordSchema,
   type LoginPasswordType,
-} from '@/server/schema/login';
+} from '@hexa/server/schema/login';
 import {
   Card,
   CardContent,

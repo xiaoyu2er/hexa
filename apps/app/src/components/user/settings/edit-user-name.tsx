@@ -4,12 +4,12 @@ import { setFormError } from '@/components/form';
 import { Form } from '@/components/form';
 import { InputField } from '@/components/form';
 import { useUser } from '@/hooks/use-user';
-import { $updateUserName } from '@/lib/api';
-import {} from '@/server/schema/project';
+import { $updateUserName } from '@hexa/server/api';
+import {} from '@hexa/server/schema/project';
 import {
   UpdateUserNameSchema,
   type UpdateUserNameType,
-} from '@/server/schema/user';
+} from '@hexa/server/schema/user';
 import {
   Card,
   CardContent,

@@ -3,7 +3,7 @@
   "aliases": {
     "components": "@hexa",
     "ui": "@hexa/ui",
-    "utils": "@hexa/utils",
+    "utils": "@hexa/lib",
     "hooks": "@hexa/ui/hooks",
     "lib": "@hexa"
   },
