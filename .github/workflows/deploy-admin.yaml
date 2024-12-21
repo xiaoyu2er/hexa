@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy Admin
 
 on:
   workflow_dispatch:
@@ -65,7 +65,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           environment: ${{ env.DEPLOY_ENV != 'production' && 'staging' || '' }}
-          workingDirectory: "apps/app"
+          workingDirectory: "apps/admin"
           packageManager: pnpm
           preCommands: |
             echo "*** pre command ***"

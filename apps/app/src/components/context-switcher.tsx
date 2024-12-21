@@ -59,7 +59,7 @@ export function ContextSwitcher() {
 
   const modal = useModal(CreateProjectModal);
   const selectedProject = projects?.find(
-    (project) => `${project.slug}` === slug
+    (project: SelectProjectType) => `${project.slug}` === slug
   );
   const router = useRouter();
   const { mutateAsync: setUserDefaultProject } = useMutation({

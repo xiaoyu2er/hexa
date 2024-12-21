@@ -37,6 +37,7 @@
     "tailwindcss": "catalog:",
     "typescript": "catalog:",
     "autoprefixer": "catalog:",
-    "postcss-import": "catalog:"
+    "postcss-import": "catalog:",
+    "@cloudflare/workers-types": "catalog:"
   }
 }
