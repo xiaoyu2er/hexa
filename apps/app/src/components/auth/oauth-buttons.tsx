@@ -13,7 +13,8 @@ export const OauthGithubButton = () => {
       }
       variant="bordered"
       as={Link}
-      onPress={() => setIsLoading(true)}
+      // If we use onPress, the button will be disabled when the link is clicked, however, the link will not be navigated to.
+      onClick={() => setIsLoading(true)}
       href="/api/oauth/github"
       isLoading={isLoading}
     >
@@ -35,7 +36,8 @@ export const OauthGoogleButton = () => {
           />
         )
       }
-      onPress={() => setIsLoading(true)}
+      // If we use onPress, the button will be disabled when the link is clicked, however, the link will not be navigated to.
+      onClick={() => setIsLoading(true)}
       variant="bordered"
       as={Link}
       href="/api/oauth/google"
