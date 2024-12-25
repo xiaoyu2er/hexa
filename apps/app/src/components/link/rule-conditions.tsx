@@ -3,7 +3,7 @@ import { RuleCondition } from '@/components/link/rule-condition';
 import type { LinkRuleCondition, RulesFormType } from '@hexa/const/rule';
 import { PlusIcon } from '@hexa/ui/icons';
 import { Button } from '@nextui-org/react';
-import React from 'react';
+import { Fragment } from 'react';
 import { useFieldArray, type useForm } from 'react-hook-form';
 
 export const RuleConditions = ({
@@ -44,7 +44,7 @@ export const RuleConditions = ({
         ) : null}
         {conditions.map((condition, condIndex) => {
           return (
-            <React.Fragment key={condition.id}>
+            <Fragment key={condition.id}>
               <RuleCondition
                 formKey={`rules.${ruleIndex}.conditions.${condIndex}`}
                 form={form}
@@ -62,7 +62,7 @@ export const RuleConditions = ({
                   <div className="h-px flex-grow bg-border" />
                 </div>
               )}
-            </React.Fragment>
+            </Fragment>
           );
         })}
         <Button

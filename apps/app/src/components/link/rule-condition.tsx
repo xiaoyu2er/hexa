@@ -14,10 +14,10 @@ import {
   type RulesFormType,
   getRuleFieldSelectOptions,
 } from '@hexa/const/rule';
+import { cn } from '@hexa/lib';
 import { TrashIcon } from '@hexa/ui/icons';
 import { Button } from '@nextui-org/react';
 import type { Path, useForm } from 'react-hook-form';
-import { cn } from '../../../../../packages/lib/src';
 
 export const RuleCondition = ({
   formKey,

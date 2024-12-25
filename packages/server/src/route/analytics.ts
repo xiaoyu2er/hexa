@@ -89,8 +89,8 @@ const analytics = new Hono<Context>()
     authProject('query'),
     async (c) => {
       const env = c.env;
-      const { start, end } = c.req.valid('query');
-      const { startDays, endDays } = getDateIntervals(start, end);
+      // const { start, end } = c.req.valid('query');
+      // const { startDays, endDays } = getDateIntervals(start, end);
 
       const query = `
         /* Analytics overview query
@@ -151,7 +151,7 @@ const analytics = new Hono<Context>()
       const _linkId = `'url_kmwyedewyuvpel55q7wu4z2dh6mgs'`;
       const { type } = c.req.param() as { type: LogsKey };
       const { start, end } = c.req.valid('query');
-      const { startDays, endDays } = getDateIntervals(start, end);
+      const { startDays } = getDateIntervals(start, end);
 
       // if (!isValidLogsKey(type)) {
       //   return c.json({ error: 'Invalid analytics type' }, 400);

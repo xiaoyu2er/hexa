@@ -1,5 +1,5 @@
+import { cn } from '@hexa/lib';
 import { type SVGProps, forwardRef } from 'react';
-import { cn } from '../../../lib/src';
 
 const CreditCard = forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>(
   ({ className, ...props }, ref) => (

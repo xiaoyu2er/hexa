@@ -19,7 +19,6 @@ function h<
   T extends (
     args: InferRequestType<T>,
     opt?: ClientRequestOptions
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   ) => Promise<any>,
 >(api: T) {
   return async (
@@ -35,7 +34,7 @@ function h<
       location.href = res.url;
       return {} as InferResponseType<T>;
     }
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+
     let data: InferResponseType<T>;
     try {
       data = await res.json();

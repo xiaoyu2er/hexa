@@ -1,31 +1,25 @@
 'use client';
-
-import { ExternalLinkIcon } from '@hexa/ui/icons';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-
+import { siteConfig } from '@hexa/const/config/site';
 import { Badge } from '@hexa/ui/badge';
 import { LogoIcon } from '@hexa/ui/icons';
-import { cn } from '../../../lib/src';
-
-import { docsConfig } from '@hexa/const/config/docs';
-import { siteConfig } from '@hexa/const/config/site';
+import { NavigationMenuDemo } from '@hexa/ui/nav-menu';
+import Link from 'next/link';
 import type { FC } from 'react';
 
 export const MainNav: FC = () => {
-  const pathname = usePathname();
-
   return (
     <div className="mr-4 hidden md:flex">
-      <Link href="/" className="relative mr-6 flex items-center space-x-2">
-        <LogoIcon className="size-6" />
-        <span className="hidden font-bold md:inline-block">
+      <Link href="/" className="flex relative mr-6  items-center space-x-2 ">
+        <LogoIcon />
+        <span className="hidden font-bold lg:inline-block">
           {siteConfig.name}
         </span>
-        <Badge variant="secondary">Beta</Badge>
+        <Badge variant="secondary" className="hidden lg:inline-block">
+          Beta
+        </Badge>
       </Link>
-      <nav className="hidden items-center space-x-6 font-medium text-sm xl:flex">
-        {docsConfig.mainNav.map((item) => (
+      <nav className="items-center space-x-6 font-medium text-sm">
+        {/* {docsConfig.mainNav.map((item) => (
           <Link
             key={item.title}
             href={item.href ?? ''}
@@ -46,7 +40,8 @@ export const MainNav: FC = () => {
             )}
             {item.external && <ExternalLinkIcon className="ml-2 size-4" />}
           </Link>
-        ))}
+        ))} */}
+        <NavigationMenuDemo />
       </nav>
     </div>
   );

@@ -3,7 +3,7 @@ export interface NavItem {
   href?: string;
   disabled?: boolean;
   external?: boolean;
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+
   icon?: any;
   label?: string;
   paid?: boolean;

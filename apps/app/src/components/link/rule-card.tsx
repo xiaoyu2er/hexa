@@ -2,6 +2,7 @@ import { InputField } from '@/components/form';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import type { RulesFormType } from '@hexa/const/rule';
+import { cn } from '@hexa/lib';
 import { Badge } from '@hexa/ui/badge';
 import { Card } from '@hexa/ui/card';
 import {
@@ -22,7 +23,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import type { useForm } from 'react-hook-form';
 import type { FieldArrayWithId } from 'react-hook-form';
-import { cn } from '../../../../../packages/lib/src/cn';
 import { RuleConditions } from './rule-conditions';
 
 interface RuleCardProps {

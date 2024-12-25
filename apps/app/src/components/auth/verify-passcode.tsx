@@ -5,6 +5,7 @@ import { Form, setFormError } from '@/components/form';
 import { FormErrorMessage } from '@/components/form';
 import { useTurnstile } from '@/hooks/use-turnstile';
 import { RESEND_VERIFY_CODE_TIME_SPAN } from '@hexa/const';
+import { cn } from '@hexa/lib';
 import {
   type ResendPasscodeType,
   type VerifyPasscodeOnlyCodeType,
@@ -29,7 +30,6 @@ import { useMutation } from '@tanstack/react-query';
 import { type FC, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useCountdown } from 'usehooks-ts';
-import { cn } from '../../../../../packages/lib/src';
 
 export interface VerifyPasscodeProps {
   email?: string;

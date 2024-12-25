@@ -3,8 +3,8 @@
 import { getOrgAvatarFallbackUrl } from '@/lib/org';
 import type { SelectOrgType } from '@hexa/server/schema/org';
 
+import { cn } from '@hexa/lib';
 import { Avatar, type AvatarProps } from '@nextui-org/react';
-import { cn } from '../../../../../packages/lib/src';
 
 export function OrgAvatar({
   org,

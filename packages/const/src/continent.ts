@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-// biome-ignore lint/nursery/noExportedImports: <explanation>
 import type { ContinentCode } from '@cloudflare/workers-types';
 import type { SelectOptions } from './select-option';
 

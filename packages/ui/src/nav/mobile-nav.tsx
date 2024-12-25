@@ -2,12 +2,12 @@
 
 import Link, { type LinkProps } from 'next/link';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { type ReactNode } from 'react';
 
 import { docsConfig } from '@hexa/const/config/docs';
 import { siteConfig } from '@hexa/const/config/site';
+import { cn } from '@hexa/lib';
 import { LogoIcon } from '@hexa/ui/icons';
-import { cn } from '../../../lib/src';
 
 import {
   Button,
@@ -146,7 +146,7 @@ export function MobileNav() {
 
 interface MobileLinkProps extends LinkProps {
   onOpenChange?: (open: boolean) => void;
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
 }
 

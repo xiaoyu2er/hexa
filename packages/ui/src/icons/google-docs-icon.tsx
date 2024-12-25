@@ -1,5 +1,5 @@
+import { cn } from '@hexa/lib';
 import { type SVGProps, forwardRef } from 'react';
-import { cn } from '../../../lib/src';
 
 export const GoogleDocsIcon = forwardRef<
   SVGSVGElement,

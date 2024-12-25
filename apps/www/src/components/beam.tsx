@@ -1,8 +1,7 @@
 'use client';
+import { type ReactNode, forwardRef, useRef } from 'react';
 
-import type React from 'react';
-import { forwardRef, useRef } from 'react';
-
+import { cn } from '@hexa/lib';
 import { AnimatedBeam } from '@hexa/ui/animated-beam';
 import {
   GoogleDriveIcon,
@@ -11,11 +10,10 @@ import {
   OpenAIIcon,
   PersonIcon,
 } from '@hexa/ui/icons';
-import { cn } from '../../../../packages/lib/src';
 
 const Circle = forwardRef<
   HTMLDivElement,
-  { className?: string; children?: React.ReactNode }
+  { className?: string; children?: ReactNode }
 >(({ className, children }, ref) => {
   return (
     <div

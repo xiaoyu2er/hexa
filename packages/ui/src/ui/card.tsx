@@ -1,3 +1,4 @@
+import { cn } from '@hexa/lib';
 import {
   CardBody,
   CardFooter as CardFooterNextui,
@@ -5,7 +6,6 @@ import {
   Card as CardNextui,
 } from '@nextui-org/react';
 import type { HTMLAttributes, RefAttributes } from 'react';
-import { cn } from '../../../lib/src';
 
 // Basic component types
 type CardProps = HTMLAttributes<HTMLDivElement> & RefAttributes<HTMLDivElement>;

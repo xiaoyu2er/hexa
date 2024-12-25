@@ -1,5 +1,5 @@
+import { cn } from '@hexa/lib';
 import { CopyButton } from '@hexa/ui/copy-button';
-import { cn } from '../../../../../packages/lib/src/cn';
 
 interface DNSRecordGridProps {
   columns: {
