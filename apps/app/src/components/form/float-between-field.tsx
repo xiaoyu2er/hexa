@@ -15,7 +15,6 @@ export const FloatBetweenField = <T extends FieldValues = FieldValues>({
     form.trigger(name);
   };
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     return () => {
       form.unregister(`${name}.min` as Path<T>);

@@ -1,3 +1,4 @@
+import { cn } from '@hexa/lib';
 import { ArrowDown, ArrowUp, ChevronsUpDown, EyeOff } from '@hexa/ui/icons';
 import {
   Button,
@@ -8,7 +9,6 @@ import {
 } from '@nextui-org/react';
 import type { Column } from '@tanstack/react-table';
 import type { HTMLAttributes } from 'react';
-import { cn } from '../../../../../packages/lib/src';
 
 interface TableColumnHeaderProps<TData, TValue>
   extends HTMLAttributes<HTMLDivElement> {

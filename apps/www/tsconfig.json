@@ -5,9 +5,10 @@
         "name": "next"
       }
     ],
-
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "contentlayer2/generated": ["./.contentlayer/generated"]
     }
   },
   "exclude": ["node_modules", "../../packages/ui"],

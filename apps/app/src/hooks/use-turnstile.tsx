@@ -21,7 +21,7 @@ export function useTurnstile<T extends FieldValues>({
   onSuccess,
 }: {
   errorField?: string;
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+
   form: UseFormReturn<T, any, undefined>;
   onError?: (err: string) => void;
   onSuccess?: (res: string) => void;
@@ -76,7 +76,6 @@ export function useTurnstile<T extends FieldValues>({
     />
   );
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (DISABLE_CLOUDFLARE_TURNSTILE) {
       // @ts-ignore

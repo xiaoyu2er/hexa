@@ -1,3 +1,3 @@
-import { NotFound } from '@hexa/ui/not-found';
+import { NotFound } from '@/components/not-found';
 
 export default NotFound;

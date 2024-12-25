@@ -1,8 +1,9 @@
 import { InfoIcon } from '@hexa/ui/icons';
+import type { ReactNode } from 'react';
 
 interface InfoMessageProps {
   variant: 'blue' | 'orange';
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export function InfoMessage({ variant, children }: InfoMessageProps) {

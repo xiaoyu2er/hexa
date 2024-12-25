@@ -13,7 +13,8 @@ export const AuthLink: FC<{
       underline="hover"
       size="sm"
       className={cn('font-medium text-xs', className)}
-      onPress={onPress}
+      // TODO: onPress will prevent the default behavior of the link
+      onClick={onPress}
     >
       {children}
     </Link>

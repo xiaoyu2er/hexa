@@ -14,6 +14,7 @@ export const zDomain = z.string().refine((val) => {
   ) {
     return true;
   }
+  // biome-ignore lint/performance/useTopLevelRegex: <explanation>
   if (/^[a-zA-Z0-9][a-zA-Z0-9-_.]*[a-zA-Z0-9]$/.test(val)) {
     return true;
   }

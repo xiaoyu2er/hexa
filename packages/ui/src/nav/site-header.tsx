@@ -1,41 +1,22 @@
 'use client';
 import { cn } from '@hexa/lib';
-import { GithubIcon, StarIcon, TwitterIcon } from '@hexa/ui/icons';
+import { GithubIcon } from '@hexa/ui/icons';
 import { ModeToggle } from '@hexa/ui/mode-toggle';
-import NumberTicker from '@hexa/ui/number-ticker';
 
 import { siteConfig } from '@hexa/const/config/site';
-import { Button, Link } from '@nextui-org/react';
-import { useEffect, useState } from 'react';
-import { MainNav } from './main-nav';
+import { Button } from '@nextui-org/react';
+import {} from 'react';
 import { MobileNav } from './mobile-nav';
+
+import {} from '@hexa/ui/navigation-menu';
+
+import { MainNav } from '@hexa/ui/main-nav';
+import Link from 'next/link';
 
 interface SiteHeaderProps {
   showStars?: boolean;
 }
 export function SiteHeader({ showStars = true }: SiteHeaderProps) {
-  const [stars, setStars] = useState(300);
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    if (showStars) {
-      (async () => {
-        try {
-          const response = await fetch(
-            'https://api.github.com/repos/xiaoyu2er/hexa'
-          );
-
-          if (response.ok) {
-            const data = (await response.json()) as {
-              stargazers_count: number;
-            };
-            setStars(data.stargazers_count || stars); // Update stars if API response is valid
-          }
-        } catch (_error) {}
-      })();
-    }
-  }, [showStars]);
-
   return (
     <header
       className={cn(
@@ -46,28 +27,6 @@ export function SiteHeader({ showStars = true }: SiteHeaderProps) {
         <MainNav />
         <MobileNav />
         <div className="flex flex-1 items-center justify-between gap-2 md:justify-end">
-          {showStars && (
-            <Button
-              as={Link}
-              size="sm"
-              target="_blank"
-              color="primary"
-              href={siteConfig.links.github}
-              startContent={<GithubIcon className="relative z-[2] size-4" />}
-              endContent={
-                <div className="ml-2 flex items-center gap-1 text-sm md:flex">
-                  <StarIcon className="size-4 text-gray-500 transition-all duration-300 group-hover:text-yellow-300" />
-                  <NumberTicker
-                    value={stars}
-                    className="font-display font-medium text-white dark:text-black"
-                  />
-                </div>
-              }
-            >
-              <span className="relative z-[2]">Star</span>
-            </Button>
-          )}
-
           <nav className="flex items-center gap-1">
             <Button
               as={Link}
@@ -81,19 +40,6 @@ export function SiteHeader({ showStars = true }: SiteHeaderProps) {
               className="min-w-8"
             >
               <GithubIcon className="h-4 w-4" />
-            </Button>
-            <Button
-              as={Link}
-              href={siteConfig.links.twitter}
-              target="_blank"
-              rel="noreferrer"
-              variant="light"
-              aria-label="Twitter"
-              size="sm"
-              isIconOnly
-              className="min-w-8"
-            >
-              <TwitterIcon className="h-4 w-4" />
             </Button>
             <ModeToggle />
           </nav>

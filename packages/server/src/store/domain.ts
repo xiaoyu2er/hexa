@@ -107,7 +107,7 @@ export async function updateDomain(
 // Delete domain
 export async function deleteDomain(
   db: DbType,
-  { domainId, userId }: { domainId: string; userId: string }
+  { domainId }: { domainId: string }
 ) {
   const domain = await getDomain(db, domainId);
   if (!domain) {

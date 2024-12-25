@@ -35,6 +35,7 @@ class StorageClient {
   }
 
   async upload(key: string, body: Blob | string, opts?: ImageOptions) {
+    // biome-ignore lint/suspicious/noEvolvingTypes: <explanation>
     // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
     let uploadBody;
     if (typeof body === 'string') {
@@ -89,6 +90,7 @@ class StorageClient {
   }
 
   private base64ToArrayBuffer(base64: string, opts?: ImageOptions) {
+    // biome-ignore lint/performance/useTopLevelRegex: <explanation>
     const base64Data = base64.replace(/^data:.+;base64,/, '');
     const paddedBase64Data = base64Data.padEnd(
       base64Data.length + ((4 - (base64Data.length % 4)) % 4),
@@ -109,6 +111,7 @@ class StorageClient {
   }
 
   private isBase64(str: string): boolean {
+    // biome-ignore lint/performance/useTopLevelRegex: <explanation>
     const regex = /^data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+);base64,([^\s]*)$/;
     return regex.test(str);
   }

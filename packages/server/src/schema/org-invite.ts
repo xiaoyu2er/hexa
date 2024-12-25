@@ -153,14 +153,15 @@ export const OrgInviteSortingSchema = z.object({
 
 export type OrgInviteSortingType = z.infer<typeof OrgInviteSortingSchema>;
 
+const SORT_REGEX = /^sort/;
 // Transform function to convert sort params
 export function transformSortParams(params: OrgInviteSortingType) {
   return Object.entries(params)
     .filter(([field, sort]) => field.startsWith('sort') && sort !== undefined)
     .map(([field, sort]) => ({
       column:
-        field.replace(/^sort/, '').charAt(0).toLowerCase() +
-        field.replace(/^sort/, '').slice(1),
+        field.replace(SORT_REGEX, '').charAt(0).toLowerCase() +
+        field.replace(SORT_REGEX, '').slice(1),
       sort,
     }))
     .filter((item): item is { column: SortableColumn; sort: 'asc' | 'desc' } =>

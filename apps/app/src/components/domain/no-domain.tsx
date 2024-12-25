@@ -1,6 +1,7 @@
 import Image from 'next/image';
+import type { ReactNode } from 'react';
 
-export default function NoDomain({ slot }: { slot?: React.ReactNode }) {
+export default function NoDomain({ slot }: { slot?: ReactNode }) {
   return (
     <div className="col-span-3 flex flex-col items-center justify-center rounded-md border border-gray-200 bg-white py-12">
       <h2 className="z-10 font-semibold text-gray-700 text-xl">

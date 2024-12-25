@@ -9,14 +9,14 @@ import {
   Tailwind,
   Text,
 } from '@react-email/components';
-import type React from 'react';
+import type { ReactNode } from 'react';
 import Footer from './components/footer';
 
 interface VerifyCodeTemplateProps {
   email: string;
   code: string;
   appName: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 export default function VerifyCodeTemplate({
   email,

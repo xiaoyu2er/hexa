@@ -4,22 +4,14 @@
   "files": {
     "ignore": [
       "scripts/**/*",
-      "apps/app/.next/**/*",
-      "apps/app/.worker-next/**/*",
-      "apps/app/.wrangler/**/*",
-      "apps/app/drizzle/**/*",
-      "apps/app/env.d.ts",
-      "apps/www/.next/**/*",
-      "apps/www/.worker-next/**/*",
-      "apps/www/.wrangler/**/*",
-      "apps/www/drizzle/**/*",
-      "apps/www/env.d.ts",
-      "apps/redirect/.wrangler/**/*",
-      "apps/redirect/drizzle/**/*",
-      "apps/redirect/env.d.ts",
-      "apps/redirect/worker-configuration.d.ts",
-      "packages/email-templates/.react-email/**/*",
-      "apps/docs/mint.json"
+      "**/.next/**/*",
+      "**/.open-next/**/*",
+      "**/.wrangler/**/*",
+      "**/drizzle/**/*",
+      "**/env.d.ts",
+      "**/.react-email/**/*",
+      "apps/www/src/styles/prism.css",
+      "**/.contentlayer/**/*"
     ]
   },
   "linter": {
@@ -29,14 +21,25 @@
           "level": "warn",
           "fix": "safe"
         },
-        "noNodejsModules": "off"
+        "noNodejsModules": "off",
+        "useExhaustiveDependencies": "off"
+      },
+
+      "nursery": {
+        "useSortedClasses": "off",
+        "noExportedImports": "off"
       },
       "style": {
         "useNamingConvention": "off"
       },
       "suspicious": {
         "noConsoleLog": "off",
-        "noArrayIndexKey": "off"
+        "noArrayIndexKey": "off",
+        "noExplicitAny": "off",
+        "useAwait": "off"
+      },
+      "a11y": {
+        "noSvgWithoutTitle": "off"
       }
     }
   }

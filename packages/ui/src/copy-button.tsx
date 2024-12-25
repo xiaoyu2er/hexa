@@ -1,10 +1,10 @@
 'use client';
 
+import { cn } from '@hexa/lib';
 import { Check, Copy } from '@hexa/ui/icons';
 import { toast } from '@hexa/ui/sonner';
 import { Button } from '@nextui-org/react';
 import { useState } from 'react';
-import { cn } from '../../lib/src';
 
 export function CopyButton({
   value,

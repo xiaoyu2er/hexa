@@ -49,12 +49,13 @@ export const zName = z
 
 const RESERVERD_SLUGS = ['new'];
 
+const SLUG_REGEX = /^[a-z0-9-]+$/;
 export const zSlug = z
   .string({ message: 'Please enter a slug' })
   .min(3, 'Min 3 characters')
   .max(32, 'Max 32 characters')
   .refine(
-    (v) => /^[a-z0-9-]+$/.test(v),
+    (v) => SLUG_REGEX.test(v),
     'Only lowercase letters, numbers and dash are allowed'
   )
   .refine((v) => !RESERVERD_SLUGS.includes(v), 'This slug is reserved keyword');
