@@ -4,8 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: "Choose an environment to deploy to: <staging|production>"
-        default: "staging"
+        description: "Choose an environment to deploy to"
+        type: choice
+        options:
+          - staging
+          - production
+        required: true
+        default: "production"
   push:
     branches:
       - main
