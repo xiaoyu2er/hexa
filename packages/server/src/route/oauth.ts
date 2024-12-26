@@ -40,9 +40,9 @@ const oauth = new Hono<Context>()
   .get('/oauth/github', async (c) => {
     const state = generateState();
 
-    const url = await getGitHub(c.env).createAuthorizationURL(state, {
-      scopes: ['user:email'],
-    });
+    const url = await getGitHub(c.env).createAuthorizationURL(state, [
+      'user:email',
+    ]);
 
     setCookie(c, 'github_oauth_state', state, {
       path: '/',
@@ -69,7 +69,7 @@ const oauth = new Hono<Context>()
 
       const githubUserResponse = await fetch('https://api.github.com/user', {
         headers: {
-          Authorization: `Bearer ${tokens.accessToken}`,
+          Authorization: `Bearer ${tokens.accessToken()}`,
           'User-Agent': 'hexa.im',
         },
       });
@@ -82,7 +82,7 @@ const oauth = new Hono<Context>()
       const githubUser: GitHubUser = await githubUserResponse.json();
       const emailsResponse = await fetch('https://api.github.com/user/emails', {
         headers: {
-          Authorization: `Bearer ${tokens.accessToken}`,
+          Authorization: `Bearer ${tokens.accessToken()}`,
           'User-Agent': 'hexa.im',
         },
       });
@@ -104,9 +104,7 @@ const oauth = new Hono<Context>()
     const url = await getGoogle(c.env).createAuthorizationURL(
       state,
       codeVerifier,
-      {
-        scopes: ['profile', 'email'],
-      }
+      ['profile', 'email']
     );
 
     setCookie(c, 'google_oauth_state', state, {
@@ -152,7 +150,7 @@ const oauth = new Hono<Context>()
         'https://openidconnect.googleapis.com/v1/userinfo',
         {
           headers: {
-            Authorization: `Bearer ${tokens.accessToken}`,
+            Authorization: `Bearer ${tokens.accessToken()}`,
           },
         }
       );
