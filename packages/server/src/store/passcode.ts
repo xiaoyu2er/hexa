@@ -37,19 +37,26 @@ export async function addPasscode(
 ) {
   const code = generateCode();
   const token = generateId();
+  const values = {
+    code,
+    token,
+    userId,
+    tmpUserId,
+    email,
+    expiresAt: createDate(RESET_PASSWORD_EXPIRE_TIME_SPAN),
+    type,
+  };
   const row = (
     await db
       .insert(passcodeTable)
-      .values({
-        code,
-        token,
-        userId,
-        tmpUserId,
-        email,
-        expiresAt: createDate(RESET_PASSWORD_EXPIRE_TIME_SPAN),
-        type,
+      .values(values)
+      .onConflictDoUpdate({
+        target: [passcodeTable.email, passcodeTable.type],
+        set: {
+          code,
+          expiresAt: createDate(RESET_PASSWORD_EXPIRE_TIME_SPAN),
+        },
       })
-      .onConflictDoNothing()
       .returning()
   )[0];
 

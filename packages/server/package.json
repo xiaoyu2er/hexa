@@ -45,6 +45,7 @@
     "arctic": "catalog:",
     "@lucia-auth/adapter-sqlite": "catalog:",
     "react": "catalog:",
-    "zod": "catalog:"
+    "zod": "catalog:",
+    "resend": "catalog:"
   }
 }
