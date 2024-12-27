@@ -46,5 +46,5 @@ export async function resendPasscodeAndSendEmail(
   } = await updatePasscode(db, { id });
   const url = `${verifyUrlPrefex}/${token}`;
   const data = await sendVerifyCodeAndUrlEmail(email, verificationCode, url);
-  return { expiresAt, ...data };
+  return { id, expiresAt, ...data };
 }

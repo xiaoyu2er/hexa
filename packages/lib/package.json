@@ -19,7 +19,6 @@
   "dependencies": {
     "clsx": "catalog:",
     "cookie": "catalog:",
-    "resend": "catalog:",
     "tailwind-merge": "catalog:",
     "@hexa/env": "workspace:*",
     "aws4fetch": "catalog:",

@@ -131,7 +131,7 @@ catalog:
   "rehype": "13.0.2"
   "remark-gfm": "4.0.0"
   "remark": "^15.0.1"
-  "resend": "3.3.0"
+  "resend": "4.0.1"
   "rss": "1.2.2"
   "scroll-into-view-if-needed": "3.1.0"
   "sharp": "^0.32.1"
