@@ -20,7 +20,8 @@
     "db:migrate:prod": "wrangler d1 migrations apply hexa --remote",
     "db:migrate:staging": "wrangler d1 migrations apply hexa-xyz --remote --env staging",
     "db:studio:local": "DB_LOCAL_PATH=$(find .wrangler/state/v3/d1/miniflare-D1DatabaseObject -type f -name '*.sqlite' -print -quit) drizzle-kit studio",
-    "db:studio:prod": "NODE_ENV=production drizzle-kit studio --port 3456",
+    "db:studio:staging": "NODE_ENV=staging drizzle-kit studio --port 7100",
+    "db:studio:prod": "NODE_ENV=production drizzle-kit studio --port 7101",
     "db:drop:local": "wrangler d1 drop hexa --local",
     "db:drop:prod": "wrangler d1 drop hexa --remote",
     "db:drop:staging": "wrangler d1 drop hexa-xyz --remote --env staging"
