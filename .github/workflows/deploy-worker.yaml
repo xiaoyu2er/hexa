@@ -1,0 +1,140 @@
+name: Deploy Worker
+
+on:
+  workflow_call:
+    inputs:
+      app_name:
+        required: true
+        type: string
+      wrangler_toml_var:
+        required: true
+        type: string
+    secrets:
+      CLOUDFLARE_API_TOKEN:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy ${{ inputs.app_name }}
+    environment: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/main' && 'production' || 'staging') }}
+    env:
+      DEPLOY_ENV: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/main' && 'production' || 'staging') }}
+      APP_DIR: ./apps/${{ inputs.app_name }}
+
+    steps:
+      # Debug step
+      - name: Echo env
+        run: |
+          echo ${{ env.DEPLOY_ENV }}
+
+      # Checkout and setup
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      # Enhanced Node.js and caching setup
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+          cache: "pnpm"
+          cache-dependency-path: "**/pnpm-lock.yaml"
+
+      # Configure caching
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup build cache
+        with:
+          path: |
+            ${{ env.STORE_PATH }}
+            ${{ env.APP_DIR }}/.next/cache
+            ${{ github.workspace }}/node_modules/.cache
+          key: ${{ runner.os }}-node-${{ matrix.node-version }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}-nextjs-${{ hashFiles('**/next.config.js') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node-version }}-pnpm-
+            ${{ runner.os }}-node-${{ matrix.node-version }}-
+            ${{ runner.os }}-
+
+      # Setup Next.js cache
+      - name: Setup Next.js cache directory
+        run: |
+          echo "NEXT_CACHE_DIR=${{ env.APP_DIR }}/.next/cache" >> $GITHUB_ENV
+
+      # Install dependencies
+      - name: Install dependencies
+        run: pnpm install
+
+      # Create env file
+      - name: Create .env file
+        run: |
+          cat << EOF > ${{ env.APP_DIR }}/.env
+          NEXT_PUBLIC_APP_NAME=${{ vars.NEXT_PUBLIC_APP_NAME }}
+          NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY=${{ vars.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY }}
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ vars.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+          NEXT_PUBLIC_STORAGE_ENDPOINT=${{ vars.NEXT_PUBLIC_STORAGE_ENDPOINT }}
+          NEXT_PUBLIC_STORAGE_BASE_URL=${{ vars.NEXT_PUBLIC_STORAGE_BASE_URL }}
+          NEXT_PUBLIC_APP_URL=${{ vars.NEXT_PUBLIC_APP_URL }}
+          NEXT_PUBLIC_ADMIN_URL=${{ vars.NEXT_PUBLIC_ADMIN_URL }}
+          NEXT_PUBLIC_WWW_URL=${{ vars.NEXT_PUBLIC_WWW_URL }}
+          NEXT_PUBLIC_REDIRECT_URL=${{ vars.NEXT_PUBLIC_REDIRECT_URL }}
+          NEXT_PUBLIC_LOGIN_DOMAIN=${{ vars.NEXT_PUBLIC_LOGIN_DOMAIN }}
+          EOF
+          cat ${{ env.APP_DIR }}/.env
+
+      # Create wrangler.toml
+      - name: Create wrangler.toml
+        run: |
+          cat << 'EOF' > ${{ env.APP_DIR }}/wrangler.toml
+          ${{ vars[inputs.wrangler_toml_var] }}
+          EOF
+          cat ${{ env.APP_DIR }}/wrangler.toml
+
+      # Build and deploy
+      - name: Build and Deploy
+        id: deploy
+        uses: cloudflare/wrangler-action@v3
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OAUTH_GITHUB_CLIENT_ID: ${{ secrets.OAUTH_GITHUB_CLIENT_ID }}
+          OAUTH_GITHUB_CLIENT_SECRET: ${{ secrets.OAUTH_GITHUB_CLIENT_SECRET }}
+          OAUTH_GOOGLE_CLIENT_ID: ${{ secrets.OAUTH_GOOGLE_CLIENT_ID }}
+          OAUTH_GOOGLE_CLIENT_SECRET: ${{ secrets.OAUTH_GOOGLE_CLIENT_SECRET }}
+          CF_TURNSTILE_SECRET_KEY: ${{ secrets.CF_TURNSTILE_SECRET_KEY }}
+          STORAGE_ACCESS_KEY_ID: ${{ secrets.STORAGE_ACCESS_KEY_ID }}
+          STORAGE_SECRET_ACCESS_KEY: ${{ secrets.STORAGE_SECRET_ACCESS_KEY }}
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+          DEFAULT_DOMAINS: ${{ secrets.DEFAULT_DOMAINS }}
+          REDIRECT_DATASET: ${{ secrets.REDIRECT_DATASET }}
+          CF_WAE_API_TOKEN: ${{ secrets.CF_WAE_API_TOKEN }}
+          CF_WAE_ACCOUNT_ID: ${{ secrets.CF_WAE_ACCOUNT_ID }}
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          environment: ${{ env.DEPLOY_ENV != 'production' && 'staging' || '' }}
+          workingDirectory: ${{ env.APP_DIR }}
+          packageManager: pnpm
+          preCommands: |
+            echo "*** pre command ***"
+            pnpm run build:worker
+            ls .open-next
+          command: deploy
+          secrets: |
+            RESEND_API_KEY
+            OAUTH_GITHUB_CLIENT_ID
+            OAUTH_GITHUB_CLIENT_SECRET
+            OAUTH_GOOGLE_CLIENT_ID
+            OAUTH_GOOGLE_CLIENT_SECRET
+            CF_TURNSTILE_SECRET_KEY
+            STORAGE_ACCESS_KEY_ID
+            STORAGE_SECRET_ACCESS_KEY
+            STRIPE_SECRET_KEY
+            STRIPE_WEBHOOK_SECRET
+            DEFAULT_DOMAINS
+            REDIRECT_DATASET
+            CF_WAE_API_TOKEN
+            CF_WAE_ACCOUNT_ID
