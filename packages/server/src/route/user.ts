@@ -1,7 +1,7 @@
 import { APP_URL } from '@hexa/env';
 import { generateId, isHashValid } from '@hexa/lib';
 import { ApiError } from '@hexa/lib';
-import { isStored, storage } from '@hexa/server/lib';
+import { getStorage, isStored } from '@hexa/server/lib';
 import {
   getPasscodeByTokenMiddleware,
   getPasscodeMiddleware,
@@ -177,13 +177,16 @@ const user = new Hono<Context>()
         user: { avatarUrl },
       } = c.var;
       const { image } = c.req.valid('form');
-      const { url } = await storage.upload(`avatars/${generateId()}`, image);
+      const { url } = await getStorage().upload(
+        `avatars/${generateId()}`,
+        image
+      );
       await updateUserAvatar(db, userId, url);
       // Delete old avatar
       c.ctx.waitUntil(
         (async () => {
           if (avatarUrl && isStored(avatarUrl)) {
-            await storage.delete(avatarUrl);
+            await getStorage().delete(avatarUrl);
           }
         })()
       );
