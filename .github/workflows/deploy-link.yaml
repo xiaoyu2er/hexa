@@ -43,10 +43,12 @@ jobs:
           echo "NEXT_PUBLIC_ADMIN_URL=${{ vars.NEXT_PUBLIC_ADMIN_URL }}" >> ./apps/link/.env
           echo "NEXT_PUBLIC_WWW_URL=${{ vars.NEXT_PUBLIC_WWW_URL }}" >> ./apps/link/.env
           echo "NEXT_PUBLIC_REDIRECT_URL=${{ vars.NEXT_PUBLIC_REDIRECT_URL }}" >> ./apps/link/.env
+          echo "NEXT_PUBLIC_LOGIN_DOMAIN=${{ vars.NEXT_PUBLIC_LOGIN_DOMAIN }}" >> ./apps/link/.env
           cat ./apps/link/.env
       - name: Create wrangler.toml
         run: |
           echo "${{ vars.LINK_WRANGLER_TOML }}" > ./apps/link/wrangler.toml
+          cat ./apps/link/wrangler.toml
       - name: Build and Deploy
         id: deploy
         uses: cloudflare/wrangler-action@v3
