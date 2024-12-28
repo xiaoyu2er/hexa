@@ -8,14 +8,11 @@ import type {
 import { orgMemberTable } from '@hexa/server/table/org-member';
 import { projectTable } from '@hexa/server/table/project';
 import { userTable } from '@hexa/server/table/user';
-// @ts-ignore
-import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { eq, inArray } from 'drizzle-orm';
 import type { DbType } from '../route/route-types';
 
 export const getDefaultDomains = async () => {
-  const { env } = await getCloudflareContext();
-  return env.DEFAULT_DOMAINS?.split(',') ?? ['a.ml.kg', 'b.ml.kg'];
+  return process.env.DEFAULT_DOMAINS?.split(',') ?? [];
 };
 
 // Helper function to check project permissions
