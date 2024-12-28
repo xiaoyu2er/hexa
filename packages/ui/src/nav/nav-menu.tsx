@@ -24,7 +24,7 @@ const Resources: { title: string; href: string; description: string }[] = [
   },
   {
     title: 'Docs',
-    href: '/docs/intro',
+    href: '/docs/introduction',
     description: 'Documentation for the product and the company.',
   },
 ];

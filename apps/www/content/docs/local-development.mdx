@@ -1,0 +1,44 @@
+---
+title: Local Development
+description: Local development guide for Hexa.
+---
+
+# Local Development Guide
+
+## Project Structure
+
+The project is a monorepo using pnpm workspaces with the following structure:
+
+## Prerequisites
+
+Before you begin, you'll need to create accounts and obtain API keys from the following services:
+
+1. **Cloudflare Account**
+
+   - Workers account for deployment
+   - D1 Database
+   - R2 Storage
+   - API tokens with appropriate permissions
+
+2. **OAuth Providers**
+
+   - GitHub OAuth application
+   - Google Cloud OAuth credentials
+
+3. **Additional Services**
+   - Resend account for email sending
+   - Stripe account for payments
+   - Cloudflare Turnstile for bot protection
+
+## Required Environment Variables
+
+The project uses two types of environment files:
+
+- `.env` - For Next.js and build-time variables
+- `.dev.vars` - For Cloudflare Workers runtime variables
+
+Key environment variables include:
+
+## Local Setup
+
+1. **Clone and Install Dependencies**
