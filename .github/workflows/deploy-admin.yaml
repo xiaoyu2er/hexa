@@ -47,7 +47,7 @@ jobs:
           cat ./apps/admin/.env
       - name: Create wrangler.toml
         run: |
-          echo "${{ vars.ADMIN_WRANGLER_TOML }}" > ./apps/admin/wrangler.toml
+          printf '%s' "${{ vars.ADMIN_WRANGLER_TOML }}" > ./apps/admin/wrangler.toml
           cat ./apps/admin/wrangler.toml
       - name: Build and Deploy
         id: deploy
