@@ -2,11 +2,6 @@
 # https://resend.com/api-keys
 RESEND_API_KEY=
 
-# == Oauth ==
-# Github
-# https://github.com/settings/developers
-OAUTH_GITHUB_CLIENT_ID=
-OAUTH_GITHUB_CLIENT_SECRET=
 # Google
 # https://console.cloud.google.com/apis/credentials
 OAUTH_GOOGLE_CLIENT_ID=
