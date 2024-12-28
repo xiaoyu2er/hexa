@@ -91,6 +91,7 @@ jobs:
           REDIRECT_DATASET: ${{ secrets.REDIRECT_DATASET }}
           CF_WAE_API_TOKEN: ${{ secrets.CF_WAE_API_TOKEN }}
           CF_WAE_ACCOUNT_ID: ${{ secrets.CF_WAE_ACCOUNT_ID }}
+          DEFAULT_DOMAINS: ${{ secrets.DEFAULT_DOMAINS }}
           EOF
           cat ${{ env.APP_DIR }}/.env
 
@@ -106,9 +107,6 @@ jobs:
       - name: Build and Deploy
         id: deploy
         uses: cloudflare/wrangler-action@v3
-        env:
-          DEFAULT_DOMAINS: ${{ secrets.DEFAULT_DOMAINS }}
-
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           environment: ${{ env.DEPLOY_ENV != 'production' && 'staging' || '' }}
@@ -119,5 +117,3 @@ jobs:
             pnpm run build:worker
             ls .open-next
           command: deploy
-          secrets: |
-            DEFAULT_DOMAINS
