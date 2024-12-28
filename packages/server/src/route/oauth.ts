@@ -40,9 +40,7 @@ const oauth = new Hono<Context>()
   .get('/oauth/github', async (c) => {
     const state = generateState();
 
-    const url = await getGitHub(c.env).createAuthorizationURL(state, [
-      'user:email',
-    ]);
+    const url = await getGitHub().createAuthorizationURL(state, ['user:email']);
 
     setCookie(c, 'github_oauth_state', state, {
       path: '/',
@@ -65,7 +63,7 @@ const oauth = new Hono<Context>()
         throw new ApiError('FORBIDDEN', 'Invalid state');
       }
 
-      const tokens = await getGitHub(c.env).validateAuthorizationCode(code);
+      const tokens = await getGitHub().validateAuthorizationCode(code);
 
       const githubUserResponse = await fetch('https://api.github.com/user', {
         headers: {
@@ -101,11 +99,10 @@ const oauth = new Hono<Context>()
     const state = generateState();
     const codeVerifier = generateCodeVerifier();
 
-    const url = await getGoogle(c.env).createAuthorizationURL(
-      state,
-      codeVerifier,
-      ['profile', 'email']
-    );
+    const url = await getGoogle().createAuthorizationURL(state, codeVerifier, [
+      'profile',
+      'email',
+    ]);
 
     setCookie(c, 'google_oauth_state', state, {
       secure: true,
@@ -142,7 +139,7 @@ const oauth = new Hono<Context>()
         return c.json({ error: 'Invalid state' }, 400);
       }
 
-      const tokens = await getGoogle(c.env).validateAuthorizationCode(
+      const tokens = await getGoogle().validateAuthorizationCode(
         code,
         codeVerifier
       );

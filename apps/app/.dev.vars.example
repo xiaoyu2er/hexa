@@ -2,11 +2,6 @@
 # https://resend.com/api-keys
 RESEND_API_KEY=
 
-# Google
-# https://console.cloud.google.com/apis/credentials
-OAUTH_GOOGLE_CLIENT_ID=
-OAUTH_GOOGLE_CLIENT_SECRET=
-
 # Secretkey	                            Description
 # 1x0000000000000000000000000000000AA	Always passes
 # 2x0000000000000000000000000000000AA	Always fails
