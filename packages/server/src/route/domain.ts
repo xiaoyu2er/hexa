@@ -39,7 +39,7 @@ const domain = new Hono<Context>()
       const newData: QueryDomainType[] = await Promise.all(
         data.map((d) =>
           d.cloudflareId
-            ? getCustomHostnameDetails(c.env, d.cloudflareId).then((detail) => {
+            ? getCustomHostnameDetails(d.cloudflareId).then((detail) => {
                 (d as unknown as QueryDomainType).detail = detail;
                 return d;
               })
@@ -59,7 +59,7 @@ const domain = new Hono<Context>()
     async (c) => {
       const data = c.req.valid('json');
       const org = c.get('org');
-      const details = await createCustomHostname(c.env, data.hostname);
+      const details = await createCustomHostname(data.hostname);
       const adminOrgId = await c.env.APP_KV.get('config:admin-org-id');
       await createDomain(c.get('db'), {
         details,

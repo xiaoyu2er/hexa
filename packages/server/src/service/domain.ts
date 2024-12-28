@@ -1,5 +1,4 @@
 import { ApiError } from '@hexa/lib';
-import type { Context } from '@hexa/server/route/route-types';
 import type { CustomHostnameDetailsType } from '@hexa/server/schema/domain';
 
 // Get an API Token
@@ -8,18 +7,14 @@ import type { CustomHostnameDetailsType } from '@hexa/server/schema/domain';
 // Get Custom Hostname Details
 // https://developers.cloudflare.com/api/operations/custom-hostname-for-a-zone-custom-hostname-details
 
-function constructRequest(
-  env: Context['Bindings'],
-  path: string,
-  request?: RequestInit
-) {
+function constructRequest(path: string, request?: RequestInit) {
   return new Request(
-    `https://api.cloudflare.com/client/v4/zones/${env.CF_ZONE_ID}/custom_hostnames${path}`,
+    `https://api.cloudflare.com/client/v4/zones/${process.env.CF_ZONE_ID}/custom_hostnames${path}`,
     {
       method: request?.method || 'GET',
       ...request,
       headers: {
-        Authorization: `Bearer ${env.CF_EDIT_CUSTOM_HOSTNAME_API_TOKEN}`,
+        Authorization: `Bearer ${process.env.CF_EDIT_CUSTOM_HOSTNAME_API_TOKEN}`,
         'Content-Type': 'application/json',
         ...request?.headers,
       },
@@ -59,17 +54,13 @@ async function handleRequest<T>(req: Request) {
 }
 
 export const getCustomHostnameDetails = (
-  env: Context['Bindings'],
   domainId: string
 ): Promise<CustomHostnameDetailsType> =>
-  handleRequest<CustomHostnameDetailsType>(
-    constructRequest(env, `/${domainId}`)
-  );
+  handleRequest<CustomHostnameDetailsType>(constructRequest(`/${domainId}`));
 
 // https://developers.cloudflare.com/api/operations/custom-hostname-for-a-zone-create-custom-hostnameame
 
 export const createCustomHostname = (
-  env: Context['Bindings'],
   hostname: string
 ): Promise<CustomHostnameDetailsType> => {
   const body = {
@@ -80,7 +71,7 @@ export const createCustomHostname = (
       settings: { min_tls_version: '1.0' },
     },
   };
-  const request = constructRequest(env, '', {
+  const request = constructRequest('', {
     method: 'POST',
     body: JSON.stringify(body),
   });
@@ -88,12 +79,9 @@ export const createCustomHostname = (
 };
 
 // https://developers.cloudflare.com/api/operations/custom-hostname-for-a-zone-delete-custom-hostname-(-and-any-issued-ssl-certificates)
-export const deleteCustomHostname = (
-  env: Context['Bindings'],
-  domainId: string
-) =>
+export const deleteCustomHostname = (domainId: string) =>
   handleRequest(
-    constructRequest(env, `/${domainId}`, {
+    constructRequest(`/${domainId}`, {
       method: 'DELETE',
     })
   );
