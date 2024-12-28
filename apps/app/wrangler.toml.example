@@ -1,36 +1,56 @@
 #:schema node_modules/wrangler/config-schema.json
-name = "{APP_NAME}"
-main = ".open-next/worker.ts"
+name = "{{name}}"
+# middleware version
+main = ".open-next/worker.js"
+# main = ".worker-next/index.mjs"
 workers_dev = false
 routes = [
-  { pattern = "{APP_DOMAIN}", custom_domain = true },
-  { pattern = "{WWW_DOMAIN}", custom_domain = true },
-  { pattern = "{REDIRECT_DOMAIN}", custom_domain = true },
-  { pattern = "{ADMIN_DOMAIN}", custom_domain = true },
+  { pattern = "{{domain}}", custom_domain = true },
 ]
-# Use the new Workers + Assets to host the static frontend files
-assets = { directory = ".open-next/assets", binding = "ASSETS" }
-compatibility_date = "2024-09-26"
+
+compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 
-# Minification helps to keep the Worker bundle size down and improve start up time.
 minify = true
 
-# wrangler.toml (wrangler v3.79.0^)
+assets = { directory = ".open-next/assets", binding = "ASSETS" }
+
 [observability]
 enabled = true
 head_sampling_rate = 1
 
 [[d1_databases]]
 binding = "DB"
-database_name = "{APP_NAME}"
-database_id = "{DB_ID}"
+database_name = "hexa"
+database_id = "ce720dbc-f1ce-4d3b-9348-a7d1cb6bbe43"
 migrations_dir = "./drizzle/migrations"
 
 [[kv_namespaces]]
 binding = "APP_KV"
-id = "{REDIRECT_KV_ID}"
+id = "1eed1bf2d8ae4aa9a112121be24ad5d7"
 
 [[analytics_engine_datasets]]
 binding = "REDIRECT_ANALYTICS"
-dataset = "{REDIRECT_DATASET}"
+dataset = "hexa_link_events_prod_v0"
+
+# =================== Staging ===================
+[env.staging]
+name="{{name}}-xyz"
+routes = [
+  { pattern = "{{staging_domain}}", custom_domain = true }
+]
+
+[[env.staging.d1_databases]]
+binding = "DB"
+database_name = "hexa-xyz"
+database_id = "8540e0e2-15ee-44f6-82ec-64584e8331a8"
+migrations_dir = "./drizzle/migrations"
+
+
+[[env.staging.kv_namespaces]]
+binding = "APP_KV"
+id = "082a86f93ac54912af21bdf8ae170ade"
+
+[[env.staging.analytics_engine_datasets]]
+binding = "REDIRECT_ANALYTICS"
+dataset = "hexa_link_events_staging_v0"
