@@ -62,7 +62,7 @@ export default function Hero() {
       <div className="mx-0 flex w-full max-w-full flex-col gap-2 py-1 sm:max-w-lg sm:flex-row sm:gap-4">
         <Button
           as={Link}
-          href={`${APP_URL}/login`}
+          href={`${APP_URL}`}
           color="primary"
           className="w-full"
           endContent={

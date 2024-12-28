@@ -1,3 +1,7 @@
 {
-  "extends": "@hexa/typescript-config/base.json"
+  "compilerOptions": {
+    "baseUrl": "."
+  },
+  "extends": "@hexa/typescript-config/base.json",
+  "include": ["scripts/**/*.ts"]
 }

@@ -1,8 +1,8 @@
-# This file is for private environment variables that will be used in worker server 
 # email
 # https://resend.com/api-keys
 RESEND_API_KEY=
-# == oauth ==
+
+# == Oauth ==
 # Github
 # https://github.com/settings/developers
 OAUTH_GITHUB_CLIENT_ID=
@@ -11,30 +11,29 @@ OAUTH_GITHUB_CLIENT_SECRET=
 # https://console.cloud.google.com/apis/credentials
 OAUTH_GOOGLE_CLIENT_ID=
 OAUTH_GOOGLE_CLIENT_SECRET=
-# == Cloudflare ==
+
 # Secretkey	                            Description
 # 1x0000000000000000000000000000000AA	Always passes
 # 2x0000000000000000000000000000000AA	Always fails
 # 3x0000000000000000000000000000000AA	Yields a “token already spent” error
-CF_TURNSTILE_SECRET_KEY=
+CF_TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
 
 # R2
 STORAGE_ACCESS_KEY_ID=
 STORAGE_SECRET_ACCESS_KEY=
 
 # Stripe
-# https://dashboard.stripe.com/apikeys
 STRIPE_SECRET_KEY=
 # Set this environment variable to support webhooks — https://stripe.com/docs/webhooks#verify-events
 STRIPE_WEBHOOK_SECRET=
 
 # default domains, comma separated
-DEFAULT_DOMAINS=example.com
-DEFAULT_ADMIN_ORG_ID=org_xx
-REDIRECT_DATASET=
-
-CF_WAE_API_TOKEN=
-CF_WAE_ACCOUNT_ID=
+DEFAULT_DOMAINS=localhost:7001
+REDIRECT_DATASET=redirect_events_xyz_v0
+CF_WAE_API_TOKEN=zSC5WG59m39VRysaeYDlSerU753pSdeaG1-IK3LL
+CF_WAE_ACCOUNT_ID=0b41676095f2ba288882723b4cebc32e
 
 CF_ZONE_ID=
+CF_EDIT_CUSTOM_HOSTNAME_API_TOKEN=
 
+DEFAULT_ADMIN_ORG_ID=
