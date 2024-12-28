@@ -24,7 +24,7 @@ catalog:
   "@lucia-auth/adapter-sqlite": "3.0.2"
   "@mapbox/rehype-prism": "^0.6.0"
   "@marsidev/react-turnstile": "1.1.0"
-  "@nextui-org/react": "2.6.8"
+  "@nextui-org/react": "2.6.10"
   "@nextui-org/system": "2.4.3"
   "@nextui-org/theme": "2.4.1"
   "@opennextjs/cloudflare": "https://pkg.pr.new/@opennextjs/cloudflare@203"
