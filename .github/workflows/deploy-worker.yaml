@@ -48,27 +48,19 @@ jobs:
       - name: Get pnpm store directory
         shell: bash
         run: |
+          # Global pnpm store cache - shared across all apps
           echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_ENV
 
       - uses: actions/cache@v3
-        name: Setup build cache
+        name: Setup pnpm cache
         with:
           path: |
             ${{ env.STORE_PATH }}
-            ${{ env.APP_DIR }}/.next/cache
-            ${{ github.workspace }}/node_modules/.cache
-          key: ${{ runner.os }}-node-${{ matrix.node-version }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}-nextjs-${{ hashFiles('**/next.config.js') }}
+          # Simplified cache key focusing on dependencies
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-node-${{ matrix.node-version }}-pnpm-
-            ${{ runner.os }}-node-${{ matrix.node-version }}-
-            ${{ runner.os }}-
+            ${{ runner.os }}-pnpm-store-
 
-      # Setup Next.js cache
-      - name: Setup Next.js cache directory
-        run: |
-          echo "NEXT_CACHE_DIR=${{ env.APP_DIR }}/.next/cache" >> $GITHUB_ENV
-
-      # Install dependencies
       - name: Install dependencies
         run: pnpm install
 
