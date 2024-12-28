@@ -85,6 +85,7 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           STORAGE_ACCESS_KEY_ID: ${{ secrets.STORAGE_ACCESS_KEY_ID }}
           STORAGE_SECRET_ACCESS_KEY: ${{ secrets.STORAGE_SECRET_ACCESS_KEY }}
+          CF_TURNSTILE_SECRET_KEY: ${{ secrets.CF_TURNSTILE_SECRET_KEY }}
           EOF
           cat ${{ env.APP_DIR }}/.env
 
@@ -101,7 +102,6 @@ jobs:
         id: deploy
         uses: cloudflare/wrangler-action@v3
         env:
-          CF_TURNSTILE_SECRET_KEY: ${{ secrets.CF_TURNSTILE_SECRET_KEY }}
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
           STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
           DEFAULT_DOMAINS: ${{ secrets.DEFAULT_DOMAINS }}
@@ -119,7 +119,6 @@ jobs:
             ls .open-next
           command: deploy
           secrets: |
-            CF_TURNSTILE_SECRET_KEY
             STRIPE_SECRET_KEY
             STRIPE_WEBHOOK_SECRET
             DEFAULT_DOMAINS
