@@ -1,11 +1,10 @@
 import { APP_URL } from '@hexa/env';
-import type { Context } from '@hexa/server/route/route-types';
 // @ts-ignore
 import { Google } from 'arctic';
 
-export const getGoogle = (env: Context['Bindings']) =>
+export const getGoogle = () =>
   new Google(
-    env.OAUTH_GOOGLE_CLIENT_ID,
-    env.OAUTH_GOOGLE_CLIENT_SECRET,
+    process.env.OAUTH_GOOGLE_CLIENT_ID ?? '',
+    process.env.OAUTH_GOOGLE_CLIENT_SECRET ?? '',
     `${APP_URL}/api/oauth/google/callback`
   );
