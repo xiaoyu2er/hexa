@@ -88,7 +88,7 @@ const analytics = new Hono<Context>()
     zValidator('query', ProjectIdSchema.merge(TimeRangeSchema)),
     authProject('query'),
     async (c) => {
-      const env = c.env;
+      const _env = c.env;
       // const { start, end } = c.req.valid('query');
       // const { startDays, endDays } = getDateIntervals(start, end);
 
@@ -126,7 +126,7 @@ const analytics = new Hono<Context>()
           
           -- Metrics
           SUM(_sample_interval) as visits              -- Total number of visits
-        FROM ${env.REDIRECT_DATASET}
+        FROM ${process.env.REDIRECT_DATASET}
         GROUP BY 
           deviceVendor, deviceModel, deviceType,
           engineName, engineVersion, cpu,
@@ -138,7 +138,7 @@ const analytics = new Hono<Context>()
         LIMIT 10
       `;
 
-      const data = (await queryAnalytics(env, query)) as TimeSeriesResponse;
+      const data = (await queryAnalytics(query)) as TimeSeriesResponse;
       return c.json(data);
     }
   )
@@ -147,7 +147,7 @@ const analytics = new Hono<Context>()
     zValidator('query', ProjectIdSchema.merge(TimeRangeSchema)),
     authProject('query'),
     async (c) => {
-      const env = c.env;
+      const _env = c.env;
       const _linkId = `'url_kmwyedewyuvpel55q7wu4z2dh6mgs'`;
       const { type } = c.req.param() as { type: LogsKey };
       const { start, end } = c.req.valid('query');
@@ -167,7 +167,7 @@ const analytics = new Hono<Context>()
           ${getBlobSQL(type)} as value,
           SUM(_sample_interval) as count
           ${countrySelect}
-        FROM ${env.REDIRECT_DATASET}
+        FROM ${process.env.REDIRECT_DATASET}
         WHERE timestamp >= NOW() - INTERVAL '${startDays}' DAY 
         AND timestamp <= NOW()
         GROUP BY value${countrySelect ? ', country' : ''}
@@ -175,7 +175,7 @@ const analytics = new Hono<Context>()
         LIMIT 10
       `;
 
-      const data = (await queryAnalytics(env, query)) as LogsResponse;
+      const data = (await queryAnalytics(query)) as LogsResponse;
       return c.json(data);
     }
   );
