@@ -48,27 +48,32 @@ jobs:
         with:
           node-version: "20"
           cache: "pnpm"
-          # Look for pnpm-lock.yaml in any directory
           cache-dependency-path: "**/pnpm-lock.yaml"
 
-      # Configure caching for pnpm and Next.js
-      # This improves build times by reusing cached dependencies
+      # Enhanced caching configuration for pnpm and Next.js
       - name: Get pnpm store directory
         shell: bash
         run: |
           echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_ENV
 
       - uses: actions/cache@v3
-        name: Setup pnpm cache
+        name: Setup build cache
         with:
-          # Cache both pnpm store and Next.js build cache
           path: |
             ${{ env.STORE_PATH }}
-            ${{ github.workspace }}/.next/cache
-          # Cache key based on OS, pnpm store, and lock file hash
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+            ${{ github.workspace }}/apps/app/.next/cache
+            ${{ github.workspace }}/node_modules/.cache
+          # Enhanced cache key including Next.js version
+          key: ${{ runner.os }}-node-${{ matrix.node-version }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}-nextjs-${{ hashFiles('**/next.config.js') }}
           restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+            ${{ runner.os }}-node-${{ matrix.node-version }}-pnpm-
+            ${{ runner.os }}-node-${{ matrix.node-version }}-
+            ${{ runner.os }}-
+
+      # Add Next.js build cache environment variable
+      - name: Setup Next.js cache directory
+        run: |
+          echo "NEXT_CACHE_DIR=${{ github.workspace }}/apps/app/.next/cache" >> $GITHUB_ENV
 
       # Install dependencies using pnpm
       - name: Install pnpm
