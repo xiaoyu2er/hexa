@@ -1,8 +1,8 @@
 import { generateProjectSlug } from '@hexa/lib';
 import { generateId } from '@hexa/lib';
 import { ApiError } from '@hexa/lib';
-import { sendOrgInviteEmails } from '@hexa/server/lib';
-import { isStored, storage } from '@hexa/server/lib';
+import { getStorage, sendOrgInviteEmails } from '@hexa/server/lib';
+import { isStored } from '@hexa/server/lib';
 import authOrg from '@hexa/server/middleware/org';
 import { authInvite } from '@hexa/server/middleware/org-invite';
 import type { Context } from '@hexa/server/route/route-types';
@@ -107,7 +107,7 @@ const org = new Hono<Context>()
     async (c) => {
       const { db, org, orgId } = c.var;
       const { image } = c.req.valid('form');
-      const { url } = await storage.upload(
+      const { url } = await getStorage().upload(
         `org-avatars/${generateId()}`,
         image
       );
@@ -124,7 +124,7 @@ const org = new Hono<Context>()
       c.ctx.waitUntil(
         (async () => {
           if (org.avatarUrl && isStored(org.avatarUrl)) {
-            await storage.delete(org.avatarUrl);
+            await getStorage().delete(org.avatarUrl);
           }
         })()
       );

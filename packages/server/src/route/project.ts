@@ -1,6 +1,6 @@
 import { generateId } from '@hexa/lib';
 import { ApiError } from '@hexa/lib';
-import { isStored, storage } from '@hexa/server/lib';
+import { getStorage, isStored } from '@hexa/server/lib';
 import authOrg from '@hexa/server/middleware/org';
 import authProject from '@hexa/server/middleware/project';
 import type { Context } from '@hexa/server/route/route-types';
@@ -124,7 +124,7 @@ const project = new Hono<Context>()
     async (c) => {
       const { db, project, projectId } = c.var;
       const { image } = c.req.valid('form');
-      const { url } = await storage.upload(
+      const { url } = await getStorage().upload(
         `project-avatars/${generateId()}`,
         image
       );
@@ -141,7 +141,7 @@ const project = new Hono<Context>()
       c.ctx.waitUntil(
         (async () => {
           if (project.avatarUrl && isStored(project.avatarUrl)) {
-            await storage.delete(project.avatarUrl);
+            await getStorage().delete(project.avatarUrl);
           }
         })()
       );

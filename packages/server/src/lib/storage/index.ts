@@ -4,8 +4,6 @@ import {
 } from '@hexa/env';
 import { fetchWithTimeout } from '@hexa/lib';
 // @ts-ignore
-import { getCloudflareContext } from '@opennextjs/cloudflare';
-// @ts-ignore
 import { AwsClient } from 'aws4fetch';
 
 interface ImageOptions {
@@ -15,22 +13,14 @@ interface ImageOptions {
 }
 
 class StorageClient {
-  private $client: Promise<AwsClient>;
+  private client: AwsClient;
 
   constructor() {
-    this.$client = new Promise((resolve) => {
-      getCloudflareContext().then(
-        ({ env: { STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY } }) => {
-          resolve(
-            new AwsClient({
-              accessKeyId: STORAGE_ACCESS_KEY_ID ?? '',
-              secretAccessKey: STORAGE_SECRET_ACCESS_KEY ?? '',
-              service: 's3',
-              region: 'auto',
-            })
-          );
-        }
-      );
+    this.client = new AwsClient({
+      accessKeyId: process.env.STORAGE_ACCESS_KEY_ID ?? '',
+      secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY ?? '',
+      service: 's3',
+      region: 'auto',
     });
   }
 
@@ -56,8 +46,7 @@ class StorageClient {
     if (opts?.contentType) {
       headers['Content-Type'] = opts.contentType;
     }
-    const client = await this.$client;
-    const res = await client.fetch(
+    const res = await this.client.fetch(
       `${NEXT_PUBLIC_STORAGE_ENDPOINT ?? ''}/${key}`,
       {
         method: 'PUT',
@@ -81,8 +70,7 @@ class StorageClient {
       };
     }
     const key = url.replace(`${NEXT_PUBLIC_STORAGE_BASE_URL ?? ''}/`, '');
-    const client = await this.$client;
-    await client.fetch(`${NEXT_PUBLIC_STORAGE_ENDPOINT ?? ''}/${key}`, {
+    await this.client.fetch(`${NEXT_PUBLIC_STORAGE_ENDPOINT ?? ''}/${key}`, {
       method: 'DELETE',
     });
 
@@ -156,7 +144,7 @@ class StorageClient {
   }
 }
 
-export const storage = new StorageClient();
+export const getStorage = () => new StorageClient();
 
 export const isStored = (url: string) => {
   return url.startsWith(NEXT_PUBLIC_STORAGE_BASE_URL ?? '');

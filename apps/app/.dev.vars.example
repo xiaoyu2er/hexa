@@ -1,6 +1,4 @@
-# email
-# https://resend.com/api-keys
-RESEND_API_KEY=
+
 
 # Secretkey	                            Description
 # 1x0000000000000000000000000000000AA	Always passes
@@ -8,9 +6,6 @@ RESEND_API_KEY=
 # 3x0000000000000000000000000000000AA	Yields a “token already spent” error
 CF_TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
 
-# R2
-STORAGE_ACCESS_KEY_ID=
-STORAGE_SECRET_ACCESS_KEY=
 
 # Stripe
 STRIPE_SECRET_KEY=
