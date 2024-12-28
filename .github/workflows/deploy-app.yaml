@@ -52,7 +52,9 @@ jobs:
           cat ./apps/app/.env
       - name: Create wrangler.toml
         run: |
-          printf '%s' "${{ vars.APP_WRANGLER_TOML }}" > ./apps/app/wrangler.toml
+          cat << 'EOF' > ./apps/app/wrangler.toml
+          ${{ vars.APP_WRANGLER_TOML }}
+          EOF
           cat ./apps/app/wrangler.toml
       - name: Build and Deploy
         id: deploy
