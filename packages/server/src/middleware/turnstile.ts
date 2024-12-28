@@ -9,12 +9,11 @@ export const turnstileMiddleware = () =>
     if (DISABLE_CLOUDFLARE_TURNSTILE) {
       return next();
     }
-    const { CF_TURNSTILE_SECRET_KEY } = c.env;
     // @ts-ignore
     const body = c.req.valid('json');
     const form = new FormData();
 
-    form.set('secret', CF_TURNSTILE_SECRET_KEY ?? '');
+    form.set('secret', process.env.CF_TURNSTILE_SECRET_KEY ?? '');
     form.set('response', (body['cf-turnstile-response'] ?? '') as string);
     form.set('remoteip', c.req.header('x-forwarded-for') as string);
 

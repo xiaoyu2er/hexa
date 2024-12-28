@@ -1,12 +1,3 @@
-
-
-# Secretkey	                            Description
-# 1x0000000000000000000000000000000AA	Always passes
-# 2x0000000000000000000000000000000AA	Always fails
-# 3x0000000000000000000000000000000AA	Yields a “token already spent” error
-CF_TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
-
-
 # Stripe
 STRIPE_SECRET_KEY=
 # Set this environment variable to support webhooks — https://stripe.com/docs/webhooks#verify-events
