@@ -6,8 +6,6 @@ import { NEXT_PUBLIC_APP_NAME } from '@hexa/env';
 import { ApiError } from '@hexa/lib';
 import { getInviteUrl } from '@hexa/lib';
 import type { QueryInviteType } from '@hexa/server/schema/org-invite';
-// @ts-ignore
-import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { type CreateEmailResponseSuccess, Resend } from 'resend';
 import type { Simplify } from 'type-fest';
 
@@ -18,15 +16,15 @@ type CreateBatchSuccessResponse = Simplify<
 export async function sendOrgInviteEmails(
   invites: QueryInviteType[]
 ): Promise<CreateBatchSuccessResponse> {
-  const { env } = await getCloudflareContext();
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
   // if RESEND_API_KEY is not set, we are in development mode
-  if (!env.RESEND_API_KEY) {
+  if (!RESEND_API_KEY) {
     return invites.map((invite) => ({
       url: getInviteUrl(invite.token),
     })) as unknown as CreateBatchSuccessResponse;
   }
 
-  const resend = new Resend(env.RESEND_API_KEY);
+  const resend = new Resend(RESEND_API_KEY);
 
   try {
     const { data, error } = await resend.batch.send(
@@ -68,13 +66,13 @@ export async function sendVerifyCodeAndUrlEmail(
   url?: string;
   resend: CreateEmailResponseSuccess;
 }> {
-  const { env } = await getCloudflareContext();
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
-  if (!env.RESEND_API_KEY) {
+  if (!RESEND_API_KEY) {
     return { code, email, url, resend: { id: 'test' } };
   }
 
-  const resend = new Resend(env.RESEND_API_KEY);
+  const resend = new Resend(RESEND_API_KEY);
 
   try {
     const { data, error } = await resend.emails.send({

@@ -82,6 +82,7 @@ jobs:
           OAUTH_GITHUB_CLIENT_SECRET: ${{ secrets.OAUTH_GITHUB_CLIENT_SECRET }}
           OAUTH_GOOGLE_CLIENT_ID: ${{ secrets.OAUTH_GOOGLE_CLIENT_ID }}
           OAUTH_GOOGLE_CLIENT_SECRET: ${{ secrets.OAUTH_GOOGLE_CLIENT_SECRET }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           EOF
           cat ${{ env.APP_DIR }}/.env
 
@@ -98,7 +99,6 @@ jobs:
         id: deploy
         uses: cloudflare/wrangler-action@v3
         env:
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           CF_TURNSTILE_SECRET_KEY: ${{ secrets.CF_TURNSTILE_SECRET_KEY }}
           STORAGE_ACCESS_KEY_ID: ${{ secrets.STORAGE_ACCESS_KEY_ID }}
           STORAGE_SECRET_ACCESS_KEY: ${{ secrets.STORAGE_SECRET_ACCESS_KEY }}
@@ -119,7 +119,6 @@ jobs:
             ls .open-next
           command: deploy
           secrets: |
-            RESEND_API_KEY
             CF_TURNSTILE_SECRET_KEY
             STORAGE_ACCESS_KEY_ID
             STORAGE_SECRET_ACCESS_KEY
