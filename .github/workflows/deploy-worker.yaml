@@ -10,6 +10,9 @@ on:
         required: true
         type: string
     secrets:
+      # We explicitly require CLOUDFLARE_API_TOKEN as it's critical for deployment
+      # All other secrets are inherited from the calling workflow using `secrets: inherit`
+      # This provides a safety check for the most essential secret while keeping the config clean
       CLOUDFLARE_API_TOKEN:
         required: true
 
