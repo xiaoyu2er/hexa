@@ -47,12 +47,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Cache node_modules
-        uses: actions/cache@v3
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
-
   build-and-deploy:
     needs: install
     runs-on: ubuntu-latest
@@ -70,11 +64,12 @@ jobs:
         with:
           version: 9
 
-      - name: Restore cached node_modules
-        uses: actions/cache@v3
+      # Just setup Node.js and pnpm, no need to install again
+      - uses: actions/setup-node@v3
         with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
+          node-version: "20"
+          cache: "pnpm"
+          cache-dependency-path: "**/pnpm-lock.yaml"
 
       # Create env file
       - name: Create .env file
