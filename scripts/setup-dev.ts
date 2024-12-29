@@ -107,7 +107,7 @@ async function setupEnvironmentFiles() {
   const sourceAppDir = path.resolve(rootDir, 'apps/app');
 
   // Copy example files to actual files
-  for (const file of ['.env.example', '.dev.vars.example']) {
+  for (const file of ['.env.example']) {
     const source = path.resolve(sourceAppDir, file);
     const target = path.resolve(sourceAppDir, file.replace('.example', ''));
 
@@ -127,10 +127,7 @@ async function setupEnvironmentFiles() {
     const appDir = path.resolve(rootDir, 'apps', app);
 
     // Determine which files to symlink based on the app
-    const filesToLink =
-      app === 'www'
-        ? ['.env'] // www only needs .env
-        : ['.env', '.dev.vars']; // admin and link need both
+    const filesToLink = ['.env'];
 
     for (const file of filesToLink) {
       const sourcePath = path.resolve(sourceAppDir, file);
@@ -212,8 +209,7 @@ async function main() {
     console.log('\n✨ Development environment setup complete!');
     console.log('\nNext steps:');
     console.log('1. Review and update environment variables in apps/app/.env');
-    console.log('2. Review and update apps/app/.dev.vars');
-    console.log('3. Start development server with: pnpm dev');
+    console.log('2. Start development server with: pnpm dev');
   } catch (error) {
     console.error('\n❌ Setup failed:', error);
     process.exit(1);
