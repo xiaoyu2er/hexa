@@ -40,7 +40,7 @@ export function LoginPassword() {
     setFocus,
   } = form;
 
-  const { resetTurnstile, turnstile } = useTurnstile({
+  const { resetTurnstile, turnstile, disableNext } = useTurnstile({
     form,
     onSuccess: () => {
       clearErrors('root');
@@ -98,7 +98,12 @@ export function LoginPassword() {
             <AuthLink href="/signup">Not signed up? Sign up now.</AuthLink>
             <AuthLink href="/reset-password">Forget password?</AuthLink>
           </div>
-          <Button color="primary" type="submit" isLoading={isSubmitting}>
+          <Button
+            color="primary"
+            type="submit"
+            isLoading={isSubmitting}
+            isDisabled={disableNext}
+          >
             Login
           </Button>
           <Button

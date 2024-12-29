@@ -65,7 +65,7 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
   const turnstileForm = useForm<TurnstileType>({
     resolver: zodResolver(TurnstileSchema),
   });
-  const { resetTurnstile, turnstile } = useTurnstile({
+  const { resetTurnstile, turnstile, disableNext } = useTurnstile({
     form: turnstileForm,
     onSuccess: () => {
       resendPasscode({ ...turnstileForm.getValues(), id: passcodeId ?? '' });
@@ -193,6 +193,7 @@ export const VerifyPasscode: FC<VerifyPasscodeProps> = ({
             className="w-full"
             isLoading={isSubmitting}
             type="submit"
+            isDisabled={disableNext}
           >
             Verify
           </Button>

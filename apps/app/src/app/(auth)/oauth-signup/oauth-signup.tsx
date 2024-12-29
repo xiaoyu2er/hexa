@@ -47,7 +47,7 @@ export const OauthSignup: FC<OauthSignupProps> = ({
     formState: { isSubmitting, errors },
     setFocus,
   } = form;
-  const { resetTurnstile, turnstile } = useTurnstile({ form });
+  const { resetTurnstile, turnstile, disableNext } = useTurnstile({ form });
 
   const { mutateAsync: signup } = useMutation({
     mutationFn: $oauthSignup,
@@ -100,6 +100,7 @@ export const OauthSignup: FC<OauthSignupProps> = ({
             className="w-full"
             type="submit"
             isLoading={isSubmitting}
+            isDisabled={disableNext}
           >
             Create account
           </Button>
