@@ -21,7 +21,6 @@ export function useTurnstile<T extends FieldValues>({
   onSuccess,
 }: {
   errorField?: string;
-
   form: UseFormReturn<T, any, undefined>;
   onError?: (err: string) => void;
   onSuccess?: (res: string) => void;
@@ -30,6 +29,7 @@ export function useTurnstile<T extends FieldValues>({
     setError,
     clearErrors,
     setValue,
+    watch,
     formState: { errors },
   } = form;
   const ref = useRef<TurnstileInstance | null>(null);
@@ -84,8 +84,11 @@ export function useTurnstile<T extends FieldValues>({
     }
   }, []);
 
+  const value = watch('cf-turnstile-response' as FieldPath<T>);
+
   return {
     resetTurnstile,
     turnstile,
+    disableNext: !value,
   };
 }

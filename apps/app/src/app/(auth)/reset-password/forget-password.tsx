@@ -55,7 +55,7 @@ export const ForgetPassword: FC<ForgetPasswordProps> = ({
     setFocus,
   } = form;
 
-  const { resetTurnstile, turnstile } = useTurnstile({
+  const { resetTurnstile, turnstile, disableNext } = useTurnstile({
     form,
     errorField: 'email',
   });
@@ -102,6 +102,7 @@ export const ForgetPassword: FC<ForgetPasswordProps> = ({
             className="w-full"
             type="submit"
             isLoading={isSubmitting}
+            isDisabled={disableNext}
           >
             Continue
           </Button>
