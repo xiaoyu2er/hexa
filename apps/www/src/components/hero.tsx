@@ -54,7 +54,7 @@ export default function Hero() {
           </p>
           <p>Track clicks in real-time with multi-workspace collaboration</p>
           <p>
-            Built with Next.js & shadcn/ui, powered by Cloudflare's edge network
+            Built with Next.js & NextUI, powered by Cloudflare's edge network
           </p>
         </div>
       </div>
