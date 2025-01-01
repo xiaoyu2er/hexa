@@ -1,4 +1,5 @@
 import { ApiError } from '@hexa/lib';
+import { isUniqueConstraintViolationError } from '@hexa/server/lib/error';
 import type { DbType } from '@hexa/server/route/route-types';
 import type { InsertOrgType, SelectUserOrgType } from '@hexa/server/schema/org';
 import type {
@@ -356,26 +357,38 @@ export const addOrgMember = async (
 // Create organization and add creator as owner
 export const createOrg = async (
   db: DbType,
-  { name, desc, userId }: InsertOrgType & Pick<InsertOrgMemberType, 'userId'>
+  { name, slug, userId }: InsertOrgType & Pick<InsertOrgMemberType, 'userId'>
 ) => {
-  // Create org
-  const [org] = await db.insert(orgTable).values({ name, desc }).returning();
+  try {
+    // Create org
+    const [org] = await db.insert(orgTable).values({ name, slug }).returning();
 
-  if (!org) {
-    throw new ApiError(
-      'INTERNAL_SERVER_ERROR',
-      'Failed to create organization'
-    );
+    if (!org) {
+      throw new ApiError(
+        'INTERNAL_SERVER_ERROR',
+        'Failed to create organization'
+      );
+    }
+
+    // Add creator as owner
+    await db.insert(orgMemberTable).values({
+      orgId: org.id,
+      userId,
+      role: 'OWNER',
+    });
+
+    return org;
+  } catch (error) {
+    // Check if error is a unique constraint violation
+    if (isUniqueConstraintViolationError(error)) {
+      throw new ApiError(
+        'CONFLICT',
+        'An organization with this slug already exists'
+      );
+    }
+    // Re-throw other errors
+    throw error;
   }
-
-  // Add creator as owner
-  await db.insert(orgMemberTable).values({
-    orgId: org.id,
-    userId,
-    role: 'OWNER',
-  });
-
-  return org;
 };
 
 // Update organization
@@ -451,6 +464,20 @@ export const updateOrgName = async (
   const [updatedOrg] = await db
     .update(orgTable)
     .set({ name })
+    .where(eq(orgTable.id, orgId))
+    .returning();
+
+  return updatedOrg;
+};
+
+// Update org slug
+export const updateOrgSlug = async (
+  db: DbType,
+  { orgId, slug }: { orgId: string; slug: string }
+) => {
+  const [updatedOrg] = await db
+    .update(orgTable)
+    .set({ slug })
     .where(eq(orgTable.id, orgId))
     .returning();
 

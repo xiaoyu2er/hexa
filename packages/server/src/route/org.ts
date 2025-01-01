@@ -1,4 +1,3 @@
-import { generateProjectSlug } from '@hexa/lib';
 import { generateId } from '@hexa/lib';
 import { ApiError } from '@hexa/lib';
 import { getStorage, sendOrgInviteEmails } from '@hexa/server/lib';
@@ -13,6 +12,7 @@ import {
   OrgIdSchema,
   UpdateOrgAvatarSchema,
   UpdateOrgNameSchema,
+  UpdateOrgSlugSchema,
 } from '@hexa/server/schema/org';
 import {
   CreateInvitesSchema,
@@ -28,6 +28,7 @@ import {
   leaveOrg,
   updateOrgAvatar,
   updateOrgName,
+  updateOrgSlug,
 } from '@hexa/server/store/org';
 import {
   createInvites,
@@ -36,7 +37,7 @@ import {
   revokeInvite,
 } from '@hexa/server/store/org-invite';
 import { getOrgMembers } from '@hexa/server/store/org-member';
-import { createProject, getProjectWithRole } from '@hexa/server/store/project';
+import {} from '@hexa/server/store/project';
 // @ts-ignore
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
@@ -49,32 +50,34 @@ const org = new Hono<Context>()
     return c.json(orgs);
   })
   // Create organization
-  .post('/org', zValidator('json', InsertOrgSchema), async (c) => {
+  .post('/org/create-org', zValidator('json', InsertOrgSchema), async (c) => {
     const { db, userId } = c.var;
     const data = c.req.valid('json');
-    const { name, desc } = data;
+    const { name, slug } = data;
 
     // Create org and add creator as owner
     const org = await createOrg(db, {
       name,
-      desc,
+      slug,
       userId,
     });
 
-    const project = await createProject(db, {
-      name: `${name}'s project`,
-      slug: generateProjectSlug(),
-      orgId: org.id,
-    });
+    // const project = await createProject(db, {
+    //   name: `${name}'s project`,
+    //   slug: generateProjectSlug(),
+    //   orgId: org.id,
+    // });
 
-    const projectWithRole = await getProjectWithRole(db, project.id, userId);
-    if (!projectWithRole) {
-      throw new ApiError(
-        'INTERNAL_SERVER_ERROR',
-        'Failed to create organization'
-      );
-    }
-    return c.json(projectWithRole);
+    // const projectWithRole = await getProjectWithRole(db, project.id, userId);
+    // if (!projectWithRole) {
+    //   throw new ApiError(
+    //     'INTERNAL_SERVER_ERROR',
+    //     'Failed to create organization'
+    //   );
+    // }
+    return c.json({
+      org,
+    });
   })
 
   // Update organization name
@@ -96,6 +99,21 @@ const org = new Hono<Context>()
           'Failed to update organization name'
         );
       }
+      return c.json(org);
+    }
+  )
+  // Update org slug
+  .put(
+    '/org/update-org-slug',
+    zValidator('json', UpdateOrgSlugSchema),
+    authOrg('json', ['OWNER', 'ADMIN']),
+    async (c) => {
+      const { db, orgId } = c.var;
+      const { slug } = c.req.valid('json');
+      const org = await updateOrgSlug(db, {
+        orgId,
+        slug,
+      });
       return c.json(org);
     }
   )
@@ -132,23 +150,6 @@ const org = new Hono<Context>()
       return c.json(newOrg);
     }
   )
-
-  // Update organization
-  // .put('/org/:orgId', zValidator('json', InsertOrgSchema), async (c) => {
-  //   const { db, userId } = c.var;
-  //   const { orgId } = c.req.param();
-  //   const data = c.req.valid('json');
-
-  //   // Verify user is owner/admin
-  //   await assertUserHasOrgRole(db, {
-  //     orgId,
-  //     userId,
-  //     requiredRole: ['OWNER', 'ADMIN'],
-  //   });
-
-  //   const updatedOrg = await updateOrg(db, orgId, data);
-  //   return c.json(updatedOrg);
-  // })
 
   // Delete organization
   .delete(

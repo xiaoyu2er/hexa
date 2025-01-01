@@ -7,7 +7,7 @@ import type { DbType } from '../route/route-types';
 
 export async function addTmpUser(
   db: DbType,
-  { email, password, name, orgName, oauthAccountId }: InsertTmpUser
+  { email, password, oauthAccountId }: InsertTmpUser
 ) {
   // First delete any existing tmp user and tokens
   // await db.delete(passcodeTable).where(eq(passcodeTable.email, email));
@@ -17,8 +17,6 @@ export async function addTmpUser(
   const newValues = {
     email: email.toLowerCase(),
     password: password ? await getHash(password) : null,
-    name,
-    orgName,
     oauthAccountId,
   };
   const row = (
@@ -36,10 +34,7 @@ export async function addTmpUser(
   )[0];
 
   if (!row) {
-    throw new ApiError(
-      'INTERNAL_SERVER_ERROR',
-      'Failed to create registration'
-    );
+    throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create user');
   }
 
   return row;

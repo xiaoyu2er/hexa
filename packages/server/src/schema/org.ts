@@ -2,7 +2,11 @@ import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 
 import { orgTable } from '@hexa/server/table/org';
 
-import { NameSchema, UpdateAvatarSchema } from '@hexa/server/schema/common';
+import {
+  NameSchema,
+  UpdateAvatarSchema,
+  zSlug,
+} from '@hexa/server/schema/common';
 import type { OrgMemberRoleType } from '@hexa/server/schema/org-member';
 import { z } from 'zod';
 
@@ -28,6 +32,15 @@ export const UpdateOrgNameSchema = z
   .merge(NameSchema);
 
 export type UpdateOrgNameType = z.infer<typeof UpdateOrgNameSchema>;
+
+// Update Project Slug
+export const UpdateOrgSlugSchema = z
+  .object({
+    slug: zSlug,
+  })
+  .merge(OrgIdSchema);
+
+export type UpdateOrgSlugType = z.infer<typeof UpdateOrgSlugSchema>;
 
 // Delete Org
 export const DELETE_ORG_CONFIRMATION = 'Confirm delete organization';

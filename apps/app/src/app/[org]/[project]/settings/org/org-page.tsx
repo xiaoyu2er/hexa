@@ -1,6 +1,7 @@
 'use client';
 import { DeleteOrg } from '@/components/orgs/settings/delete-org';
 import { EditOrgName } from '@/components/orgs/settings/edit-org-name';
+import { EditOrgSlug } from '@/components/orgs/settings/edit-org-slug';
 import { OrgId } from '@/components/orgs/settings/org-id';
 import UploadAvatar from '@/components/upload-avatar';
 import { useProject } from '@/hooks/use-project';
@@ -16,6 +17,7 @@ export const OrgPage: FC = () => {
   return (
     <>
       <EditOrgName />
+      <EditOrgSlug />
       <UploadAvatar
         title="Organization Avatar"
         description="This avatar is organization's logo."

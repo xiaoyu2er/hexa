@@ -7,11 +7,9 @@ import { useRouter } from 'next/navigation';
 import { type FC, useState } from 'react';
 import { useStep } from 'usehooks-ts';
 import { SignupEmailPassword } from './signup-email-password';
-import { SignupUserInfo } from './signup-user-info';
 
 export const SignupPage: FC = () => {
   const [email, setEmail] = useState<string | undefined>();
-  const [password, setPassword] = useState<string | undefined>();
   const [passcodeId, setPasscodeId] = useState<string | undefined>();
   const router = useRouter();
   const [currentStep, { goToNextStep, reset }] = useStep(3);
@@ -21,9 +19,9 @@ export const SignupPage: FC = () => {
       {currentStep === 1 && (
         <SignupEmailPassword
           email={email}
-          onSuccess={({ email, password }) => {
+          onSuccess={({ id, email }) => {
+            setPasscodeId(id);
             setEmail(email);
-            setPassword(password);
             goToNextStep();
           }}
           onCancel={() => {
@@ -32,16 +30,6 @@ export const SignupPage: FC = () => {
         />
       )}
       {currentStep === 2 && (
-        <SignupUserInfo
-          email={email}
-          password={password}
-          onSuccess={({ id }) => {
-            setPasscodeId(id);
-            goToNextStep();
-          }}
-        />
-      )}
-      {currentStep === 3 && (
         <VerifyPasscode
           passcodeId={passcodeId}
           email={email}

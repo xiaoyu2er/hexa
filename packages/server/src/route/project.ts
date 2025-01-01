@@ -17,7 +17,6 @@ import {
   deleteProject,
   getProjectBySlug,
   getUserAccessibleProjects,
-  setUserDefaultProject,
   updateProjectAvatar,
   updateProjectName,
   updateProjectSlug,
@@ -42,7 +41,7 @@ const project = new Hono<Context>()
     async (c) => {
       const { db } = c.var;
       const { name, orgId, desc, slug } = c.req.valid('json');
-      const existingProject = await getProjectBySlug(db, { slug });
+      const existingProject = await getProjectBySlug(db, { orgId, slug });
       if (existingProject) {
         throw new ApiError('CONFLICT', 'Project with this slug already exists');
       }
@@ -72,9 +71,8 @@ const project = new Hono<Context>()
     zValidator('json', DeleteProjectSchema),
     authProject('json', ['OWNER', 'ADMIN']),
     async (c) => {
-      const { db, projectId, userId } = c.var;
-      await setUserDefaultProject(db, { userId, projectId });
-      await deleteProject(db, { projectId, userId });
+      const { db, projectId } = c.var;
+      await deleteProject(db, { projectId });
       return c.json({});
     }
   )

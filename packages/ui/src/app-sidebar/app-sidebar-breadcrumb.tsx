@@ -8,7 +8,7 @@ export const getSidebarBreadcrumb = ({
   pathname,
 }: { slug: string; pathname: string }) => {
   const items: Record<string, { name: string; link?: string }[]> = {
-    [`/project/${slug}`]: [
+    [`/${slug}`]: [
       {
         name: 'Project',
       },
@@ -16,16 +16,16 @@ export const getSidebarBreadcrumb = ({
         name: 'Links',
       },
     ],
-    [`/project/${slug}/analytics`]: [
+    [`/${slug}/analytics`]: [
       {
         name: 'Project',
-        link: `/project/${slug}`,
+        link: `/${slug}`,
       },
       {
         name: 'Analytics',
       },
     ],
-    [`/project/${slug}/settings/user/profile`]: [
+    [`/${slug}/settings/user/profile`]: [
       {
         name: 'User',
       },
@@ -33,35 +33,35 @@ export const getSidebarBreadcrumb = ({
         name: 'Profile',
       },
     ],
-    [`/project/${slug}/settings/user/account`]: [
+    [`/${slug}/settings/user/account`]: [
       {
         name: 'User',
-        link: `/project/${slug}/settings/user/profile`,
+        link: `/${slug}/settings/user/profile`,
       },
       {
         name: 'Account',
       },
     ],
-    [`/project/${slug}/settings/user/organizations`]: [
+    [`/${slug}/settings/user/organizations`]: [
       {
         name: 'User',
-        link: `/project/${slug}/settings/user/profile`,
+        link: `/${slug}/settings/user/profile`,
       },
       {
         name: 'Organizations',
       },
     ],
 
-    [`/project/${slug}/settings/project`]: [
+    [`/${slug}/settings/project`]: [
       {
         name: 'Project',
-        link: `/project/${slug}`,
+        link: `/${slug}`,
       },
       {
         name: 'Settings',
       },
     ],
-    [`/project/${slug}/settings/org`]: [
+    [`/${slug}/settings/org`]: [
       {
         name: 'Organization',
       },
@@ -69,19 +69,19 @@ export const getSidebarBreadcrumb = ({
         name: 'Settings',
       },
     ],
-    [`/project/${slug}/settings/org/members`]: [
+    [`/${slug}/settings/org/members`]: [
       {
         name: 'Organization',
-        link: `/project/${slug}/settings/org`,
+        link: `/${slug}/settings/org`,
       },
       {
         name: 'Members',
       },
     ],
-    [`/project/${slug}/settings/org/domains`]: [
+    [`/${slug}/settings/org/domains`]: [
       {
         name: 'Organization',
-        link: `/project/${slug}/settings/org`,
+        link: `/${slug}/settings/org`,
       },
       {
         name: 'Domains',

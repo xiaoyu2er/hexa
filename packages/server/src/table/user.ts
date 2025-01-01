@@ -6,7 +6,7 @@ export const userTable = sqliteTable('user', {
   id: text('id')
     .primaryKey()
     .$default(() => generateId('u')),
-  name: text('name').notNull(),
+  name: text('name'),
   password: text('password'),
   avatarUrl: text('avatar_url'),
   defaultProjectId: text('default_project_id').references(

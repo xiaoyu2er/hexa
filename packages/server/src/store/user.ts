@@ -127,7 +127,7 @@ export async function createUser(
       .insert(userTable)
       .values({
         avatarUrl: avatarUrl ?? null,
-        name: name,
+        name: name ?? null,
         ...(password ? { password } : {}),
       })
       // .onConflictDoNothing()

@@ -14,7 +14,7 @@ export function ProjectAvatar({
   return (
     <Avatar
       src={project.avatarUrl || getProjectAvatarFallbackUrl(project)}
-      name={project.name || 'Project Profile Picture'}
+      name={project.name || project.slug}
       className={cn('shrink-0', className)}
       showFallback={false}
       {...props}

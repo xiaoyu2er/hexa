@@ -27,11 +27,11 @@ const variants = {
 };
 
 export function AppSidebar() {
-  const { slug } = useParams() as { slug: string };
+  const { project, org } = useParams() as { project: string; org: string };
+  const slug = `${org}/${project}`;
   const pathname = usePathname();
   const isProjectSettingsSidebar =
-    pathname.startsWith(`/project/${slug}/settings`) ||
-    pathname.startsWith('/user');
+    pathname.startsWith(`/${slug}/settings`) || pathname.startsWith('/user');
   const isAdminSidebar = pathname.startsWith('/admin');
 
   let sidebarItems: SidebarGroupItem[] = [];
@@ -40,7 +40,7 @@ export function AppSidebar() {
     sidebarItems = getSettingsSidebarItems(slug);
   } else if (isAdminSidebar) {
     sidebarItems = getAdminSidebarItems();
-  } else if (slug) {
+  } else if (project) {
     sidebarItems = getProjectSidebarItems(slug);
   }
 
@@ -60,7 +60,7 @@ export function AppSidebar() {
                     variants={variants}
                     transition={{ duration: 0.2 }}
                   >
-                    <BackButton slug={slug} />
+                    <BackButton slug={`${org}/${project}`} />
                   </motion.div>
                 ) : (
                   <motion.div

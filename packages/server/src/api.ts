@@ -162,9 +162,10 @@ export const $getAnalyticsTimeSeries = h(api.analytics.all.$get);
 
 // ==================== Org ====================
 export const $getOrgs = h(api.org.all.$get);
-export const $createOrg = h(api.org.$post);
+export const $createOrg = h(api.org['create-org'].$post);
 export const $deleteOrg = h(api.org['delete-org'].$delete);
 export const $updateOrgName = h(api.org['update-org-name'].$put);
+export const $updateOrgSlug = h(api.org['update-org-slug'].$put);
 export const $updateOrgAvatar = h(api.org['update-org-avatar'].$put);
 export const $getOrgMembers = h(api.org[':orgId'].members.$get);
 export const $leaveOrg = h(api.org['leave-org'].$post);

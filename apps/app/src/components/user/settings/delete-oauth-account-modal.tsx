@@ -57,7 +57,7 @@ export const DeleteOauthAccountModal = NiceModal.create(
     });
 
     return (
-      <Modal isOpen={modal.visible} onOpenChange={modal.hide} backdrop="blur">
+      <Modal isOpen={modal.visible} onOpenChange={modal.remove} backdrop="blur">
         <ModalContent className="sm:max-w-[425px]">
           <ModalHeader>Delete Connected Account</ModalHeader>
           <Form
