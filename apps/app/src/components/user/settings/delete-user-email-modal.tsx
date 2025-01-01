@@ -56,7 +56,7 @@ export const DeleteUserEmailModal = NiceModal.create(
     });
 
     return (
-      <Modal isOpen={modal.visible} onOpenChange={modal.hide} backdrop="blur">
+      <Modal isOpen={modal.visible} onOpenChange={modal.remove} backdrop="blur">
         <ModalContent>
           <ModalHeader>Delete Email</ModalHeader>
           <Form

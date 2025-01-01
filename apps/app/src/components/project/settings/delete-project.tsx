@@ -90,7 +90,7 @@ export const DeleteProjectModal = NiceModal.create(() => {
     },
   });
   return (
-    <Modal isOpen={modal.visible} onOpenChange={modal.hide} backdrop="blur">
+    <Modal isOpen={modal.visible} onOpenChange={modal.remove} backdrop="blur">
       <ModalContent>
         <Form
           form={form}
@@ -111,11 +111,13 @@ export const DeleteProjectModal = NiceModal.create(() => {
               name="projectId"
               labelPlacement="inside"
               label="Project ID"
+              autoComplete="off"
             />
             <InputField
               form={form}
               name="confirm"
               labelPlacement="inside"
+              autoComplete="off"
               label={
                 <>
                   To verify, type

@@ -1,6 +1,5 @@
 import {
   EmailSchema,
-  NameSchema,
   PasswordSchema,
   zOrgName,
 } from '@hexa/server/schema/common';
@@ -18,8 +17,6 @@ export const SignupSchema = z
   })
   .merge(EmailSchema)
   .merge(PasswordSchema)
-  .merge(NameSchema)
-  .merge(OrgNameSchema)
   .merge(TurnstileSchema);
 
 export type SignupType = z.infer<typeof SignupSchema>;

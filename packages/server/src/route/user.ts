@@ -31,7 +31,10 @@ import {
   getUserOauthAccounts,
   removeUserOauthAccount,
 } from '@hexa/server/store/oauth';
-import { getProject, setUserDefaultProject } from '@hexa/server/store/project';
+import {
+  getProjectWithRole,
+  setUserDefaultProject,
+} from '@hexa/server/store/project';
 import {
   createEmail,
   deleteUser,
@@ -230,7 +233,7 @@ const user = new Hono<Context>()
           'Failed to set default project'
         );
       }
-      const project = await getProject(db, projectId);
+      const project = await getProjectWithRole(db, projectId, userId);
       if (!project) {
         throw new ApiError('NOT_FOUND', 'Project not found');
       }

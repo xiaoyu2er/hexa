@@ -1,5 +1,4 @@
-import { EmailSchema, NameSchema } from '@hexa/server/schema/common';
-import { OrgNameSchema } from '@hexa/server/schema/signup';
+import { EmailSchema } from '@hexa/server/schema/common';
 import { TurnstileSchema } from '@hexa/server/schema/turnstile';
 import { SelectUserSchema } from '@hexa/server/schema/user';
 import { oauthAccountTable } from '@hexa/server/table/oauth';
@@ -42,8 +41,6 @@ export const OauthSignupSchema = z
   .object({})
   .merge(OauthAccountSchema)
   .merge(EmailSchema)
-  .merge(OrgNameSchema)
-  .merge(NameSchema)
   .merge(TurnstileSchema);
 
 export type OauthSignupType = z.infer<typeof OauthSignupSchema>;

@@ -1,22 +1,14 @@
-import { IS_PRODUCTION } from '@hexa/env';
 import { ApiError } from '@hexa/lib';
-import { invalidateUserSessions, setSession } from '@hexa/server/session';
+import type { ProviderType } from '@hexa/server/schema/oauth';
+import { setSession } from '@hexa/server/session';
 import {
   createOauthAccount,
   getAccountByProviderUser,
   updateOauthAccount,
 } from '@hexa/server/store/oauth';
-import { createOrg } from '@hexa/server/store/org';
-import {
-  createProject,
-  setUserDefaultProject,
-} from '@hexa/server/store/project';
+import {} from '@hexa/server/store/project';
 import { createEmail, createUser, getEmail } from '@hexa/server/store/user';
 import { createMiddleware } from 'hono/factory';
-
-import { generateProjectSlug } from '@hexa/lib';
-import type { ProviderType } from '@hexa/server/schema/oauth';
-import { setCookie } from 'hono/cookie';
 
 export const afterOauthCallbackMiddleware = (provider: ProviderType) =>
   createMiddleware(async (c) => {
@@ -46,29 +38,38 @@ export const afterOauthCallbackMiddleware = (provider: ProviderType) =>
       providerUser
     );
 
+    // If the account is already linked to a user, set the session and redirect to home
     if (existingAccount?.userId && existingAccount.user) {
       await setSession(existingAccount.userId);
       return c.redirect('/');
     }
 
-    // If there is no user, create a new account, but don't set session, we need to redirect to /signup
-
+    // If there is no user, create a new account, create a new user, and set the session
     const account = await createOauthAccount(db, null, provider, providerUser);
-
     if (!account) {
       throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create account');
     }
 
-    // we pass the new account id to the signup page, so we can bind the account to the user later
-    setCookie(c, 'oauth_account_id', account.id, {
-      path: '/',
-      secure: IS_PRODUCTION,
-      httpOnly: true,
-      maxAge: 60, // 1 minutes
-      sameSite: 'lax',
-    });
+    const newUser = await createUser(db, {});
+    if (!newUser) {
+      throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create user');
+    }
 
-    return c.redirect('/oauth-signup');
+    // bind the account to the user
+    await updateOauthAccount(db, account.id, { userId: newUser.id });
+
+    // set the session
+    await setSession(newUser.id);
+
+    // we pass the new account id to the signup page, so we can bind the account to the user later
+    // setCookie(c, 'oauth_account_id', account.id, {
+    //   path: '/',
+    //   secure: IS_PRODUCTION,
+    //   httpOnly: true,
+    //   maxAge: 60, // 1 minutes
+    //   sameSite: 'lax',
+    // });
+    return c.redirect('/');
   });
 
 /**
@@ -77,9 +78,6 @@ export const afterOauthCallbackMiddleware = (provider: ProviderType) =>
  * 1. Create a user
  * 2. Create an email
  * 3. Update the oauth account
- * 4. Create an org
- * 5. Create a project
- * 6. Set the project as the default project for the user
  */
 export const creatUserFromTmpUserMiddleware = createMiddleware(async (c) => {
   const { tmpUser, db } = c.var;
@@ -92,9 +90,7 @@ export const creatUserFromTmpUserMiddleware = createMiddleware(async (c) => {
     throw new ApiError('BAD_REQUEST', 'Email is required');
   }
 
-  const user = await createUser(db, {
-    name: tmpUser.name,
-  });
+  const user = await createUser(db, {});
 
   if (!user) {
     throw new ApiError('BAD_REQUEST', 'Failed to create user');
@@ -127,36 +123,6 @@ export const creatUserFromTmpUserMiddleware = createMiddleware(async (c) => {
     }
   }
 
-  // create org
-  const org = await createOrg(db, {
-    name: tmpUser.orgName || `${tmpUser.name}'s Org`,
-    userId: user.id,
-  });
-
-  if (!org) {
-    throw new ApiError('BAD_REQUEST', 'Failed to create org');
-  }
-
-  // create project
-  const project = await createProject(db, {
-    name: `${tmpUser.name}'s project`,
-    slug: generateProjectSlug(),
-    orgId: org.id,
-  });
-
-  const newUser = await setUserDefaultProject(db, {
-    userId: user.id,
-    projectId: project.id,
-  });
-
-  if (!newUser) {
-    throw new ApiError(
-      'INTERNAL_SERVER_ERROR',
-      'Failed to set default project'
-    );
-  }
-
-  await invalidateUserSessions(user.id);
   await setSession(user.id);
-  return c.redirect(`/project/${project.slug}`);
+  return c.redirect('/');
 });

@@ -8,6 +8,7 @@ export const onError: ErrorHandler<Context> = (error, c) => {
   if (error instanceof ZodError) {
     return c.json({ error: error, success: false }, 400);
   }
+
   // @ts-ignore
   const code = error.code;
   if (code) {

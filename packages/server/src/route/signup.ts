@@ -31,9 +31,7 @@ const signup = new Hono<Context>()
     turnstileMiddleware(),
     async (c) => {
       const db = c.get('db');
-      const { email, password, name, orgName } = c.req.valid(
-        'json'
-      ) as SignupType;
+      const { email, password } = c.req.valid('json') as SignupType;
       const emailItem = await getEmail(db, email);
 
       if (emailItem?.verified) {
@@ -47,13 +45,8 @@ const signup = new Hono<Context>()
       const tmpUser = await addTmpUser(db, {
         email,
         password,
-        name,
-        orgName,
       });
 
-      if (!tmpUser) {
-        throw new ApiError('BAD_REQUEST', 'Failed to create tmp user');
-      }
       // Send email with passcode
       const data = await addPasscodeAndSendEmail(db, {
         tmpUserId: tmpUser.id,

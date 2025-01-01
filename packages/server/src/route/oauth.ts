@@ -170,7 +170,7 @@ const oauth = new Hono<Context>()
     turnstileMiddleware(),
     async (c, next) => {
       const db = c.get('db');
-      const { email, name, orgName, oauthAccountId } = c.req.valid('json');
+      const { email, oauthAccountId } = c.req.valid('json');
 
       // Check if oauth account exists
       const oauthAcccount = await getOauthAccount(db, oauthAccountId);
@@ -199,9 +199,7 @@ const oauth = new Hono<Context>()
       if (oauthAcccount.emailVerified) {
         const tmpUser = {
           id: 'fake-id',
-          name,
           oauthAccountId,
-          orgName,
           email,
           password: null,
         };
@@ -214,8 +212,6 @@ const oauth = new Hono<Context>()
       const tmpUser = await addTmpUser(db, {
         email,
         password: null,
-        name,
-        orgName,
         oauthAccountId,
       });
 

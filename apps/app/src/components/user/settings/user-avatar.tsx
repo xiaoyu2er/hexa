@@ -16,7 +16,7 @@ export function UserAvatar({
     <Avatar
       className={cn('shrink-0', className)}
       src={user.avatarUrl ?? getAvatarFallbackUrl(user)}
-      name={user.name}
+      name={user.name ?? ''}
       showFallback={false}
       {...props}
     />

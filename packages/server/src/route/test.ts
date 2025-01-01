@@ -18,7 +18,6 @@ const test = new Hono<Context>()
     const db = c.get('db');
     // create tmp user and delete it
     const user = await addTmpUser(db, {
-      name: 'test',
       email: `${generateId('tmpu')}@test.com`,
     });
     await deleteTmpUser(db, user.id);

@@ -20,7 +20,7 @@ export const InviteCardActionModal = NiceModal.create(
   ({ row }: { row: Row<QueryInviteType> }) => {
     const modal = useModal();
     return (
-      <Modal isOpen={modal.visible} onOpenChange={modal.hide} backdrop="blur">
+      <Modal isOpen={modal.visible} onOpenChange={modal.remove} backdrop="blur">
         <ModalContent>
           <ModalHeader>Invite Actions</ModalHeader>
           <ModalBody>
