@@ -84,7 +84,7 @@ export const DeleteProjectModal = NiceModal.create(() => {
       setFormError(err, setError);
     },
     onSuccess: () => {
-      toast.success('Account deleted successfully');
+      toast.success('Project deleted successfully');
       invalidateProjectsQuery();
       router.replace('/');
     },

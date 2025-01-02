@@ -1,7 +1,7 @@
 'use client';
 import { BaseTable, type TableRef } from '@/components/table/base-table';
 import type { QueryInviteType } from '@hexa/server/schema/org-invite';
-import { type ReactNode, forwardRef } from 'react';
+import type { FC, ReactNode, Ref } from 'react';
 import {
   InviteCard as Card,
   InviteCardSkeleton as CardSkeleton,
@@ -16,12 +16,13 @@ import {
 
 interface OrgInviteTableProps {
   actionSlot?: ReactNode;
+  ref: Ref<TableRef<QueryInviteType>>;
 }
 
-export const OrgInviteTable = forwardRef<
-  TableRef<QueryInviteType>,
-  OrgInviteTableProps
->(({ actionSlot }, ref) => {
+export const OrgInviteTable: FC<OrgInviteTableProps> = ({
+  actionSlot,
+  ref,
+}) => {
   return (
     <BaseTable
       ref={ref}
@@ -35,6 +36,6 @@ export const OrgInviteTable = forwardRef<
       actionSlot={actionSlot}
     />
   );
-});
+};
 
 OrgInviteTable.displayName = 'OrgInviteTable';

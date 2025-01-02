@@ -233,7 +233,7 @@ const user = new Hono<Context>()
           'Failed to set default project'
         );
       }
-      const project = await getProjectWithRole(db, projectId, userId);
+      const project = await getProjectWithRole(db, { projectId, userId });
       if (!project) {
         throw new ApiError('NOT_FOUND', 'Project not found');
       }

@@ -7,37 +7,25 @@ import {
 } from '@hexa/server/store/project';
 import { redirect } from 'next/navigation';
 
-export default async function HomeLayout() {
+export default async function () {
   const { session, user } = await getSession();
   if (session && user) {
     if (user.defaultProjectId) {
-      try {
-        const project = await getProjectWithRole(
-          await getDb(),
-          user.defaultProjectId,
-          user.id
-        );
-        if (project) {
-          return redirect(`/${getProjectSlug(project)}`);
-        }
-      } catch (_error) {
-        // TODO onboarding process
-        return redirect('/onboarding');
+      const project = await getProjectWithRole(await getDb(), {
+        projectId: user.defaultProjectId,
+        userId: user.id,
+      });
+      if (project) {
+        return redirect(`/${getProjectSlug(project)}`);
       }
-    } else {
-      try {
-        const project = await getLastJoinedOrgsFirstProject(
-          await getDb(),
-          user.id
-        );
-        if (project) {
-          return redirect(`/${getProjectSlug(project)}`);
-        }
-      } catch (_error) {
-        // TODO onboarding process
-        return redirect('/onboarding');
-      }
+      return redirect('/onboarding');
     }
+    const project = await getLastJoinedOrgsFirstProject(await getDb(), user.id);
+    if (project) {
+      return redirect(`/${getProjectSlug(project)}`);
+    }
+    return redirect('/onboarding');
   }
+
   return redirect('/login');
 }

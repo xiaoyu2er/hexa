@@ -84,7 +84,7 @@ export const DeleteOrgModal = NiceModal.create(() => {
       setFormError(err, setError);
     },
     onSuccess: () => {
-      toast.success('Account deleted successfully');
+      toast.success('Organization deleted successfully');
       modal.resolve();
       invalidateProjectsQuery();
       router.replace('/');
