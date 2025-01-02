@@ -1,7 +1,7 @@
 'use client';
 
 import type { SelectOrgType } from '@hexa/server/schema/org';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useStep } from 'usehooks-ts';
 import { OnboardingInvite } from './onboarding-invite';
@@ -18,6 +18,7 @@ interface OnboardingFlowProps {
 }
 
 export function OnboardingFlow({ steps, initialOrg }: OnboardingFlowProps) {
+  const router = useRouter();
   const [currentStep, { goToNextStep }] = useStep(steps.length);
   const [org, setOrg] = useState<SelectOrgType | undefined>(initialOrg);
 
@@ -41,8 +42,15 @@ export function OnboardingFlow({ steps, initialOrg }: OnboardingFlowProps) {
         }
         return <OnboardingProject onNext={goToNextStep} org={org} />;
       }
-      case 'invite':
-        return <OnboardingInvite onNext={() => redirect('/')} />;
+      case 'invite': {
+        // We should have an org by this point, either from initial or created
+        if (!org) {
+          throw new Error('No organization available for invite creation');
+        }
+        return (
+          <OnboardingInvite onNext={() => router.replace('/')} org={org} />
+        );
+      }
       default:
         return null;
     }

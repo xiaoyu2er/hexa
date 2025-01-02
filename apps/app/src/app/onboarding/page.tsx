@@ -3,7 +3,10 @@ import { getProjectSlug } from '@/lib/project';
 import { getDb } from '@hexa/server/db';
 import { getSession } from '@hexa/server/session';
 import { getUserOrgs } from '@hexa/server/store/org';
-import { getOrgProjects } from '@hexa/server/store/project';
+import {
+  getLastJoinedOrgsFirstProject,
+  getProjectWithRole,
+} from '@hexa/server/store/project';
 import { redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
@@ -15,6 +18,24 @@ export default async function OnboardingPage() {
   }
 
   const db = await getDb();
+  // Check if user has a default project
+  if (user.defaultProjectId) {
+    const project = await getProjectWithRole(await getDb(), {
+      projectId: user.defaultProjectId,
+      userId: user.id,
+    });
+    if (project) {
+      return redirect(`/${getProjectSlug(project)}`);
+    }
+  }
+
+  // If no default project, check last joined orgs first project
+  const project = await getLastJoinedOrgsFirstProject(await getDb(), user.id);
+  if (project) {
+    return redirect(`/${getProjectSlug(project)}`);
+  }
+
+  // If no project found, check user orgs
   const orgs = await getUserOrgs(db, user.id);
 
   if (orgs.rowCount > 0) {
@@ -22,13 +43,6 @@ export default async function OnboardingPage() {
     const ownedOrg = orgs.data.find((org) => org.role === 'OWNER');
 
     if (ownedOrg) {
-      // Check if owned org has projects
-      const projects = await getOrgProjects(db, ownedOrg.id);
-      if (projects[0]) {
-        // Redirect to first project
-        redirect(`/${getProjectSlug(projects[0])}`);
-      }
-      // No projects, continue to project creation with owned org
       return (
         <OnboardingFlow
           steps={['project', 'invite'] as const}
@@ -36,23 +50,6 @@ export default async function OnboardingPage() {
         />
       );
     }
-
-    // If no owned org, check member orgs
-    for (const org of orgs.data) {
-      const projects = await getOrgProjects(db, org.id);
-      if (projects[0]) {
-        // Redirect to first project found
-        redirect(`/${getProjectSlug(projects[0])}`);
-      }
-    }
-
-    // Use first org if no owned org found
-    return (
-      <OnboardingFlow
-        steps={['project', 'invite'] as const}
-        initialOrg={orgs.data[0]}
-      />
-    );
   }
 
   // No orgs found, start fresh onboarding

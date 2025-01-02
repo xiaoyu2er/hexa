@@ -20,7 +20,7 @@ const authProject = (
 
     const { db, userId } = c.var;
 
-    const project = await getProjectWithRole(db, projectId, userId);
+    const project = await getProjectWithRole(db, { projectId, userId });
 
     if (!project) {
       throw new ApiError('NOT_FOUND', 'Project not found');

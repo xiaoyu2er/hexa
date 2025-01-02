@@ -130,7 +130,7 @@ export async function getProjectBySlug(
 export async function getLastJoinedOrgsFirstProject(
   db: DbType,
   userId: string
-): Promise<SelectProjectType> {
+): Promise<SelectProjectType | null> {
   // Get the latest org membership for the user
   const latestOrgMember = await db.query.orgMemberTable.findFirst({
     where: eq(orgMemberTable.userId, userId),
@@ -141,7 +141,7 @@ export async function getLastJoinedOrgsFirstProject(
   });
 
   if (!latestOrgMember) {
-    throw new ApiError('NOT_FOUND', 'No orgs found');
+    return null;
   }
 
   // Get the first project for this org
@@ -160,7 +160,7 @@ export async function getLastJoinedOrgsFirstProject(
   });
 
   if (!project) {
-    throw new ApiError('NOT_FOUND', 'No projects found');
+    return null;
   }
 
   const domains = await getDefaultDomains();
@@ -174,11 +174,10 @@ export async function getLastJoinedOrgsFirstProject(
 
 export async function getProjectWithRole(
   db: DbType,
-  projectId: string,
-  userId: string
-): Promise<SelectProjectType> {
+  { projectId, userId }: { projectId: string; userId: string }
+): Promise<SelectProjectType | null> {
   if (!projectId) {
-    throw new ApiError('NOT_FOUND', 'Project not found');
+    return null;
   }
   const project = await db.query.projectTable.findFirst({
     where: eq(projectTable.id, projectId),
@@ -195,11 +194,13 @@ export async function getProjectWithRole(
   });
 
   if (!project) {
-    throw new ApiError('NOT_FOUND', 'Project not found');
+    // throw new ApiError('NOT_FOUND', 'Project not found');
+    return null;
   }
 
   if (!project.org.members[0]) {
-    throw new ApiError('NOT_FOUND', 'Project not found');
+    // throw new ApiError('NOT_FOUND', 'Project not found');
+    return null;
   }
 
   const member = project.org.members[0];
@@ -218,7 +219,7 @@ export async function getProjectWithRoleBySlug(
   projectSlug: string,
   orgSlug: string,
   userId: string
-): Promise<SelectProjectType> {
+): Promise<SelectProjectType | null> {
   const subquery = db
     .select({ projectId: projectTable.id })
     .from(projectTable)
@@ -244,12 +245,12 @@ export async function getProjectWithRoleBySlug(
   });
 
   if (!project || !project.org) {
-    throw new ApiError('NOT_FOUND', 'Project not found');
+    return null;
   }
 
   const member = project.org.members.find((m) => m.userId === userId);
   if (!member) {
-    throw new ApiError('NOT_FOUND', 'Project not found');
+    return null;
   }
 
   const domains = await getDefaultDomains();
@@ -344,7 +345,16 @@ export async function updateProjectSlug(
     .set({ defaultProjectId: project.id })
     .where(eq(userTable.defaultProjectId, projectId));
 
-  return getProjectWithRole(db, project.id, userId);
+  const projectWithRole = await getProjectWithRole(db, {
+    projectId: project.id,
+    userId,
+  });
+
+  if (!projectWithRole) {
+    throw new ApiError('NOT_FOUND', 'Project not found');
+  }
+
+  return projectWithRole;
 }
 
 // Update project avatar
