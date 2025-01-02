@@ -6,7 +6,6 @@ import {
   resendPasscodeMiddleware,
 } from '@hexa/server/middleware/passcode';
 import { turnstileMiddleware } from '@hexa/server/middleware/turnstile';
-import type { Context } from '@hexa/server/route/route-types';
 import {
   ResendPasscodeSchema,
   SendPasscodeSchema,
@@ -20,6 +19,7 @@ import {
   verifyPasscode,
 } from '@hexa/server/store/passcode';
 import { getEmail, updateUserPassword } from '@hexa/server/store/user';
+import type { Context } from '@hexa/server/types';
 // @ts-ignore
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';

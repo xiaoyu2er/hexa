@@ -1,4 +1,3 @@
-import type { DbType } from '@hexa/server/route/route-types';
 import {
   type OrgMemberQueryType,
   isDirectTableColumn,
@@ -8,6 +7,7 @@ import type { SelectOrgMemberType } from '@hexa/server/schema/org-member';
 import { emailTable } from '@hexa/server/table/email';
 import { orgMemberTable } from '@hexa/server/table/org-member';
 import { userTable } from '@hexa/server/table/user';
+import type { DbType } from '@hexa/server/types';
 import { and, asc, desc, eq, sql } from 'drizzle-orm';
 
 export const getOrgMember = (db: DbType, orgId: string, userId: string) => {

@@ -1,11 +1,11 @@
 import { ApiError } from '@hexa/lib';
-import type { ValidTarget } from '@hexa/server/route/route-types';
 import type { PasscodeType } from '@hexa/server/schema/passcode';
 import { resendPasscodeAndSendEmail } from '@hexa/server/service/passcode';
 import {
   findPasscodeByToken,
   verifyPasscode,
 } from '@hexa/server/store/passcode';
+import type { ValidTarget } from '@hexa/server/types';
 import { createMiddleware } from 'hono/factory';
 
 export const resendPasscodeMiddleware = (verifyUrlPrefex: string) =>

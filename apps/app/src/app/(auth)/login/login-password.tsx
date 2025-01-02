@@ -95,8 +95,12 @@ export function LoginPassword() {
           <FormErrorMessage message={errors.root?.message} />
           {turnstile}
           <div className="flex flex-wrap justify-between">
-            <AuthLink href="/signup">Not signed up? Sign up now.</AuthLink>
-            <AuthLink href="/reset-password">Forget password?</AuthLink>
+            <AuthLink href="/signup" withSearchParams>
+              Not signed up? Sign up now.
+            </AuthLink>
+            <AuthLink href="/reset-password" withSearchParams>
+              Forget password?
+            </AuthLink>
           </div>
           <Button
             color="primary"

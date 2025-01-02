@@ -7,7 +7,6 @@ import {
   resendPasscodeMiddleware,
 } from '@hexa/server/middleware/passcode';
 import { turnstileMiddleware } from '@hexa/server/middleware/turnstile';
-import type { Context } from '@hexa/server/route/route-types';
 import { OauthSignupSchema } from '@hexa/server/schema/oauth';
 import {
   ResendPasscodeSchema,
@@ -18,6 +17,7 @@ import { SignupSchema, type SignupType } from '@hexa/server/schema/signup';
 import { addPasscodeAndSendEmail } from '@hexa/server/service/passcode';
 import { addTmpUser } from '@hexa/server/store/tmp-user';
 import { getEmail } from '@hexa/server/store/user';
+import type { Context } from '@hexa/server/types';
 // @ts-ignore
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';

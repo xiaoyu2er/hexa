@@ -4,7 +4,6 @@ import { getStorage, sendOrgInviteEmails } from '@hexa/server/lib';
 import { isStored } from '@hexa/server/lib';
 import authOrg from '@hexa/server/middleware/org';
 import { authInvite } from '@hexa/server/middleware/org-invite';
-import type { Context } from '@hexa/server/route/route-types';
 import {
   DeleteOrgSchema,
   InsertOrgSchema,
@@ -38,6 +37,7 @@ import {
 } from '@hexa/server/store/org-invite';
 import { getOrgMembers } from '@hexa/server/store/org-member';
 import {} from '@hexa/server/store/project';
+import type { Context } from '@hexa/server/types';
 // @ts-ignore
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';

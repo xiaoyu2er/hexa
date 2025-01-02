@@ -1,11 +1,11 @@
 import { IS_DEVELOPMENT } from '@hexa/env';
 import { getHash } from '@hexa/lib';
 import { ApiError } from '@hexa/lib';
-import type { DbType } from '@hexa/server/route/route-types';
 import type { InsertEmailType } from '@hexa/server/schema/email';
 import type { InsertUserType } from '@hexa/server/schema/user';
 import { emailTable } from '@hexa/server/table/email';
 import { userTable } from '@hexa/server/table/user';
+import type { DbType } from '@hexa/server/types';
 import { and, eq, ne } from 'drizzle-orm';
 import { pick } from 'lodash';
 

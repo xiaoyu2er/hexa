@@ -35,6 +35,7 @@ export type ContextVariables = {
   org: SelectOrgType;
   orgId: string;
   invite: SelectInviteType;
+  redirectUrl: string | undefined;
 };
 
 export type Context = {
