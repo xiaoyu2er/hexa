@@ -9,7 +9,6 @@ import {
 } from '@hexa/server/middleware/passcode';
 import authProject from '@hexa/server/middleware/project';
 import { turnstileMiddleware } from '@hexa/server/middleware/turnstile';
-import type { Context } from '@hexa/server/route/route-types';
 import { EmailSchema } from '@hexa/server/schema/common';
 import { DeleteEmailSchema } from '@hexa/server/schema/email';
 import { DeleteOauthAccountSchema } from '@hexa/server/schema/oauth';
@@ -49,6 +48,7 @@ import {
   updateUserPrimaryEmail,
   updateUsername,
 } from '@hexa/server/store/user';
+import type { Context } from '@hexa/server/types';
 // @ts-ignore
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';

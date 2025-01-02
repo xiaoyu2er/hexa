@@ -1,6 +1,5 @@
 import { ApiError } from '@hexa/lib';
 import { isUniqueConstraintViolationError } from '@hexa/server/lib/error';
-import type { DbType } from '@hexa/server/route/route-types';
 import type { InsertOrgType, SelectUserOrgType } from '@hexa/server/schema/org';
 import type {
   InsertOrgMemberType,
@@ -8,6 +7,7 @@ import type {
 } from '@hexa/server/schema/org-member';
 import { orgTable } from '@hexa/server/table/org';
 import { orgMemberTable } from '@hexa/server/table/org-member';
+import type { DbType } from '@hexa/server/types';
 import { and, eq, sql } from 'drizzle-orm';
 
 // 1. List all orgs that user belongs to with roles

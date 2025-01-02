@@ -3,7 +3,7 @@ import { ApiError } from '@hexa/lib';
 import type { InsertTmpUser } from '@hexa/server/schema/tmp-user';
 import { tmpUserTable } from '@hexa/server/table/tmp-user';
 import { eq } from 'drizzle-orm';
-import type { DbType } from '../route/route-types';
+import type { DbType } from '../types';
 
 export async function addTmpUser(
   db: DbType,

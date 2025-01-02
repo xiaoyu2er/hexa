@@ -3,7 +3,6 @@ import {
   creatUserFromTmpUserMiddleware,
 } from '@hexa/server/middleware/oauth';
 import {
-  type GitHubEmail,
   type GitHubUser,
   type GoogleUser,
   OauthSignupSchema,
@@ -20,7 +19,6 @@ import {
 } from '@hexa/server/middleware/passcode';
 import { getSessionMiddleware } from '@hexa/server/middleware/session';
 import { turnstileMiddleware } from '@hexa/server/middleware/turnstile';
-import type { Context } from '@hexa/server/route/route-types';
 import {
   ResendPasscodeSchema,
   VerifyPassTokenSchema,
@@ -29,20 +27,30 @@ import {
 import { addPasscodeAndSendEmail } from '@hexa/server/service/passcode';
 import { addTmpUser } from '@hexa/server/store/tmp-user';
 import { getEmail } from '@hexa/server/store/user';
+import type { Context } from '@hexa/server/types';
 // @ts-ignore
 import { zValidator } from '@hono/zod-validator';
 // @ts-ignore
 import { generateCodeVerifier, generateState } from 'arctic';
 import { Hono } from 'hono';
-import { getCookie, setCookie } from 'hono/cookie';
+import { deleteCookie, setCookie } from 'hono/cookie';
 const oauth = new Hono<Context>()
   // ====== Github Oauth ======
   .get('/oauth/github', async (c) => {
     const state = generateState();
-
+    const next = c.req.query('next');
+    const redirectUrl = next ?? '/';
     const url = await getGitHub().createAuthorizationURL(state, ['user:email']);
 
     setCookie(c, 'github_oauth_state', state, {
+      path: '/',
+      secure: IS_PRODUCTION,
+      httpOnly: true,
+      maxAge: 60 * 10, // 10 minutes
+      sameSite: 'lax',
+    });
+
+    setCookie(c, 'github_redirect_url', redirectUrl, {
       path: '/',
       secure: IS_PRODUCTION,
       httpOnly: true,
@@ -58,7 +66,8 @@ const oauth = new Hono<Context>()
     getSessionMiddleware,
     async (c, next) => {
       const { code, state } = c.req.query();
-      const cookieState = getCookie(c, 'github_oauth_state') ?? null;
+      const redirectUrl = deleteCookie(c, 'github_redirect_url');
+      const cookieState = deleteCookie(c, 'github_oauth_state') ?? null;
       if (!code || !state || !cookieState || state !== cookieState) {
         throw new ApiError('FORBIDDEN', 'Invalid state');
       }
@@ -78,18 +87,19 @@ const oauth = new Hono<Context>()
         );
       }
       const githubUser: GitHubUser = await githubUserResponse.json();
-      const emailsResponse = await fetch('https://api.github.com/user/emails', {
-        headers: {
-          Authorization: `Bearer ${tokens.accessToken()}`,
-          'User-Agent': 'hexa.im',
-        },
-      });
-      const emails: GitHubEmail[] = await emailsResponse.json();
-      const isEmailVerified = emails.some(
-        (email) => email.verified && email.email === githubUser.email
-      );
-      githubUser.email_verified = isEmailVerified;
+      // const emailsResponse = await fetch('https://api.github.com/user/emails', {
+      //   headers: {
+      //     Authorization: `Bearer ${tokens.accessToken()}`,
+      //     'User-Agent': 'hexa.im',
+      //   },
+      // });
+      // const emails: GitHubEmail[] = await emailsResponse.json();
+      // const isEmailVerified = emails.some(
+      //   (email) => email.verified && email.email === githubUser.email
+      // );
+      // githubUser.email_verified = isEmailVerified;
       c.set('providerUser', githubUser);
+      c.set('redirectUrl', redirectUrl ?? '/');
       return next();
     },
     afterOauthCallbackMiddleware('GITHUB')
@@ -98,7 +108,8 @@ const oauth = new Hono<Context>()
   .get('/oauth/google', async (c) => {
     const state = generateState();
     const codeVerifier = generateCodeVerifier();
-
+    const next = c.req.query('next');
+    const redirectUrl = next ?? '/';
     const url = await getGoogle().createAuthorizationURL(state, codeVerifier, [
       'profile',
       'email',
@@ -118,6 +129,13 @@ const oauth = new Hono<Context>()
       maxAge: 60 * 10, // 10 minutes
     });
 
+    setCookie(c, 'google_redirect_url', redirectUrl, {
+      secure: true,
+      path: '/',
+      httpOnly: true,
+      maxAge: 60 * 10, // 10 minutes
+    });
+
     return c.redirect(url);
   })
   // Google Oauth callback
@@ -126,8 +144,9 @@ const oauth = new Hono<Context>()
     getSessionMiddleware,
     async (c, next) => {
       const { code, state } = c.req.query();
-      const storedState = getCookie(c, 'google_oauth_state');
-      const codeVerifier = getCookie(c, 'google_code_verifier');
+      const storedState = deleteCookie(c, 'google_oauth_state');
+      const codeVerifier = deleteCookie(c, 'google_code_verifier');
+      const redirectUrl = deleteCookie(c, 'google_redirect_url');
 
       if (
         !code ||
@@ -158,6 +177,7 @@ const oauth = new Hono<Context>()
 
       const googleUser: GoogleUser = await response.json();
       c.set('providerUser', googleUser);
+      c.set('redirectUrl', redirectUrl ?? '/');
       return next();
     },
     afterOauthCallbackMiddleware('GOOGLE')

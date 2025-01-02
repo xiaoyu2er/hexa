@@ -96,7 +96,9 @@ export const ForgetPassword: FC<ForgetPasswordProps> = ({
           />
           <FormErrorMessage message={errors.root?.message} />
           {turnstile}
-          <AuthLink href="/signup">Not signed up? Sign up now.</AuthLink>
+          <AuthLink href="/signup" withSearchParams>
+            Not signed up? Sign up now.
+          </AuthLink>
           <Button
             color="primary"
             className="w-full"

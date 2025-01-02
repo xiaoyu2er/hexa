@@ -1,6 +1,6 @@
 import { ApiError } from '@hexa/lib';
-import type { ValidTarget } from '@hexa/server/route/route-types';
 import { getOrgInvite } from '@hexa/server/store/org-invite';
+import type { ValidTarget } from '@hexa/server/types';
 import { createMiddleware } from 'hono/factory';
 
 export const authInvite = (target: ValidTarget) =>

@@ -1,11 +1,11 @@
 'use server';
 import { sendVerifyCodeAndUrlEmail } from '@hexa/server/lib';
-import type { DbType } from '@hexa/server/route/route-types';
 import type {
   AddPasscodeType,
   UpdatePasscodeType,
 } from '@hexa/server/schema/passcode';
 import { addPasscode, updatePasscode } from '@hexa/server/store/passcode';
+import type { DbType } from '@hexa/server/types';
 
 export async function addPasscodeAndSendEmail(
   db: DbType,

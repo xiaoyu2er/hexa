@@ -12,7 +12,7 @@ import { createMiddleware } from 'hono/factory';
 
 export const afterOauthCallbackMiddleware = (provider: ProviderType) =>
   createMiddleware(async (c) => {
-    const { db, user, providerUser } = c.var;
+    const { db, user, providerUser, redirectUrl } = c.var;
 
     if (provider !== 'GITHUB' && provider !== 'GOOGLE') {
       throw new ApiError('BAD_REQUEST', 'Invalid provider');
@@ -28,7 +28,7 @@ export const afterOauthCallbackMiddleware = (provider: ProviderType) =>
       // If user is logged in, bind the account, even if it's already linked, update the account
       // it's possible that the user goes to /api/oauth/github or /api/oauth/google
       await createOauthAccount(db, user.id, provider, providerUser);
-      return c.redirect('/');
+      return c.redirect(redirectUrl);
     }
 
     // Find existing oauthAccount
@@ -41,7 +41,7 @@ export const afterOauthCallbackMiddleware = (provider: ProviderType) =>
     // If the account is already linked to a user, set the session and redirect to home
     if (existingAccount?.userId && existingAccount.user) {
       await setSession(existingAccount.userId);
-      return c.redirect('/');
+      return c.redirect(redirectUrl);
     }
 
     // If there is no user, create a new account, create a new user, and set the session
@@ -69,7 +69,7 @@ export const afterOauthCallbackMiddleware = (provider: ProviderType) =>
     //   maxAge: 60, // 1 minutes
     //   sameSite: 'lax',
     // });
-    return c.redirect('/');
+    return c.redirect(redirectUrl);
   });
 
 /**

@@ -1,8 +1,8 @@
 import { ApiError } from '@hexa/lib';
 import { getSessionMiddleware } from '@hexa/server/middleware/session';
-import type { Context } from '@hexa/server/route/route-types';
 import { acceptInvite, getInviteByToken } from '@hexa/server/store/org-invite';
 import { getUserEmail } from '@hexa/server/store/user';
+import type { Context } from '@hexa/server/types';
 // @ts-ignore
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
@@ -28,6 +28,8 @@ const invite = new Hono<Context>()
           }
           throw new ApiError('BAD_REQUEST', 'Email is not verified');
         }
+      } else {
+        return c.redirect(`/login?next=${c.req.url}`);
       }
 
       return c.json({});

@@ -1,7 +1,6 @@
 import { INVITE_EXPIRE_TIME_SPAN } from '@hexa/const';
 import { generateId } from '@hexa/lib';
 import { ApiError } from '@hexa/lib';
-import type { DbType } from '@hexa/server/route/route-types';
 import {
   type CreateInvitesType,
   type InviteStatusType,
@@ -14,6 +13,7 @@ import type { OrgMemberRoleType } from '@hexa/server/schema/org-member';
 import { emailTable } from '@hexa/server/table/email';
 import { orgInviteTable } from '@hexa/server/table/org-invite';
 import { orgMemberTable } from '@hexa/server/table/org-member';
+import type { DbType } from '@hexa/server/types';
 import { and, asc, desc, eq, gt, sql } from 'drizzle-orm';
 // @ts-ignore
 import { createDate } from 'oslo';

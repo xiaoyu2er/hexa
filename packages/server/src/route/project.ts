@@ -3,7 +3,6 @@ import { ApiError } from '@hexa/lib';
 import { getStorage, isStored } from '@hexa/server/lib';
 import authOrg from '@hexa/server/middleware/org';
 import authProject from '@hexa/server/middleware/project';
-import type { Context } from '@hexa/server/route/route-types';
 import {
   DeleteProjectSchema,
   InsertProjectSchema,
@@ -21,6 +20,7 @@ import {
   updateProjectName,
   updateProjectSlug,
 } from '@hexa/server/store/project';
+import type { Context } from '@hexa/server/types';
 // @ts-ignore
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';

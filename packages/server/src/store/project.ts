@@ -10,7 +10,7 @@ import { orgMemberTable } from '@hexa/server/table/org-member';
 import { projectTable } from '@hexa/server/table/project';
 import { userTable } from '@hexa/server/table/user';
 import { and, asc, desc, eq, inArray } from 'drizzle-orm';
-import type { DbType } from '../route/route-types';
+import type { DbType } from '../types';
 
 export const getDefaultDomains = async () => {
   return process.env.DEFAULT_DOMAINS?.split(',') ?? [];

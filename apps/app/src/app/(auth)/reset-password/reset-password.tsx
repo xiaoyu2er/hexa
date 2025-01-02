@@ -87,7 +87,9 @@ export const ResetPassword: FC<ResetParsswordCardProps> = ({
           />
           <FormErrorMessage message={errors.root?.message} />
 
-          <AuthLink href="/signup">Not signed up? Sign up now.</AuthLink>
+          <AuthLink href="/signup" withSearchParams>
+            Not signed up? Sign up now.
+          </AuthLink>
           <Button
             color="primary"
             className="w-full"

@@ -9,12 +9,13 @@ import { invalidateOrgInvites } from '@/lib/queries/orgs';
 import { useModal } from '@ebay/nice-modal-react';
 import type { QueryInviteType } from '@hexa/server/schema/org-invite';
 import { Button, Tab, Tabs } from '@nextui-org/react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 export function MembersPage() {
   const { project } = useProject();
   const modal = useModal(CreateInvitesModal);
   const inviteTableRef = useRef<TableRef<QueryInviteType>>(null);
+  const [selected, setSelected] = useState<string | number>('members');
 
   return (
     <>
@@ -24,7 +25,7 @@ export function MembersPage() {
       </div>
 
       <div className="relative">
-        <Tabs defaultSelectedKey="members">
+        <Tabs selectedKey={selected} onSelectionChange={setSelected}>
           <Tab key="members" title="Members">
             <OrgMemberTable />
           </Tab>
@@ -38,8 +39,12 @@ export function MembersPage() {
           className="absolute top-0 right-0"
           onPress={() =>
             modal.show(project).then(() => {
-              inviteTableRef.current?.table.setPageIndex(0);
-              invalidateOrgInvites(project.org.id);
+              if (inviteTableRef.current) {
+                inviteTableRef.current?.table.setPageIndex(0);
+                invalidateOrgInvites(project.org.id);
+              } else {
+                setSelected('invites');
+              }
             })
           }
         >

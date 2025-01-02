@@ -106,7 +106,9 @@ export const SignupEmailPassword: FC<SignupEmailPasswordProps> = ({
           <FormErrorMessage message={errors.root?.message} />
           {turnstile}
 
-          <AuthLink href="/login">Have an account? Login</AuthLink>
+          <AuthLink href="/login" withSearchParams>
+            Have an account? Login
+          </AuthLink>
 
           <Button
             color="primary"
