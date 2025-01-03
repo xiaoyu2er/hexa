@@ -1,4 +1,4 @@
-import { zPassword } from '@hexa/server/schema/common';
+import { zNextSchema, zPassword } from '@hexa/server/schema/common';
 import { TokenSchema } from '@hexa/server/schema/passcode';
 import { z } from 'zod';
 
@@ -8,6 +8,7 @@ export const ResetPasswordSchema = z
     confirmPassword: zPassword,
   })
   .merge(TokenSchema)
+  .merge(zNextSchema)
   .refine((data) => data.password === data.confirmPassword, {
     path: ['confirmPassword'],
     message: 'Password does not match',

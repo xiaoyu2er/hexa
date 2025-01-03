@@ -4,9 +4,9 @@ import { setFormError } from '@/components/form';
 import { FormErrorMessage } from '@/components/form';
 import { InputField } from '@/components/form';
 import { useTurnstile } from '@/hooks/use-turnstile';
-import {
+import type {
   $resetPasswordSendPasscode,
-  type InferApiResponseType,
+  InferApiResponseType,
 } from '@hexa/server/api';
 import {
   SendPasscodeSchema,
@@ -30,6 +30,9 @@ import { useForm } from 'react-hook-form';
 
 export interface ForgetPasswordProps {
   email: string;
+  onSendPasscode?: (
+    data: SendPasscodeType
+  ) => Promise<InferApiResponseType<typeof $resetPasswordSendPasscode>>;
   onSuccess: (
     data: InferApiResponseType<typeof $resetPasswordSendPasscode>
   ) => void;
@@ -38,6 +41,7 @@ export interface ForgetPasswordProps {
 
 export const ForgetPassword: FC<ForgetPasswordProps> = ({
   email,
+  onSendPasscode,
   onSuccess,
   onCancel,
 }) => {
@@ -61,7 +65,7 @@ export const ForgetPassword: FC<ForgetPasswordProps> = ({
   });
 
   const { mutateAsync: resetPasswordSendPasscode } = useMutation({
-    mutationFn: $resetPasswordSendPasscode,
+    mutationFn: onSendPasscode,
     onSuccess,
     onError: (error) => {
       setFormError(error, setError);
@@ -84,7 +88,7 @@ export const ForgetPassword: FC<ForgetPasswordProps> = ({
       <CardContent>
         <Form
           form={form}
-          onSubmit={handleSubmit((json) => resetPasswordSendPasscode({ json }))}
+          onSubmit={handleSubmit((json) => resetPasswordSendPasscode(json))}
           className="space-y-2"
         >
           <InputField

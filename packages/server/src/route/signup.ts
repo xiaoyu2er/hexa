@@ -7,7 +7,7 @@ import {
   resendPasscodeMiddleware,
 } from '@hexa/server/middleware/passcode';
 import { turnstileMiddleware } from '@hexa/server/middleware/turnstile';
-import { OauthSignupSchema } from '@hexa/server/schema/oauth';
+import { zNextSchema } from '@hexa/server/schema/common';
 import {
   ResendPasscodeSchema,
   VerifyPassTokenSchema,
@@ -27,11 +27,11 @@ const signup = new Hono<Context>()
   // Signup send passcode
   .post(
     '/signup/send-passcode',
-    zValidator('json', SignupSchema.or(OauthSignupSchema)),
+    zValidator('json', SignupSchema),
     turnstileMiddleware(),
     async (c) => {
       const db = c.get('db');
-      const { email, password } = c.req.valid('json') as SignupType;
+      const { email, password, next } = c.req.valid('json') as SignupType;
       const emailItem = await getEmail(db, email);
 
       if (emailItem?.verified) {
@@ -53,6 +53,7 @@ const signup = new Hono<Context>()
         email,
         type: 'SIGN_UP',
         verifyUrlPrefex: `${APP_URL}/api/signup/verify-token/`,
+        verifyUrlSuffix: next ? `?next=${next}` : undefined,
       });
 
       return c.json(data);
@@ -76,6 +77,7 @@ const signup = new Hono<Context>()
   .get(
     '/signup/verify-token/:token',
     zValidator('param', VerifyPassTokenSchema),
+    zValidator('query', zNextSchema),
     getPasscodeByTokenMiddleware('param', 'SIGN_UP'),
     creatUserFromTmpUserMiddleware
   );

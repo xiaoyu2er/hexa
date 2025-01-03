@@ -1,3 +1,4 @@
+import { zNextSchema } from '@hexa/server/schema/common';
 import { SelectOauthAccountSchema } from '@hexa/server/schema/oauth';
 import { SelectTmpUserSchema } from '@hexa/server/schema/tmp-user';
 import { TurnstileSchema } from '@hexa/server/schema/turnstile';
@@ -62,13 +63,17 @@ export type QueryPasscodeByTokenType = z.infer<
 
 export const SendPasscodeSchema = InsertPasscodeSchema.pick({
   email: true,
-}).merge(TurnstileSchema);
+})
+  .merge(TurnstileSchema)
+  .merge(zNextSchema);
 
 export type SendPasscodeType = z.infer<typeof SendPasscodeSchema>;
 
 export const ResendPasscodeSchema = SelectedPasscodeSchema.pick({
   id: true,
-}).merge(TurnstileSchema);
+})
+  .merge(TurnstileSchema)
+  .merge(zNextSchema);
 
 export type ResendPasscodeType = z.infer<typeof ResendPasscodeSchema>;
 
@@ -99,7 +104,7 @@ export type VerifyTokenType = z.infer<typeof VerifyTokenSchema>;
 export const VerifyPasscodeSchema = InsertPasscodeSchema.pick({
   code: true,
   id: true,
-});
+}).merge(zNextSchema);
 export type VerifyPasscodeType = z.infer<typeof VerifyPasscodeSchema>;
 
 export const VerifyPasscodeOnlyCodeSchema = VerifyPasscodeSchema.pick({

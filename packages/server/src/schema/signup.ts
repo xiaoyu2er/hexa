@@ -1,6 +1,7 @@
 import {
   EmailSchema,
   PasswordSchema,
+  zNextSchema,
   zOrgName,
 } from '@hexa/server/schema/common';
 import { TurnstileSchema } from '@hexa/server/schema/turnstile';
@@ -17,6 +18,7 @@ export const SignupSchema = z
   })
   .merge(EmailSchema)
   .merge(PasswordSchema)
-  .merge(TurnstileSchema);
+  .merge(TurnstileSchema)
+  .merge(zNextSchema);
 
 export type SignupType = z.infer<typeof SignupSchema>;
