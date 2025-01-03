@@ -12,13 +12,14 @@ export const resendPasscodeMiddleware = (verifyUrlPrefex: string) =>
   createMiddleware(async (c) => {
     const db = c.get('db');
     // @ts-ignore
-    const { id } = c.req.valid('json');
+    const { id, next } = c.req.valid('json');
     if (!id) {
       throw new ApiError('BAD_REQUEST', 'The passcode id is required');
     }
     const data = await resendPasscodeAndSendEmail(db, {
       id,
       verifyUrlPrefex,
+      verifyUrlSuffix: next ? `?next=${next}` : undefined,
     });
 
     return c.json(data);

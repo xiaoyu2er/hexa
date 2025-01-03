@@ -81,7 +81,9 @@ export const afterOauthCallbackMiddleware = (provider: ProviderType) =>
  */
 export const creatUserFromTmpUserMiddleware = createMiddleware(async (c) => {
   const { tmpUser, db } = c.var;
-
+  // @ts-ignore
+  const { next } = c.req.valid('query') ?? {};
+  const redirectUrl = next ?? '/';
   if (!tmpUser) {
     throw new ApiError('BAD_REQUEST', 'tmp user not found');
   }
@@ -90,7 +92,9 @@ export const creatUserFromTmpUserMiddleware = createMiddleware(async (c) => {
     throw new ApiError('BAD_REQUEST', 'Email is required');
   }
 
-  const user = await createUser(db, {});
+  const user = await createUser(db, {
+    password: tmpUser.password,
+  });
 
   if (!user) {
     throw new ApiError('BAD_REQUEST', 'Failed to create user');
@@ -124,5 +128,5 @@ export const creatUserFromTmpUserMiddleware = createMiddleware(async (c) => {
   }
 
   await setSession(user.id);
-  return c.redirect('/');
+  return c.redirect(redirectUrl);
 });

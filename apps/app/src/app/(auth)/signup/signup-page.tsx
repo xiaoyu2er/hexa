@@ -1,9 +1,13 @@
 'use client';
 
 import { VerifyPasscode } from '@/components/auth/verify-passcode';
-import { $signupResendPasscode, $signupVerifyPasscode } from '@hexa/server/api';
+import {
+  $signupResendPasscode,
+  $signupSendPasscode,
+  $signupVerifyPasscode,
+} from '@hexa/server/api';
 import { toast } from '@hexa/ui/sonner';
-import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { type FC, useState } from 'react';
 import { useStep } from 'usehooks-ts';
 import { SignupEmailPassword } from './signup-email-password';
@@ -11,21 +15,21 @@ import { SignupEmailPassword } from './signup-email-password';
 export const SignupPage: FC = () => {
   const [email, setEmail] = useState<string | undefined>();
   const [passcodeId, setPasscodeId] = useState<string | undefined>();
-  const router = useRouter();
   const [currentStep, { goToNextStep, reset }] = useStep(3);
+  const next = useSearchParams().get('next') ?? undefined;
 
   return (
     <div>
       {currentStep === 1 && (
         <SignupEmailPassword
           email={email}
+          onSignup={(json) => {
+            return $signupSendPasscode({ json: { ...json, next } });
+          }}
           onSuccess={({ id, email }) => {
             setPasscodeId(id);
             setEmail(email);
             goToNextStep();
-          }}
-          onCancel={() => {
-            router.push('/');
           }}
         />
       )}
@@ -35,12 +39,12 @@ export const SignupPage: FC = () => {
           email={email}
           onVerify={(json) => {
             return $signupVerifyPasscode({
-              json,
+              json: { ...json, next },
             });
           }}
           onResend={(json) => {
             return $signupResendPasscode({
-              json,
+              json: { ...json, next },
             });
           }}
           onSuccess={() => {

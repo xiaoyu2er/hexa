@@ -34,7 +34,7 @@ const resetPassword = new Hono<Context>()
     async (c) => {
       const db = c.get('db');
       // @ts-ignore
-      const { email } = c.req.valid('json');
+      const { email, next } = c.req.valid('json');
       const emailItem = await getEmail(db, email);
       if (!emailItem || !emailItem.userId) {
         throw new ApiError('CONFLICT', 'Email not found');
@@ -44,6 +44,7 @@ const resetPassword = new Hono<Context>()
         userId: emailItem.userId,
         type: 'RESET_PASSWORD',
         verifyUrlPrefex: `${APP_URL}/reset-password?token=`,
+        verifyUrlSuffix: next ? `&next=${next}` : '',
       });
       return c.json(data);
     }
@@ -75,7 +76,8 @@ const resetPassword = new Hono<Context>()
     getPasscodeByTokenMiddleware('json', 'RESET_PASSWORD'),
     async (c) => {
       const db = c.get('db');
-      const { token, password } = c.req.valid('json');
+      const { token, password, next } = c.req.valid('json');
+      const redirectUrl = next ?? '/';
       const passcode = await findPasscodeByToken(db, {
         token,
         type: 'RESET_PASSWORD',
@@ -97,7 +99,7 @@ const resetPassword = new Hono<Context>()
       await invalidateUserSessions(passcode.userId);
       await setSession(passcode.userId);
 
-      return c.redirect('/');
+      return c.redirect(redirectUrl);
     }
   );
 

@@ -3,7 +3,7 @@
 import { AuthLink } from '@/components/auth/auth-link';
 import { Form, FormErrorMessage, setFormError } from '@/components/form';
 import { PasswordField } from '@/components/form';
-import { $resetPassword } from '@hexa/server/api';
+import type { $resetPassword, InferApiResponseType } from '@hexa/server/api';
 import {
   ResetPasswordSchema,
   type ResetPasswordType,
@@ -24,12 +24,16 @@ import { useForm } from 'react-hook-form';
 export interface ResetParsswordCardProps {
   onSuccess?: () => void;
   onCancel?: () => void;
+  onReset?: (
+    data: ResetPasswordType
+  ) => Promise<InferApiResponseType<typeof $resetPassword>>;
   token?: string;
 }
 
 export const ResetPassword: FC<ResetParsswordCardProps> = ({
   onSuccess,
   onCancel,
+  onReset,
   token,
 }) => {
   const form = useForm<ResetPasswordType>({
@@ -47,7 +51,7 @@ export const ResetPassword: FC<ResetParsswordCardProps> = ({
   } = form;
 
   const { mutateAsync: resetPassword } = useMutation({
-    mutationFn: $resetPassword,
+    mutationFn: onReset,
     onSuccess,
     onError: (error) => {
       // resetTurnstile();
@@ -70,7 +74,7 @@ export const ResetPassword: FC<ResetParsswordCardProps> = ({
       <CardContent>
         <Form
           form={form}
-          onSubmit={handleSubmit((json) => resetPassword({ json }))}
+          onSubmit={handleSubmit((json) => resetPassword(json))}
           className="space-y-2"
         >
           <PasswordField

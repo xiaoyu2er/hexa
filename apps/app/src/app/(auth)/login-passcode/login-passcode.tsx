@@ -7,9 +7,9 @@ import {
   setFormError,
 } from '@/components/form';
 import { useTurnstile } from '@/hooks/use-turnstile';
-import {
+import type {
   $loginPasscodeSendPasscode,
-  type InferApiResponseType,
+  InferApiResponseType,
 } from '@hexa/server/api';
 import {
   SendPasscodeSchema,
@@ -26,16 +26,24 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
 import { Button, Link } from '@nextui-org/react';
+import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 interface LoginPasscodeProps {
+  onSendPasscode?: (
+    _data: SendPasscodeType
+  ) => Promise<InferApiResponseType<typeof $loginPasscodeSendPasscode>>;
   onSuccess?: (
     _data: InferApiResponseType<typeof $loginPasscodeSendPasscode>
   ) => void;
 }
 
-export function LoginPasscode({ onSuccess }: LoginPasscodeProps) {
+export function LoginPasscode({
+  onSuccess,
+  onSendPasscode,
+}: LoginPasscodeProps) {
+  const _searchParams = useSearchParams();
   const form = useForm<SendPasscodeType>({
     resolver: zodResolver(SendPasscodeSchema),
     defaultValues: {},
@@ -53,7 +61,7 @@ export function LoginPasscode({ onSuccess }: LoginPasscodeProps) {
   });
 
   const { mutateAsync: loginPasscodeSendPasscode } = useMutation({
-    mutationFn: $loginPasscodeSendPasscode,
+    mutationFn: onSendPasscode,
     onSuccess,
     onError: (error) => {
       setFormError(error, setError);
@@ -77,9 +85,7 @@ export function LoginPasscode({ onSuccess }: LoginPasscodeProps) {
         <CardContent>
           <Form
             form={form}
-            onSubmit={handleSubmit((json) =>
-              loginPasscodeSendPasscode({ json })
-            )}
+            onSubmit={handleSubmit((json) => loginPasscodeSendPasscode(json))}
             className="space-y-2"
           >
             <InputField

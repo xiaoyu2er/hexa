@@ -24,10 +24,13 @@ import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Link } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
+import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 export function LoginPassword() {
+  const searchParams = useSearchParams();
+  const search = searchParams.toString() ? `?${searchParams.toString()}` : '';
   const form = useForm<LoginPasswordType>({
     resolver: zodResolver(LoginPasswordSchema),
   });
@@ -76,7 +79,14 @@ export function LoginPassword() {
         <Form
           form={form}
           className="flex flex-col gap-2"
-          onSubmit={handleSubmit((json) => loginPassword({ json }))}
+          onSubmit={handleSubmit((json) =>
+            loginPassword({
+              json: {
+                ...json,
+                next: searchParams.get('next') ?? undefined,
+              },
+            })
+          )}
         >
           <InputField
             form={form}
@@ -115,7 +125,7 @@ export function LoginPassword() {
             className="w-full"
             key="cancel"
             as={Link}
-            href="/login-passcode"
+            href={`/login-passcode${search}`}
           >
             Login with passcode
           </Button>
