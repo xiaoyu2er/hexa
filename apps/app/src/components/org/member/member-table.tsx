@@ -3,7 +3,7 @@
 import {
   MemberCardWithActions as Card,
   MemberCardSkeleton as CardSkeleton,
-} from '@/components/orgs/member/member-card';
+} from '@/components/org/member/member-card';
 import { BaseTable, type TableRef } from '@/components/table/base-table';
 import type { SelectOrgMemberType } from '@hexa/server/schema/org-member';
 import { forwardRef } from 'react';

@@ -98,14 +98,6 @@ export const $resetPassword = h(api['reset-password'].$post);
 export const $signupSendPasscode = h(api.signup['send-passcode'].$post);
 export const $signupResendPasscode = h(api.signup['resend-passcode'].$post);
 export const $signupVerifyPasscode = h(api.signup['verify-passcode'].$post);
-// oauth
-export const $oauthSignup = h(api['oauth-signup'].$post);
-export const $oauthSignupResendPasscode = h(
-  api['oauth-signup']['resend-passcode'].$post
-);
-export const $oauthSignupVerifyPasscode = h(
-  api['oauth-signup']['verify-passcode'].$post
-);
 
 // logout
 export const $logout = h(api.logout.$post);

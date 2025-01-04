@@ -1,5 +1,5 @@
 'use client';
-import RevokeInvite from '@/components/orgs/invite/invite-revoke-button';
+import RevokeInvite from '@/components/org/invite/invite-revoke-button';
 import { TableColumnHeader } from '@/components/table/table-column-header';
 import type { FilterConfig } from '@/components/table/table-types';
 import { UserAvatar } from '@/components/user/settings/user-avatar';

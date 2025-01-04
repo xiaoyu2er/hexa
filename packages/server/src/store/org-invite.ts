@@ -94,12 +94,17 @@ export async function revokeInvite(db: DbType, inviteId: string) {
 }
 
 // Get invite by token
-export async function getInviteByToken(db: DbType, token: string) {
+export async function getInviteByToken(
+  db: DbType,
+  token: string
+): Promise<SelectInviteType> {
+  const now = Math.floor(Date.now() / 1000); // Convert to seconds
+
   const invite = await db.query.orgInviteTable.findFirst({
     where: and(
       eq(orgInviteTable.token, token),
       eq(orgInviteTable.status, 'PENDING'),
-      gt(orgInviteTable.expiresAt, new Date())
+      gt(orgInviteTable.expiresAt, sql`${now}`)
     ),
     with: {
       org: true,
@@ -108,10 +113,14 @@ export async function getInviteByToken(db: DbType, token: string) {
   });
 
   if (!invite) {
-    throw new ApiError('NOT_FOUND', 'Invite is invalid');
+    throw new ApiError('NOT_FOUND', 'Invite is not valid or expired');
   }
 
-  return invite;
+  return {
+    ...invite,
+    createdAt: invite.createdAt.toISOString(),
+    expiresAt: invite.expiresAt.toISOString(),
+  };
 }
 
 // // Get org's invites
@@ -196,16 +205,10 @@ export async function getOrgInvite(
     throw new ApiError('NOT_FOUND', 'Invite not found');
   }
 
-  if (!invite.inviter?.orgMembers[0]) {
-    throw new ApiError('NOT_FOUND', 'Inviter not found');
-  }
-
   return {
     ...invite,
-    inviter: {
-      ...invite.inviter,
-      role: invite.inviter.orgMembers[0].role,
-    },
+    createdAt: invite.createdAt.toISOString(),
+    expiresAt: invite.expiresAt.toISOString(),
   };
 }
 
@@ -331,15 +334,25 @@ export async function acceptInvite(db: DbType, token: string, userId: string) {
     throw new ApiError('NOT_FOUND', 'Invalid or expired invite');
   }
 
-  // Add user to org
-  await db.insert(orgMemberTable).values({
-    orgId: invite.orgId,
-    userId,
-    role: invite.role as OrgMemberRoleType,
-  });
-
   // Update invite status
-  return await updateInviteStatus(db, token, 'ACCEPTED');
+  await updateInviteStatus(db, token, 'ACCEPTED');
+
+  // Add user to org
+  await db
+    .insert(orgMemberTable)
+    .values({
+      orgId: invite.orgId,
+      userId,
+      role: invite.role as OrgMemberRoleType,
+    })
+    .onConflictDoUpdate({
+      target: [orgMemberTable.orgId, orgMemberTable.userId],
+      set: {
+        role: sql`excluded.role`,
+      },
+    });
+
+  return invite;
 }
 
 // Delete expired invites

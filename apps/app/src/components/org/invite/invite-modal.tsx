@@ -1,6 +1,6 @@
 'use client';
 
-import { InviteForm } from '@/components/orgs/invite/invite-form';
+import { InviteForm } from '@/components/org/invite/invite-form';
 import { getRoleOptions, useInviteForm } from '@/hooks/use-invite-form';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import type { SelectProjectType } from '@hexa/server/schema/project';

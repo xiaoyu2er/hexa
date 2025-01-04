@@ -1,7 +1,7 @@
 'use client';
 
-import { LeaveOrg } from '@/components/orgs/list/leave-org';
-import { OrgAvatar } from '@/components/orgs/org-avatar';
+import { LeaveOrg } from '@/components/org/list/leave-org';
+import { OrgAvatar } from '@/components/org/org-avatar';
 import { useOrgs } from '@/hooks/use-orgs';
 import type { SelectUserOrgType } from '@hexa/server/schema/org';
 import { Badge } from '@hexa/ui/badge';

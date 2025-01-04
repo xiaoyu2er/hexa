@@ -73,7 +73,10 @@ const resetPassword = new Hono<Context>()
   .post(
     '/reset-password',
     zValidator('json', ResetPasswordSchema),
-    getPasscodeByTokenMiddleware('json', 'RESET_PASSWORD'),
+    getPasscodeByTokenMiddleware({
+      tokenValidTarget: 'json',
+      passcodeType: 'RESET_PASSWORD',
+    }),
     async (c) => {
       const db = c.get('db');
       const { token, password, next } = c.req.valid('json');

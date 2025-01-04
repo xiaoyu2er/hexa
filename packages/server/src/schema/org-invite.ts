@@ -68,13 +68,13 @@ export type InsertInviteType = Simplify<z.infer<typeof InsertInviteSchema>>;
 export const SelectInviteSchema = createSelectSchema(orgInviteTable, {
   role: zOrgMemberRole,
   status: zInviteStatus,
+  expiresAt: z.string().datetime(),
+  createdAt: z.string().datetime(),
 }).extend({
-  inviter: SelectUserSchema.extend({
-    role: zOrgMemberRole,
-  }),
+  inviter: SelectUserSchema,
   org: SelectOrgSchema,
 });
-export type SelectInviteType = z.infer<typeof SelectInviteSchema>;
+export type SelectInviteType = Simplify<z.infer<typeof SelectInviteSchema>>;
 
 export const QueryInviteSchema = createSelectSchema(orgInviteTable, {
   role: zOrgMemberRole,

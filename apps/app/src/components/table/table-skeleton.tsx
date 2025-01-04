@@ -1,6 +1,6 @@
 import { TableCell, TableRow } from '@hexa/ui/table';
 import { Skeleton } from '@nextui-org/react';
-import { columns } from '../orgs/invite/invite-table-data';
+import { columns } from '../org/invite/invite-table-data';
 
 export const TableSkeleton = ({ rows }: { rows: number }) => {
   return (

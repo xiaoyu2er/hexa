@@ -71,15 +71,22 @@ const signup = new Hono<Context>()
     '/signup/verify-passcode',
     zValidator('json', VerifyPasscodeSchema),
     getPasscodeMiddleware('json', 'SIGN_UP'),
-    creatUserFromTmpUserMiddleware
+    creatUserFromTmpUserMiddleware({
+      nextValidTarget: 'json',
+    })
   )
   // Signup verify token
   .get(
     '/signup/verify-token/:token',
     zValidator('param', VerifyPassTokenSchema),
     zValidator('query', zNextSchema),
-    getPasscodeByTokenMiddleware('param', 'SIGN_UP'),
-    creatUserFromTmpUserMiddleware
+    getPasscodeByTokenMiddleware({
+      tokenValidTarget: 'param',
+      passcodeType: 'SIGN_UP',
+    }),
+    creatUserFromTmpUserMiddleware({
+      nextValidTarget: 'query',
+    })
   );
 
 export default signup;

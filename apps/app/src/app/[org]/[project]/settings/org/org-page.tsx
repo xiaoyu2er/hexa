@@ -1,8 +1,8 @@
 'use client';
-import { DeleteOrg } from '@/components/orgs/settings/delete-org';
-import { EditOrgName } from '@/components/orgs/settings/edit-org-name';
-import { EditOrgSlug } from '@/components/orgs/settings/edit-org-slug';
-import { OrgId } from '@/components/orgs/settings/org-id';
+import { DeleteOrg } from '@/components/org/settings/delete-org';
+import { EditOrgName } from '@/components/org/settings/edit-org-name';
+import { EditOrgSlug } from '@/components/org/settings/edit-org-slug';
+import { OrgId } from '@/components/org/settings/org-id';
 import UploadAvatar from '@/components/upload-avatar';
 import { useProject } from '@/hooks/use-project';
 import { getOrgAvatarFallbackUrl } from '@/lib/org';
