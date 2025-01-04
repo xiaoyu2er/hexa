@@ -26,7 +26,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
 import { Button, Link } from '@nextui-org/react';
-import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -43,7 +42,6 @@ export function LoginPasscode({
   onSuccess,
   onSendPasscode,
 }: LoginPasscodeProps) {
-  const _searchParams = useSearchParams();
   const form = useForm<SendPasscodeType>({
     resolver: zodResolver(SendPasscodeSchema),
     defaultValues: {},
