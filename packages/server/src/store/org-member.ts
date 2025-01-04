@@ -70,6 +70,11 @@ export const getOrgMembers = async (
             where: and(eq(emailTable.primary, true)),
             limit: 1,
           },
+          oauthAccounts: {
+            columns: {
+              email: true,
+            },
+          },
         },
       },
     },
@@ -105,7 +110,10 @@ export const getOrgMembers = async (
       id: member.user.id,
       name: member.user.name,
       avatarUrl: member.user.avatarUrl,
-      email: member.user.emails[0]?.email ?? null,
+      email:
+        member.user.emails[0]?.email ??
+        member.user.oauthAccounts[0]?.email ??
+        null,
     },
     userId: member.user.id,
   }));

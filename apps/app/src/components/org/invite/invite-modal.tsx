@@ -22,7 +22,11 @@ export const CreateInvitesModal = NiceModal.create(
     });
 
     return (
-      <Modal isOpen={modal.visible} onOpenChange={() => modal.hide()} size="md">
+      <Modal
+        isOpen={modal.visible}
+        onOpenChange={() => modal.remove()}
+        size="md"
+      >
         <ModalContent>
           <ModalHeader>Invite Members</ModalHeader>
           <ModalBody>

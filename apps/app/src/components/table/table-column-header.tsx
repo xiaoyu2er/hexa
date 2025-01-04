@@ -23,8 +23,12 @@ export function TableColumnHeader<TData, TValue>({
 }: TableColumnHeaderProps<TData, TValue>) {
   if (!column.getCanSort()) {
     return (
-      <Button variant="light" size="sm" className="text-sm">
-        {title}
+      <Button
+        variant="light"
+        size="sm"
+        className="-ml-3 h-8 data-[state=open]:bg-accent"
+      >
+        <span>{title}</span>
       </Button>
     );
   }

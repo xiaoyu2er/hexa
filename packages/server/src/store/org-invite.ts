@@ -13,18 +13,59 @@ import type { OrgMemberRoleType } from '@hexa/server/schema/org-member';
 import { emailTable } from '@hexa/server/table/email';
 import { orgInviteTable } from '@hexa/server/table/org-invite';
 import { orgMemberTable } from '@hexa/server/table/org-member';
+import { userTable } from '@hexa/server/table/user';
 import type { DbType } from '@hexa/server/types';
 import { and, asc, desc, eq, gt, sql } from 'drizzle-orm';
 // @ts-ignore
 import { createDate } from 'oslo';
 import { ZodError, type ZodIssue } from 'zod';
 
+// Add this helper function to get all emails for org members
+async function getOrgMemberEmails(db: DbType, orgId: string) {
+  const emails = await db
+    .select({
+      email: emailTable.email,
+    })
+    .from(orgMemberTable)
+    .leftJoin(userTable, eq(userTable.id, orgMemberTable.userId))
+    .leftJoin(emailTable, eq(emailTable.userId, userTable.id))
+    .where(
+      and(eq(orgMemberTable.orgId, orgId), sql`${emailTable.email} IS NOT NULL`)
+    );
+
+  return emails.map((e) => e.email?.toLowerCase());
+}
+
 // Create new invites
 export async function createInvites(
   db: DbType,
   data: { inviterId: string } & CreateInvitesType
 ) {
-  // Check if invite already exists
+  // Get all member emails
+  const memberEmails = await getOrgMemberEmails(db, data.orgId);
+
+  // Check for existing members
+  const existingMembers = data.invites.filter((invite) =>
+    memberEmails.includes(invite.email.toLowerCase())
+  );
+
+  const issues: ZodIssue[] = [];
+
+  if (existingMembers.length > 0) {
+    const memberIssues: ZodIssue[] = existingMembers.map((invite) => {
+      const index = data.invites.findIndex(
+        (i) => i.email.toLowerCase() === invite.email.toLowerCase()
+      );
+      return {
+        code: 'custom',
+        message: `${invite.email} is already a member of this organization`,
+        path: [`invites.${index}.email`],
+      };
+    });
+    issues.push(...memberIssues);
+  }
+
+  // Check for pending invites (existing code)
   const existings = await db.query.orgInviteTable.findMany({
     where: and(
       eq(orgInviteTable.orgId, data.orgId),
@@ -34,7 +75,7 @@ export async function createInvites(
   });
 
   if (existings.length > 0) {
-    const issues: ZodIssue[] = existings.map((invite) => {
+    const inviteIssues: ZodIssue[] = existings.map((invite) => {
       const index = data.invites.findIndex(
         (i) => i.email.toLowerCase() === invite.email.toLowerCase()
       );
@@ -44,14 +85,11 @@ export async function createInvites(
         path: [`invites.${index}.email`],
       };
     });
-    throw new ZodError([
-      ...issues,
-      {
-        code: 'custom',
-        message: 'Please check the invites and try again',
-        path: ['root'],
-      },
-    ]);
+    issues.push(...inviteIssues);
+  }
+
+  if (issues.length > 0) {
+    throw new ZodError(issues);
   }
 
   // Create invite values with all fields we want to update
@@ -163,6 +201,11 @@ export async function getInvitesByIds(
             where: and(eq(emailTable.primary, true)),
             limit: 1,
           },
+          oauthAccounts: {
+            columns: {
+              email: true,
+            },
+          },
         },
       },
     },
@@ -176,7 +219,10 @@ export async function getInvitesByIds(
       id: invite.inviter.id,
       name: invite.inviter.name,
       avatarUrl: invite.inviter.avatarUrl,
-      email: invite.inviter.emails?.[0]?.email ?? null,
+      email:
+        invite.inviter.emails?.[0]?.email ??
+        invite.inviter.oauthAccounts?.[0]?.email ??
+        null,
     },
   }));
 }
@@ -196,6 +242,11 @@ export async function getOrgInvite(
         with: {
           orgMembers: {
             where: eq(orgMemberTable.orgId, orgInviteTable.orgId),
+          },
+          oauthAccounts: {
+            columns: {
+              email: true,
+            },
           },
         },
       },
@@ -272,6 +323,11 @@ export const getOrgInvites = async (
             where: and(eq(emailTable.primary, true)),
             limit: 1,
           },
+          oauthAccounts: {
+            columns: {
+              email: true,
+            },
+          },
         },
       },
     },
@@ -300,7 +356,10 @@ export const getOrgInvites = async (
         id: invite.inviter.id,
         name: invite.inviter.name,
         avatarUrl: invite.inviter.avatarUrl,
-        email: invite.inviter.emails?.[0]?.email ?? null,
+        email:
+          invite.inviter.emails?.[0]?.email ??
+          invite.inviter.oauthAccounts?.[0]?.email ??
+          null,
       },
     };
   });
