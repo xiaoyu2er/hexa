@@ -98,15 +98,22 @@ const login = new Hono<Context>()
     '/login-passcode/verify-passcode',
     zValidator('json', VerifyPasscodeSchema),
     getPasscodeMiddleware('json', 'LOGIN'),
-    verifyLoginPasscodeMiddleware
+    verifyLoginPasscodeMiddleware({
+      nextValidTarget: 'json',
+    })
   )
   // Login by passcode verify token
   .get(
     '/login-token/:token',
     zValidator('param', VerifyPassTokenSchema),
     zValidator('query', zNextSchema),
-    getPasscodeByTokenMiddleware('param', 'LOGIN'),
-    verifyLoginPasscodeMiddleware
+    getPasscodeByTokenMiddleware({
+      tokenValidTarget: 'param',
+      passcodeType: 'LOGIN',
+    }),
+    verifyLoginPasscodeMiddleware({
+      nextValidTarget: 'query',
+    })
   );
 
 export default login;

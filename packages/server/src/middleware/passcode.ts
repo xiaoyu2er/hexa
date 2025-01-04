@@ -47,14 +47,17 @@ export const getPasscodeMiddleware = (
     return next();
   });
 
-export const getPasscodeByTokenMiddleware = (
-  validTarget: ValidTarget,
-  type: PasscodeType
-) =>
+export const getPasscodeByTokenMiddleware = ({
+  tokenValidTarget,
+  passcodeType: type,
+}: {
+  tokenValidTarget: ValidTarget;
+  passcodeType: PasscodeType;
+}) =>
   createMiddleware(async (c, next) => {
     const db = c.get('db');
     // @ts-ignore
-    const { token } = c.req.valid(validTarget);
+    const { token } = c.req.valid(tokenValidTarget);
     if (!token) {
       throw new ApiError('BAD_REQUEST', 'Token is required');
     }

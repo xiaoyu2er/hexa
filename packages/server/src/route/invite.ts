@@ -1,7 +1,17 @@
-import { ApiError } from '@hexa/lib';
+import { sendOrgInviteEmails } from '@hexa/server/lib';
+import authOrg from '@hexa/server/middleware/org';
+import { authInvite } from '@hexa/server/middleware/org-invite';
 import { getSessionMiddleware } from '@hexa/server/middleware/session';
-import { acceptInvite, getInviteByToken } from '@hexa/server/store/org-invite';
-import { getUserEmail } from '@hexa/server/store/user';
+import {
+  CreateInvitesSchema,
+  RevokeInviteSchema,
+} from '@hexa/server/schema/org-invite';
+import {
+  acceptInvite,
+  createInvites,
+  getInvitesByIds,
+  revokeInvite,
+} from '@hexa/server/store/org-invite';
 import type { Context } from '@hexa/server/types';
 // @ts-ignore
 import { zValidator } from '@hono/zod-validator';
@@ -9,6 +19,43 @@ import { Hono } from 'hono';
 import { z } from 'zod';
 
 const invite = new Hono<Context>()
+  .post(
+    '/org/create-invites',
+    zValidator('json', CreateInvitesSchema),
+    authOrg('json'),
+    async (c) => {
+      const { db, orgId, userId: inviterId } = c.var;
+      const { invites } = c.req.valid('json');
+
+      // Create invites
+      const insertedInvites = await createInvites(db, {
+        orgId,
+        inviterId,
+        invites,
+      });
+
+      // Get full details
+      const invitesWithDetails = await getInvitesByIds(
+        db,
+        insertedInvites.map((invite) => invite.id)
+      );
+
+      const emails = await sendOrgInviteEmails(invitesWithDetails);
+
+      return c.json(emails);
+    }
+  )
+  // Revoke invite
+  .put(
+    '/org/revoke-invite',
+    zValidator('json', RevokeInviteSchema),
+    authInvite('json'),
+    async (c) => {
+      const { db, invite } = c.var;
+      await revokeInvite(db, invite.id);
+      return c.json({});
+    }
+  )
   // Accept invite
   .get(
     '/invite/:token',
@@ -17,22 +64,12 @@ const invite = new Hono<Context>()
     async (c) => {
       const { db, userId } = c.var;
       const { token } = c.req.valid('param');
-      const invite = await getInviteByToken(db, token);
       if (userId) {
-        const email = await getUserEmail(db, userId, invite.email);
-        if (email) {
-          if (email.verified) {
-            // accept invite
-            await acceptInvite(db, token, userId);
-            return c.redirect('/user/orgs?msg=Invite+accepted');
-          }
-          throw new ApiError('BAD_REQUEST', 'Email is not verified');
-        }
-      } else {
-        return c.redirect(`/login?next=${c.req.url}`);
+        // accept invite
+        await acceptInvite(db, token, userId);
+        return c.redirect('/');
       }
-
-      return c.json({});
+      return c.redirect(`/login?next=${c.req.url}`);
     }
   );
 

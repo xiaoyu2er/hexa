@@ -147,7 +147,10 @@ const user = new Hono<Context>()
   .get(
     '/user/add-email/verify-token/:token',
     zValidator('param', VerifyPassTokenSchema),
-    getPasscodeByTokenMiddleware('param', 'ADD_EMAIL'),
+    getPasscodeByTokenMiddleware({
+      tokenValidTarget: 'param',
+      passcodeType: 'ADD_EMAIL',
+    }),
     async (c) => {
       const { db, userId } = c.var;
       const passcode = c.get('passcode');

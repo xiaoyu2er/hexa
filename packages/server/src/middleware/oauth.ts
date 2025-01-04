@@ -8,6 +8,7 @@ import {
 } from '@hexa/server/store/oauth';
 import {} from '@hexa/server/store/project';
 import { createEmail, createUser, getEmail } from '@hexa/server/store/user';
+import type { ValidTarget } from '@hexa/server/types';
 import { createMiddleware } from 'hono/factory';
 
 export const afterOauthCallbackMiddleware = (provider: ProviderType) =>
@@ -79,54 +80,66 @@ export const afterOauthCallbackMiddleware = (provider: ProviderType) =>
  * 2. Create an email
  * 3. Update the oauth account
  */
-export const creatUserFromTmpUserMiddleware = createMiddleware(async (c) => {
-  const { tmpUser, db } = c.var;
-  // @ts-ignore
-  const { next } = c.req.valid('query') ?? {};
-  const redirectUrl = next ?? '/';
-  if (!tmpUser) {
-    throw new ApiError('BAD_REQUEST', 'tmp user not found');
-  }
-
-  if (!tmpUser.email) {
-    throw new ApiError('BAD_REQUEST', 'Email is required');
-  }
-
-  const user = await createUser(db, {
-    password: tmpUser.password,
-  });
-
-  if (!user) {
-    throw new ApiError('BAD_REQUEST', 'Failed to create user');
-  }
-
-  // create email
-  const existingEmail = await getEmail(db, tmpUser.email);
-  if (existingEmail) {
-    throw new ApiError('BAD_REQUEST', 'This email is taken by another account');
-  }
-
-  const email = await createEmail(db, {
-    userId: user.id,
-    email: tmpUser.email,
-    verified: true,
-    primary: true,
-  });
-
-  if (!email) {
-    throw new ApiError('BAD_REQUEST', 'Failed to create email');
-  }
-
-  // update oauth account
-  if (tmpUser.oauthAccountId) {
-    const oauthAccount = await updateOauthAccount(db, tmpUser.oauthAccountId, {
-      userId: user.id,
-    });
-    if (!oauthAccount) {
-      throw new ApiError('BAD_REQUEST', 'Failed to update oauth account');
+export const creatUserFromTmpUserMiddleware = ({
+  nextValidTarget,
+}: {
+  nextValidTarget: ValidTarget;
+}) =>
+  createMiddleware(async (c) => {
+    const { tmpUser, db } = c.var;
+    // @ts-ignore
+    const { next } = c.req.valid(nextValidTarget) ?? {};
+    const redirectUrl = next ?? '/';
+    if (!tmpUser) {
+      throw new ApiError('BAD_REQUEST', 'tmp user not found');
     }
-  }
 
-  await setSession(user.id);
-  return c.redirect(redirectUrl);
-});
+    if (!tmpUser.email) {
+      throw new ApiError('BAD_REQUEST', 'Email is required');
+    }
+
+    const user = await createUser(db, {
+      password: tmpUser.password,
+    });
+
+    if (!user) {
+      throw new ApiError('BAD_REQUEST', 'Failed to create user');
+    }
+
+    // create email
+    const existingEmail = await getEmail(db, tmpUser.email);
+    if (existingEmail) {
+      throw new ApiError(
+        'BAD_REQUEST',
+        'This email is taken by another account'
+      );
+    }
+
+    const email = await createEmail(db, {
+      userId: user.id,
+      email: tmpUser.email,
+      verified: true,
+      primary: true,
+    });
+
+    if (!email) {
+      throw new ApiError('BAD_REQUEST', 'Failed to create email');
+    }
+
+    // update oauth account
+    if (tmpUser.oauthAccountId) {
+      const oauthAccount = await updateOauthAccount(
+        db,
+        tmpUser.oauthAccountId,
+        {
+          userId: user.id,
+        }
+      );
+      if (!oauthAccount) {
+        throw new ApiError('BAD_REQUEST', 'Failed to update oauth account');
+      }
+    }
+
+    await setSession(user.id);
+    return c.redirect(redirectUrl);
+  });

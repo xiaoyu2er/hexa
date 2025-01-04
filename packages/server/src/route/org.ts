@@ -1,9 +1,8 @@
 import { generateId } from '@hexa/lib';
 import { ApiError } from '@hexa/lib';
-import { getStorage, sendOrgInviteEmails } from '@hexa/server/lib';
+import { getStorage } from '@hexa/server/lib';
 import { isStored } from '@hexa/server/lib';
 import authOrg from '@hexa/server/middleware/org';
-import { authInvite } from '@hexa/server/middleware/org-invite';
 import {
   DeleteOrgSchema,
   InsertOrgSchema,
@@ -13,11 +12,7 @@ import {
   UpdateOrgNameSchema,
   UpdateOrgSlugSchema,
 } from '@hexa/server/schema/org';
-import {
-  CreateInvitesSchema,
-  OrgInviteQuerySchema,
-  RevokeInviteSchema,
-} from '@hexa/server/schema/org-invite';
+import { OrgInviteQuerySchema } from '@hexa/server/schema/org-invite';
 import { OrgMemberQuerySchema } from '@hexa/server/schema/org-member';
 import {
   assertUserHasOrgRole,
@@ -29,12 +24,7 @@ import {
   updateOrgName,
   updateOrgSlug,
 } from '@hexa/server/store/org';
-import {
-  createInvites,
-  getInvitesByIds,
-  getOrgInvites,
-  revokeInvite,
-} from '@hexa/server/store/org-invite';
+import { getOrgInvites } from '@hexa/server/store/org-invite';
 import { getOrgMembers } from '@hexa/server/store/org-member';
 import {} from '@hexa/server/store/project';
 import type { Context } from '@hexa/server/types';
@@ -197,43 +187,6 @@ const org = new Hono<Context>()
       const query = c.req.valid('query');
       const invites = await getOrgInvites(db, orgId, query);
       return c.json(invites);
-    }
-  )
-  .post(
-    '/org/create-invites',
-    zValidator('json', CreateInvitesSchema),
-    authOrg('json'),
-    async (c) => {
-      const { db, orgId, userId: inviterId } = c.var;
-      const { invites } = c.req.valid('json');
-
-      // Create invites
-      const insertedInvites = await createInvites(db, {
-        orgId,
-        inviterId,
-        invites,
-      });
-
-      // Get full details
-      const invitesWithDetails = await getInvitesByIds(
-        db,
-        insertedInvites.map((invite) => invite.id)
-      );
-
-      const emails = await sendOrgInviteEmails(invitesWithDetails);
-
-      return c.json(emails);
-    }
-  )
-  // Revoke invite
-  .put(
-    '/org/revoke-invite',
-    zValidator('json', RevokeInviteSchema),
-    authInvite('json'),
-    async (c) => {
-      const { db, invite } = c.var;
-      await revokeInvite(db, invite.id);
-      return c.json({});
     }
   )
 

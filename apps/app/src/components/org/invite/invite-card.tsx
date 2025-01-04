@@ -1,4 +1,4 @@
-import RevokeInvite from '@/components/orgs/invite/invite-revoke-button';
+import RevokeInvite from '@/components/org/invite/invite-revoke-button';
 import { UserAvatar } from '@/components/user/settings/user-avatar';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { cn } from '@hexa/lib';

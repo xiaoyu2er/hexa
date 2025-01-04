@@ -9,7 +9,7 @@ import {
 } from '@hexa/ui/card';
 
 import { ReadOnly } from '@/components/form';
-import { EditOrgSlugModal } from '@/components/orgs/settings/edit-org-slug-modal';
+import { EditOrgSlugModal } from '@/components/org/settings/edit-org-slug-modal';
 import { useProject } from '@/hooks/use-project';
 
 import { useModal } from '@ebay/nice-modal-react';

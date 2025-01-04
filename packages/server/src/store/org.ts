@@ -251,6 +251,19 @@ export const updateOrgMemberRole = async (
   return true;
 };
 
+export const getOrgMember = async (
+  db: DbType,
+  orgId: string,
+  userId: string
+) => {
+  return await db.query.orgMemberTable.findFirst({
+    where: and(
+      eq(orgMemberTable.orgId, orgId),
+      eq(orgMemberTable.userId, userId)
+    ),
+  });
+};
+
 // Helper function to check if user has required role
 export const assertUserHasOrgRole = async (
   db: DbType,
@@ -264,12 +277,7 @@ export const assertUserHasOrgRole = async (
     requiredRole: OrgMemberRoleType[];
   }
 ) => {
-  const member = await db.query.orgMemberTable.findFirst({
-    where: and(
-      eq(orgMemberTable.orgId, orgId),
-      eq(orgMemberTable.userId, userId)
-    ),
-  });
+  const member = await getOrgMember(db, orgId, userId);
 
   if (!member || !requiredRole.includes(member.role)) {
     throw new ApiError(

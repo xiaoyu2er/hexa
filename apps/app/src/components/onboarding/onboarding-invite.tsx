@@ -1,6 +1,6 @@
 'use client';
 
-import { InviteForm } from '@/components/orgs/invite/invite-form';
+import { InviteForm } from '@/components/org/invite/invite-form';
 import { getRoleOptions, useInviteForm } from '@/hooks/use-invite-form';
 import type { SelectOrgType } from '@hexa/server/schema/org';
 import { LogoIcon } from '@hexa/ui/icons';

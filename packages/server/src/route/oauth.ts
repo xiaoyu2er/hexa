@@ -224,7 +224,9 @@ const oauth = new Hono<Context>()
           password: null,
         };
         c.set('tmpUser', tmpUser);
-        return creatUserFromTmpUserMiddleware(c, next);
+        return creatUserFromTmpUserMiddleware({
+          nextValidTarget: 'json',
+        })(c, next);
       }
 
       // If Oauth provider user's email is not verified, we need to create a pending registration
@@ -262,14 +264,21 @@ const oauth = new Hono<Context>()
     '/oauth-signup/verify-passcode',
     zValidator('json', VerifyPasscodeSchema),
     getPasscodeMiddleware('json', 'OAUTH_SIGNUP'),
-    creatUserFromTmpUserMiddleware
+    creatUserFromTmpUserMiddleware({
+      nextValidTarget: 'json',
+    })
   )
   // Oauth signup verify token
   .get(
     '/oauth-signup/verify-token/:token',
     zValidator('param', VerifyPassTokenSchema),
-    getPasscodeByTokenMiddleware('param', 'OAUTH_SIGNUP'),
-    creatUserFromTmpUserMiddleware
+    getPasscodeByTokenMiddleware({
+      tokenValidTarget: 'param',
+      passcodeType: 'OAUTH_SIGNUP',
+    }),
+    creatUserFromTmpUserMiddleware({
+      nextValidTarget: 'query',
+    })
   );
 
 export default oauth;

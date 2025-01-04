@@ -4,7 +4,7 @@ import {} from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
-import { OrgTable } from '@/components/orgs/list/org-table';
+import { OrgTable } from '@/components/org/list/org-table';
 
 export const OrgPage = () => {
   const searchParams = useSearchParams();

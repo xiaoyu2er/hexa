@@ -1,6 +1,6 @@
 'use client';
 
-import { CreateOrgForm } from '@/components/orgs/create-org-form';
+import { CreateOrgForm } from '@/components/org/create-org-form';
 import { useCreateOrg } from '@/hooks/use-create-org';
 import { WWW_URL } from '@hexa/env';
 import type { SelectOrgType } from '@hexa/server/schema/org';
