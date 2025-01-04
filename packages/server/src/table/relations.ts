@@ -7,8 +7,10 @@ import { orgInviteTable } from '@hexa/server/table/org-invite';
 import { orgMemberTable } from '@hexa/server/table/org-member';
 import { passcodeTable } from '@hexa/server/table/passcode';
 import { projectTable } from '@hexa/server/table/project';
+import { tagTable } from '@hexa/server/table/tag';
 import { tmpUserTable } from '@hexa/server/table/tmp-user';
 import { userTable } from '@hexa/server/table/user';
+import { linkTagTable } from '@hexa/server/table/link-tag';
 import { relations } from 'drizzle-orm';
 
 // ================ Relations ================
@@ -102,14 +104,16 @@ export const projectRelations = relations(projectTable, ({ one, many }) => ({
     references: [orgTable.id],
   }),
   shortUrls: many(linkTable),
+  tags: many(tagTable),
 }));
 
-// Short url relations
-export const shortUrlRelations = relations(linkTable, ({ one }) => ({
+// Link relations
+export const linkRelations = relations(linkTable, ({ one, many }) => ({
   project: one(projectTable, {
     fields: [linkTable.projectId],
     references: [projectTable.id],
   }),
+  linkTags: many(linkTagTable),
 }));
 
 // Domain relations
@@ -117,5 +121,26 @@ export const domainRelations = relations(domainTable, ({ one }) => ({
   org: one(orgTable, {
     fields: [domainTable.orgId],
     references: [orgTable.id],
+  }),
+}));
+
+// Tag relations
+export const tagRelations = relations(tagTable, ({ one, many }) => ({
+  project: one(projectTable, {
+    fields: [tagTable.projectId],
+    references: [projectTable.id],
+  }),
+  linkTags: many(linkTagTable),
+}));
+
+// Link tag relations
+export const linkTagRelations = relations(linkTagTable, ({ one }) => ({
+  link: one(linkTable, {
+    fields: [linkTagTable.linkId],
+    references: [linkTable.id],
+  }),
+  tag: one(tagTable, {
+    fields: [linkTagTable.tagId],
+    references: [tagTable.id],
   }),
 }));

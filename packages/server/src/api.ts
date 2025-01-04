@@ -175,3 +175,6 @@ export const $revokeInvite = h(api.org['revoke-invite'].$put);
 // domains
 export const $getDomains = h(api.org[':orgId'].domains.$get);
 export const $createDomain = h(api.org['create-domain'].$post);
+// ==================== Tag ====================
+export const $getTags = h(api.project[':projectId'].tags.$get);
+export const $createTag = h(api.tag['create-tag'].$post);
