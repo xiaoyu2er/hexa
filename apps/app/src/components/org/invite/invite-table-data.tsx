@@ -2,9 +2,9 @@
 import RevokeInvite from '@/components/org/invite/invite-revoke-button';
 import { TableColumnHeader } from '@/components/table/table-column-header';
 import type { FilterConfig } from '@/components/table/table-types';
-import { UserAvatar } from '@/components/user/settings/user-avatar';
 import { useInvites } from '@/hooks/use-invites';
 import { invalidateOrgInvites } from '@/lib/queries/orgs';
+import { getAvatarUrl, getUserDisplayName } from '@/lib/user';
 import { getInviteUrl } from '@hexa/lib';
 import {
   InviteSortableColumnOptions,
@@ -14,6 +14,7 @@ import type { QueryInviteType } from '@hexa/server/schema/org-invite';
 import { OrgRoleOptions } from '@hexa/server/schema/org-member';
 import { Badge } from '@hexa/ui/badge';
 import { CopyButton } from '@hexa/ui/copy-button';
+import { User } from '@nextui-org/react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
 
@@ -57,15 +58,14 @@ export const columns: ColumnDef<QueryInviteType>[] = [
     cell: ({ row }) => {
       const member = row.original;
       return (
-        <div className="flex items-center gap-2">
-          <UserAvatar user={member.inviter} className="h-6 w-6" />
-          <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-semibold">
-              {member.inviter.name}
-            </span>
-            <span className="truncate text-xs">{member.inviter.email}</span>
-          </div>
-        </div>
+        <User
+          avatarProps={{
+            src: getAvatarUrl(member.inviter),
+            size: 'sm',
+          }}
+          description={member.inviter.email}
+          name={getUserDisplayName(member.inviter)}
+        />
       );
     },
     enableSorting: false,

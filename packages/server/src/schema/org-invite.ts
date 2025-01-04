@@ -9,7 +9,7 @@ import { orgInviteTable } from '@hexa/server/table/org-invite';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import type { Simplify } from 'type-fest';
 import { z } from 'zod';
-import { SelectUserSchema } from './user';
+import { BasicUserSchema, SelectUserSchema } from './user';
 
 export const zInviteStatus = z.enum([
   'PENDING',
@@ -83,13 +83,7 @@ export const QueryInviteSchema = createSelectSchema(orgInviteTable, {
   expiresAt: z.string().datetime(),
   createdAt: z.string().datetime(),
 }).extend({
-  inviter: SelectUserSchema.pick({
-    id: true,
-    name: true,
-    avatarUrl: true,
-  }).extend({
-    email: z.string().nullable(),
-  }),
+  inviter: BasicUserSchema,
   org: SelectOrgSchema,
 });
 export type QueryInviteType = Simplify<z.infer<typeof QueryInviteSchema>>;

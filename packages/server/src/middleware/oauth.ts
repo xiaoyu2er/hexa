@@ -51,7 +51,11 @@ export const afterOauthCallbackMiddleware = (provider: ProviderType) =>
       throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create account');
     }
 
-    const newUser = await createUser(db, {});
+    const newUser = await createUser(db, {
+      name: account.name,
+      avatarUrl: account.avatarUrl,
+    });
+
     if (!newUser) {
       throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create user');
     }

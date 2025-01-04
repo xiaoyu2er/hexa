@@ -2,7 +2,6 @@
 
 import { TableColumnHeader } from '@/components/table/table-column-header';
 import type { FilterConfig } from '@/components/table/table-types';
-import { UserAvatar } from '@/components/user/settings/user-avatar';
 import { useMembers } from '@/hooks/use-members';
 import {
   OrgMemberColumnOptions,
@@ -11,7 +10,9 @@ import {
   type SelectOrgMemberType,
 } from '@hexa/server/schema/org-member';
 import { Badge } from '@hexa/ui/badge';
+import { User } from '@nextui-org/react';
 
+import { getAvatarUrl, getUserDisplayName } from '@/lib/user';
 import { MoreHorizontal } from '@hexa/ui/icons';
 import {
   Button,
@@ -38,15 +39,14 @@ export const columns: ColumnDef<SelectOrgMemberType>[] = [
     cell: ({ row }) => {
       const member = row.original;
       return (
-        <div className="flex items-center gap-3">
-          <UserAvatar user={member.user} className="h-8 w-8" />
-          <div className="flex flex-col">
-            <span className="font-medium">{member.user.name}</span>
-            <span className="text-muted-foreground text-sm">
-              {member.user.email}
-            </span>
-          </div>
-        </div>
+        <User
+          avatarProps={{
+            src: getAvatarUrl(member.user),
+            size: 'sm',
+          }}
+          description={member.user.email}
+          name={getUserDisplayName(member.user)}
+        />
       );
     },
     enableHiding: false,

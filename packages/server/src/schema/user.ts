@@ -19,8 +19,17 @@ export type InsertUserType = z.infer<typeof InsertUserSchema>;
 export const SelectUserSchema = createSelectSchema(userTable).omit({
   password: true,
 });
-export type SelectUserType = Simplify<z.infer<typeof SelectUserSchema>>;
 
+export type SelectUserType = Simplify<z.infer<typeof SelectUserSchema>>;
+export const BasicUserSchema = SelectUserSchema.pick({
+  id: true,
+  name: true,
+  avatarUrl: true,
+}).extend({
+  email: z.string().nullable(),
+});
+
+export type BasicUserType = z.infer<typeof BasicUserSchema>;
 export const UpdateUserNameSchema = z.object({}).merge(NameSchema);
 export type UpdateUserNameType = z.infer<typeof UpdateUserNameSchema>;
 
