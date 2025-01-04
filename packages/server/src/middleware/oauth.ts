@@ -1,26 +1,19 @@
-import { IS_PRODUCTION } from '@hexa/env';
 import { ApiError } from '@hexa/lib';
-import { invalidateUserSessions, setSession } from '@hexa/server/session';
+import type { ProviderType } from '@hexa/server/schema/oauth';
+import { setSession } from '@hexa/server/session';
 import {
   createOauthAccount,
   getAccountByProviderUser,
   updateOauthAccount,
 } from '@hexa/server/store/oauth';
-import { createOrg } from '@hexa/server/store/org';
-import {
-  createProject,
-  setUserDefaultProject,
-} from '@hexa/server/store/project';
+import {} from '@hexa/server/store/project';
 import { createEmail, createUser, getEmail } from '@hexa/server/store/user';
+import type { ValidTarget } from '@hexa/server/types';
 import { createMiddleware } from 'hono/factory';
-
-import { generateProjectSlug } from '@hexa/lib';
-import type { ProviderType } from '@hexa/server/schema/oauth';
-import { setCookie } from 'hono/cookie';
 
 export const afterOauthCallbackMiddleware = (provider: ProviderType) =>
   createMiddleware(async (c) => {
-    const { db, user, providerUser } = c.var;
+    const { db, user, providerUser, redirectUrl } = c.var;
 
     if (provider !== 'GITHUB' && provider !== 'GOOGLE') {
       throw new ApiError('BAD_REQUEST', 'Invalid provider');
@@ -36,7 +29,7 @@ export const afterOauthCallbackMiddleware = (provider: ProviderType) =>
       // If user is logged in, bind the account, even if it's already linked, update the account
       // it's possible that the user goes to /api/oauth/github or /api/oauth/google
       await createOauthAccount(db, user.id, provider, providerUser);
-      return c.redirect('/');
+      return c.redirect(redirectUrl);
     }
 
     // Find existing oauthAccount
@@ -46,29 +39,42 @@ export const afterOauthCallbackMiddleware = (provider: ProviderType) =>
       providerUser
     );
 
+    // If the account is already linked to a user, set the session and redirect to home
     if (existingAccount?.userId && existingAccount.user) {
       await setSession(existingAccount.userId);
-      return c.redirect('/');
+      return c.redirect(redirectUrl);
     }
 
-    // If there is no user, create a new account, but don't set session, we need to redirect to /signup
-
+    // If there is no user, create a new account, create a new user, and set the session
     const account = await createOauthAccount(db, null, provider, providerUser);
-
     if (!account) {
       throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create account');
     }
 
-    // we pass the new account id to the signup page, so we can bind the account to the user later
-    setCookie(c, 'oauth_account_id', account.id, {
-      path: '/',
-      secure: IS_PRODUCTION,
-      httpOnly: true,
-      maxAge: 60, // 1 minutes
-      sameSite: 'lax',
+    const newUser = await createUser(db, {
+      name: account.name,
+      avatarUrl: account.avatarUrl,
     });
 
-    return c.redirect('/oauth-signup');
+    if (!newUser) {
+      throw new ApiError('INTERNAL_SERVER_ERROR', 'Failed to create user');
+    }
+
+    // bind the account to the user
+    await updateOauthAccount(db, account.id, { userId: newUser.id });
+
+    // set the session
+    await setSession(newUser.id);
+
+    // we pass the new account id to the signup page, so we can bind the account to the user later
+    // setCookie(c, 'oauth_account_id', account.id, {
+    //   path: '/',
+    //   secure: IS_PRODUCTION,
+    //   httpOnly: true,
+    //   maxAge: 60, // 1 minutes
+    //   sameSite: 'lax',
+    // });
+    return c.redirect(redirectUrl);
   });
 
 /**
@@ -77,86 +83,67 @@ export const afterOauthCallbackMiddleware = (provider: ProviderType) =>
  * 1. Create a user
  * 2. Create an email
  * 3. Update the oauth account
- * 4. Create an org
- * 5. Create a project
- * 6. Set the project as the default project for the user
  */
-export const creatUserFromTmpUserMiddleware = createMiddleware(async (c) => {
-  const { tmpUser, db } = c.var;
-
-  if (!tmpUser) {
-    throw new ApiError('BAD_REQUEST', 'tmp user not found');
-  }
-
-  if (!tmpUser.email) {
-    throw new ApiError('BAD_REQUEST', 'Email is required');
-  }
-
-  const user = await createUser(db, {
-    name: tmpUser.name,
-  });
-
-  if (!user) {
-    throw new ApiError('BAD_REQUEST', 'Failed to create user');
-  }
-
-  // create email
-  const existingEmail = await getEmail(db, tmpUser.email);
-  if (existingEmail) {
-    throw new ApiError('BAD_REQUEST', 'This email is taken by another account');
-  }
-
-  const email = await createEmail(db, {
-    userId: user.id,
-    email: tmpUser.email,
-    verified: true,
-    primary: true,
-  });
-
-  if (!email) {
-    throw new ApiError('BAD_REQUEST', 'Failed to create email');
-  }
-
-  // update oauth account
-  if (tmpUser.oauthAccountId) {
-    const oauthAccount = await updateOauthAccount(db, tmpUser.oauthAccountId, {
-      userId: user.id,
-    });
-    if (!oauthAccount) {
-      throw new ApiError('BAD_REQUEST', 'Failed to update oauth account');
+export const creatUserFromTmpUserMiddleware = ({
+  nextValidTarget,
+}: {
+  nextValidTarget: ValidTarget;
+}) =>
+  createMiddleware(async (c) => {
+    const { tmpUser, db } = c.var;
+    // @ts-ignore
+    const { next } = c.req.valid(nextValidTarget) ?? {};
+    const redirectUrl = next ?? '/';
+    if (!tmpUser) {
+      throw new ApiError('BAD_REQUEST', 'tmp user not found');
     }
-  }
 
-  // create org
-  const org = await createOrg(db, {
-    name: tmpUser.orgName || `${tmpUser.name}'s Org`,
-    userId: user.id,
+    if (!tmpUser.email) {
+      throw new ApiError('BAD_REQUEST', 'Email is required');
+    }
+
+    const user = await createUser(db, {
+      password: tmpUser.password,
+    });
+
+    if (!user) {
+      throw new ApiError('BAD_REQUEST', 'Failed to create user');
+    }
+
+    // create email
+    const existingEmail = await getEmail(db, tmpUser.email);
+    if (existingEmail) {
+      throw new ApiError(
+        'BAD_REQUEST',
+        'This email is taken by another account'
+      );
+    }
+
+    const email = await createEmail(db, {
+      userId: user.id,
+      email: tmpUser.email,
+      verified: true,
+      primary: true,
+    });
+
+    if (!email) {
+      throw new ApiError('BAD_REQUEST', 'Failed to create email');
+    }
+
+    // update oauth account
+    if (tmpUser.oauthAccountId) {
+      const oauthAccount = await updateOauthAccount(
+        db,
+        tmpUser.oauthAccountId,
+        {
+          userId: user.id,
+        }
+      );
+      if (!oauthAccount) {
+        throw new ApiError('BAD_REQUEST', 'Failed to update oauth account');
+      }
+    }
+
+    await setSession(user.id);
+    return c.redirect(redirectUrl);
   });
-
-  if (!org) {
-    throw new ApiError('BAD_REQUEST', 'Failed to create org');
-  }
-
-  // create project
-  const project = await createProject(db, {
-    name: `${tmpUser.name}'s project`,
-    slug: generateProjectSlug(),
-    orgId: org.id,
-  });
-
-  const newUser = await setUserDefaultProject(db, {
-    userId: user.id,
-    projectId: project.id,
-  });
-
-  if (!newUser) {
-    throw new ApiError(
-      'INTERNAL_SERVER_ERROR',
-      'Failed to set default project'
-    );
-  }
-
-  await invalidateUserSessions(user.id);
-  await setSession(user.id);
-  return c.redirect(`/project/${project.slug}`);
-});

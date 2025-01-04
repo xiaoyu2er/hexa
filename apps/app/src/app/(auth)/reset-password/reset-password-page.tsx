@@ -2,7 +2,9 @@
 
 import { VerifyPasscode } from '@/components/auth/verify-passcode';
 import {
+  $resetPassword,
   $resetPasswordResendPasscode,
+  $resetPasswordSendPasscode,
   $resetPasswordVerifyPasscode,
 } from '@hexa/server/api';
 import { toast } from '@hexa/ui/sonner';
@@ -17,12 +19,14 @@ export interface ResetPasswordProps {
 }
 
 export const ResetPasswordPage: FC<ResetPasswordProps> = () => {
-  const initToken = useSearchParams().get('token');
+  const searchParams = useSearchParams();
+  const initToken = searchParams.get('token');
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [passcodeId, setPasscodeId] = useState('');
   const [token, setToken] = useState('');
   const [currentStep, { goToNextStep, goToPrevStep, reset }] = useStep(3);
+  const next = searchParams.get('next') ?? undefined;
 
   const onCancel = () => {
     router.push('/');
@@ -32,6 +36,14 @@ export const ResetPasswordPage: FC<ResetPasswordProps> = () => {
     return (
       <ResetPassword
         token={initToken}
+        onReset={(json) => {
+          return $resetPassword({
+            json: {
+              ...json,
+              next,
+            },
+          });
+        }}
         onCancel={onCancel}
         onSuccess={() => {
           toast.success('Password reset successful');
@@ -45,6 +57,14 @@ export const ResetPasswordPage: FC<ResetPasswordProps> = () => {
       {currentStep === 1 && (
         <ForgetPassword
           email={email}
+          onSendPasscode={(json) => {
+            return $resetPasswordSendPasscode({
+              json: {
+                ...json,
+                next,
+              },
+            });
+          }}
           onSuccess={(data) => {
             setEmail(data.email);
             setPasscodeId(data.id);
@@ -59,12 +79,18 @@ export const ResetPasswordPage: FC<ResetPasswordProps> = () => {
           email={email}
           onVerify={(json) => {
             return $resetPasswordVerifyPasscode({
-              json,
+              json: {
+                ...json,
+                next,
+              },
             });
           }}
           onResend={(json) => {
             return $resetPasswordResendPasscode({
-              json,
+              json: {
+                ...json,
+                next,
+              },
             });
           }}
           onSuccess={(data: unknown) => {
@@ -77,6 +103,14 @@ export const ResetPasswordPage: FC<ResetPasswordProps> = () => {
       {currentStep === 3 && (
         <ResetPassword
           token={token}
+          onReset={(json) => {
+            return $resetPassword({
+              json: {
+                ...json,
+                next,
+              },
+            });
+          }}
           onCancel={reset}
           onSuccess={() => {
             toast.success('Password reset successful');

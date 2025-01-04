@@ -8,8 +8,8 @@ export const tmpUserTable = sqliteTable('tmp_user', {
     .$default(() => generateId('tmpu')),
   email: text('email').notNull().unique(),
   password: text('password'),
-  name: text('name').notNull(),
-  orgName: text('org_name'),
+  // name: text('name').notNull(),
+  // orgName: text('org_name'),
   ...oauthAccountIdNullable,
 });
 

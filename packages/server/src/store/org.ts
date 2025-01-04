@@ -1,5 +1,5 @@
 import { ApiError } from '@hexa/lib';
-import type { DbType } from '@hexa/server/route/route-types';
+import { isUniqueConstraintViolationError } from '@hexa/server/lib/error';
 import type { InsertOrgType, SelectUserOrgType } from '@hexa/server/schema/org';
 import type {
   InsertOrgMemberType,
@@ -7,6 +7,7 @@ import type {
 } from '@hexa/server/schema/org-member';
 import { orgTable } from '@hexa/server/table/org';
 import { orgMemberTable } from '@hexa/server/table/org-member';
+import type { DbType } from '@hexa/server/types';
 import { and, eq, sql } from 'drizzle-orm';
 
 // 1. List all orgs that user belongs to with roles
@@ -250,6 +251,19 @@ export const updateOrgMemberRole = async (
   return true;
 };
 
+export const getOrgMember = async (
+  db: DbType,
+  orgId: string,
+  userId: string
+) => {
+  return await db.query.orgMemberTable.findFirst({
+    where: and(
+      eq(orgMemberTable.orgId, orgId),
+      eq(orgMemberTable.userId, userId)
+    ),
+  });
+};
+
 // Helper function to check if user has required role
 export const assertUserHasOrgRole = async (
   db: DbType,
@@ -263,12 +277,7 @@ export const assertUserHasOrgRole = async (
     requiredRole: OrgMemberRoleType[];
   }
 ) => {
-  const member = await db.query.orgMemberTable.findFirst({
-    where: and(
-      eq(orgMemberTable.orgId, orgId),
-      eq(orgMemberTable.userId, userId)
-    ),
-  });
+  const member = await getOrgMember(db, orgId, userId);
 
   if (!member || !requiredRole.includes(member.role)) {
     throw new ApiError(
@@ -356,26 +365,38 @@ export const addOrgMember = async (
 // Create organization and add creator as owner
 export const createOrg = async (
   db: DbType,
-  { name, desc, userId }: InsertOrgType & Pick<InsertOrgMemberType, 'userId'>
+  { name, slug, userId }: InsertOrgType & Pick<InsertOrgMemberType, 'userId'>
 ) => {
-  // Create org
-  const [org] = await db.insert(orgTable).values({ name, desc }).returning();
+  try {
+    // Create org
+    const [org] = await db.insert(orgTable).values({ name, slug }).returning();
 
-  if (!org) {
-    throw new ApiError(
-      'INTERNAL_SERVER_ERROR',
-      'Failed to create organization'
-    );
+    if (!org) {
+      throw new ApiError(
+        'INTERNAL_SERVER_ERROR',
+        'Failed to create organization'
+      );
+    }
+
+    // Add creator as owner
+    await db.insert(orgMemberTable).values({
+      orgId: org.id,
+      userId,
+      role: 'OWNER',
+    });
+
+    return org;
+  } catch (error) {
+    // Check if error is a unique constraint violation
+    if (isUniqueConstraintViolationError(error)) {
+      throw new ApiError(
+        'CONFLICT',
+        'An organization with this slug already exists'
+      );
+    }
+    // Re-throw other errors
+    throw error;
   }
-
-  // Add creator as owner
-  await db.insert(orgMemberTable).values({
-    orgId: org.id,
-    userId,
-    role: 'OWNER',
-  });
-
-  return org;
 };
 
 // Update organization
@@ -451,6 +472,20 @@ export const updateOrgName = async (
   const [updatedOrg] = await db
     .update(orgTable)
     .set({ name })
+    .where(eq(orgTable.id, orgId))
+    .returning();
+
+  return updatedOrg;
+};
+
+// Update org slug
+export const updateOrgSlug = async (
+  db: DbType,
+  { orgId, slug }: { orgId: string; slug: string }
+) => {
+  const [updatedOrg] = await db
+    .update(orgTable)
+    .set({ slug })
     .where(eq(orgTable.id, orgId))
     .returning();
 

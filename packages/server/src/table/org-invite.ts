@@ -22,7 +22,7 @@ export const orgInviteTable = sqliteTable(
     // inviter
     inviterId: text('inviter_id')
       .notNull()
-      .references(() => userTable.id),
+      .references(() => userTable.id, { onDelete: 'cascade' }),
     // invitee
     email: text('email').notNull(),
     name: text('name'),

@@ -11,6 +11,7 @@ import {
 import { ReadOnly } from '@/components/form';
 import { EditProjectSlugModal } from '@/components/project/settings/edit-project-slug-modal';
 import { useProject } from '@/hooks/use-project';
+import { getProjectSlug } from '@/lib/project';
 import { useModal } from '@ebay/nice-modal-react';
 import type { SelectProjectType } from '@hexa/server/schema/project';
 import { Button } from '@nextui-org/react';
@@ -39,7 +40,7 @@ export function EditProjectSlug() {
           onPress={() => {
             modal.show({ project }).then((newProject) => {
               router.replace(
-                `/project/${(newProject as SelectProjectType).slug}/settings/project`
+                `/${getProjectSlug(newProject as SelectProjectType)}/settings/project`
               );
             });
           }}

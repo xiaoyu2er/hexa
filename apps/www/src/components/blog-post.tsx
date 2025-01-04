@@ -55,7 +55,6 @@ const BlogPostCard = (post: BlogPost) => {
                 as={NextLink}
                 className="font-semibold "
                 href={post.url}
-                size="lg"
                 underline="hover"
                 onPress={handlePress}
               >

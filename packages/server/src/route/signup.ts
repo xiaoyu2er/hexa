@@ -7,8 +7,7 @@ import {
   resendPasscodeMiddleware,
 } from '@hexa/server/middleware/passcode';
 import { turnstileMiddleware } from '@hexa/server/middleware/turnstile';
-import type { Context } from '@hexa/server/route/route-types';
-import { OauthSignupSchema } from '@hexa/server/schema/oauth';
+import { zNextSchema } from '@hexa/server/schema/common';
 import {
   ResendPasscodeSchema,
   VerifyPassTokenSchema,
@@ -18,6 +17,7 @@ import { SignupSchema, type SignupType } from '@hexa/server/schema/signup';
 import { addPasscodeAndSendEmail } from '@hexa/server/service/passcode';
 import { addTmpUser } from '@hexa/server/store/tmp-user';
 import { getEmail } from '@hexa/server/store/user';
+import type { Context } from '@hexa/server/types';
 // @ts-ignore
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
@@ -27,13 +27,11 @@ const signup = new Hono<Context>()
   // Signup send passcode
   .post(
     '/signup/send-passcode',
-    zValidator('json', SignupSchema.or(OauthSignupSchema)),
+    zValidator('json', SignupSchema),
     turnstileMiddleware(),
     async (c) => {
       const db = c.get('db');
-      const { email, password, name, orgName } = c.req.valid(
-        'json'
-      ) as SignupType;
+      const { email, password, next } = c.req.valid('json') as SignupType;
       const emailItem = await getEmail(db, email);
 
       if (emailItem?.verified) {
@@ -47,19 +45,15 @@ const signup = new Hono<Context>()
       const tmpUser = await addTmpUser(db, {
         email,
         password,
-        name,
-        orgName,
       });
 
-      if (!tmpUser) {
-        throw new ApiError('BAD_REQUEST', 'Failed to create tmp user');
-      }
       // Send email with passcode
       const data = await addPasscodeAndSendEmail(db, {
         tmpUserId: tmpUser.id,
         email,
         type: 'SIGN_UP',
         verifyUrlPrefex: `${APP_URL}/api/signup/verify-token/`,
+        verifyUrlSuffix: next ? `?next=${next}` : undefined,
       });
 
       return c.json(data);
@@ -77,14 +71,22 @@ const signup = new Hono<Context>()
     '/signup/verify-passcode',
     zValidator('json', VerifyPasscodeSchema),
     getPasscodeMiddleware('json', 'SIGN_UP'),
-    creatUserFromTmpUserMiddleware
+    creatUserFromTmpUserMiddleware({
+      nextValidTarget: 'json',
+    })
   )
   // Signup verify token
   .get(
     '/signup/verify-token/:token',
     zValidator('param', VerifyPassTokenSchema),
-    getPasscodeByTokenMiddleware('param', 'SIGN_UP'),
-    creatUserFromTmpUserMiddleware
+    zValidator('query', zNextSchema),
+    getPasscodeByTokenMiddleware({
+      tokenValidTarget: 'param',
+      passcodeType: 'SIGN_UP',
+    }),
+    creatUserFromTmpUserMiddleware({
+      nextValidTarget: 'query',
+    })
   );
 
 export default signup;

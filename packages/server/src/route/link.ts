@@ -1,6 +1,5 @@
 import { ApiError } from '@hexa/lib';
 import authProject from '@hexa/server/middleware/project';
-import type { Context } from '@hexa/server/route/route-types';
 import { LinkQuerySchema, UpdateLinkSchema } from '@hexa/server/schema/link';
 import { InsertLinkSchema } from '@hexa/server/schema/link';
 import { ProjectIdSchema } from '@hexa/server/schema/project';
@@ -10,6 +9,7 @@ import {
   getLinks,
   updateLink,
 } from '@hexa/server/store/link';
+import type { Context } from '@hexa/server/types';
 // @ts-ignore
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';

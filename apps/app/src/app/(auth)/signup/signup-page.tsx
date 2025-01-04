@@ -1,58 +1,50 @@
 'use client';
 
 import { VerifyPasscode } from '@/components/auth/verify-passcode';
-import { $signupResendPasscode, $signupVerifyPasscode } from '@hexa/server/api';
+import {
+  $signupResendPasscode,
+  $signupSendPasscode,
+  $signupVerifyPasscode,
+} from '@hexa/server/api';
 import { toast } from '@hexa/ui/sonner';
-import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { type FC, useState } from 'react';
 import { useStep } from 'usehooks-ts';
 import { SignupEmailPassword } from './signup-email-password';
-import { SignupUserInfo } from './signup-user-info';
 
 export const SignupPage: FC = () => {
   const [email, setEmail] = useState<string | undefined>();
-  const [password, setPassword] = useState<string | undefined>();
   const [passcodeId, setPasscodeId] = useState<string | undefined>();
-  const router = useRouter();
   const [currentStep, { goToNextStep, reset }] = useStep(3);
+  const next = useSearchParams().get('next') ?? undefined;
 
   return (
     <div>
       {currentStep === 1 && (
         <SignupEmailPassword
           email={email}
-          onSuccess={({ email, password }) => {
-            setEmail(email);
-            setPassword(password);
-            goToNextStep();
+          onSignup={(json) => {
+            return $signupSendPasscode({ json: { ...json, next } });
           }}
-          onCancel={() => {
-            router.push('/');
+          onSuccess={({ id, email }) => {
+            setPasscodeId(id);
+            setEmail(email);
+            goToNextStep();
           }}
         />
       )}
       {currentStep === 2 && (
-        <SignupUserInfo
-          email={email}
-          password={password}
-          onSuccess={({ id }) => {
-            setPasscodeId(id);
-            goToNextStep();
-          }}
-        />
-      )}
-      {currentStep === 3 && (
         <VerifyPasscode
           passcodeId={passcodeId}
           email={email}
           onVerify={(json) => {
             return $signupVerifyPasscode({
-              json,
+              json: { ...json, next },
             });
           }}
           onResend={(json) => {
             return $signupResendPasscode({
-              json,
+              json: { ...json, next },
             });
           }}
           onSuccess={() => {

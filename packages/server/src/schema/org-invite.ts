@@ -9,7 +9,7 @@ import { orgInviteTable } from '@hexa/server/table/org-invite';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import type { Simplify } from 'type-fest';
 import { z } from 'zod';
-import { SelectUserSchema } from './user';
+import { BasicUserSchema, SelectUserSchema } from './user';
 
 export const zInviteStatus = z.enum([
   'PENDING',
@@ -68,13 +68,13 @@ export type InsertInviteType = Simplify<z.infer<typeof InsertInviteSchema>>;
 export const SelectInviteSchema = createSelectSchema(orgInviteTable, {
   role: zOrgMemberRole,
   status: zInviteStatus,
+  expiresAt: z.string().datetime(),
+  createdAt: z.string().datetime(),
 }).extend({
-  inviter: SelectUserSchema.extend({
-    role: zOrgMemberRole,
-  }),
+  inviter: SelectUserSchema,
   org: SelectOrgSchema,
 });
-export type SelectInviteType = z.infer<typeof SelectInviteSchema>;
+export type SelectInviteType = Simplify<z.infer<typeof SelectInviteSchema>>;
 
 export const QueryInviteSchema = createSelectSchema(orgInviteTable, {
   role: zOrgMemberRole,
@@ -83,13 +83,7 @@ export const QueryInviteSchema = createSelectSchema(orgInviteTable, {
   expiresAt: z.string().datetime(),
   createdAt: z.string().datetime(),
 }).extend({
-  inviter: SelectUserSchema.pick({
-    id: true,
-    name: true,
-    avatarUrl: true,
-  }).extend({
-    email: z.string().nullable(),
-  }),
+  inviter: BasicUserSchema,
   org: SelectOrgSchema,
 });
 export type QueryInviteType = Simplify<z.infer<typeof QueryInviteSchema>>;

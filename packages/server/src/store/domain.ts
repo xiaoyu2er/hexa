@@ -1,5 +1,4 @@
 import { ApiError } from '@hexa/lib';
-import type { DbType } from '@hexa/server/route/route-types';
 import type { PaginationType } from '@hexa/server/schema/common';
 import type {
   CustomHostnameDetailsType,
@@ -11,6 +10,7 @@ import type {
 } from '@hexa/server/schema/domain';
 import type { SelectOrgType } from '@hexa/server/schema/org';
 import { domainTable } from '@hexa/server/table/domain';
+import type { DbType } from '@hexa/server/types';
 import { and, eq, sql } from 'drizzle-orm';
 
 // Get domains for an organization

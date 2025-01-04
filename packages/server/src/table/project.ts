@@ -15,7 +15,7 @@ export const projectTable = sqliteTable(
     avatarUrl: text('avatar_url'),
   },
   (t) => ({
-    slugIdx: uniqueIndex('project_slug_idx').on(t.slug),
+    slugIdx: uniqueIndex('project_slug_idx').on(t.orgId, t.slug),
     orgIndex: index('project_org_index').on(t.orgId),
   })
 );

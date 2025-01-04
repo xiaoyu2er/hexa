@@ -1,15 +1,27 @@
 import { Link, cn } from '@nextui-org/react';
+import { useSearchParams } from 'next/navigation';
 import type { FC, ReactNode } from 'react';
 
-export const AuthLink: FC<{
+export type AuthLinkProps = {
   href?: string;
   children: ReactNode;
   className?: string;
   onPress?: () => void;
-}> = ({ href, children, className, onPress }) => {
+  withSearchParams?: boolean;
+};
+
+export const AuthLink: FC<AuthLinkProps> = ({
+  href,
+  children,
+  className,
+  onPress,
+  withSearchParams = false,
+}) => {
+  const searchParams = useSearchParams();
+  const search = searchParams.toString() ? `?${searchParams.toString()}` : '';
   return (
     <Link
-      href={href}
+      href={withSearchParams ? `${href}${search}` : href}
       underline="hover"
       size="sm"
       className={cn('font-medium text-xs', className)}

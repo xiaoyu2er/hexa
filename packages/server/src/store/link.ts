@@ -1,5 +1,4 @@
 import { ApiError } from '@hexa/lib';
-import type { DbType } from '@hexa/server/route/route-types';
 import { transformSortParams } from '@hexa/server/schema/link';
 import type {
   InsertLinkType,
@@ -7,6 +6,7 @@ import type {
   SelectLinkType,
 } from '@hexa/server/schema/link';
 import { linkTable } from '@hexa/server/table/link';
+import type { DbType } from '@hexa/server/types';
 import { and, asc, desc, eq, sql } from 'drizzle-orm';
 
 // Get all URLs in a project

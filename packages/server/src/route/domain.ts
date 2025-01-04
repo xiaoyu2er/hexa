@@ -1,5 +1,4 @@
 import authOrg from '@hexa/server/middleware/org';
-import type { Context } from '@hexa/server/route/route-types';
 import { PaginationSchema } from '@hexa/server/schema/common';
 import {
   InsertDomainSchema,
@@ -16,6 +15,7 @@ import {
   getDomains,
   updateDomain,
 } from '@hexa/server/store/domain';
+import type { Context } from '@hexa/server/types';
 // @ts-ignore
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';

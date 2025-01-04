@@ -65,17 +65,17 @@ export const getProjectSidebarItems = (slug: string): SidebarGroupItem[] => {
       subItems: [
         {
           title: 'Links',
-          url: `/project/${slug}`,
+          url: `/${slug}`,
           icon: Link2Icon,
         },
         {
           title: 'Analytics',
-          url: `/project/${slug}/analytics`,
+          url: `/${slug}/analytics`,
           icon: ChartBar,
         },
         {
           title: 'Settings',
-          url: `/project/${slug}/settings/project`,
+          url: `/${slug}/settings/project`,
           icon: Cog,
         },
       ],
@@ -90,7 +90,7 @@ export const getSettingsSidebarItems = (slug: string): SidebarGroupItem[] => {
       subItems: [
         {
           title: 'Settings',
-          url: `/project/${slug}/settings/project`,
+          url: `/${slug}/settings/project`,
           icon: Cog,
         },
       ],
@@ -100,17 +100,17 @@ export const getSettingsSidebarItems = (slug: string): SidebarGroupItem[] => {
       subItems: [
         {
           title: 'Settings',
-          url: `/project/${slug}/settings/org`,
+          url: `/${slug}/settings/org`,
           icon: BuildingIcon,
         },
         {
           title: 'Domains',
-          url: `/project/${slug}/settings/org/domains`,
+          url: `/${slug}/settings/org/domains`,
           icon: GlobeIcon,
         },
         {
           title: 'Members',
-          url: `/project/${slug}/settings/org/members`,
+          url: `/${slug}/settings/org/members`,
           icon: Users,
         },
       ],
@@ -120,17 +120,17 @@ export const getSettingsSidebarItems = (slug: string): SidebarGroupItem[] => {
       subItems: [
         {
           title: 'Profile',
-          url: `/project/${slug}/settings/user/profile`,
+          url: `/${slug}/settings/user/profile`,
           icon: User2Icon,
         },
         {
           title: 'Account',
-          url: `/project/${slug}/settings/user/account`,
+          url: `/${slug}/settings/user/account`,
           icon: UserCogIcon,
         },
         {
           title: 'Organizations',
-          url: `/project/${slug}/settings/user/orgs`,
+          url: `/${slug}/settings/user/orgs`,
           icon: BuildingIcon,
         },
       ],

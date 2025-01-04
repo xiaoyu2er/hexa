@@ -1,7 +1,6 @@
 import { RESET_PASSWORD_EXPIRE_TIME_SPAN } from '@hexa/const';
 import { generateCode, generateId } from '@hexa/lib';
 import { ApiError } from '@hexa/lib';
-import type { DbType } from '@hexa/server/route/route-types';
 import type {
   AddPasscodeType,
   QueryPasscodeByTokenType,
@@ -9,6 +8,7 @@ import type {
   VerifyTokenType,
 } from '@hexa/server/schema/passcode';
 import { passcodeTable } from '@hexa/server/table/passcode';
+import type { DbType } from '@hexa/server/types';
 import { and, eq } from 'drizzle-orm';
 // @ts-ignore
 import { createDate, isWithinExpirationDate } from 'oslo';

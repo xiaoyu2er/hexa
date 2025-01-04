@@ -6,7 +6,6 @@ import {
   resendPasscodeMiddleware,
 } from '@hexa/server/middleware/passcode';
 import { turnstileMiddleware } from '@hexa/server/middleware/turnstile';
-import type { Context } from '@hexa/server/route/route-types';
 import {
   ResendPasscodeSchema,
   SendPasscodeSchema,
@@ -20,6 +19,7 @@ import {
   verifyPasscode,
 } from '@hexa/server/store/passcode';
 import { getEmail, updateUserPassword } from '@hexa/server/store/user';
+import type { Context } from '@hexa/server/types';
 // @ts-ignore
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
@@ -34,7 +34,7 @@ const resetPassword = new Hono<Context>()
     async (c) => {
       const db = c.get('db');
       // @ts-ignore
-      const { email } = c.req.valid('json');
+      const { email, next } = c.req.valid('json');
       const emailItem = await getEmail(db, email);
       if (!emailItem || !emailItem.userId) {
         throw new ApiError('CONFLICT', 'Email not found');
@@ -44,6 +44,7 @@ const resetPassword = new Hono<Context>()
         userId: emailItem.userId,
         type: 'RESET_PASSWORD',
         verifyUrlPrefex: `${APP_URL}/reset-password?token=`,
+        verifyUrlSuffix: next ? `&next=${next}` : '',
       });
       return c.json(data);
     }
@@ -72,10 +73,14 @@ const resetPassword = new Hono<Context>()
   .post(
     '/reset-password',
     zValidator('json', ResetPasswordSchema),
-    getPasscodeByTokenMiddleware('json', 'RESET_PASSWORD'),
+    getPasscodeByTokenMiddleware({
+      tokenValidTarget: 'json',
+      passcodeType: 'RESET_PASSWORD',
+    }),
     async (c) => {
       const db = c.get('db');
-      const { token, password } = c.req.valid('json');
+      const { token, password, next } = c.req.valid('json');
+      const redirectUrl = next ?? '/';
       const passcode = await findPasscodeByToken(db, {
         token,
         type: 'RESET_PASSWORD',
@@ -97,7 +102,7 @@ const resetPassword = new Hono<Context>()
       await invalidateUserSessions(passcode.userId);
       await setSession(passcode.userId);
 
-      return c.redirect('/');
+      return c.redirect(redirectUrl);
     }
   );
 

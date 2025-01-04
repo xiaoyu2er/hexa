@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { LoginPassword } from './login-password';
 
 export const metadata = {
@@ -6,5 +7,9 @@ export const metadata = {
 };
 
 export default function () {
-  return <LoginPassword />;
+  return (
+    <Suspense>
+      <LoginPassword />
+    </Suspense>
+  );
 }

@@ -1,8 +1,8 @@
 import { ApiError } from '@hexa/lib';
 import { turnstileMiddleware } from '@hexa/server/middleware/turnstile';
-import type { Context } from '@hexa/server/route/route-types';
 import { CheckEmailSchema } from '@hexa/server/schema/user';
 import { getEmail } from '@hexa/server/store/user';
+import type { Context } from '@hexa/server/types';
 // @ts-ignore
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';

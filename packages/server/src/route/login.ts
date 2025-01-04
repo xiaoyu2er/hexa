@@ -8,7 +8,7 @@ import {
   resendPasscodeMiddleware,
 } from '@hexa/server/middleware/passcode';
 import { turnstileMiddleware } from '@hexa/server/middleware/turnstile';
-import type { Context } from '@hexa/server/route/route-types';
+import { zNextSchema } from '@hexa/server/schema/common';
 import { LoginPasswordSchema } from '@hexa/server/schema/login';
 import {
   ResendPasscodeSchema,
@@ -19,6 +19,7 @@ import {
 import { addPasscodeAndSendEmail } from '@hexa/server/service/passcode';
 import { setSession } from '@hexa/server/session';
 import { getEmail } from '@hexa/server/store/user';
+import type { Context } from '@hexa/server/types';
 // @ts-ignore
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
@@ -30,7 +31,8 @@ const login = new Hono<Context>()
     zValidator('json', LoginPasswordSchema),
     turnstileMiddleware(),
     async (c) => {
-      const { email, password } = c.req.valid('json');
+      const { email, password, next } = c.req.valid('json');
+      const redirectUrl = next ?? '/';
       const db = c.get('db');
       const emailItem = await getEmail(db, email);
       const existingUser = emailItem?.user;
@@ -54,7 +56,7 @@ const login = new Hono<Context>()
       }
 
       await setSession(existingUser.id);
-      return c.redirect('/');
+      return c.redirect(redirectUrl);
     }
   )
   // ====== Login by passcode ======
@@ -64,7 +66,7 @@ const login = new Hono<Context>()
     zValidator('json', SendPasscodeSchema),
     turnstileMiddleware(),
     async (c) => {
-      const { email } = c.req.valid('json');
+      const { email, next } = c.req.valid('json');
       const db = c.get('db');
       const emailItem = await getEmail(db, email);
       const existingUser = emailItem?.user;
@@ -78,6 +80,7 @@ const login = new Hono<Context>()
         type: 'LOGIN',
         userId: existingUser.id,
         verifyUrlPrefex: `${APP_URL}/api/login-token/`,
+        verifyUrlSuffix: next ? `?next=${next}` : undefined,
       });
 
       return c.json(data);
@@ -95,14 +98,22 @@ const login = new Hono<Context>()
     '/login-passcode/verify-passcode',
     zValidator('json', VerifyPasscodeSchema),
     getPasscodeMiddleware('json', 'LOGIN'),
-    verifyLoginPasscodeMiddleware
+    verifyLoginPasscodeMiddleware({
+      nextValidTarget: 'json',
+    })
   )
   // Login by passcode verify token
   .get(
     '/login-token/:token',
     zValidator('param', VerifyPassTokenSchema),
-    getPasscodeByTokenMiddleware('param', 'LOGIN'),
-    verifyLoginPasscodeMiddleware
+    zValidator('query', zNextSchema),
+    getPasscodeByTokenMiddleware({
+      tokenValidTarget: 'param',
+      passcodeType: 'LOGIN',
+    }),
+    verifyLoginPasscodeMiddleware({
+      nextValidTarget: 'query',
+    })
   );
 
 export default login;

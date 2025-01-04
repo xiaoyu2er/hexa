@@ -104,3 +104,8 @@ export type PaginationType = z.infer<typeof PaginationSchema>;
 export const zSortEnum = z.enum(['asc', 'desc']);
 
 export const zDatetime = z.string().datetime();
+
+export const zNext = z.string().optional();
+export const zNextSchema = z.object({
+  next: zNext,
+});

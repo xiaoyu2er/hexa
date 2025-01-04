@@ -57,7 +57,7 @@ export const CreateDomainModal = NiceModal.create(
     });
 
     return (
-      <Modal isOpen={modal.visible} onOpenChange={modal.hide}>
+      <Modal isOpen={modal.visible} onOpenChange={modal.remove}>
         <ModalContent>
           <ModalHeader>Add domain</ModalHeader>
           <Form

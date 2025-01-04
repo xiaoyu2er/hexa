@@ -98,14 +98,6 @@ export const $resetPassword = h(api['reset-password'].$post);
 export const $signupSendPasscode = h(api.signup['send-passcode'].$post);
 export const $signupResendPasscode = h(api.signup['resend-passcode'].$post);
 export const $signupVerifyPasscode = h(api.signup['verify-passcode'].$post);
-// oauth
-export const $oauthSignup = h(api['oauth-signup'].$post);
-export const $oauthSignupResendPasscode = h(
-  api['oauth-signup']['resend-passcode'].$post
-);
-export const $oauthSignupVerifyPasscode = h(
-  api['oauth-signup']['verify-passcode'].$post
-);
 
 // logout
 export const $logout = h(api.logout.$post);
@@ -162,9 +154,10 @@ export const $getAnalyticsTimeSeries = h(api.analytics.all.$get);
 
 // ==================== Org ====================
 export const $getOrgs = h(api.org.all.$get);
-export const $createOrg = h(api.org.$post);
+export const $createOrg = h(api.org['create-org'].$post);
 export const $deleteOrg = h(api.org['delete-org'].$delete);
 export const $updateOrgName = h(api.org['update-org-name'].$put);
+export const $updateOrgSlug = h(api.org['update-org-slug'].$put);
 export const $updateOrgAvatar = h(api.org['update-org-avatar'].$put);
 export const $getOrgMembers = h(api.org[':orgId'].members.$get);
 export const $leaveOrg = h(api.org['leave-org'].$post);

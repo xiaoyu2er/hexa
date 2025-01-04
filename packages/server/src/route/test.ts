@@ -9,8 +9,8 @@ import {
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
 } from '@hexa/env';
 import { generateId } from '@hexa/lib';
-import type { Context } from '@hexa/server/route/route-types';
 import { addTmpUser, deleteTmpUser } from '@hexa/server/store/tmp-user';
+import type { Context } from '@hexa/server/types';
 import { Hono } from 'hono';
 
 const test = new Hono<Context>()
@@ -18,7 +18,6 @@ const test = new Hono<Context>()
     const db = c.get('db');
     // create tmp user and delete it
     const user = await addTmpUser(db, {
-      name: 'test',
       email: `${generateId('tmpu')}@test.com`,
     });
     await deleteTmpUser(db, user.id);

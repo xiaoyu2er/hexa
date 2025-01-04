@@ -1,5 +1,5 @@
-import type { Context } from '@hexa/server/route/route-types';
 import { invalidateSession, setBlankSessionCookie } from '@hexa/server/session';
+import type { Context } from '@hexa/server/types';
 
 import { assertAuthMiddleware } from '@hexa/server/middleware/user';
 import { Hono } from 'hono';

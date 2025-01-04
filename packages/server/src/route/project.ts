@@ -3,7 +3,6 @@ import { ApiError } from '@hexa/lib';
 import { getStorage, isStored } from '@hexa/server/lib';
 import authOrg from '@hexa/server/middleware/org';
 import authProject from '@hexa/server/middleware/project';
-import type { Context } from '@hexa/server/route/route-types';
 import {
   DeleteProjectSchema,
   InsertProjectSchema,
@@ -17,11 +16,11 @@ import {
   deleteProject,
   getProjectBySlug,
   getUserAccessibleProjects,
-  setUserDefaultProject,
   updateProjectAvatar,
   updateProjectName,
   updateProjectSlug,
 } from '@hexa/server/store/project';
+import type { Context } from '@hexa/server/types';
 // @ts-ignore
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
@@ -42,7 +41,7 @@ const project = new Hono<Context>()
     async (c) => {
       const { db } = c.var;
       const { name, orgId, desc, slug } = c.req.valid('json');
-      const existingProject = await getProjectBySlug(db, { slug });
+      const existingProject = await getProjectBySlug(db, { orgId, slug });
       if (existingProject) {
         throw new ApiError('CONFLICT', 'Project with this slug already exists');
       }
@@ -72,9 +71,8 @@ const project = new Hono<Context>()
     zValidator('json', DeleteProjectSchema),
     authProject('json', ['OWNER', 'ADMIN']),
     async (c) => {
-      const { db, projectId, userId } = c.var;
-      await setUserDefaultProject(db, { userId, projectId });
-      await deleteProject(db, { projectId, userId });
+      const { db, projectId } = c.var;
+      await deleteProject(db, { projectId });
       return c.json({});
     }
   )

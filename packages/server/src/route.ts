@@ -14,10 +14,10 @@ import oauth from './route/oauth';
 import org from './route/org';
 import project from './route/project';
 import resetPassword from './route/reset-password';
-import type { Context } from './route/route-types';
 import signup from './route/signup';
 import test from './route/test';
 import user from './route/user';
+import type { Context } from './types';
 
 export const app = new Hono<Context>()
   .basePath('/api')

@@ -108,7 +108,6 @@ export const VideoInView: FC<VideoInViewProps> = ({
         <Spinner
           className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2"
           color="secondary"
-          size="lg"
         />
       )}
       <Tooltip content={isPlaying ? 'Pause' : 'Play'} delay={1000}>

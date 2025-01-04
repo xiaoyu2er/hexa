@@ -1,8 +1,7 @@
 'use client';
 
 import { FormErrorMessage } from '@/components/form';
-import {} from '@hexa/server/schema/signup';
-import { Button } from '@nextui-org/react';
+import { Button, Link } from '@nextui-org/react';
 
 import { Form } from '@/components/form';
 import {
@@ -18,31 +17,37 @@ import { useForm } from 'react-hook-form';
 import { AuthLink } from '@/components/auth/auth-link';
 import { DividerOr } from '@/components/auth/divider-or';
 import { OauthButtons } from '@/components/auth/oauth-buttons';
+import { TermsPrivacy } from '@/components/auth/terms-privacy';
 import { setFormError } from '@/components/form';
 import { InputField } from '@/components/form';
 import { PasswordField } from '@/components/form';
 import { useTurnstile } from '@/hooks/use-turnstile';
-import { $checkEmail } from '@hexa/server/api';
-import { PasswordSchema, type PasswordType } from '@hexa/server/schema/common';
-import { CheckEmailSchema } from '@hexa/server/schema/user';
-import type { CheckEmailType } from '@hexa/server/schema/user';
+import type {
+  $signupSendPasscode,
+  InferApiResponseType,
+} from '@hexa/server/api';
+import { SignupSchema, type SignupType } from '@hexa/server/schema/signup';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { omit } from 'lodash';
+import { useSearchParams } from 'next/navigation';
 
 interface SignupEmailPasswordProps {
   email: string | null | undefined;
-  onSuccess: (data: { email: string; password: string }) => void;
-  onCancel?: () => void;
+  onSignup: (
+    data: SignupType
+  ) => Promise<InferApiResponseType<typeof $signupSendPasscode>>;
+  onSuccess: (data: InferApiResponseType<typeof $signupSendPasscode>) => void;
 }
 
 export const SignupEmailPassword: FC<SignupEmailPasswordProps> = ({
   email,
+  onSignup,
   onSuccess,
-  onCancel,
 }) => {
-  const form = useForm<CheckEmailType & PasswordType>({
-    resolver: zodResolver(CheckEmailSchema.merge(PasswordSchema)),
+  const searchParams = useSearchParams();
+  const search = searchParams.toString() ? `?${searchParams.toString()}` : '';
+  const form = useForm<SignupType>({
+    resolver: zodResolver(SignupSchema),
     defaultValues: {
       email: email ?? undefined,
     },
@@ -57,13 +62,10 @@ export const SignupEmailPassword: FC<SignupEmailPasswordProps> = ({
 
   const { resetTurnstile, turnstile, disableNext } = useTurnstile({ form });
 
-  const { mutateAsync: checkUserEmail } = useMutation({
-    mutationFn: $checkEmail,
-    onSuccess: () => {
-      onSuccess({
-        email: form.getValues('email'),
-        password: form.getValues('password'),
-      });
+  const { mutateAsync: signupSendPasscode } = useMutation({
+    mutationFn: onSignup,
+    onSuccess: (res) => {
+      onSuccess(res);
     },
     onError: (error) => {
       resetTurnstile();
@@ -86,11 +88,7 @@ export const SignupEmailPassword: FC<SignupEmailPasswordProps> = ({
         <DividerOr />
         <Form
           form={form}
-          onSubmit={handleSubmit((json) =>
-            checkUserEmail({
-              json: omit(json, ['password']),
-            })
-          )}
+          onSubmit={handleSubmit((json) => signupSendPasscode(json))}
           className="space-y-2"
         >
           <InputField
@@ -109,7 +107,10 @@ export const SignupEmailPassword: FC<SignupEmailPasswordProps> = ({
           <FormErrorMessage message={errors.root?.message} />
           {turnstile}
 
-          <AuthLink href="/login">Have an account? Login</AuthLink>
+          <AuthLink href="/login" withSearchParams>
+            Have an account? Login
+          </AuthLink>
+
           <Button
             color="primary"
             className="w-full"
@@ -119,9 +120,15 @@ export const SignupEmailPassword: FC<SignupEmailPasswordProps> = ({
           >
             Continue
           </Button>
-          <Button variant="ghost" className="w-full" onPress={onCancel}>
+          <Button
+            variant="ghost"
+            className="w-full"
+            as={Link}
+            href={`/login${search}`}
+          >
             Cancel
           </Button>
+          <TermsPrivacy />
         </Form>
       </CardContent>
     </Card>

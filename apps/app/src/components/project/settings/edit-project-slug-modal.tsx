@@ -56,7 +56,7 @@ export const EditProjectSlugModal = NiceModal.create(
     });
 
     return (
-      <Modal isOpen={modal.visible} onOpenChange={modal.hide} backdrop="blur">
+      <Modal isOpen={modal.visible} onOpenChange={modal.remove} backdrop="blur">
         {understandBool.value ? (
           <ModalContent>
             <ModalHeader>Enter a new project slug</ModalHeader>
@@ -65,7 +65,7 @@ export const EditProjectSlugModal = NiceModal.create(
               onSubmit={handleSubmit((json) => updateProjectSlug({ json }))}
             >
               <ModalBody className="space-y-2">
-                <InputField form={form} name="slug" label="Slug" />
+                <InputField form={form} name="slug" label="New project slug" />
               </ModalBody>
               <ModalFooter>
                 <Button
@@ -95,7 +95,10 @@ export const EditProjectSlugModal = NiceModal.create(
                   We <strong>will not</strong> set up redirects for your
                   projects.
                 </li>
-                <li>Project old slug will be available for anyone to claim.</li>
+                <li>
+                  Project's old slug will be available for new projects to
+                  claim.
+                </li>
                 <li>You will need to update any bookmarks or saved links.</li>
               </ul>
             </ModalBody>

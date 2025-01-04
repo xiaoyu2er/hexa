@@ -1,8 +1,10 @@
 'use client';
+import { CreateProjectModal } from '@/components/project/create-project-modal';
 import { ProjectAvatar } from '@/components/project/project-avatar';
-import { CreateProjectModal } from '@/components/project/project-create-modal';
 import { UserAvatar } from '@/components/user/settings/user-avatar';
+import { useProject } from '@/hooks/use-project';
 import { useUser } from '@/hooks/use-user';
+import { getProjectSlug } from '@/lib/project';
 import { queryProjectsOptions } from '@/lib/queries/project';
 import { useModal } from '@ebay/nice-modal-react';
 import { cn } from '@hexa/lib';
@@ -39,10 +41,14 @@ export const ListboxWrapper = ({ children }: { children: ReactNode }) => (
 export function ContextSwitcher() {
   const { isMobile } = useScreenSize();
 
-  const { slug } = useParams() as { slug: string };
+  const { org: orgSlug, project: projectSlug } = useParams() as {
+    org: string;
+    project: string;
+  };
+  const slug = `${orgSlug}/${projectSlug}`;
   const { state } = useSidebar();
   const { user } = useUser();
-
+  const { project } = useProject();
   const {
     data: projects = [],
     refetch,
@@ -57,9 +63,9 @@ export function ContextSwitcher() {
     setFalse: closePopover,
   } = useBoolean();
 
-  const modal = useModal(CreateProjectModal);
+  const createProjectModal = useModal(CreateProjectModal);
   const selectedProject = projects?.find(
-    (project: SelectProjectType) => `${project.slug}` === slug
+    (project: SelectProjectType) => getProjectSlug(project) === slug
   );
   const router = useRouter();
   const { mutateAsync: setUserDefaultProject } = useMutation({
@@ -67,7 +73,7 @@ export function ContextSwitcher() {
     onSuccess({ project }) {
       toast.success('Project switched');
       setPopoverOpen(false);
-      router.push(`/project/${project.slug}`);
+      router.push(`/${getProjectSlug(project)}`);
     },
     onError(err) {
       toast.error(`Failed to switch project${err.message}`);
@@ -142,7 +148,7 @@ export function ContextSwitcher() {
                     className="h-5 w-5"
                   />
                   <span className="w-2/3 overflow-hidden text-ellipsis text-nowrap text-left">
-                    {selectedProject.name}
+                    {selectedProject.name || selectedProject.slug}
                   </span>
                   <Badge className="!mt-0">Plan</Badge>
                 </>
@@ -201,7 +207,7 @@ export function ContextSwitcher() {
                     startContent={<PlusCircledIcon className="h-5 w-5" />}
                     onPress={() => {
                       closePopover();
-                      modal.show().then(() => {
+                      createProjectModal.show(project.org).then(() => {
                         refetch();
                       });
                     }}

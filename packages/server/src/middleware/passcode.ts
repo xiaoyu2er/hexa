@@ -1,24 +1,25 @@
 import { ApiError } from '@hexa/lib';
-import type { ValidTarget } from '@hexa/server/route/route-types';
 import type { PasscodeType } from '@hexa/server/schema/passcode';
 import { resendPasscodeAndSendEmail } from '@hexa/server/service/passcode';
 import {
   findPasscodeByToken,
   verifyPasscode,
 } from '@hexa/server/store/passcode';
+import type { ValidTarget } from '@hexa/server/types';
 import { createMiddleware } from 'hono/factory';
 
 export const resendPasscodeMiddleware = (verifyUrlPrefex: string) =>
   createMiddleware(async (c) => {
     const db = c.get('db');
     // @ts-ignore
-    const { id } = c.req.valid('json');
+    const { id, next } = c.req.valid('json');
     if (!id) {
       throw new ApiError('BAD_REQUEST', 'The passcode id is required');
     }
     const data = await resendPasscodeAndSendEmail(db, {
       id,
       verifyUrlPrefex,
+      verifyUrlSuffix: next ? `?next=${next}` : undefined,
     });
 
     return c.json(data);
@@ -46,14 +47,17 @@ export const getPasscodeMiddleware = (
     return next();
   });
 
-export const getPasscodeByTokenMiddleware = (
-  validTarget: ValidTarget,
-  type: PasscodeType
-) =>
+export const getPasscodeByTokenMiddleware = ({
+  tokenValidTarget,
+  passcodeType: type,
+}: {
+  tokenValidTarget: ValidTarget;
+  passcodeType: PasscodeType;
+}) =>
   createMiddleware(async (c, next) => {
     const db = c.get('db');
     // @ts-ignore
-    const { token } = c.req.valid(validTarget);
+    const { token } = c.req.valid(tokenValidTarget);
     if (!token) {
       throw new ApiError('BAD_REQUEST', 'Token is required');
     }

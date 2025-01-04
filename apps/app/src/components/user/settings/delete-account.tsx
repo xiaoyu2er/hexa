@@ -84,7 +84,7 @@ export const DeleteAccountModal = NiceModal.create(() => {
   });
 
   return (
-    <Modal isOpen={modal.visible} onOpenChange={modal.hide} backdrop="blur">
+    <Modal isOpen={modal.visible} onOpenChange={modal.remove} backdrop="blur">
       <ModalContent>
         <ModalHeader>Delete account</ModalHeader>
         <Form

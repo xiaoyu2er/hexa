@@ -11,7 +11,7 @@ export const BackButton = ({ slug }: { slug: string }) => {
     return (
       <Button
         as={Link}
-        href={slug ? `/project/${slug}` : '/'}
+        href={slug ? `/${slug}` : '/'}
         isIconOnly
         variant="light"
         size="sm"
@@ -24,7 +24,7 @@ export const BackButton = ({ slug }: { slug: string }) => {
   return (
     <Button
       as={Link}
-      href={slug ? `/project/${slug}` : '/'}
+      href={slug ? `/${slug}` : '/'}
       variant="light"
       className="w-full justify-start"
       startContent={<ArrowLeft className="h-4 w-4" />}

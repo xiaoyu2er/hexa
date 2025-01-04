@@ -1,6 +1,6 @@
 import { inspect } from 'node:util';
 import { ERROR_CODE_TO_HTTP_STATUS } from '@hexa/lib';
-import type { Context } from '@hexa/server/route/route-types';
+import type { Context } from '@hexa/server/types';
 import type { ErrorHandler } from 'hono';
 import { ZodError } from 'zod';
 
@@ -8,6 +8,7 @@ export const onError: ErrorHandler<Context> = (error, c) => {
   if (error instanceof ZodError) {
     return c.json({ error: error, success: false }, 400);
   }
+
   // @ts-ignore
   const code = error.code;
   if (code) {

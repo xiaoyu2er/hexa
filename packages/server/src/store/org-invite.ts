@@ -1,7 +1,6 @@
 import { INVITE_EXPIRE_TIME_SPAN } from '@hexa/const';
 import { generateId } from '@hexa/lib';
 import { ApiError } from '@hexa/lib';
-import type { DbType } from '@hexa/server/route/route-types';
 import {
   type CreateInvitesType,
   type InviteStatusType,
@@ -14,17 +13,59 @@ import type { OrgMemberRoleType } from '@hexa/server/schema/org-member';
 import { emailTable } from '@hexa/server/table/email';
 import { orgInviteTable } from '@hexa/server/table/org-invite';
 import { orgMemberTable } from '@hexa/server/table/org-member';
+import { userTable } from '@hexa/server/table/user';
+import type { DbType } from '@hexa/server/types';
 import { and, asc, desc, eq, gt, sql } from 'drizzle-orm';
 // @ts-ignore
 import { createDate } from 'oslo';
 import { ZodError, type ZodIssue } from 'zod';
+
+// Add this helper function to get all emails for org members
+async function getOrgMemberEmails(db: DbType, orgId: string) {
+  const emails = await db
+    .select({
+      email: emailTable.email,
+    })
+    .from(orgMemberTable)
+    .leftJoin(userTable, eq(userTable.id, orgMemberTable.userId))
+    .leftJoin(emailTable, eq(emailTable.userId, userTable.id))
+    .where(
+      and(eq(orgMemberTable.orgId, orgId), sql`${emailTable.email} IS NOT NULL`)
+    );
+
+  return emails.map((e) => e.email?.toLowerCase());
+}
 
 // Create new invites
 export async function createInvites(
   db: DbType,
   data: { inviterId: string } & CreateInvitesType
 ) {
-  // Check if invite already exists
+  // Get all member emails
+  const memberEmails = await getOrgMemberEmails(db, data.orgId);
+
+  // Check for existing members
+  const existingMembers = data.invites.filter((invite) =>
+    memberEmails.includes(invite.email.toLowerCase())
+  );
+
+  const issues: ZodIssue[] = [];
+
+  if (existingMembers.length > 0) {
+    const memberIssues: ZodIssue[] = existingMembers.map((invite) => {
+      const index = data.invites.findIndex(
+        (i) => i.email.toLowerCase() === invite.email.toLowerCase()
+      );
+      return {
+        code: 'custom',
+        message: `${invite.email} is already a member of this organization`,
+        path: [`invites.${index}.email`],
+      };
+    });
+    issues.push(...memberIssues);
+  }
+
+  // Check for pending invites (existing code)
   const existings = await db.query.orgInviteTable.findMany({
     where: and(
       eq(orgInviteTable.orgId, data.orgId),
@@ -34,7 +75,7 @@ export async function createInvites(
   });
 
   if (existings.length > 0) {
-    const issues: ZodIssue[] = existings.map((invite) => {
+    const inviteIssues: ZodIssue[] = existings.map((invite) => {
       const index = data.invites.findIndex(
         (i) => i.email.toLowerCase() === invite.email.toLowerCase()
       );
@@ -44,14 +85,11 @@ export async function createInvites(
         path: [`invites.${index}.email`],
       };
     });
-    throw new ZodError([
-      ...issues,
-      {
-        code: 'custom',
-        message: 'Please check the invites and try again',
-        path: ['root'],
-      },
-    ]);
+    issues.push(...inviteIssues);
+  }
+
+  if (issues.length > 0) {
+    throw new ZodError(issues);
   }
 
   // Create invite values with all fields we want to update
@@ -94,12 +132,17 @@ export async function revokeInvite(db: DbType, inviteId: string) {
 }
 
 // Get invite by token
-export async function getInviteByToken(db: DbType, token: string) {
+export async function getInviteByToken(
+  db: DbType,
+  token: string
+): Promise<SelectInviteType> {
+  const now = Math.floor(Date.now() / 1000); // Convert to seconds
+
   const invite = await db.query.orgInviteTable.findFirst({
     where: and(
       eq(orgInviteTable.token, token),
       eq(orgInviteTable.status, 'PENDING'),
-      gt(orgInviteTable.expiresAt, new Date())
+      gt(orgInviteTable.expiresAt, sql`${now}`)
     ),
     with: {
       org: true,
@@ -108,10 +151,14 @@ export async function getInviteByToken(db: DbType, token: string) {
   });
 
   if (!invite) {
-    throw new ApiError('NOT_FOUND', 'Invite is invalid');
+    throw new ApiError('NOT_FOUND', 'Invite is not valid or expired');
   }
 
-  return invite;
+  return {
+    ...invite,
+    createdAt: invite.createdAt.toISOString(),
+    expiresAt: invite.expiresAt.toISOString(),
+  };
 }
 
 // // Get org's invites
@@ -154,6 +201,11 @@ export async function getInvitesByIds(
             where: and(eq(emailTable.primary, true)),
             limit: 1,
           },
+          oauthAccounts: {
+            columns: {
+              email: true,
+            },
+          },
         },
       },
     },
@@ -167,7 +219,10 @@ export async function getInvitesByIds(
       id: invite.inviter.id,
       name: invite.inviter.name,
       avatarUrl: invite.inviter.avatarUrl,
-      email: invite.inviter.emails?.[0]?.email ?? null,
+      email:
+        invite.inviter.emails?.[0]?.email ??
+        invite.inviter.oauthAccounts?.[0]?.email ??
+        null,
     },
   }));
 }
@@ -188,6 +243,11 @@ export async function getOrgInvite(
           orgMembers: {
             where: eq(orgMemberTable.orgId, orgInviteTable.orgId),
           },
+          oauthAccounts: {
+            columns: {
+              email: true,
+            },
+          },
         },
       },
     },
@@ -196,16 +256,10 @@ export async function getOrgInvite(
     throw new ApiError('NOT_FOUND', 'Invite not found');
   }
 
-  if (!invite.inviter?.orgMembers[0]) {
-    throw new ApiError('NOT_FOUND', 'Inviter not found');
-  }
-
   return {
     ...invite,
-    inviter: {
-      ...invite.inviter,
-      role: invite.inviter.orgMembers[0].role,
-    },
+    createdAt: invite.createdAt.toISOString(),
+    expiresAt: invite.expiresAt.toISOString(),
   };
 }
 
@@ -269,6 +323,11 @@ export const getOrgInvites = async (
             where: and(eq(emailTable.primary, true)),
             limit: 1,
           },
+          oauthAccounts: {
+            columns: {
+              email: true,
+            },
+          },
         },
       },
     },
@@ -297,7 +356,10 @@ export const getOrgInvites = async (
         id: invite.inviter.id,
         name: invite.inviter.name,
         avatarUrl: invite.inviter.avatarUrl,
-        email: invite.inviter.emails?.[0]?.email ?? null,
+        email:
+          invite.inviter.emails?.[0]?.email ??
+          invite.inviter.oauthAccounts?.[0]?.email ??
+          null,
       },
     };
   });
@@ -331,15 +393,25 @@ export async function acceptInvite(db: DbType, token: string, userId: string) {
     throw new ApiError('NOT_FOUND', 'Invalid or expired invite');
   }
 
-  // Add user to org
-  await db.insert(orgMemberTable).values({
-    orgId: invite.orgId,
-    userId,
-    role: invite.role as OrgMemberRoleType,
-  });
-
   // Update invite status
-  return await updateInviteStatus(db, token, 'ACCEPTED');
+  await updateInviteStatus(db, token, 'ACCEPTED');
+
+  // Add user to org
+  await db
+    .insert(orgMemberTable)
+    .values({
+      orgId: invite.orgId,
+      userId,
+      role: invite.role as OrgMemberRoleType,
+    })
+    .onConflictDoUpdate({
+      target: [orgMemberTable.orgId, orgMemberTable.userId],
+      set: {
+        role: sql`excluded.role`,
+      },
+    });
+
+  return invite;
 }
 
 // Delete expired invites

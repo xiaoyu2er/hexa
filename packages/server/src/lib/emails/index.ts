@@ -35,7 +35,7 @@ export async function sendOrgInviteEmails(
         react: OrgInviteTemplate({
           email: invite.email,
           orgName: invite.org.name,
-          inviterName: invite.inviter.name,
+          inviterName: invite.inviter.name ?? '',
           inviterEmail: invite.inviter.email ?? '',
           role: invite.role,
           expiresAt: invite.expiresAt,

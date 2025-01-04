@@ -1,4 +1,3 @@
-import type { DbType } from '@hexa/server/route/route-types';
 import type {
   GitHubUser,
   GoogleUser,
@@ -9,6 +8,7 @@ import type {
 } from '@hexa/server/schema/oauth';
 import type { SelectUserType } from '@hexa/server/schema/user';
 import { oauthAccountTable } from '@hexa/server/table/oauth';
+import type { DbType } from '@hexa/server/types';
 import { and, eq } from 'drizzle-orm';
 
 export async function getAccountByGoogleId(db: DbType, googleId: string) {
