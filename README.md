@@ -8,15 +8,13 @@
 [![pnpm](https://img.shields.io/badge/pnpm-9.x-orange?logo=pnpm)](https://pnpm.io/)
 [![Cloudflare](https://img.shields.io/badge/Cloudflare-Ready-F38020?logo=cloudflare)](https://developers.cloudflare.com/)
 [![Discord](https://img.shields.io/discord/1320508869654479000?label=Discord&logo=discord&logoColor=white)](https://discord.gg/SfG97JBQdS)
-[![Documentation](https://img.shields.io/badge/docs-up%20to%20date-brightgreen.svg)](https://docs.hexa.im)
+[![Documentation](https://img.shields.io/badge/docs-up%20to%20date-brightgreen.svg)](https://hexa.im/docs/introduction)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![Code Style](https://img.shields.io/badge/code%20style-biome-lightgrey?logo=prettier)](https://biomejs.dev/)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 
 🔗 Modern link management platform built for teams
-
-[Getting Started](https://docs.hexa.im) •
 [Features](#features) •
 [Documentation](https://hexa.im/docs/introduction) •
 [Contributing](#contributing)
