@@ -23,7 +23,9 @@ export const TableViewOptionsButton = forwardRef<
         isIconOnly={isMobile}
         startContent={<Settings2 className="h-4 w-4" />}
         className="relative ml-auto flex items-center gap-2"
-        onPress={onPress}
+        onPress={() => {
+          onPress?.();
+        }}
       >
         {!isMobile && <span>Display</span>}
       </Button>

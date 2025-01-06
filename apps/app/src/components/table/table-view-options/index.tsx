@@ -33,15 +33,14 @@ export function TableViewOptions<TData>({
   onViewChange,
   showViewChange = true,
 }: TableViewOptionsProps<TData>) {
-  const { isMobile } = useScreenSize();
+  const { isDesktop } = useScreenSize();
   const [isOpen, setIsOpen] = useState(false);
 
   const hasFiltersOrSort =
     table.getState().columnFilters.length > 0 ||
     table.getState().sorting.length > 0;
 
-  // Separate desktop and mobile components
-  if (!isMobile) {
+  if (isDesktop) {
     return (
       <Popover
         classNames={{
@@ -71,7 +70,9 @@ export function TableViewOptions<TData>({
     <>
       <TableViewOptionsButton
         hasFiltersOrSort={hasFiltersOrSort}
-        onPress={() => setIsOpen(true)}
+        onPress={() => {
+          setIsOpen(true);
+        }}
       />
       <Modal isOpen={isOpen} onOpenChange={setIsOpen}>
         <ModalContent>

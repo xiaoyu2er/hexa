@@ -21,6 +21,7 @@ export default async function () {
       return redirect('/onboarding');
     }
     const project = await getLastJoinedOrgsFirstProject(await getDb(), user.id);
+
     if (project) {
       return redirect(`/${getProjectSlug(project)}`);
     }
