@@ -1,7 +1,12 @@
+import { icons } from '@dicebear/collection';
+import { createAvatar } from '@dicebear/core';
 import type { SelectProjectType } from '@hexa/server/schema/project';
 
 export const getProjectAvatarFallbackUrl = (project: SelectProjectType) => {
-  return `https://api.dicebear.com/9.x/icons/svg?seed=${project?.id}`;
+  const avatar = createAvatar(icons, {
+    seed: project.id,
+  });
+  return avatar.toDataUri();
 };
 
 export const getProjectSlug = (project: {

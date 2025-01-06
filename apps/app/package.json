@@ -27,6 +27,8 @@
     "db:drop:staging": "wrangler d1 drop hexa-xyz --remote --env staging"
   },
   "dependencies": {
+    "@dicebear/collection": "catalog:",
+    "@dicebear/core": "catalog:",
     "@dnd-kit/core": "catalog:",
     "@dnd-kit/sortable": "catalog:",
     "@dnd-kit/utilities": "catalog:",
