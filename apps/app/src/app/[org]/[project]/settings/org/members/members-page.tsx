@@ -39,9 +39,9 @@ export function MembersPage() {
           className="absolute top-0 right-0"
           onPress={() =>
             modal.show(project).then(() => {
+              invalidateOrgInvites(project.org.id);
               if (inviteTableRef.current) {
                 inviteTableRef.current?.table.setPageIndex(0);
-                invalidateOrgInvites(project.org.id);
               } else {
                 setSelected('invites');
               }

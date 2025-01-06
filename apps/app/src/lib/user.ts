@@ -1,7 +1,7 @@
 import type { BasicUserType } from '@hexa/server/schema/user';
 
 export const getAvatarFallbackUrl = (user: BasicUserType) => {
-  return `https://api.dicebear.com/9.x/initials/svg?seed=${user.name}`;
+  return `https://api.dicebear.com/9.x/initials/svg?seed=${user.name ?? user.email}`;
 };
 
 export const getAvatarUrl = (user: BasicUserType) => {
