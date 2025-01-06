@@ -69,7 +69,7 @@ const invite = new Hono<Context>()
         await acceptInvite(db, token, userId);
         return c.redirect('/');
       }
-      return c.redirect(`/login?next=${c.req.url}`);
+      return c.redirect(`/login?next=/api/invite/${token}`);
     }
   );
 
