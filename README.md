@@ -1,78 +1,73 @@
-# Turborepo starter
+<div align="center">
 
-This is an official starter Turborepo.
+# Hexa
 
-## Using this example
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Next.js](https://img.shields.io/badge/built%20with-Next.js%2015-black)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![pnpm](https://img.shields.io/badge/pnpm-9.x-orange?logo=pnpm)](https://pnpm.io/)
+[![Cloudflare](https://img.shields.io/badge/Cloudflare-Ready-F38020?logo=cloudflare)](https://developers.cloudflare.com/)
+[![Discord](https://img.shields.io/discord/1320508869654479000?label=Discord&logo=discord&logoColor=white)](https://discord.gg/SfG97JBQdS)
+[![Documentation](https://img.shields.io/badge/docs-up%20to%20date-brightgreen.svg)](https://docs.hexa.im)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![Code Style](https://img.shields.io/badge/code%20style-biome-lightgrey?logo=prettier)](https://biomejs.dev/)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
-Run the following command:
 
-```sh
-npx create-turbo@latest
-```
+🔗 Modern link management platform built for teams
 
-## What's inside?
+[Getting Started](https://docs.hexa.im) •
+[Features](#features) •
+[Documentation](https://hexa.im/docs/introduction) •
+[Contributing](#contributing)
 
-This Turborepo includes the following packages/apps:
+</div>
 
-### Apps and Packages
+## 🎯 Overview
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@hexa/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@hexa/typescript-config`: `tsconfig.json`s used throughout the monorepo
+Hexa is an intelligent link management platform that transforms simple links into dynamic gateways. Route users based on location, time, device, and more with our modern, edge-first architecture.
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+## ✨ Features
 
-### Utilities
+- 🌍 Geographic-based routing
+- ⚡ Edge-first architecture with Cloudflare
+- 🔄 A/B testing capabilities
+- 📊 Real-time analytics
+- 👥 Team collaboration
+- 🔑 Enterprise-ready security
 
-This Turborepo has some additional tools already setup for you:
+## 🏗 Tech Stack
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
+- ⚛️ Next.js 15 with React Server Components
+- ☁️ Cloudflare Workers for edge computing
+- 🗄️ Drizzle ORM with D1 Database
+- 🎨 NextUI components
+- 📦 Turborepo + pnpm for monorepo management
+- 🔒 Lucia for authentication
 
-### Build
+## 📖 Documentation
 
-To build all apps and packages, run the following command:
+Visit our [documentation site](https://hexa.im/docs/introduction) for:
+- Detailed setup guides
+- API reference
+- Architecture overview
+- Best practices
 
-```
-cd my-turborepo
-pnpm build
-```
+## 🤝 Contributing
 
-### Develop
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
-To develop all apps and packages, run the following command:
+1. Fork the repository
+2. Create your feature branch
+3. Run tests with pnpm test
+4. Submit a pull request
 
-```
-cd my-turborepo
-pnpm dev
-```
+## 📜 License
 
-### Remote Caching
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+## 🔗 Support
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+- 📚 [Documentation](https://hexa.im/docs/introduction)
+- 🐛 [Issue Tracker](https://github.com/xiaoyu2er/hexa/issues)
+- 💻 [Discord Community](https://discord.gg/SfG97JBQdS)

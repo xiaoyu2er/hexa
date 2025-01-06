@@ -27,6 +27,12 @@ import {
   virtualAnchorEncode,
 } from '@/components/virtual-anchor';
 
+import { AnimatedBeamMultipleOutputDemo } from '@/components/animated-beam';
+import { CodeDemo } from '@/components/docs/components/code-demo/code-demo';
+import { Features } from '@/components/docs/components/features';
+import { Frameworks } from '@/components/docs/components/frameworks';
+import { FeaturesGrid } from '@/components/marketing/features-grid';
+
 const Table: FC<{ children?: ReactNode }> = ({ children }) => {
   return (
     <div className="overflow-x-auto overflow-y-hidden">
@@ -403,4 +409,9 @@ export const MDXComponents = {
   ),
   APITable,
   // Block,
+  Frameworks,
+  Features,
+  CodeDemo,
+  AnimatedBeamMultipleOutputDemo,
+  FeaturesGrid,
 } as unknown as Record<string, ReactNode>;

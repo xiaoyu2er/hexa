@@ -1,43 +1,141 @@
 ---
 title: Local Development
-description: Local development guide for Hexa.
+description: Set up your local development environment for Hexa
 ---
 
 # Local Development Guide
 
 ## Project Structure
 
-The project is a monorepo using pnpm workspaces with the following structure:
+Hexa uses a monorepo structure with pnpm workspaces:
+
+```bash
+hexa/
+├── apps/
+│   ├── app/         # Main application
+│   ├── admin/       # Admin dashboard
+│   ├── link/        # Link management service
+│   └── www/         # Marketing website
+│
+└── packages/
+    ├── @hexa/ui/    # Shared UI components
+    ├── @hexa/server # Backend utilities
+    ├── @hexa/env/   # Environment configuration
+    └── @hexa/lib/   # Shared utilities
+```
 
 ## Prerequisites
 
-Before you begin, you'll need to create accounts and obtain API keys from the following services:
+<FeaturesGrid
+  features={[
+    {
+      title: "Node.js 18+",
+      description: "Latest LTS version recommended",
+      icon: "⚡",
+    },
+    {
+      title: "pnpm 8+",
+      description: "Fast, disk space efficient package manager",
+      icon: "📦",
+    },
+    {
+      title: "Cloudflare Account",
+      description: "For Workers, D1, and R2 services",
+      icon: "☁️",
+    },
+    {
+      title: "Development Tools",
+      description: "Git, VS Code recommended",
+      icon: "🛠️",
+    },
+  ]}
+/>
 
-1. **Cloudflare Account**
+## Initial Setup
 
-   - Workers account for deployment
-   - D1 Database
-   - R2 Storage
+Our setup script handles the configuration automatically:
+
+```bash
+# Install dependencies
+pnpm install
+
+# Run setup script
+pnpm setup-dev
+```
+
+The setup script will:
+
+- Configure domain settings
+- Set up Wrangler for Cloudflare Workers
+- Create environment files
+- Initialize local database
+- Set up development symlinks
+
+## Environment Configuration
+
+You'll need to configure the following services:
+
+1. **Cloudflare Services**
+
+   - Workers deployment access
+   - D1 Database instance
+   - R2 Storage bucket
    - API tokens with appropriate permissions
 
-2. **OAuth Providers**
+2. **Authentication Providers**
 
    - GitHub OAuth application
    - Google Cloud OAuth credentials
 
 3. **Additional Services**
-   - Resend account for email sending
-   - Stripe account for payments
+   - Resend for email delivery
+   - Stripe for payments (optional)
    - Cloudflare Turnstile for bot protection
 
-## Required Environment Variables
+## Development Workflow
 
-The project uses two types of environment files:
+Start the development environment:
 
-- `.env` - For Next.js and build-time variables
+```bash
+# Start all services
+pnpm dev
 
-Key environment variables include:
+# Start specific app
+pnpm --filter @hexa/app dev
+pnpm --filter @hexa/admin dev
+pnpm --filter @hexa/link dev
+```
 
-## Local Setup
+Local development URLs:
 
-1. **Clone and Install Dependencies**
+- Main App: [http://localhost:7002](http://localhost:7002)
+- Admin: [http://localhost:7004](http://localhost:7004)
+- Link Service: [http://localhost:7001](http://localhost:7001)
+
+## Database Management
+
+```bash
+# Generate database schema
+pnpm run db:generate
+
+# Run migrations
+pnpm run db:migrate:local
+
+# Reset local database
+pnpm run db:reset
+```
+
+## Troubleshooting
+
+If you encounter issues during setup:
+
+1. Check environment variables in `.env`
+2. Ensure Cloudflare credentials are correct
+3. Verify database migrations have run
+4. Check Wrangler configuration in each app
+
+For detailed logs, run setup with debug flag:
+
+```bash
+DEBUG=* pnpm setup-dev
+```
