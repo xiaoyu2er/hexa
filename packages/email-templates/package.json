@@ -6,7 +6,7 @@
     "./*": "./src/*.tsx"
   },
   "scripts": {
-    "email:dev": "email dev --dir src --port 7003",
+    "dev": "email dev --dir src --port 7006",
     "email:build": "email build --dir src",
     "email:start": "email start",
     "email:export": "email export"
@@ -16,14 +16,14 @@
   "license": "ISC",
   "dependencies": {
     "@react-email/components": "catalog:",
-    "react": "catalog:",
-    "react-email": "catalog:"
+    "react": "catalog:"
   },
   "devDependencies": {
     "@hexa/tailwind-config": "workspace:*",
     "@hexa/typescript-config": "workspace:*",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
+    "react-email": "catalog:",
     "tailwindcss": "catalog:"
   }
 }
