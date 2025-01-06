@@ -334,6 +334,7 @@ export const getOrgInvites = async (
     orderBy,
     limit: pageSize,
     offset: offset,
+    where: and(...conditions),
   });
 
   // Get total count using a separate count query
