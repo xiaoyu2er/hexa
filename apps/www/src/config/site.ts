@@ -35,7 +35,7 @@ export const siteConfig = {
     github: 'https://github.com/nextui-org/nextui',
     twitter: 'https://x.com/getnextui',
     docs: 'https://nextui.org',
-    discord: 'https://discord.gg/9b6yyZKmH4',
+    discord: 'https://discord.gg/SfG97JBQdS',
     sponsor: 'https://patreon.com/jrgarciadev',
     portfolio: 'https://jrgarciadev.com',
   },

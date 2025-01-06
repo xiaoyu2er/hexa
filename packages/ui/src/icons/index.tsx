@@ -19,6 +19,8 @@ export { StarIcon } from '@heroicons/react/24/solid';
 export type { LucideIcon } from 'lucide-react';
 // https://lucide.dev/icons/
 export {
+  FileIcon,
+  FolderIcon,
   HashIcon,
   MicrochipIcon,
   GlassesIcon,

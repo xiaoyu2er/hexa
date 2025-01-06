@@ -1,4 +1,4 @@
-import { AnimatedBeamMultipleOutputDemo } from '@/components/animated-beam-multiple-outputs';
+import { AnimatedBeamMultipleOutputDemo } from '@/components/animated-beam';
 import Hero from '@/components/hero';
 import type { ReactElement } from 'react';
 
