@@ -32,6 +32,7 @@ export async function sendOrgInviteEmails(
       invites.map((invite) => ({
         from: 'Hexa <noreply@hexa.im>',
         to: invite.email,
+        subject: `You have been invited to join ${invite.org.name}`,
         react: OrgInviteTemplate({
           email: invite.email,
           orgName: invite.org.name,

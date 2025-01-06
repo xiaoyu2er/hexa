@@ -44,9 +44,9 @@ export default function OrgInviteTemplate({
 
             <Text className="text-black text-sm leading-6">
               <span className="font-semibold">{inviterName}</span> (
-              {inviterEmail ? `(${inviterEmail})` : ''}) has invited you (
-              {email}) to join
-              <span className="font-semibold">{orgName}</span> as a
+              {inviterEmail ? `${inviterEmail}` : ''}) has invited you ({email})
+              to join&nbsp;<span className="font-semibold">{orgName}</span> as
+              a&nbsp;
               <span className="font-semibold">{role.toLowerCase()}</span>.
             </Text>
 
@@ -68,7 +68,7 @@ export default function OrgInviteTemplate({
             </Text>
 
             <Text className="text-gray-500 text-sm">
-              This invitation will expire on
+              This invitation will expire on&nbsp;
               {new Date(expiresAt).toLocaleString()}
             </Text>
 
