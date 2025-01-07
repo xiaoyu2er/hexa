@@ -8,6 +8,7 @@ import domain from './route/domain';
 import email from './route/email';
 import invite from './route/invite';
 import link from './route/link';
+import tag from './route/tag';
 import login from './route/login';
 import logout from './route/logout';
 import oauth from './route/oauth';
@@ -18,6 +19,7 @@ import signup from './route/signup';
 import test from './route/test';
 import user from './route/user';
 import type { Context } from './types';
+
 
 export const app = new Hono<Context>()
   .basePath('/api')
@@ -31,6 +33,7 @@ export const app = new Hono<Context>()
   .use('/analytics/*', assertAuthMiddleware)
   .route('/', user)
   .route('/', link)
+  .route('/', tag)
   .route('/', analytics)
   .route('/', project)
   .route('/', org)

@@ -5,6 +5,7 @@ import {
   $getAccessibleProjects,
   $getLinks,
   $getProject,
+  $getTags,
 } from '@hexa/server/api';
 import { getQueryClient } from '@hexa/ui/get-query-client';
 import { queryOptions } from '@tanstack/react-query';
@@ -47,7 +48,16 @@ export const queryLinksOptions = (projectId: string, query: TableQuery) =>
       }),
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
-
+export const queryTagsOptions = (projectId: string, query: TableQuery) =>
+  queryOptions({
+    queryKey: ['project/', projectId, 'tags', query],
+    queryFn: () =>
+      $getTags({
+        param: { projectId },
+        query: getTableQuery(query),
+      }),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
 export const invalidateProjectLinks = (
   projectId: string,
   query?: TableQuery
@@ -58,7 +68,16 @@ export const invalidateProjectLinks = (
       : ['project/', projectId, 'urls'],
   });
 };
-
+export const invalidateProjectTags = (
+  projectId: string,
+  query?: TableQuery
+) => {
+  return getQueryClient().invalidateQueries({
+    queryKey: query
+      ? ['project/', projectId, 'tags', query]
+      : ['project/', projectId, 'tags'],
+  });
+};
 export const invalidateAnalytics = (projectId: string) => {
   return getQueryClient().invalidateQueries({
     queryKey: ['project', projectId, 'analytics'],

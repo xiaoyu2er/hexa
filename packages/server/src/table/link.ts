@@ -34,3 +34,8 @@ export const linkTable = sqliteTable(
     projectIndex: index('url_project_index').on(t.projectId),
   })
 );
+export const linkIdNotNull = {
+  linkId: text('link_id')
+    .notNull()
+    .references(() => linkTable.id, { onDelete: 'cascade' }),
+};
