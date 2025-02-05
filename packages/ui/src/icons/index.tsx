@@ -73,6 +73,7 @@ export {
   PlusCircle,
   Trash,
   Cog,
+  Tag,
   Users,
   User,
   BadgeCheck,

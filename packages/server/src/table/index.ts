@@ -11,8 +11,10 @@ import { orgMemberTable } from '@hexa/server/table/org-member';
 import { passcodeTable } from '@hexa/server/table/passcode';
 import { projectTable } from '@hexa/server/table/project';
 import { sessionTable } from '@hexa/server/table/session';
+import { tagTable } from '@hexa/server/table/tag';
 import { tmpUserTable } from '@hexa/server/table/tmp-user';
 import { userTable } from '@hexa/server/table/user';
+import { linkTagTable } from '@hexa/server/table/link-tag';
 
 export * from '@hexa/server/table/relations';
 
@@ -31,6 +33,9 @@ export {
   domainTable,
   // url
   linkTable,
+  linkTagTable,
+  // tag
+  tagTable,
   // invite
   orgInviteTable,
 };
