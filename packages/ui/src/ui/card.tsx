@@ -1,10 +1,10 @@
-import { cn } from '@hexa/lib';
 import {
   CardBody,
   CardFooter as CardFooterNextui,
   CardHeader as CardHeaderNextui,
   Card as CardNextui,
-} from '@nextui-org/react';
+} from '@heroui/react';
+import { cn } from '@hexa/lib';
 import type { HTMLAttributes, RefAttributes } from 'react';
 
 // Basic component types

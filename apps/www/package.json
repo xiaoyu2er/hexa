@@ -26,7 +26,7 @@
     "next": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "@nextui-org/theme": "catalog:",
+    "@heroui/theme": "catalog:",
     "next-contentlayer2": "catalog:",
     "contentlayer2": "catalog:",
     "remark-gfm": "catalog:",

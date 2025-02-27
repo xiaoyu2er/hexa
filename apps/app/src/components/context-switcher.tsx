@@ -7,14 +7,6 @@ import { useUser } from '@/hooks/use-user';
 import { getProjectSlug } from '@/lib/project';
 import { queryProjectsOptions } from '@/lib/queries/project';
 import { useModal } from '@ebay/nice-modal-react';
-import { cn } from '@hexa/lib';
-import { $updateUserDefaultProject } from '@hexa/server/api';
-import type { SelectProjectType } from '@hexa/server/schema/project';
-import { Badge } from '@hexa/ui/badge';
-import { useScreenSize } from '@hexa/ui/hooks/use-screen-size';
-import { CaretSortIcon, PlusCircledIcon } from '@hexa/ui/icons';
-import { useSidebar } from '@hexa/ui/sidebar';
-import { toast } from '@hexa/ui/sonner';
 import {
   Button,
   Input,
@@ -24,8 +16,16 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@nextui-org/react';
-import { Skeleton } from '@nextui-org/react';
+} from '@heroui/react';
+import { Skeleton } from '@heroui/react';
+import { cn } from '@hexa/lib';
+import { $updateUserDefaultProject } from '@hexa/server/api';
+import type { SelectProjectType } from '@hexa/server/schema/project';
+import { Badge } from '@hexa/ui/badge';
+import { useScreenSize } from '@hexa/ui/hooks/use-screen-size';
+import { CaretSortIcon, PlusCircledIcon } from '@hexa/ui/icons';
+import { useSidebar } from '@hexa/ui/sidebar';
+import { toast } from '@hexa/ui/sonner';
 import { useQuery } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';

@@ -1,5 +1,5 @@
 import { ScriptProviders } from '@/components/scripts/script-providers';
-import { Image } from '@nextui-org/react';
+import { Image } from '@heroui/react';
 import type { ReactNode } from 'react';
 
 interface DocsLayoutProps {

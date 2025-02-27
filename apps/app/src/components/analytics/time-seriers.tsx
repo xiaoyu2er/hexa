@@ -2,7 +2,7 @@
 
 // import { type TimeRange, useTimeSeriesData } from '@/hooks/use-analytics';
 // import { ChartContainer, ChartTooltip } from '@hexa/ui/chart';
-// import { Skeleton } from '@nextui-org/react';
+// import { Skeleton } from '@heroui/react';
 // import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
 // // Custom tooltip content

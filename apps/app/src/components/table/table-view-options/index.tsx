@@ -11,7 +11,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@nextui-org/react';
+} from '@heroui/react';
 import type { Table } from '@tanstack/react-table';
 import { useState } from 'react';
 

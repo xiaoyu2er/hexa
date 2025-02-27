@@ -4,7 +4,7 @@ import scrollbarHide from 'tailwind-scrollbar-hide';
 import animate from 'tailwindcss-animate';
 import radix from 'tailwindcss-radix';
 
-import { nextui } from '@nextui-org/react';
+import { heroui } from '@heroui/react';
 import type { Config } from 'tailwindcss';
 const config: Config = {
   content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
@@ -107,7 +107,7 @@ const config: Config = {
     radix,
     animate,
     // //
-    nextui({
+    heroui({
       prefix: 'nextui', // prefix for themes variables
       addCommonColors: false, // override common colors (e.g. "blue", "green", "pink").
       defaultTheme: 'light', // default theme from the themes object

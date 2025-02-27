@@ -3,7 +3,7 @@ import {
   DateRangePicker,
   type DateRangePickerProps,
   type RangeValue,
-} from '@nextui-org/react';
+} from '@heroui/react';
 import {} from 'lodash';
 import { type FieldValues, useController } from 'react-hook-form';
 
@@ -46,6 +46,7 @@ export const TimeRangeField = <T extends FieldValues = FieldValues>({
           ? error.message
           : undefined
       }
+      // @ts-ignore
       onChange={(value: RangeValue<DateValue> | null) => {
         if (
           value?.start &&

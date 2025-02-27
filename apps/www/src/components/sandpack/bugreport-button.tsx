@@ -1,5 +1,5 @@
-import { Button, Tooltip } from '@nextui-org/react';
-import { capitalize } from '@nextui-org/shared-utils';
+import { Button, Tooltip } from '@heroui/react';
+import { capitalize } from '@heroui/shared-utils';
 import { usePathname } from 'next/navigation';
 
 import { BugIcon } from '@/components/icons';

@@ -13,8 +13,8 @@ import { EditProjectSlugModal } from '@/components/project/settings/edit-project
 import { useProject } from '@/hooks/use-project';
 import { getProjectSlug } from '@/lib/project';
 import { useModal } from '@ebay/nice-modal-react';
+import { Button } from '@heroui/react';
 import type { SelectProjectType } from '@hexa/server/schema/project';
-import { Button } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 
 export function EditProjectSlug() {

@@ -3,8 +3,8 @@ import { GeistSans } from '@hexa/ui/font';
 import { cn } from '@hexa/lib';
 import { Toaster } from '@hexa/ui/sonner';
 import '@hexa/tailwind-config/globals.css';
+import { HeroUIProvider } from '@hexa/ui/heroui-provider';
 import { Indicator } from '@hexa/ui/indicator';
-import { NextUIProvider } from '@hexa/ui/nextui-provider';
 import type { ReactNode } from 'react';
 
 import { ThemeProvider } from '@hexa/ui/theme-provider';
@@ -33,7 +33,7 @@ export function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <NextUIProvider>{children}</NextUIProvider>
+          <HeroUIProvider>{children}</HeroUIProvider>
           <Toaster richColors position="top-center" />
           <Indicator />
         </ThemeProvider>

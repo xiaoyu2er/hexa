@@ -1,5 +1,5 @@
+import { Button, Link } from '@heroui/react';
 import { Icon } from '@iconify/react/dist/iconify.js';
-import { Button, Link } from '@nextui-org/react';
 import type { FC } from 'react';
 
 export const OAuthButtons2: FC = () => {

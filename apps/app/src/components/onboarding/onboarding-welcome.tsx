@@ -1,8 +1,8 @@
 'use client';
 
+import { Button, Card } from '@heroui/react';
 import { NEXT_PUBLIC_APP_NAME } from '@hexa/env';
 import { LogoIcon } from '@hexa/ui/icons';
-import { Button, Card } from '@nextui-org/react';
 
 interface OnboardingWelcomeProps {
   onNext: () => void;

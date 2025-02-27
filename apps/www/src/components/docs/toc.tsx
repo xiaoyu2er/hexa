@@ -1,8 +1,8 @@
 'use client';
 
-import { Divider, Spacer } from '@nextui-org/react';
-import { ChevronCircleTopLinearIcon } from '@nextui-org/shared-icons';
-import { clsx } from '@nextui-org/shared-utils';
+import { Divider, Spacer } from '@heroui/react';
+import { ChevronCircleTopLinearIcon } from '@heroui/shared-icons';
+import { clsx } from '@heroui/shared-utils';
 import { type FC, useEffect, useRef, useState } from 'react';
 import scrollIntoView from 'scroll-into-view-if-needed';
 

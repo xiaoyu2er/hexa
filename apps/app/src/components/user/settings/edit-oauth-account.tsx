@@ -13,13 +13,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useModal } from '@ebay/nice-modal-react';
 
 import {
-  EllipsisIcon,
-  GithubIcon,
-  GoogleIcon,
-  MoveRightIcon,
-  UserPlusIcon,
-} from '@hexa/ui/icons';
-import {
   Button,
   Dropdown,
   DropdownItem,
@@ -30,7 +23,14 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@nextui-org/react';
+} from '@heroui/react';
+import {
+  EllipsisIcon,
+  GithubIcon,
+  GoogleIcon,
+  MoveRightIcon,
+  UserPlusIcon,
+} from '@hexa/ui/icons';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { DeleteOauthAccountModal } from './delete-oauth-account-modal';

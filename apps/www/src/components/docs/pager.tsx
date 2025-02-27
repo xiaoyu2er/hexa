@@ -1,7 +1,7 @@
 'use client';
 
-import { Link } from '@nextui-org/react';
-import { ChevronIcon } from '@nextui-org/shared-icons';
+import { Link } from '@heroui/react';
+import { ChevronIcon } from '@heroui/shared-icons';
 import { useRouter } from 'next/navigation';
 import { usePostHog } from 'posthog-js/react';
 import type * as React from 'react';

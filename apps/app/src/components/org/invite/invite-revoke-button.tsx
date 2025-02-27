@@ -1,8 +1,8 @@
+import { Button } from '@heroui/react';
 import { cn } from '@hexa/lib';
 import { $revokeInvite } from '@hexa/server/api';
 import type { QueryInviteType } from '@hexa/server/schema/org-invite';
 import { toast } from '@hexa/ui/sonner';
-import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 export default function RevokeInvite({
   invite,

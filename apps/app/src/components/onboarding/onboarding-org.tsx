@@ -2,10 +2,10 @@
 
 import { CreateOrgForm } from '@/components/org/create-org-form';
 import { useCreateOrg } from '@/hooks/use-create-org';
+import { Card, Link } from '@heroui/react';
 import { WWW_URL } from '@hexa/env';
 import type { SelectOrgType } from '@hexa/server/schema/org';
 import { LogoIcon } from '@hexa/ui/icons';
-import { Card, Link } from '@nextui-org/react';
 
 interface OnboardingOrgProps {
   onNext: (org: SelectOrgType) => void;

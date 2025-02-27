@@ -1,7 +1,7 @@
-import { Button, Tooltip } from '@nextui-org/react';
-import { get, isEmpty } from '@nextui-org/shared-utils';
-import { commonColors, semanticColors } from '@nextui-org/theme';
-import { useClipboard } from '@nextui-org/use-clipboard';
+import { Button, Tooltip } from '@heroui/react';
+import { get, isEmpty } from '@heroui/shared-utils';
+import { commonColors, semanticColors } from '@heroui/theme';
+import { useClipboard } from '@heroui/use-clipboard';
 import { parseToRgba, readableColor } from 'color2k';
 import { useTheme } from 'next-themes';
 import { useState } from 'react';

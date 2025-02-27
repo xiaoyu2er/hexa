@@ -3,9 +3,9 @@
 import { LeaveOrg } from '@/components/org/list/leave-org';
 import { OrgAvatar } from '@/components/org/org-avatar';
 import { useOrgs } from '@/hooks/use-orgs';
+import { Button } from '@heroui/react';
 import type { SelectUserOrgType } from '@hexa/server/schema/org';
 import { Badge } from '@hexa/ui/badge';
-import { Button } from '@nextui-org/react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
 

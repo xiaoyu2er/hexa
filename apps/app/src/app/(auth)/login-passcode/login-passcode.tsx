@@ -25,7 +25,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
-import { Button, Link } from '@nextui-org/react';
+import { Button, Link } from '@heroui/react';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 

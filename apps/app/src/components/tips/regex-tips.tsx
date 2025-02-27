@@ -1,5 +1,5 @@
+import { Popover, PopoverContent, PopoverTrigger } from '@heroui/react';
 import { REGEX_FLAGS } from '@hexa/const/regex';
-import { Popover, PopoverContent, PopoverTrigger } from '@nextui-org/react';
 
 import { TipButton } from '@/components/tips/tip-button';
 import { ChevronDown, ChevronUp, ExternalLinkIcon } from '@hexa/ui/icons';

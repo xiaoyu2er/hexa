@@ -1,5 +1,6 @@
 'use client';
 import { Form } from '@/components/form';
+import { Button } from '@heroui/react';
 import { NEXT_PUBLIC_APP_NAME } from '@hexa/env';
 import {
   UpdateAvatarSchema,
@@ -16,7 +17,6 @@ import {
 import { FileUpload } from '@hexa/ui/file-upload';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';

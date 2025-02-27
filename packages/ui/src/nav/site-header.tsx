@@ -3,8 +3,8 @@ import { cn } from '@hexa/lib';
 import { GithubIcon } from '@hexa/ui/icons';
 import { ModeToggle } from '@hexa/ui/mode-toggle';
 
+import { Button } from '@heroui/react';
 import { siteConfig } from '@hexa/const/config/site';
-import { Button } from '@nextui-org/react';
 import {} from 'react';
 import { MobileNav } from './mobile-nav';
 

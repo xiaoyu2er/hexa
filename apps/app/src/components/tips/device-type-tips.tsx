@@ -1,4 +1,13 @@
 import { TipButton } from '@/components/tips/tip-button';
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@heroui/react';
 import { DEVICE_TYPES } from '@hexa/const/device-type';
 import { useScreenSize } from '@hexa/ui/hooks/use-screen-size';
 import {
@@ -12,15 +21,6 @@ import {
   WatchIcon,
 } from '@hexa/ui/icons';
 import type { LucideIcon } from '@hexa/ui/icons';
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@nextui-org/react';
 import { useState } from 'react';
 
 interface DeviceTypeConfig {

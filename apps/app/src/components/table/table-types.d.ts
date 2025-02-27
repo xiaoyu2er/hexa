@@ -1,4 +1,4 @@
-import type { InputProps } from '@nextui-org/react';
+import type { InputProps } from '@heroui/react';
 import type { Column, Table } from '@tanstack/react-table';
 import type { ComponentType, ReactNode } from 'react';
 

@@ -14,7 +14,7 @@ import {
   SelectItem,
   Tab,
   Tabs,
-} from '@nextui-org/react';
+} from '@heroui/react';
 import type { Table } from '@tanstack/react-table';
 
 // Helper function to get column label

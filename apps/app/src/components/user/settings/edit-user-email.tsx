@@ -35,7 +35,7 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-} from '@nextui-org/react';
+} from '@heroui/react';
 
 export function EditUserEmails() {
   const { data: emails = [], refetch } = useQuery(queryUserEmailsOptions);

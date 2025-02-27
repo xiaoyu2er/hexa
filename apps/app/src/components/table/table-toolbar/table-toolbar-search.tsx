@@ -1,8 +1,8 @@
 'use client';
 
 import type { TableToolbarSearchProps } from '@/components/table/table-types';
+import { Input } from '@heroui/react';
 import { useDebounce } from '@hexa/ui/hooks/use-debounce';
-import { Input } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
 
 export function TableToolbarSearch<TData>({

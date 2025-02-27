@@ -1,6 +1,7 @@
 'use client';
 import { type ReactNode, forwardRef, useRef } from 'react';
 
+import { Button } from '@heroui/react';
 import { cn } from '@hexa/lib';
 import { AnimatedBeam } from '@hexa/ui/animated-beam';
 import {
@@ -12,7 +13,6 @@ import {
   User2Icon,
   WhatsAppIcon,
 } from '@hexa/ui/icons';
-import { Button } from '@nextui-org/react';
 
 const Circle = forwardRef<
   HTMLButtonElement,

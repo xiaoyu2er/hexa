@@ -21,9 +21,6 @@ import {
   setFormError,
 } from '@/components/form';
 
-import { GlobeIcon, RefreshCwIcon } from '@hexa/ui/icons';
-import { toast } from '@hexa/ui/sonner';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Button,
   Chip,
@@ -33,7 +30,10 @@ import {
   ModalFooter,
   ModalHeader,
   Tooltip,
-} from '@nextui-org/react';
+} from '@heroui/react';
+import { GlobeIcon, RefreshCwIcon } from '@hexa/ui/icons';
+import { toast } from '@hexa/ui/sonner';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { QRCodeCanvas } from 'qrcode.react';
 import { generateSlug } from 'random-word-slugs';

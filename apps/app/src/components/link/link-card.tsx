@@ -2,9 +2,9 @@
 
 import { useProject } from '@/hooks/use-project';
 import { useModal } from '@ebay/nice-modal-react';
+import { Skeleton } from '@heroui/react';
 import type { SelectLinkType } from '@hexa/server/schema/link';
 import { SparklesIcon } from '@hexa/ui/icons';
-import { Skeleton } from '@nextui-org/react';
 import type { Row } from '@tanstack/react-table';
 import { LinkActions } from './link-actions';
 import { LinkInfo } from './link-info';

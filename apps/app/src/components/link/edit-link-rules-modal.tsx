@@ -23,9 +23,6 @@ import {
   RulesSchema,
 } from '@hexa/const/rule';
 
-import { PlusIcon } from '@hexa/ui/icons';
-import { ScrollArea } from '@hexa/ui/scroll-area';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Button,
   Modal,
@@ -33,7 +30,10 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from '@nextui-org/react';
+} from '@heroui/react';
+import { PlusIcon } from '@hexa/ui/icons';
+import { ScrollArea } from '@hexa/ui/scroll-area';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useFieldArray, useForm } from 'react-hook-form';
 
 export const EditLinkRulesModal = NiceModal.create(

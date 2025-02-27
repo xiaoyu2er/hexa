@@ -16,7 +16,7 @@ import {
   useRef,
 } from 'react';
 
-import { Button, type ButtonProps } from '@nextui-org/react';
+import { Button, type ButtonProps } from '@heroui/react';
 
 type Api = {
   fire: (options?: ConfettiOptions) => void;

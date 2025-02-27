@@ -1,4 +1,4 @@
-import { Link } from '@nextui-org/react';
+import { Link } from '@heroui/react';
 import type React from 'react';
 import { type ReactNode, useEffect, useRef, useState } from 'react';
 

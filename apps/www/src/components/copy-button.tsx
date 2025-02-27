@@ -1,6 +1,6 @@
-import { Button, type ButtonProps } from '@nextui-org/react';
-import { clsx } from '@nextui-org/shared-utils';
-import { useClipboard } from '@nextui-org/use-clipboard';
+import { Button, type ButtonProps } from '@heroui/react';
+import { clsx } from '@heroui/shared-utils';
+import { useClipboard } from '@heroui/use-clipboard';
 import type { FC } from 'react';
 
 import { CheckLinearIcon, CopyLinearIcon } from '@/components/icons';

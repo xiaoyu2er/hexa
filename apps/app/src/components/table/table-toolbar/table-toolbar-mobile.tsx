@@ -2,9 +2,9 @@
 
 import { TableToolbarSearch } from '@/components/table/table-toolbar/table-toolbar-search';
 import type { TableToolbarProps } from '@/components/table/table-types';
+import { Button } from '@heroui/react';
 import { Badge } from '@hexa/ui/badge';
 import { X } from '@hexa/ui/icons';
-import { Button } from '@nextui-org/react';
 
 export function TableToolbarMobile<TData>({
   table,

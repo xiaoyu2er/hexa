@@ -15,7 +15,7 @@ import {
   DrawerBody,
   DrawerContent,
   DrawerHeader,
-} from '@nextui-org/react';
+} from '@heroui/react';
 
 export function MobileNav() {
   const [open, setOpen] = React.useState(false);

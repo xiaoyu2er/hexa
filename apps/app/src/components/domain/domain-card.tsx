@@ -3,8 +3,8 @@ import { VerificationTab } from '@/components/domain/verification-tab';
 import type { QueryDomainType } from '@hexa/server/schema/domain';
 import { Badge } from '@hexa/ui/badge';
 
+import { Button } from '@heroui/react';
 import { GlobeIcon } from '@hexa/ui/icons';
-import { Button } from '@nextui-org/react';
 import type { Row } from '@tanstack/react-table';
 import { useState } from 'react';
 

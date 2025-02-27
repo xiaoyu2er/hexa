@@ -4,6 +4,7 @@ import { AuthLink } from '@/components/auth/auth-link';
 import { Form, setFormError } from '@/components/form';
 import { FormErrorMessage } from '@/components/form';
 import { useTurnstile } from '@/hooks/use-turnstile';
+import { Button, InputOtp } from '@heroui/react';
 import { RESEND_VERIFY_CODE_TIME_SPAN } from '@hexa/const';
 import { cn } from '@hexa/lib';
 import {
@@ -25,7 +26,6 @@ import {
 } from '@hexa/ui/card';
 import { PencilLine } from '@hexa/ui/icons';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, InputOtp } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { type FC, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';

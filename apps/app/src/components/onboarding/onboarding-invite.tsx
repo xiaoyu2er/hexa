@@ -2,9 +2,9 @@
 
 import { InviteForm } from '@/components/org/invite/invite-form';
 import { getRoleOptions, useInviteForm } from '@/hooks/use-invite-form';
+import { Card } from '@heroui/react';
 import type { SelectOrgType } from '@hexa/server/schema/org';
 import { LogoIcon } from '@hexa/ui/icons';
-import { Card } from '@nextui-org/react';
 
 interface OnboardingInviteProps {
   onNext: () => void;

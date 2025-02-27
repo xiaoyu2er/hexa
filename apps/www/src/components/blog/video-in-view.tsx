@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 'use client';
 
-import { Button, Spinner, Tooltip, cn } from '@nextui-org/react';
+import { Button, Spinner, Tooltip, cn } from '@heroui/react';
 import { useInView } from 'framer-motion';
 import {
   type FC,

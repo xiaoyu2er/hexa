@@ -1,6 +1,6 @@
 import { getProjectAvatarFallbackUrl } from '@/lib/project';
+import { Avatar, type AvatarProps, cn } from '@heroui/react';
 import type { SelectProjectType } from '@hexa/server/schema/project';
-import { Avatar, type AvatarProps, cn } from '@nextui-org/react';
 
 export type ProjectAvatarProps = {
   project: SelectProjectType;

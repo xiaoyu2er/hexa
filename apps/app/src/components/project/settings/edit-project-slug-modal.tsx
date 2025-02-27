@@ -3,14 +3,6 @@ import { setFormError } from '@/components/form';
 import { Form } from '@/components/form';
 import { InputField } from '@/components/form';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
-import { $updateProjectSlug } from '@hexa/server/api';
-import {
-  UpdateProjectSlugSchema,
-  type UpdateProjectSlugType,
-} from '@hexa/server/schema/project';
-import type { SelectProjectType } from '@hexa/server/schema/project';
-import { toast } from '@hexa/ui/sonner';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Alert,
   Button,
@@ -19,7 +11,15 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from '@nextui-org/react';
+} from '@heroui/react';
+import { $updateProjectSlug } from '@hexa/server/api';
+import {
+  UpdateProjectSlugSchema,
+  type UpdateProjectSlugType,
+} from '@hexa/server/schema/project';
+import type { SelectProjectType } from '@hexa/server/schema/project';
+import { toast } from '@hexa/ui/sonner';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useBoolean } from 'usehooks-ts';

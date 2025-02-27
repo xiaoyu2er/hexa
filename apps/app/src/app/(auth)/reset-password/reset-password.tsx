@@ -3,6 +3,7 @@
 import { AuthLink } from '@/components/auth/auth-link';
 import { Form, FormErrorMessage, setFormError } from '@/components/form';
 import { PasswordField } from '@/components/form';
+import { Button } from '@heroui/react';
 import type { $resetPassword, InferApiResponseType } from '@hexa/server/api';
 import {
   ResetPasswordSchema,
@@ -16,7 +17,6 @@ import {
   CardTitle,
 } from '@hexa/ui/card';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { type FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';

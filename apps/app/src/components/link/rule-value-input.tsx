@@ -8,10 +8,10 @@ import { RegexField } from '@/components/form';
 import { SelectField } from '@/components/form';
 import { TimeField } from '@/components/form';
 import { TimeRangeField } from '@/components/form';
+import { Avatar, Input } from '@heroui/react';
 import type { RuleField, RulesFormType } from '@hexa/const/rule';
 import type { RuleValueTypeCode } from '@hexa/const/rule-value-type';
 import type { SelectOptions } from '@hexa/const/select-option';
-import { Avatar, Input } from '@nextui-org/react';
 import type { ReactNode } from 'react';
 import type { Path, useForm } from 'react-hook-form';
 

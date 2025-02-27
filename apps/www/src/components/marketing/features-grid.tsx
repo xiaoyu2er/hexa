@@ -6,8 +6,8 @@ import {
   CardHeader,
   type LinkProps,
   type SlotsToClasses,
-} from '@nextui-org/react';
-import { LinkIcon } from '@nextui-org/shared-icons';
+} from '@heroui/react';
+import { LinkIcon } from '@heroui/shared-icons';
 import { useRouter } from 'next/navigation';
 import { usePostHog } from 'posthog-js/react';
 import type React from 'react';

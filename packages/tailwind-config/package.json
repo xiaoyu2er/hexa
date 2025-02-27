@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {},
   "dependencies": {
-    "@nextui-org/react": "catalog:",
+    "@heroui/react": "catalog:",
     "@tailwindcss/forms": "catalog:",
     "@tailwindcss/typography": "catalog:",
     "tailwind-scrollbar-hide": "catalog:",

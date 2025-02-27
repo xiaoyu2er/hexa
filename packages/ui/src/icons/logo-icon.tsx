@@ -1,5 +1,5 @@
+import { Avatar } from '@heroui/react';
 import { cn } from '@hexa/lib';
-import { Avatar } from '@nextui-org/react';
 
 export const LogoIcon = ({ className }: { className?: string }) => {
   return (

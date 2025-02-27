@@ -2,7 +2,7 @@
 
 import { useCreateOrg } from '@/hooks/use-create-org';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
-import { Modal, ModalBody, ModalContent, ModalHeader } from '@nextui-org/react';
+import { Modal, ModalBody, ModalContent, ModalHeader } from '@heroui/react';
 import { useRouter } from 'next/navigation';
 import { CreateOrgForm } from './create-org-form';
 

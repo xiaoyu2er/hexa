@@ -1,15 +1,15 @@
 'use client';
 
-import { BaseItem } from '@nextui-org/aria-utils';
+import { BaseItem } from '@heroui/aria-utils';
 import {
   Chip,
   Link as NextUILink,
   Spacer,
   type SpacerProps,
   dataFocusVisibleClasses,
-} from '@nextui-org/react';
-import { ChevronIcon } from '@nextui-org/shared-icons';
-import { clsx, dataAttr, debounce, isEmpty } from '@nextui-org/shared-utils';
+} from '@heroui/react';
+import { ChevronIcon } from '@heroui/shared-icons';
+import { clsx, dataAttr, debounce, isEmpty } from '@heroui/shared-utils';
 import { useFocusRing } from '@react-aria/focus';
 import { usePress } from '@react-aria/interactions';
 import { useSelectableCollection } from '@react-aria/selection';

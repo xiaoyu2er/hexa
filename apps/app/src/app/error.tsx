@@ -1,9 +1,9 @@
 'use client';
 
+import { Button, Link } from '@heroui/react';
 import { SiteBanner } from '@hexa/ui/site-banner';
 import { SiteFooter } from '@hexa/ui/site-footer';
 import { SiteHeader } from '@hexa/ui/site-header';
-import { Button, Link } from '@nextui-org/react';
 import type { ReactElement } from 'react';
 
 export default function GlobalError({

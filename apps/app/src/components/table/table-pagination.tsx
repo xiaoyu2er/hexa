@@ -7,7 +7,7 @@ import {
 } from '@hexa/ui/icons';
 import type { Table } from '@tanstack/react-table';
 
-import { Button, Select, SelectItem } from '@nextui-org/react';
+import { Button, Select, SelectItem } from '@heroui/react';
 
 interface TablePaginationProps<TData> {
   table: Table<TData>;

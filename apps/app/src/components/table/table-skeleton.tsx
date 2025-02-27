@@ -1,5 +1,5 @@
+import { Skeleton } from '@heroui/react';
 import { TableCell, TableRow } from '@hexa/ui/table';
-import { Skeleton } from '@nextui-org/react';
 import { columns } from '../org/invite/invite-table-data';
 
 export const TableSkeleton = ({ rows }: { rows: number }) => {
