@@ -3,8 +3,8 @@
 import { InviteForm } from '@/components/org/invite/invite-form';
 import { getRoleOptions, useInviteForm } from '@/hooks/use-invite-form';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
+import { Modal, ModalBody, ModalContent, ModalHeader } from '@heroui/react';
 import type { SelectProjectType } from '@hexa/server/schema/project';
-import { Modal, ModalBody, ModalContent, ModalHeader } from '@nextui-org/react';
 
 export const CreateInvitesModal = NiceModal.create(
   (project: SelectProjectType) => {

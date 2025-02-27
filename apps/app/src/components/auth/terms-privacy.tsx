@@ -1,5 +1,5 @@
+import { Link } from '@heroui/react';
 import { WWW_URL } from '@hexa/env';
-import { Link } from '@nextui-org/react';
 import type { FC } from 'react';
 
 export const TermsPrivacy: FC = () => {

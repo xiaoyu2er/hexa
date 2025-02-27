@@ -1,4 +1,4 @@
-import { Link, cn } from '@nextui-org/react';
+import { Link, cn } from '@heroui/react';
 import { useSearchParams } from 'next/navigation';
 import type { FC, ReactNode } from 'react';
 

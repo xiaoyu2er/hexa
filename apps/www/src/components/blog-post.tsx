@@ -8,7 +8,7 @@ import {
   CardHeader,
   Image,
   Link,
-} from '@nextui-org/react';
+} from '@heroui/react';
 import type { BlogPost } from 'contentlayer2/generated';
 import { format, parseISO } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';

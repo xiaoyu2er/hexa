@@ -2,7 +2,7 @@
 import { useProject } from '@/hooks/use-project';
 import { invalidateDomains } from '@/lib/queries/orgs';
 import { useModal } from '@ebay/nice-modal-react';
-import { Button } from '@nextui-org/react';
+import { Button } from '@heroui/react';
 import type { FC } from 'react';
 import { CreateDomainModal } from './create-domain-modal';
 

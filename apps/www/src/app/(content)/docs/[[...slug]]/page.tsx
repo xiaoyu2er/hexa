@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { Link } from '@nextui-org/react';
+import { Link } from '@heroui/react';
 import { allDocs } from 'contentlayer2/generated';
 import { notFound } from 'next/navigation';
 

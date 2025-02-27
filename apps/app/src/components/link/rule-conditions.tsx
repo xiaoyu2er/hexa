@@ -1,8 +1,8 @@
 'use client';
 import { RuleCondition } from '@/components/link/rule-condition';
+import { Button } from '@heroui/react';
 import type { LinkRuleCondition, RulesFormType } from '@hexa/const/rule';
 import { PlusIcon } from '@hexa/ui/icons';
-import { Button } from '@nextui-org/react';
 import { Fragment } from 'react';
 import { useFieldArray, type useForm } from 'react-hook-form';
 

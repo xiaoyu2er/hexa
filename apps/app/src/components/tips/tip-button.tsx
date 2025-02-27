@@ -1,5 +1,5 @@
+import { Button, cn } from '@heroui/react';
 import { CircleHelpIcon } from '@hexa/ui/icons';
-import { Button, cn } from '@nextui-org/react';
 import type { ComponentProps } from 'react';
 import { forwardRef } from 'react';
 

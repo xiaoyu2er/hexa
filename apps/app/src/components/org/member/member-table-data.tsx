@@ -3,6 +3,7 @@
 import { TableColumnHeader } from '@/components/table/table-column-header';
 import type { FilterConfig } from '@/components/table/table-types';
 import { useMembers } from '@/hooks/use-members';
+import { User } from '@heroui/react';
 import {
   OrgMemberColumnOptions,
   OrgMemberSortableColumnOptions,
@@ -10,17 +11,16 @@ import {
   type SelectOrgMemberType,
 } from '@hexa/server/schema/org-member';
 import { Badge } from '@hexa/ui/badge';
-import { User } from '@nextui-org/react';
 
 import { getAvatarUrl, getUserDisplayName } from '@/lib/user';
-import { MoreHorizontal } from '@hexa/ui/icons';
 import {
   Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-} from '@nextui-org/react';
+} from '@heroui/react';
+import { MoreHorizontal } from '@hexa/ui/icons';
 import type { ColumnDef } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
 

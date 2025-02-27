@@ -4,12 +4,6 @@ import NiceModal, { useModal } from '@ebay/nice-modal-react';
 import { toast } from '@hexa/ui/sonner';
 
 import { Form, InputField, setFormError } from '@/components/form';
-import { $deleteUserEmail } from '@hexa/server/api';
-import {
-  DeleteEmailSchema,
-  type DeleteEmailType,
-} from '@hexa/server/schema/email';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Alert,
   Button,
@@ -18,7 +12,13 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from '@nextui-org/react';
+} from '@heroui/react';
+import { $deleteUserEmail } from '@hexa/server/api';
+import {
+  DeleteEmailSchema,
+  type DeleteEmailType,
+} from '@hexa/server/schema/email';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 

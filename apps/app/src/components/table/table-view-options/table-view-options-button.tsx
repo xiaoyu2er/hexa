@@ -3,7 +3,7 @@ import type {} from '@/components/table/table-types';
 import { useScreenSize } from '@hexa/ui/hooks/use-screen-size';
 import { Settings2 } from '@hexa/ui/icons';
 
-import { Badge, Button } from '@nextui-org/react';
+import { Badge, Button } from '@heroui/react';
 import { type ComponentProps, forwardRef } from 'react';
 
 export const TableViewOptionsButton = forwardRef<

@@ -1,5 +1,5 @@
 import type { BaseFieldProps } from '@/components/form';
-import { type TextAreaProps, Textarea } from '@nextui-org/react';
+import { type TextAreaProps, Textarea } from '@heroui/react';
 import { type FieldValues, useController } from 'react-hook-form';
 
 export type TextareaFieldProps<T extends FieldValues> = BaseFieldProps<T> &

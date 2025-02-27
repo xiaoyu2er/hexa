@@ -1,12 +1,12 @@
-import { cn } from '@hexa/lib';
-import { ArrowDown, ArrowUp, ChevronsUpDown, EyeOff } from '@hexa/ui/icons';
 import {
   Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-} from '@nextui-org/react';
+} from '@heroui/react';
+import { cn } from '@hexa/lib';
+import { ArrowDown, ArrowUp, ChevronsUpDown, EyeOff } from '@hexa/ui/icons';
 import type { Column } from '@tanstack/react-table';
 import type { HTMLAttributes } from 'react';
 

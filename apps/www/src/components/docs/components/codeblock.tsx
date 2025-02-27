@@ -2,9 +2,9 @@
 
 import type { Language, PrismTheme } from 'prism-react-renderer';
 
-import { cn } from '@nextui-org/react';
-import { clsx, dataAttr, getUniqueID } from '@nextui-org/shared-utils';
-import { debounce, omit } from '@nextui-org/shared-utils';
+import { cn } from '@heroui/react';
+import { clsx, dataAttr, getUniqueID } from '@heroui/shared-utils';
+import { debounce, omit } from '@heroui/shared-utils';
 import BaseHighlight, { defaultProps } from 'prism-react-renderer';
 import React, { forwardRef, type ReactNode, useEffect } from 'react';
 import { useIntersectionObserver } from 'usehooks-ts';

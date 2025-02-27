@@ -1,6 +1,6 @@
 'use client';
+import { Button, Card, Link } from '@heroui/react';
 import { LogoIcon } from '@hexa/ui/icons';
-import { Button, Card, Link } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 

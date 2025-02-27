@@ -1,4 +1,4 @@
-import { Spacer } from '@nextui-org/react';
+import { Spacer } from '@heroui/react';
 
 import { sectionWrapper, subtitle, title, titleWrapper } from '../primitives';
 

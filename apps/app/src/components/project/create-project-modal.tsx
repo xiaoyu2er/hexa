@@ -2,8 +2,8 @@
 
 import { useCreateProject } from '@/hooks/use-create-project';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
+import { Modal, ModalBody, ModalContent, ModalHeader } from '@heroui/react';
 import type { SelectOrgType } from '@hexa/server/schema/org';
-import { Modal, ModalBody, ModalContent, ModalHeader } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import { CreateProjectForm } from './create-project-form';
 

@@ -9,7 +9,7 @@ import {
   ModalHeader,
   Link as NextUILink,
   Skeleton,
-} from '@nextui-org/react';
+} from '@heroui/react';
 import Link from 'next/link';
 import { type FC, useState } from 'react';
 

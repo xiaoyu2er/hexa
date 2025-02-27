@@ -1,10 +1,10 @@
 import { Form, FormErrorMessage } from '@/components/form';
 import { InputField } from '@/components/form';
+import { Button } from '@heroui/react';
 import { APP_URL } from '@hexa/env';
 import { getSlugByName } from '@hexa/lib';
 import type { SelectOrgType } from '@hexa/server/schema/org';
 import type { InsertProjectType } from '@hexa/server/schema/project';
-import { Button } from '@nextui-org/react';
 import { type ComponentProps, type FormEvent, useEffect } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 

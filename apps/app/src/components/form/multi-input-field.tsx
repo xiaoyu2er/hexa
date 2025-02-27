@@ -1,7 +1,7 @@
 import { InputField } from '@/components/form';
 import type { BaseFieldProps } from '@/components/form';
+import { Button, type InputProps } from '@heroui/react';
 import { PlusIcon, TrashIcon } from '@hexa/ui/icons';
-import { Button, type InputProps } from '@nextui-org/react';
 import {
   type ArrayPath,
   type FieldError,

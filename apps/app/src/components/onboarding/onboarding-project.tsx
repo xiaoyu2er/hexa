@@ -2,10 +2,10 @@
 
 import { CreateProjectForm } from '@/components/project/create-project-form';
 import { useCreateProject } from '@/hooks/use-create-project';
+import { Card, Link } from '@heroui/react';
 import { WWW_URL } from '@hexa/env';
 import type { SelectOrgType } from '@hexa/server/schema/org';
 import { LogoIcon } from '@hexa/ui/icons';
-import { Card, Link } from '@nextui-org/react';
 
 interface OnboardingProjectProps {
   onNext: () => void;

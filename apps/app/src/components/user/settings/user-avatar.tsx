@@ -1,9 +1,9 @@
 'use client';
 
 import { getAvatarUrl } from '@/lib/user';
+import { Avatar, type AvatarProps } from '@heroui/react';
 import { cn } from '@hexa/lib';
 import type { BasicUserType } from '@hexa/server/schema/user';
-import { Avatar, type AvatarProps } from '@nextui-org/react';
 
 export function UserAvatar({
   user,

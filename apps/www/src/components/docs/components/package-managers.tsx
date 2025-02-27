@@ -1,6 +1,6 @@
 'use client';
 
-import { Code, Snippet, Tab, Tabs } from '@nextui-org/react';
+import { Code, Snippet, Tab, Tabs } from '@heroui/react';
 import { type Key, type ReactNode, useState } from 'react';
 
 import { Blockquote } from './blockquote';
@@ -117,7 +117,7 @@ export const PackageManagers = ({
           The above command is for individual installation only. You may skip
           this step if{' '}
           <Code className="px-1 py-0.5 font-mono text-small md:text-tiny">
-            @nextui-org/react
+            @heroui/react
           </Code>{' '}
           is already installed globally.
         </Blockquote>

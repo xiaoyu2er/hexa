@@ -1,16 +1,16 @@
 import {
-  type CalendarDate,
-  getLocalTimeZone,
-  today,
-} from '@internationalized/date';
-import {
   Button,
   ButtonGroup,
   DateRangePicker,
   Radio,
   type RadioProps,
   cn,
-} from '@nextui-org/react';
+} from '@heroui/react';
+import {
+  type CalendarDate,
+  getLocalTimeZone,
+  today,
+} from '@internationalized/date';
 import { useLocale } from '@react-aria/i18n';
 import type { FC } from 'react';
 
@@ -111,7 +111,9 @@ export const AnalyticsTimePicker: FC<AnalyticsTimePickerProps> = ({
         </ButtonGroup>
       }
       calendarProps={{
+        // @ts-ignore
         focusedValue: value.start,
+        // @ts-ignore
         onFocusChange: (val) => setValue({ ...value, start: val }),
         nextButtonProps: {
           variant: 'bordered',
@@ -124,6 +126,7 @@ export const AnalyticsTimePicker: FC<AnalyticsTimePickerProps> = ({
       value={value}
       onChange={(newDate) => {
         if (newDate) {
+          // @ts-ignore
           setValue(newDate);
         }
       }}

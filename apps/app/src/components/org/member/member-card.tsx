@@ -2,15 +2,15 @@ import { UserAvatar } from '@/components/user/settings/user-avatar';
 import type { SelectOrgMemberType } from '@hexa/server/schema/org-member';
 import { Badge } from '@hexa/ui/badge';
 
-import { MoreHorizontal } from '@hexa/ui/icons';
 import {
   Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-} from '@nextui-org/react';
-import { Skeleton } from '@nextui-org/react';
+} from '@heroui/react';
+import { Skeleton } from '@heroui/react';
+import { MoreHorizontal } from '@hexa/ui/icons';
 import type { Row } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
 

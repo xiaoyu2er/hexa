@@ -20,9 +20,9 @@ import {
   type UpdateOrgNameType,
 } from '@hexa/server/schema/org';
 
+import { Button } from '@heroui/react';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';

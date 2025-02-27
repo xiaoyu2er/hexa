@@ -1,10 +1,10 @@
 import { Form, FormErrorMessage } from '@/components/form';
 import { InputField } from '@/components/form';
 import { SelectField } from '@/components/form';
+import { Button } from '@heroui/react';
 import type { CreateInvitesType } from '@hexa/server/schema/org-invite';
 import { OrgRoleOptions } from '@hexa/server/schema/org-member';
 import { Trash } from '@hexa/ui/icons';
-import { Button } from '@nextui-org/react';
 import { useEffect } from 'react';
 import { type UseFormReturn, useFieldArray } from 'react-hook-form';
 

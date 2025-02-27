@@ -4,6 +4,7 @@ import { setFormError } from '@/components/form';
 import { Form } from '@/components/form';
 import { InputField } from '@/components/form';
 import { useUser } from '@/hooks/use-user';
+import { Button } from '@heroui/react';
 import { $updateUserName } from '@hexa/server/api';
 import {} from '@hexa/server/schema/project';
 import {
@@ -20,7 +21,6 @@ import {
 } from '@hexa/ui/card';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';

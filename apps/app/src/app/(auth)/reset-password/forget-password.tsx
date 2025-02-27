@@ -4,6 +4,7 @@ import { setFormError } from '@/components/form';
 import { FormErrorMessage } from '@/components/form';
 import { InputField } from '@/components/form';
 import { useTurnstile } from '@/hooks/use-turnstile';
+import { Button } from '@heroui/react';
 import type {
   $resetPasswordSendPasscode,
   InferApiResponseType,
@@ -12,7 +13,6 @@ import {
   SendPasscodeSchema,
   type SendPasscodeType,
 } from '@hexa/server/schema/passcode';
-import { Button } from '@nextui-org/react';
 
 import { AuthLink } from '@/components/auth/auth-link';
 import { Form } from '@/components/form';

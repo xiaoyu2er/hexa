@@ -39,7 +39,7 @@ Hexa is an intelligent link management platform that transforms simple links int
 - ⚛️ Next.js 15 with React Server Components
 - ☁️ Cloudflare Workers for edge computing
 - 🗄️ Drizzle ORM with D1 Database
-- 🎨 NextUI components
+- 🎨 HeroUI components
 - 📦 Turborepo + pnpm for monorepo management
 - 🔒 Lucia for authentication
 

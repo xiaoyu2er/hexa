@@ -1,9 +1,6 @@
 import RevokeInvite from '@/components/org/invite/invite-revoke-button';
 import { UserAvatar } from '@/components/user/settings/user-avatar';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
-import { cn } from '@hexa/lib';
-import type { QueryInviteType } from '@hexa/server/schema/org-invite';
-import { Badge } from '@hexa/ui/badge';
 import {
   Card,
   CardBody,
@@ -11,8 +8,11 @@ import {
   ModalBody,
   ModalContent,
   ModalHeader,
-} from '@nextui-org/react';
-import { Skeleton } from '@nextui-org/react';
+} from '@heroui/react';
+import { Skeleton } from '@heroui/react';
+import { cn } from '@hexa/lib';
+import type { QueryInviteType } from '@hexa/server/schema/org-invite';
+import { Badge } from '@hexa/ui/badge';
 import type { Row } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
 

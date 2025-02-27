@@ -1,4 +1,4 @@
-import { Snippet, Tab, Tabs } from '@nextui-org/react';
+import { Snippet, Tab, Tabs } from '@heroui/react';
 
 import Codeblock from './codeblock';
 

@@ -1,6 +1,6 @@
+import { Button, Link } from '@heroui/react';
 import { APP_URL } from '@hexa/env';
 import { SiteFooter } from '@hexa/ui/site-footer';
-import { Button, Link } from '@nextui-org/react';
 
 export function NotFound() {
   return (

@@ -1,5 +1,5 @@
 import type { BaseFieldProps } from '@/components/form';
-import { DatePicker, type DatePickerProps } from '@nextui-org/react';
+import { DatePicker, type DatePickerProps } from '@heroui/react';
 import { type FieldValues, useController } from 'react-hook-form';
 
 export type TimeFieldProps<T extends FieldValues> = BaseFieldProps<T> &
@@ -41,6 +41,7 @@ export const TimeField = <T extends FieldValues = FieldValues>({
           ? error.message
           : undefined
       }
+      // @ts-ignore
       onChange={(
         value: CalendarDate | CalendarDateTime | ZonedDateTime | null
       ) => {

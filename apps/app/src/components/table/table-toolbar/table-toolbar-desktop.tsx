@@ -4,7 +4,7 @@ import { X } from '@hexa/ui/icons';
 import { DataTableFacetedFilter } from '@/components/table/table-toolbar/table-faceted-filter';
 import { TableToolbarSearch } from '@/components/table/table-toolbar/table-toolbar-search';
 import type { TableToolbarProps } from '@/components/table/table-types';
-import { Button } from '@nextui-org/react';
+import { Button } from '@heroui/react';
 
 export function TableToolbarDesktop<TData>({
   table,

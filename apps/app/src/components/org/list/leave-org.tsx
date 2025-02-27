@@ -1,8 +1,8 @@
 'use client';
 
+import { Button } from '@heroui/react';
 import { $leaveOrg } from '@hexa/server/api';
 import { toast } from '@hexa/ui/sonner';
-import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 
 export const LeaveOrg = ({

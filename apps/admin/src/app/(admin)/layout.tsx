@@ -1,4 +1,5 @@
 import { AppSidebar } from '@/components/app-sidebar';
+import { Divider } from '@heroui/react';
 import { APP_URL } from '@hexa/env';
 import { getSession } from '@hexa/server/session';
 import { AppSidebarBreadcrumb } from '@hexa/ui/app-sidebar-breadcrumb';
@@ -8,7 +9,6 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@hexa/ui/sidebar';
-import { Divider } from '@nextui-org/react';
 import { redirect } from 'next/navigation';
 import type { ReactNode } from 'react';
 

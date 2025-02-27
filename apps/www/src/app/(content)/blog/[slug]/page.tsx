@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { Link, User } from '@nextui-org/react';
+import { Link, User } from '@heroui/react';
 import { allBlogPosts } from 'contentlayer2/generated';
 import { format, parseISO } from 'date-fns';
 import NextLink from 'next/link';

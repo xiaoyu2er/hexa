@@ -7,8 +7,8 @@ import type { TableRef } from '@/components/table/base-table';
 import { useProject } from '@/hooks/use-project';
 import { invalidateOrgInvites } from '@/lib/queries/orgs';
 import { useModal } from '@ebay/nice-modal-react';
+import { Button, Tab, Tabs } from '@heroui/react';
 import type { QueryInviteType } from '@hexa/server/schema/org-invite';
-import { Button, Tab, Tabs } from '@nextui-org/react';
 import { useRef, useState } from 'react';
 
 export function MembersPage() {

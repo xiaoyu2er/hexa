@@ -1,7 +1,7 @@
 'use client';
 
 import { FormErrorMessage } from '@/components/form';
-import { Button, Link } from '@nextui-org/react';
+import { Button, Link } from '@heroui/react';
 
 import { Form } from '@/components/form';
 import {

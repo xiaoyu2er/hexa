@@ -2,6 +2,7 @@
 import { Form, PasswordField, setFormError } from '@/components/form';
 import { FormErrorMessage } from '@/components/form';
 import { useUser } from '@/hooks/use-user';
+import { Button, Input, Link } from '@heroui/react';
 import { NEXT_PUBLIC_APP_NAME } from '@hexa/env';
 import { $updateUserPassword } from '@hexa/server/api';
 import { EditPasswordSchema } from '@hexa/server/schema/reset-password';
@@ -16,7 +17,6 @@ import {
 } from '@hexa/ui/card';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Input, Link } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';

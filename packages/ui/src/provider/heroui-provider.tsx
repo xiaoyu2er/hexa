@@ -1,7 +1,7 @@
 // app/providers.tsx
 'use client';
 
-import { NextUIProvider as InnerNextUIProvider } from '@nextui-org/react';
+import { HeroUIProvider as InnerHeroUIProvider } from '@heroui/react';
 import { useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
 
@@ -14,10 +14,10 @@ declare module '@react-types/shared' {
   }
 }
 
-export function NextUIProvider({ children }: { children: ReactNode }) {
+export function HeroUIProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   return (
-    <InnerNextUIProvider navigate={router.push}>{children}</InnerNextUIProvider>
+    <InnerHeroUIProvider navigate={router.push}>{children}</InnerHeroUIProvider>
   );
 }

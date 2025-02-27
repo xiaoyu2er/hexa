@@ -1,5 +1,5 @@
+import { Button, Link } from '@heroui/react';
 import { Icon } from '@iconify/react';
-import { Button, Link } from '@nextui-org/react';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 

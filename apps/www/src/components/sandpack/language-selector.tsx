@@ -1,5 +1,5 @@
 import type { SandpackPredefinedTemplate } from '@codesandbox/sandpack-react';
-import { Tab, Tabs } from '@nextui-org/react';
+import { Tab, Tabs } from '@heroui/react';
 import React, { useCallback } from 'react';
 
 import { JavascriptIcon, TypescriptIcon } from '@/components/icons';

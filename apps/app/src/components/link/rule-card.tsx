@@ -1,6 +1,13 @@
 import { InputField } from '@/components/form';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from '@heroui/react';
 import type { RulesFormType } from '@hexa/const/rule';
 import { cn } from '@hexa/lib';
 import { Badge } from '@hexa/ui/badge';
@@ -12,13 +19,6 @@ import {
   GripVerticalIcon,
   TrashIcon,
 } from '@hexa/ui/icons';
-import {
-  Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-} from '@nextui-org/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import type { useForm } from 'react-hook-form';

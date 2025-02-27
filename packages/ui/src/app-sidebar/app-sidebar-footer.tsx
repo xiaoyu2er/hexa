@@ -1,12 +1,12 @@
 'use client';
 
+import { Button, Tooltip } from '@heroui/react';
 import { cn } from '@hexa/lib';
 import { $logout } from '@hexa/server/api';
 import { useScreenSize } from '@hexa/ui/hooks/use-screen-size';
 import { LogOut } from '@hexa/ui/icons';
 import { ModeToggle } from '@hexa/ui/mode-toggle';
 import { SidebarFooter, useSidebar } from '@hexa/ui/sidebar';
-import { Button, Tooltip } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 

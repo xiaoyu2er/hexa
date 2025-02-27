@@ -1,9 +1,9 @@
 'use client';
 
+import { Button, Drawer, DrawerContent } from '@heroui/react';
+import { Skeleton, Tooltip } from '@heroui/react';
 import { cn } from '@hexa/lib';
 import { useScreenSize } from '@hexa/ui/hooks/use-screen-size';
-import { Button, Drawer, DrawerContent } from '@nextui-org/react';
-import { Skeleton, Tooltip } from '@nextui-org/react';
 import { Slot } from '@radix-ui/react-slot';
 import { type VariantProps, cva } from 'class-variance-authority';
 import { PanelLeft } from 'lucide-react';

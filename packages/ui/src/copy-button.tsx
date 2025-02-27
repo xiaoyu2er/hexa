@@ -1,9 +1,9 @@
 'use client';
 
+import { Button } from '@heroui/react';
 import { cn } from '@hexa/lib';
 import { Check, Copy } from '@hexa/ui/icons';
 import { toast } from '@hexa/ui/sonner';
-import { Button } from '@nextui-org/react';
 import { useState } from 'react';
 
 export function CopyButton({

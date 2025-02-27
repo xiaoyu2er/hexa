@@ -13,8 +13,8 @@ import { EditOrgSlugModal } from '@/components/org/settings/edit-org-slug-modal'
 import { useProject } from '@/hooks/use-project';
 
 import { useModal } from '@ebay/nice-modal-react';
+import { Button } from '@heroui/react';
 import type { SelectOrgType } from '@hexa/server/schema/org';
-import { Button } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 
 export function EditOrgSlug() {

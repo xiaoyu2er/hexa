@@ -7,10 +7,10 @@ import { AppSidebarBreadcrumb } from '@hexa/ui/app-sidebar-breadcrumb';
 import { notFound, redirect } from 'next/navigation';
 import type { ReactNode } from 'react';
 
+import { Divider } from '@heroui/react';
 import { SessionProvider } from '@hexa/ui/session-provider';
 import { SidebarInset, SidebarTrigger } from '@hexa/ui/sidebar';
 import { SidebarProvider } from '@hexa/ui/sidebar-provider';
-import { Divider } from '@nextui-org/react';
 
 export default async function ProjectLayout({
   children,

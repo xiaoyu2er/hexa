@@ -23,7 +23,7 @@
     "next": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "@nextui-org/theme": "catalog:",
+    "@heroui/theme": "catalog:",
     "framer-motion": "catalog:",
     "ua-parser-js": "catalog:",
     "intl-parse-accept-language": "catalog:"

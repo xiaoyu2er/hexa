@@ -1,6 +1,6 @@
 'use client';
 
-import { BreadcrumbItem, Breadcrumbs } from '@nextui-org/react';
+import { BreadcrumbItem, Breadcrumbs } from '@heroui/react';
 import { useParams, usePathname } from 'next/navigation';
 
 export const getSidebarBreadcrumb = ({

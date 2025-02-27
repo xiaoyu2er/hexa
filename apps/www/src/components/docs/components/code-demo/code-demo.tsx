@@ -1,6 +1,6 @@
 'use client';
 
-import { Skeleton, Tab, Tabs } from '@nextui-org/react';
+import { Skeleton, Tab, Tabs } from '@heroui/react';
 import { useInView } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import type React from 'react';

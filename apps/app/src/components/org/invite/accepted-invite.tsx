@@ -1,9 +1,9 @@
 'use client';
 
+import { Button, Card, Link } from '@heroui/react';
 import type { SelectInviteType } from '@hexa/server/schema/org-invite';
 import { Confetti, type ConfettiRef } from '@hexa/ui/confetti';
 import { LogoIcon } from '@hexa/ui/icons';
-import { Button, Card, Link } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 

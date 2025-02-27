@@ -1,6 +1,4 @@
 import { TipButton } from '@/components/tips/tip-button';
-import { useScreenSize } from '@hexa/ui/hooks/use-screen-size';
-import { ExternalLinkIcon } from '@hexa/ui/icons';
 import {
   Modal,
   ModalBody,
@@ -9,7 +7,9 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@nextui-org/react';
+} from '@heroui/react';
+import { useScreenSize } from '@hexa/ui/hooks/use-screen-size';
+import { ExternalLinkIcon } from '@hexa/ui/icons';
 import { useState } from 'react';
 
 const CountryContent = () => (

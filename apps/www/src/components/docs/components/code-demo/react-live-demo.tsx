@@ -1,7 +1,7 @@
 import type { SandpackFiles } from '@codesandbox/sandpack-react';
+import * as NextUI from '@heroui/react';
+import { clsx } from '@heroui/shared-utils';
 import * as intlDateUtils from '@internationalized/date';
-import * as NextUI from '@nextui-org/react';
-import { clsx } from '@nextui-org/shared-utils';
 import * as reactAriaI18n from '@react-aria/i18n';
 import React from 'react';
 import * as reactHookFormBase from 'react-hook-form';
@@ -24,7 +24,7 @@ export interface ReactLiveDemoProps {
 }
 
 // 🚨 Do not pass react-hook-form to scope, it will break the live preview since
-// it also has a "Form" component that will override the one from @nextui-org/react
+// it also has a "Form" component that will override the one from @heroui/react
 const reactHookForm = {
   useForm: reactHookFormBase.useForm,
   Controller: reactHookFormBase.Controller,

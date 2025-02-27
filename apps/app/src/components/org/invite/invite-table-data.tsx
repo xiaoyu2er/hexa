@@ -5,6 +5,7 @@ import type { FilterConfig } from '@/components/table/table-types';
 import { useInvites } from '@/hooks/use-invites';
 import { invalidateOrgInvites } from '@/lib/queries/orgs';
 import { getAvatarUrl, getUserDisplayName } from '@/lib/user';
+import { User } from '@heroui/react';
 import { getInviteUrl } from '@hexa/lib';
 import {
   InviteSortableColumnOptions,
@@ -14,7 +15,6 @@ import type { QueryInviteType } from '@hexa/server/schema/org-invite';
 import { OrgRoleOptions } from '@hexa/server/schema/org-member';
 import { Badge } from '@hexa/ui/badge';
 import { CopyButton } from '@hexa/ui/copy-button';
-import { User } from '@nextui-org/react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { capitalize } from 'lodash';
 

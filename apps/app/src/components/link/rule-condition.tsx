@@ -5,6 +5,7 @@ import {
   RuleValueInputPlaceholder,
 } from '@/components/link/rule-value-input';
 import { RuleValueTips } from '@/components/link/rule-value-tips';
+import { Button } from '@heroui/react';
 import {
   FIELD_CONFIGS,
   type LinkRuleCondition,
@@ -16,7 +17,6 @@ import {
 } from '@hexa/const/rule';
 import { cn } from '@hexa/lib';
 import { TrashIcon } from '@hexa/ui/icons';
-import { Button } from '@nextui-org/react';
 import type { Path, useForm } from 'react-hook-form';
 
 export const RuleCondition = ({

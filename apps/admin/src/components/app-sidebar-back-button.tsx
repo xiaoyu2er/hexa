@@ -1,9 +1,9 @@
+import { Link } from '@heroui/react';
+import { Button } from '@heroui/react';
 import { APP_URL } from '@hexa/env';
 import { useScreenSize } from '@hexa/ui/hooks/use-screen-size';
 import { ArrowLeft } from '@hexa/ui/icons';
 import { useSidebar } from '@hexa/ui/sidebar';
-import { Link } from '@nextui-org/react';
-import { Button } from '@nextui-org/react';
 
 export const BackButton = () => {
   const { state } = useSidebar();

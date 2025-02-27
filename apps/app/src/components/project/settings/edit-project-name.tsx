@@ -13,6 +13,7 @@ import {
 import { InputField } from '@/components/form';
 import { useProject } from '@/hooks/use-project';
 import { invalidateProjectsQuery } from '@/lib/queries/project';
+import { Button } from '@heroui/react';
 import { NEXT_PUBLIC_APP_NAME } from '@hexa/env';
 import { $updateProjectName } from '@hexa/server/api';
 import {
@@ -21,7 +22,6 @@ import {
 } from '@hexa/server/schema/project';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';

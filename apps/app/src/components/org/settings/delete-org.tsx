@@ -8,6 +8,15 @@ import {
 } from '@/components/form';
 import { invalidateProjectsQuery } from '@/lib/queries/project';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
+import {
+  Alert,
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from '@heroui/react';
 import { NEXT_PUBLIC_APP_NAME } from '@hexa/env';
 import { $deleteOrg } from '@hexa/server/api';
 import {
@@ -24,15 +33,6 @@ import {
 } from '@hexa/ui/card';
 import { toast } from '@hexa/ui/sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  Alert,
-  Button,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';

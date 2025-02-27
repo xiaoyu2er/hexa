@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react';
 
-import { NextUIProvider } from '@nextui-org/react';
+import { HeroUIProvider } from '@heroui/react';
 import type { ThemeProviderProps } from 'next-themes';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import { useRouter } from 'next/navigation';
@@ -45,9 +45,9 @@ export function Providers({ children, themeProps }: ProvidersProps) {
 
   return (
     <ProviderWrapper>
-      <NextUIProvider navigate={router.push}>
+      <HeroUIProvider navigate={router.push}>
         <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
-      </NextUIProvider>
+      </HeroUIProvider>
     </ProviderWrapper>
   );
 }

@@ -1,4 +1,4 @@
-import { clsx } from '@nextui-org/shared-utils';
+import { clsx } from '@heroui/shared-utils';
 import type React from 'react';
 import { tv } from 'tailwind-variants';
 

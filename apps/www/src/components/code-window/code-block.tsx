@@ -1,4 +1,4 @@
-import { clsx } from '@nextui-org/shared-utils';
+import { clsx } from '@heroui/shared-utils';
 import { toHtml } from 'hast-util-to-html';
 import rangeParser from 'parse-numeric-range';
 // Inspired by https://github.dev/modulz/stitches-site code demo

@@ -1,4 +1,4 @@
-import { clsx } from '@nextui-org/shared-utils';
+import { clsx } from '@heroui/shared-utils';
 import { type ReactNode, forwardRef } from 'react';
 
 export interface PreProps {

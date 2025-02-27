@@ -1,7 +1,7 @@
+import { Button, Divider, Link } from '@heroui/react';
 import { APP_URL } from '@hexa/env';
 import { cn } from '@hexa/lib';
 import { ChevronRight } from '@hexa/ui/icons';
-import { Button, Divider, Link } from '@nextui-org/react';
 
 export default function Hero() {
   const post = { href: '/blog/introducing-hexa', title: 'Introducing Hexa' };

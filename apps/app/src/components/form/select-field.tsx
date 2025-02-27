@@ -6,8 +6,8 @@ import {
 } from '@hexa/const/select-option';
 import { Icon } from '@iconify/react';
 
-import { Select, SelectItem, SelectSection } from '@nextui-org/react';
-import type { SelectProps } from '@nextui-org/react';
+import { Select, SelectItem, SelectSection } from '@heroui/react';
+import type { SelectProps } from '@heroui/react';
 import { type ReactNode, useState } from 'react';
 import { type FieldValues, useController } from 'react-hook-form';
 

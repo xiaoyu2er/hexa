@@ -1,6 +1,6 @@
 import { useSandpack } from '@codesandbox/sandpack-react';
-import { Button, Tooltip } from '@nextui-org/react';
-import { useClipboard } from '@nextui-org/use-clipboard';
+import { Button, Tooltip } from '@heroui/react';
+import { useClipboard } from '@heroui/use-clipboard';
 
 import { CopyLinearIcon } from '@/components/icons';
 

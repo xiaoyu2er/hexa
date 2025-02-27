@@ -1,5 +1,5 @@
 import type { BaseFieldProps } from '@/components/form';
-import { Input, type InputProps } from '@nextui-org/react';
+import { Input, type InputProps } from '@heroui/react';
 import { type FieldValues, useController } from 'react-hook-form';
 
 export type InputFieldProps<T extends FieldValues> = BaseFieldProps<T> &

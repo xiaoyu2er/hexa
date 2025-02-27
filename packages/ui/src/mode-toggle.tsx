@@ -10,7 +10,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
   cn,
-} from '@nextui-org/react';
+} from '@heroui/react';
 
 export function ModeToggle({ className }: { className?: string }) {
   const { setTheme } = useTheme();

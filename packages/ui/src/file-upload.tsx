@@ -1,8 +1,8 @@
+import { Avatar } from '@heroui/react';
 import { MAX_PROFILE_FILE_SIZE_MB } from '@hexa/const';
 import { cn } from '@hexa/lib';
 import { Loader2, UploadCloud } from '@hexa/ui/icons';
 import { toast } from '@hexa/ui/sonner';
-import { Avatar } from '@nextui-org/react';
 import { type VariantProps, cva } from 'class-variance-authority';
 import type React from 'react';
 import { type ReactNode, useState } from 'react';
